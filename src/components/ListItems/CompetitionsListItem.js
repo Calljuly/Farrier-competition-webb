@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { enterCompetition } from "../../store/actions/CompActions";
 import { useDispatch } from "react-redux";
 import { users } from "../../dummyData";
 import Admin from "../../Pages/Admin";
@@ -36,7 +35,6 @@ const CompetitionsListItem = ({
   current,
   maxEntries,
   index,
-  result,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();

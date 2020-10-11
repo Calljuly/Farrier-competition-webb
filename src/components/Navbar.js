@@ -51,6 +51,7 @@ const Navbar = ({ logOut }) => {
     <div className={classes.container}>
       <img
         className={classes.logo}
+        alt="Loggo"
         src={
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSdNDXa5K731C5bU_b83eUK3YaI2NmVd-ZcwnZMGJyHFUfgWPjwPdnaGwX3ECyKWwrKvfXLPWlW_YiOXzz663Wq6e-dIK9ThiFocBhQ&usqp=CAU&ec=45704948"
         }

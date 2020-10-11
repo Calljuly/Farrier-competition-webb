@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
-import { competitions } from "../../dummyData";
+
 const useStyle = makeStyles({
   container: {
     display: "flex",
@@ -25,9 +25,9 @@ const ResultListItem = ({ competition, points, placing }) => {
   const [seeComp, setSeeComp] = useState(false);
   const state = useSelector((state) => state.competitions.competitions);
   const comp = state.filter((item, index) => item.name === competition);
+
   const handleCompSeeMore = () => {
     setSeeComp((prev) => !prev);
-    console.log(comp[0].totalRestult);
   };
   return (
     <div className={classes.container}>
@@ -38,15 +38,7 @@ const ResultListItem = ({ competition, points, placing }) => {
       <button onClick={handleCompSeeMore}> Se mer </button>
       {seeComp && (
         <div className={classes.compContainer}>
-          {comp[0].totalRestult.map((result) => {
-            return (
-              <div>
-                <p>{result.user}</p>
-                <p>{result.points}</p>
-                <p>{result.placing}</p>
-              </div>
-            );
-          })}
+          <p>Results to come</p>
         </div>
       )}
     </div>

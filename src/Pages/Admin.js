@@ -35,9 +35,7 @@ const Admin = () => {
     setModal(true);
   };
   const closeModalHandler = (data, id, cellId) => {
-    console.log(data);
     dispatch(actions.addPoint(data, id, cellId));
-
     setModal(false);
   };
   const saveResults = () => {
@@ -59,7 +57,9 @@ const Admin = () => {
           <TableHead>
             <TableRow>
               {compClasses[2].headerTitles.map((comp) => (
-                <TableCell align="left">{comp}</TableCell>
+                <TableCell key={comp} align="left">
+                  {comp}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

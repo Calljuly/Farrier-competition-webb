@@ -3,11 +3,8 @@ import { Avatar } from "@material-ui/core";
 import { users } from "../dummyData";
 import { makeStyles } from "@material-ui/styles";
 import ResultListItem from "../components/ListItems/ResultListItem";
-import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 const useStyle = makeStyles({
@@ -30,7 +27,7 @@ const useStyle = makeStyles({
     width: 700,
   },
 });
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -41,14 +38,10 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
-}
+};
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -80,6 +73,7 @@ const User = () => {
           {users[0].results.map((item) => {
             return (
               <ResultListItem
+                key={item.competition}
                 competition={item.competition}
                 points={item.points}
                 placing={item.placing}

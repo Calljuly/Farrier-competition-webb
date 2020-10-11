@@ -14,14 +14,14 @@ function App() {
     if (localStorage.getItem("auth")) {
       dispatch(action.isAuth(true, false));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     firestore.collection("competitions").onSnapshot((collection) => {
       const competitions = collection.docs.map((data) => data.data());
       dispatch(actionComp.fetchCompetitions(competitions));
     });
-  }, []);
+  }, [dispatch]);
 
   const signIn = (email, pass) => {
     dispatch(() => action.isLoadning(true));
