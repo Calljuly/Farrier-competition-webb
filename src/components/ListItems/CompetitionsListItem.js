@@ -81,7 +81,7 @@ const CompetitionsListItem = ({
           </button>
         </div>
       ) : (
-        <Admin goBack={() => setModal(true)} />
+        <Admin compClasses={compClasses} goBack={() => setModal(true)} />
       )}
     </>
   );
