@@ -47,6 +47,7 @@ export const users = [
     age: 1993,
     live: "Gothenburg",
     img: timmy,
+    admin: true,
     results: [
       {
         competition: "Nordiska",

@@ -23,8 +23,6 @@ const useStyle = makeStyles({
 const ResultListItem = ({ competition, points, placing }) => {
   const classes = useStyle();
   const [seeComp, setSeeComp] = useState(false);
-  const state = useSelector((state) => state.competitions.competitions);
-  const comp = state.filter((item, index) => item.name === competition);
 
   const handleCompSeeMore = () => {
     setSeeComp((prev) => !prev);

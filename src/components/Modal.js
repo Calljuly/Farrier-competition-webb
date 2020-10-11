@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    display: "flex",
+    justifyContent: "cenetr",
+    alignItems: "center",
+    flexDirection: "column",
   },
 
   modalContent: {
@@ -50,9 +54,11 @@ const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
   };
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <div className={classes.modalContent}>
+      <div style={modalStyle} className={classes.paper}>
+        <h4>Enter points for : </h4>
+
         <div>
-          <p>{title}</p>
+          <h2>{modalData.title}</h2>
         </div>
         <div>
           <TextField
@@ -62,7 +68,7 @@ const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
           />
         </div>
 
-        <Button onClick={onSubmitHandler}>Klick</Button>
+        <Button onClick={onSubmitHandler}>Save</Button>
       </div>
     </Modal>
   );

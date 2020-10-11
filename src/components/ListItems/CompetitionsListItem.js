@@ -42,7 +42,12 @@ const CompetitionsListItem = ({
   return (
     <>
       {modalopen ? (
-        <div className={classes.container} onClick={() => setModal(false)}>
+        <div className={classes.container}>
+          {users[0].admin && (
+            <p onClick={() => setModal(false)}>
+              Set results for this competition
+            </p>
+          )}
           <h1>{name}</h1>
           <p>Price : {price}</p>
           <p> Country : {country}</p>
@@ -76,7 +81,7 @@ const CompetitionsListItem = ({
           </button>
         </div>
       ) : (
-        <Admin />
+        <Admin goBack={() => setModal(true)} />
       )}
     </>
   );

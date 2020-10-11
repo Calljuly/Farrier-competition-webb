@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Admin = () => {
+const Admin = ({ goBack }) => {
   const classes = useStyles();
   const [modalopen, setModal] = useState(false);
   const [modalData, setModalData] = useState("");
@@ -27,10 +27,11 @@ const Admin = () => {
   const result = useSelector((state) => state.result.result);
   const savedState = useSelector((state) => state.result.saved);
 
-  const handleModalContent = (id, cell) => {
+  const handleModalContent = (id, cell, title) => {
     setModalData({
       id: id,
       cellId: cell,
+      title: title,
     });
     setModal(true);
   };
@@ -74,7 +75,12 @@ const Admin = () => {
                     onClick={
                       savedState
                         ? () => alert("You can no longer edit these results")
-                        : () => handleModalContent(item.id, "one")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "one",
+                              compClasses[2].headerTitles[1]
+                            )
                     }
                     align="left"
                   >
@@ -84,7 +90,12 @@ const Admin = () => {
                     onClick={
                       savedState
                         ? () => alert("You can no longer edit these results")
-                        : () => handleModalContent(item.id, "two")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "two",
+                              compClasses[2].headerTitles[2]
+                            )
                     }
                     align="left"
                   >
@@ -94,7 +105,12 @@ const Admin = () => {
                     onClick={
                       savedState
                         ? () => alert("You can no longer edit these results")
-                        : () => handleModalContent(item.id, "three")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "three",
+                              compClasses[2].headerTitles[3]
+                            )
                     }
                     align="left"
                   >
@@ -104,7 +120,12 @@ const Admin = () => {
                     onClick={
                       savedState
                         ? () => alert("You can no longer edit these results")
-                        : () => handleModalContent(item.id, "four")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "four",
+                              compClasses[2].headerTitles[4]
+                            )
                     }
                     align="left"
                   >
@@ -123,6 +144,7 @@ const Admin = () => {
       </p>
       <p>You wont be able to edit these results after saving them</p>
       <Button onClick={saveResults}>Save results</Button>
+      <Button onClick={goBack}>Go Back</Button>
     </div>
   );
 };

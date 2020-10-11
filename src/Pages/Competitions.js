@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
-
+import {users} from '../dummyData'
 const useStyle = makeStyles({
   container: {
     display: "flex",
