@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
-import {users} from '../dummyData'
+import { compClasses, users } from "../dummyData";
 const useStyle = makeStyles({
   container: {
     display: "flex",
@@ -10,9 +10,10 @@ const useStyle = makeStyles({
   },
 });
 const Competitions = () => {
-  const competitions = useSelector((state) => state.competitions.competitions);
+  const competitions = useSelector((state) =>
+    state.competitions.competitions
+  );
   const classes = useStyle();
-
   return (
     <div className={classes.container}>
       {competitions.map((item, index) => {

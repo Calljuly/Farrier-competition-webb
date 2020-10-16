@@ -46,7 +46,7 @@ function App() {
     });
   };
 
-  let routes = getRoutes(logOut, signIn, isAuthenticated, false);
+  let routes = getRoutes(logOut, signIn, isAuthenticated, true);
 
   return <div>{routes}</div>;
 }

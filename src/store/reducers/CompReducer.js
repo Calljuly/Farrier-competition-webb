@@ -17,20 +17,31 @@ const CompReducer = (state = initialState, actions) => {
       )
         return state;
 
-      console.log(updatedState[actions.index]);
       updatedState[actions.index].currentEntries += 1;
       updatedState[actions.index].maxEntries -= 1;
       updatedState[actions.index].entries.push(actions.data);
       updatedState[actions.index].result.push({
         id: updatedState[actions.index].currentEntries,
         competitor: actions.data,
+        total: "",
       });
-
+      updatedState[actions.index].classes.map((item) => {
+        return item.result.push({
+          id: updatedState[actions.index].currentEntries,
+          competitor: actions.data,
+          one: "",
+          two: "",
+          three: "",
+          four: "",
+          total: "",
+        });
+      });
       firestore.collection("competitions").doc(actions.id).update({
         currentEntries: updatedState[actions.index].currentEntries,
         maxEntries: updatedState[actions.index].maxEntries,
         entries: updatedState[actions.index].entries,
         result: updatedState[actions.index].result,
+        classes: updatedState[actions.index].classes,
       });
       return {
         ...state,

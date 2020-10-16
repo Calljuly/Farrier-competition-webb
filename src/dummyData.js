@@ -71,15 +71,21 @@ export const users = [
 ];
 export const compClasses = [
   {
-    type: "Egel eye",
-    description: "Information",
-  },
-  {
-    type: "Forgin",
+    type: "Forging",
+    title: "forging",
+    headerTitles: [
+      "Competitor",
+      "Forging",
+      "Measurements",
+      "Nailplacement/ Fit",
+      "Flat / Finish",
+      "Total Points",
+    ],
     description: "Information",
   },
   {
     type: "Shoeing",
+    title: "shoeing",
     headerTitles: [
       "Competitor",
       "Shoe Fit",
@@ -186,98 +192,8 @@ export const result = {
   ],
   saved: false,
 };
-export const resultTwo = {
-  result: [
-    {
-      id: 0,
-      competitor: "Timmy Hoas",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 1,
-      competitor: "Julia Call",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 2,
-      competitor: "Simon Bodner",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 3,
-      competitor: "Per Nilsson",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 4,
-      competitor: "Sara ",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 5,
-      competitor: "Fredrik Strange",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 6,
-      competitor: "Louise Sjöstrand",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 7,
-      competitor: "Rickar Svärd",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 8,
-      competitor: "Rickard Roos",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-    {
-      id: 9,
-      competitor: "Daniel Sahl",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-      total: "",
-    },
-  ],
-  saved: false,
-};
+export const numbersToMultiply = 
+[  {
+    id:0,
+
+  }]

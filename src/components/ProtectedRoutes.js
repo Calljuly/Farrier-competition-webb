@@ -6,7 +6,7 @@ import User from "../Pages/User";
 import Home from "../Pages/Home";
 import Contact from "../Pages/Contact";
 import Login from "../components/LogIn.js/Login";
-
+import Admin from "../Pages/Admin";
 export const getUnProtectedRoutes = (signIn, isAuthenticated) => {
   return (
     <Route exact path="/">
@@ -35,6 +35,7 @@ export const getProtectedAdminRoutes = (logOut) => {
         <Route exact path="/" component={Home} />
         <Route path="/myProfile" component={User} />
         <Route path="/competitions" component={Competitions} />
+        <Route path="/admin" component={Admin} />
         <Route path="/contact" component={Contact} />
       </Switch>
     </Layout>

@@ -11,22 +11,23 @@ import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
-const ShoingClass = ({
+const ForgingClass = ({
   saveResults,
+  goBack,
   handleModalContent,
   pointsToMultiply,
-  result,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
-  //const result = useSelector((state) => state.result.result);
-  const history = useHistory();
+  const result = useSelector((state) => state.result.result);
+
   const classes = useStyles();
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -125,9 +126,9 @@ const ShoingClass = ({
       </p>
       <p>You wont be able to edit these results after saving them</p>
       <Button onClick={saveResults}>Save results</Button>
-      <Button onClick={() => history.goBack()}>Go Back</Button>
+      <Button onClick={goBack}>Go Back</Button>
     </div>
   );
 };
 
-export default ShoingClass;
+export default ForgingClass;

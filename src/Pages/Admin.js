@@ -1,17 +1,22 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { compClasses } from "../dummyData";
 import { useSelector, useDispatch } from "react-redux";
 import CustomModal from "../components/Modal";
 import * as actions from "../store/actions/resultAction";
-import { Button } from "@material-ui/core";
 import ShoingClass from "../components/Tables/ShoingClass";
-import { result, resultTwo } from "../dummyData";
+import ForgingClass from "../components/Tables/ForgingClass";
+import AddCompetition from "../components/Forms/addCompetition";
 
-const Admin = ({ goBack, compClasses }) => {
+const Admin = () => {
   const [modalopen, setModal] = useState(false);
   const [modalData, setModalData] = useState("");
   const dispatch = useDispatch();
+  const compClasses = useSelector((state) =>
+    state.competitions.competitions.filter((comp) => {
+      if (comp.id === "gjhAkbUpupIBrgysmoAG") {
+        return comp.classes;
+      }
+    })
+  );
 
   const handleModalContent = (id, cell, title) => {
     setModalData({
@@ -35,13 +40,17 @@ const Admin = ({ goBack, compClasses }) => {
         handleClose={closeModalHandler}
         modalData={modalData}
       />
+      <h1>Admin</h1>
+      <AddCompetition />
       {compClasses.map((item, index) => {
+        const a = item.classes;
         return (
           <ShoingClass
-            key={item.title}
+            key={a[index].type}
             handleModalContent={handleModalContent}
             saveResults={saveResults}
-            goBack={goBack}
+            pointsToMultiply={a[index].pointsToMultiply}
+            result={a[index].result}
           />
         );
       })}
