@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { users } from "../../dummyData";
-import Admin from "../../Pages/Admin";
 import * as actions from "../../store/actions/CompActions";
 import { Link } from "react-router-dom";
 const useStyle = makeStyles({
@@ -39,6 +38,7 @@ const CompetitionsListItem = ({
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const comp = useSelector((state) => state.competitions.competitions);
   return (
     <>
       <div className={classes.container}>
@@ -74,7 +74,7 @@ const CompetitionsListItem = ({
         </div>
         <button
           onClick={() =>
-            dispatch(actions.enterCompetition(users[0].name, index, id))
+            dispatch(actions.enterCompetition(users[0].name, index, id, comp))
           }
         >
           Enter

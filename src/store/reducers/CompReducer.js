@@ -1,5 +1,5 @@
-import { ADD, SUB } from "../actions/actions";
-import { FETCH_COMPETITIONS } from "../actions/CompActions";
+import { SUB } from "../actions/actions";
+import { FETCH_COMPETITIONS, ADD_COMPETITOR } from "../actions/CompActions";
 import { firestore } from "../../components/firebase";
 
 const initialState = {
@@ -9,43 +9,10 @@ const initialState = {
 const CompReducer = (state = initialState, actions) => {
   const updatedState = [...state.competitions];
   switch (actions.type) {
-    case ADD:
-      if (
-        updatedState[actions.index].entries.find(
-          (user) => user === actions.data
-        )
-      )
-        return state;
-
-      updatedState[actions.index].currentEntries += 1;
-      updatedState[actions.index].maxEntries -= 1;
-      updatedState[actions.index].entries.push(actions.data);
-      updatedState[actions.index].result.push({
-        id: updatedState[actions.index].currentEntries,
-        competitor: actions.data,
-        total: "",
-      });
-      updatedState[actions.index].classes.map((item) => {
-        return item.result.push({
-          id: updatedState[actions.index].currentEntries,
-          competitor: actions.data,
-          one: "",
-          two: "",
-          three: "",
-          four: "",
-          total: "",
-        });
-      });
-      firestore.collection("competitions").doc(actions.id).update({
-        currentEntries: updatedState[actions.index].currentEntries,
-        maxEntries: updatedState[actions.index].maxEntries,
-        entries: updatedState[actions.index].entries,
-        result: updatedState[actions.index].result,
-        classes: updatedState[actions.index].classes,
-      });
+    case ADD_COMPETITOR:
       return {
         ...state,
-        competitions: updatedState,
+        competitions: actions.data,
       };
     case SUB:
       console.log(actions.data.title);
