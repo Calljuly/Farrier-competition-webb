@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import { compClasses } from "../../dummyData";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles({

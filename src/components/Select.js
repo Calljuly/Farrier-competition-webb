@@ -15,14 +15,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
 }));
-const CustomSelect = ({ classTypes, label, handler, index, disabled }) => {
+const CustomSelect = ({ classTypes, label, handler, index, disabled, id }) => {
   const [age, setAge] = useState("");
   const classes = useStyles();
 
   const handleChange = (event) => {
     event.preventDefault();
     setAge(event.target.value);
-    handler(label.toLowerCase(), event.target.value, index);
+    handler(id, event.target.value, index);
   };
 
   return (
@@ -45,5 +45,6 @@ CustomSelect.propTypes = {
   label: string,
   handler: func,
   disabled: boolean,
+  key: string,
 };
 export default CustomSelect;

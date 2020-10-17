@@ -1,7 +1,7 @@
 import React from "react";
 import TextInput from "./TextInput";
 import CustomSelect from "./Select";
-import { string, func, shape, number, array, boolean, bool } from "prop-types";
+import { string, func, shape, number, array, boolean } from "prop-types";
 
 const AddClass = ({ label, handleClasses, compClasses, shoes, disabled }) => {
   return (
@@ -10,50 +10,29 @@ const AddClass = ({ label, handleClasses, compClasses, shoes, disabled }) => {
       <CustomSelect
         handler={handleClasses}
         label="type"
+        id={"type"}
         classTypes={compClasses}
       />
       <CustomSelect
         handler={handleClasses}
         label="Shoe to Forge"
+        id="shoeToForge"
         classTypes={shoes}
       />
       <CustomSelect
         handler={handleClasses}
         label="Shoe to Horse"
+        id="shoeToHorse"
         classTypes={shoes}
         disabled={disabled}
       />
       <TextInput
         required
-        key="time"
+        id="time"
         label="Time"
         placeholder="time"
         onChange={(event) => handleClasses("time", event.target.value)}
       />
-
-      {disabled
-        ? compClasses[0].headerTitles.map((item) => {
-            return (
-              <TextInput
-                required
-                key={item}
-                label={item}
-                placeholder={item}
-                onChange={(event) => handleClasses(item, event.target.value)}
-              />
-            );
-          })
-        : compClasses[1].headerTitles.map((item) => {
-            return (
-              <TextInput
-                required
-                key={item}
-                label={item}
-                placeholder={item}
-                onChange={(event) => handleClasses(item, event.target.value)}
-              />
-            );
-          })}
     </div>
   );
 };

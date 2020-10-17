@@ -1,6 +1,9 @@
 import { SUB } from "../actions/actions";
-import { FETCH_COMPETITIONS, ADD_COMPETITOR } from "../actions/CompActions";
-import { firestore } from "../../components/firebase";
+import {
+  FETCH_COMPETITIONS,
+  ADD_COMPETITOR,
+  CREATE_COMPETITON,
+} from "../actions/CompActions";
 
 const initialState = {
   competitions: [],
@@ -15,7 +18,6 @@ const CompReducer = (state = initialState, actions) => {
         competitions: actions.data,
       };
     case SUB:
-      console.log(actions.data.title);
       const newState = updatedState.filter((item) => {
         return item.title !== actions.data;
       });
@@ -27,6 +29,21 @@ const CompReducer = (state = initialState, actions) => {
     case FETCH_COMPETITIONS:
       return {
         competitions: actions.data,
+      };
+    case CREATE_COMPETITON:
+      updatedState.push({
+        classes: actions.data.classes,
+        currentEntries: 0,
+        result: [],
+        entries: [],
+        maxEntries: actions.data.maxEntries,
+        name: actions.data.name,
+        price: actions.data.price,
+        referee: actions.data.referee,
+      });
+      return {
+        ...state,
+        competitions: updatedState,
       };
     default:
       return state;

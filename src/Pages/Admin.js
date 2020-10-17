@@ -10,13 +10,7 @@ const Admin = () => {
   const [modalopen, setModal] = useState(false);
   const [modalData, setModalData] = useState("");
   const dispatch = useDispatch();
-  const compClasses = useSelector((state) =>
-    state.competitions.competitions.filter((comp) => {
-      if (comp.id === "gjhAkbUpupIBrgysmoAG") {
-        return comp.classes;
-      }
-    })
-  );
+  const compClasses = useSelector((state) => state.competitions.competitions);
 
   const handleModalContent = (id, cell, title) => {
     setModalData({
@@ -42,17 +36,18 @@ const Admin = () => {
       />
       <h1>Admin</h1>
       <AddCompetition />
-      {compClasses.map((item, index) => {
-        const a = item.classes;
-        return (
-          <ShoingClass
-            key={a[index].type}
-            handleModalContent={handleModalContent}
-            saveResults={saveResults}
-            pointsToMultiply={a[index].pointsToMultiply}
-            result={a[index].result}
-          />
-        );
+      {compClasses.map((item) => {
+        return item.classes.map((classes, index) => {
+          return (
+            <ShoingClass
+              key={index}
+              handleModalContent={handleModalContent}
+              saveResults={saveResults}
+              pointsToMultiply={classes.pointsToMultiply}
+              result={classes.result}
+            />
+          );
+        });
       })}
     </div>
   );

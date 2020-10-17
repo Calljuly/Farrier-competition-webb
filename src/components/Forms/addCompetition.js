@@ -3,6 +3,10 @@ import TextInput from "../TextInput";
 import { compClasses, shoes } from "../../dummyData";
 import AddClass from "../addClass";
 import { Button } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import AddPoints from "../Forms/addPoints";
+import * as actions from "../../store/actions/CompActions";
+
 const textInputs = [
   {
     id: 0,
@@ -39,10 +43,7 @@ const initialState = {
   classes: [],
 };
 
-function reducer(state, action) {
-  console.log(state);
-  console.log(action);
-
+const reducer = (state, action) => {
   switch (action.type) {
     case "name":
       return { ...state, [action.type]: action.value };
@@ -55,45 +56,47 @@ function reducer(state, action) {
     case "maxEntries":
       return { ...state, [action.type]: action.value };
     case "classes":
+      console.log("Kommer hit");
+      console.log(action.value);
       return {
         ...state,
-        [action.type]: action.value,
+        [action.type]: [...action.value],
       };
     default:
       return;
   }
-}
+};
 const AddCompetition = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatchReducer] = useReducer(reducer, initialState);
   const [classesObject, setClasses] = useState({
     pointsToMultiply: [],
     shoeToForge: "",
     shoeToHorse: "",
     time: "",
     type: "",
-    orging: "",
-    measurements: "",
-    "nailplacement/ fit": "",
-    "flat / finish": "",
-    "total Points": "",
-    "shoe fit": "",
-    "trimming/balance": "",
-    shoe: "",
-    "nailing and finish": "",
-    "total points": "",
+    result: [],
   });
+  const dispatch = useDispatch();
+  const array = [];
+
   const handleClasses = (key, value, index) => {
     setClasses((prev) => {
       const a = {
         ...prev,
-        [key.toLowerCase()]: value,
+        [key]: value,
       };
       return a;
     });
   };
 
   const addNewClassHandler = () => {
-    const newClassesArray = [...classesObject];
+    array.push(classesObject);
+    dispatchReducer({
+      type: "classes",
+      value: array,
+    });
+
+    /*const newClassesArray = [...classesObject];
     newClassesArray.push({
       pointsToMultiply: [],
       shoeToForge: "",
@@ -101,19 +104,27 @@ const AddCompetition = () => {
       time: "",
       type: "",
     });
-    setClasses(newClassesArray);
+    setClasses(newClassesArray);*/
+  };
+  const confirmPoints = (data) => {
+    Object.values(data).map((item) => {
+      classesObject.pointsToMultiply.push(item);
+    });
+  };
+  const createCompetition = async () => {
+    dispatch(actions.createCompetition(state));
   };
   return (
     <div>
       <h3>Competition</h3>
-      {textInputs.map((item, index) => (
+      {textInputs.map((item) => (
         <TextInput
           required
           key={item.id}
           label={item.label}
           placeholder={item.label}
           onChange={(event) =>
-            dispatch({ type: item.value, value: event.target.value })
+            dispatchReducer({ type: item.value, value: event.target.value })
           }
         />
       ))}
@@ -126,7 +137,16 @@ const AddCompetition = () => {
         label=" New Class"
       />
 
+      <AddPoints
+        confirmPoints={confirmPoints}
+        disabled={classesObject.type === "forging"}
+      />
+
       <Button onClick={addNewClassHandler}>Add new class</Button>
+
+      <Button onClick={addNewClassHandler}>Save Competition</Button>
+
+      <Button onClick={createCompetition}>Create Competition</Button>
     </div>
   );
 };

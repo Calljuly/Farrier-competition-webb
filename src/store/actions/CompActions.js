@@ -4,6 +4,7 @@ export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const SUB = "SUB";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
+export const CREATE_COMPETITON = "CREATE_COMPETITION";
 
 export const enterCompetition = (data, index, id, state) => {
   const updatedState = [...state];
@@ -44,6 +45,32 @@ export const enterCompetition = (data, index, id, state) => {
         dispatch({
           type: ADD_COMPETITOR,
           data: updatedState,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const createCompetition = (data) => {
+  return (dispatch) => {
+    firestore
+      .collection("competitions")
+      .add({
+        classes: data.classes,
+        currentEntries: 0,
+        result: [],
+        entries: [],
+        maxEntries: data.maxEntries,
+        name: data.name,
+        price: data.price,
+        referee: data.referee,
+      })
+      .then(() => {
+        dispatch({
+          type: CREATE_COMPETITON,
+          data: data,
         });
       })
       .catch((err) => {
