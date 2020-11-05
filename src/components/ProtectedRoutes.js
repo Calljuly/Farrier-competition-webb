@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Competitions from "../Pages/Competitions";
 import Layout from "../components/UI/Layout";
 import User from "../Pages/User";
@@ -7,17 +7,21 @@ import Home from "../Pages/Home";
 import Contact from "../Pages/Contact";
 import Login from "../components/LogIn.js/Login";
 import Admin from "../Pages/Admin";
-export const getUnProtectedRoutes = (signIn, isAuthenticated) => {
+
+export const getUnProtectedRoutes = () => {
   return (
-    <Route exact path="/">
-      <Login loginFailed={isAuthenticated} auth={signIn} />
-    </Route>
+    <Switch>
+      <Route exact path="/">
+        <Login />
+      </Route>
+      <Redirect exact to="/" />
+    </Switch>
   );
 };
-export const getProtectedUserRoutes = (logOut, signIn, isAuthenticated) => {
+export const getProtectedUserRoutes = (isAuthenticated) => {
   if (isAuthenticated) {
     return (
-      <Layout logOut={logOut}>
+      <Layout>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/myProfile" component={User} />
@@ -26,11 +30,11 @@ export const getProtectedUserRoutes = (logOut, signIn, isAuthenticated) => {
         </Switch>
       </Layout>
     );
-  } else return getUnProtectedRoutes(logOut, signIn, isAuthenticated);
+  } else return getUnProtectedRoutes(isAuthenticated);
 };
-export const getProtectedAdminRoutes = (logOut) => {
+export const getProtectedAdminRoutes = () => {
   return (
-    <Layout logOut={logOut}>
+    <Layout>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/myProfile" component={User} />
@@ -42,15 +46,15 @@ export const getProtectedAdminRoutes = (logOut) => {
   );
 };
 
-export const getRoutes = (logOut, signIn, isAuthenticated, Admin) => {
+export const getRoutes = (isAuthenticated, Admin) => {
   if (!isAuthenticated) {
-    return getProtectedUserRoutes(signIn, isAuthenticated);
+    return getUnProtectedRoutes(isAuthenticated);
   }
   if (isAuthenticated) {
     if (Admin) {
-      return getProtectedAdminRoutes(logOut, signIn, isAuthenticated);
+      return getProtectedAdminRoutes(isAuthenticated);
     } else {
-      return getProtectedUserRoutes(logOut, signIn, isAuthenticated);
+      return getProtectedUserRoutes(isAuthenticated);
     }
   }
 };

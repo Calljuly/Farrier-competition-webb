@@ -42,12 +42,6 @@ const CompetitionsListItem = ({
   return (
     <>
       <div className={classes.container}>
-        {users[0].admin && (
-          <>
-            <Link to="/admin">Set result</Link>
-            <Link to="/admin">Add competition</Link>
-          </>
-        )}
         <h1>{name}</h1>
         <p>Price : {price}</p>
         <p> Country : {country}</p>

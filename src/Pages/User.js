@@ -6,7 +6,8 @@ import ResultListItem from "../components/ListItems/ResultListItem";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-
+import { useSelector } from "react-redux";
+import { Paper } from "@material-ui/core";
 const useStyle = makeStyles({
   avatar: {
     margin: 40,
@@ -42,15 +43,17 @@ const TabPanel = (props) => {
     </div>
   );
 };
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
+};
+
 const User = () => {
   const classes = useStyle();
   const [value, setValue] = React.useState(0);
+  const user = useSelector((state) => state.auth.user);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -62,24 +65,37 @@ const User = () => {
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Profile" {...a11yProps(0)} />
           <Tab label="Results" {...a11yProps(1)} />
+          <Tab label="Edit profile" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <div className={classes.headContainer}>
-            <h1>{users[0].name}</h1>
-            <h3>{users[0].live}</h3>
-          </div>
+          <Paper elevation={4}>
+            <div className={classes.headContainer}>
+              <h1>{user.name}</h1>
+              <h3>{user.location}</h3>
+              <h3>{user.info}</h3>
+            </div>
+          </Paper>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {users[0].results.map((item) => {
-            return (
-              <ResultListItem
-                key={item.competition}
-                competition={item.competition}
-                points={item.points}
-                placing={item.placing}
-              />
-            );
-          })}
+          <Paper elevation={4} style={{ padding: 20 }}>
+            <h1>Results</h1>
+            {user.result.length > 0 &&
+              user.result.map((item) => {
+                return (
+                  <ResultListItem
+                    key={item.competition}
+                    competition={item.competition}
+                    points={item.points}
+                    placing={item.placing}
+                  />
+                );
+              })}
+          </Paper>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Paper elevation={4}>
+            <h1>Edit profil</h1>
+          </Paper>
         </TabPanel>
       </div>
     </div>

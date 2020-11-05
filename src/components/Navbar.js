@@ -3,6 +3,8 @@ import { Avatar } from "@material-ui/core";
 import { users } from "../dummyData";
 import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
+import * as actions from "../store/actions/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyle = makeStyles({
   avatar: {
@@ -45,8 +47,10 @@ const useStyle = makeStyles({
     flex: 1,
   },
 });
-const Navbar = ({ logOut }) => {
+const Navbar = () => {
   const classes = useStyle();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.isAuth);
   return (
     <div className={classes.container}>
       <img
@@ -66,10 +70,19 @@ const Navbar = ({ logOut }) => {
         <Link className={classes.link} to="/competitions">
           Competitions
         </Link>
+        {auth && (
+          <Link className={classes.link} to="/admin">
+            Admin
+          </Link>
+        )}
         <Link className={classes.link} to="/contact">
           Contact
         </Link>
-        <Link onClick={logOut} className={classes.link} to="/">
+        <Link
+          onClick={() => dispatch(actions.logOut())}
+          className={classes.link}
+          to="/"
+        >
           Logout
         </Link>
         <div className={classes.welcomeContainer}>

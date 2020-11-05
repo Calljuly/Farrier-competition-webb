@@ -3,10 +3,10 @@ import { makeStyles } from "@material-ui/styles";
 import { TextField, Button } from "@material-ui/core";
 import Farrier from "../../assets/Images/farrier.jpg";
 import Spinner from "../../components/UI/Spinner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../store/actions/auth";
 
 const useStyle = makeStyles({
-
   loginContainer: {
     width: "40%",
     height: 600,
@@ -52,8 +52,9 @@ const useStyle = makeStyles({
     fontWeight: "bold",
   },
 });
-const Login = ({ auth }) => {
+const Login = () => {
   const classes = useStyle();
+  const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isError = useSelector((state) => state.auth.error);
   const [authState, setAuthState] = useState({
@@ -99,7 +100,9 @@ const Login = ({ auth }) => {
           <Button
             classes={{ root: classes.button }}
             onClick={() =>
-              auth(authState.email.value, authState.password.value)
+              dispatch(
+                actions.signIn(authState.email.value, authState.password.value)
+              )
             }
           >
             Log in

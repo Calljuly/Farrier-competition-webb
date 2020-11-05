@@ -7,10 +7,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-
 import { compClasses } from "../../dummyData";
 import { useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   table: {
@@ -19,13 +19,12 @@ const useStyles = makeStyles({
 });
 const ForgingClass = ({
   saveResults,
-  goBack,
   handleModalContent,
   pointsToMultiply,
+  result,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
-  const result = useSelector((state) => state.result.result);
-
+  const { goBack } = useHistory();
   const classes = useStyles();
 
   return (

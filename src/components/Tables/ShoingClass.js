@@ -25,6 +25,7 @@ const ShoingClass = ({
 }) => {
   const savedState = useSelector((state) => state.result.saved);
   //const result = useSelector((state) => state.result.result);
+
   const history = useHistory();
   const classes = useStyles();
   return (

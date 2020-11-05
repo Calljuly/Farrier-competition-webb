@@ -9,10 +9,11 @@ const useStyle = makeStyles({
     flexDirection: "column",
   },
 });
+
 const Competitions = () => {
   const competitions = useSelector((state) => state.competitions.competitions);
   const classes = useStyle();
-  console.log(competitions);
+
   return (
     <div className={classes.container}>
       {competitions.map((item, index) => {
