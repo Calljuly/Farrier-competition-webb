@@ -1,6 +1,6 @@
 import React from "react";
-import TextInput from "./TextInput";
-import CustomSelect from "./Select";
+import TextInput from "../TextInput";
+import CustomSelect from "../Select";
 import { string, func, shape, number, array, boolean } from "prop-types";
 
 const AddClass = ({ label, handleClasses, compClasses, shoes, disabled }) => {

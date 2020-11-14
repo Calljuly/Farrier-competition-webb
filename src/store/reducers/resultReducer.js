@@ -1,9 +1,9 @@
-import { ADD_POINT,SAVED } from "../actions/resultAction";
-import { result } from "../../dummyData";
+import { ADD_POINT, SAVED, FETCH_RESULTS } from "../actions/resultAction";
+//import { result } from "../../dummyData";
 
 const initialState = {
-  result: result.result,
-  saved: result.saved,
+  result: [],
+  saved: false
 };
 
 const ResultReducer = (state = initialState, actions) => {
@@ -29,7 +29,12 @@ const ResultReducer = (state = initialState, actions) => {
         ...state,
         saved: true,
       };
-
+    case FETCH_RESULTS:
+      return {
+        ...state,
+        result: actions.data,
+        saved: false,
+      };
     default:
       return state;
   }

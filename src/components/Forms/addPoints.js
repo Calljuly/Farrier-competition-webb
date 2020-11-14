@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import TextInput from "../TextInput";
-import { compClasses, shoes } from "../../dummyData";
-import AddClass from "../addClass";
+import { compClasses } from "../../dummyData";
 import { Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
@@ -13,7 +12,6 @@ const AddPoints = ({ confirmPoints, disabled }) => {
 
   const pointsHandler = (key, event) => {
     event.preventDefault();
-    console.log(event.target.value);
     switch (key) {
       case 0:
         setNumberOne(event.target.value);

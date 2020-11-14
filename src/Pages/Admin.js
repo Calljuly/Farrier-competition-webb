@@ -46,7 +46,9 @@ const Admin = () => {
   const user = useSelector((state) => state.auth.user);
   const compClasses = useSelector((state, index) => {
     return state.competitions.competitions.filter((item) => {
-      return item.admins.includes(user.name) && user.name;
+      if (item.admins.includes(user.name)) {
+        return item;
+      }
     });
   });
 

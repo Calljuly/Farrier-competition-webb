@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { TextField, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexDirection: "column",
   },
-
   modalContent: {
     backgroundColor: "white",
     width: "80%",
@@ -39,38 +38,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
+const MessageModal = ({ isOpen, handleClose, modalData }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
-  const [text, setText] = useState(0);
 
-  const handler = (event) => {
-    event.preventDefault();
-    setText(event.target.value);
-  };
-  const onSubmitHandler = () => {
-    handleClose(text, modalData.id, modalData.cellId);
-    setText(0);
-  };
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <div style={modalStyle} className={classes.paper}>
-        <h4>Enter points for : </h4>
-
         <div>
-          <h2>{modalData.title}</h2>
+          <h1>{modalData.title}</h1>
         </div>
         <div>
-          <TextField
-            InputProps={{ inputProps: { min: 0, max: 10 } }}
-            type="number"
-            onChange={(event) => handler(event)}
-          />
+          <p>{modalData.description}</p>
         </div>
 
-        <Button onClick={onSubmitHandler}>Save</Button>
+        <Button onClick={handleClose}>Okey</Button>
       </div>
     </Modal>
   );
 };
-export default CustomModal;
+export default MessageModal;

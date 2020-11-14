@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from "react";
 import TextInput from "../TextInput";
 import { compClasses, shoes } from "../../dummyData";
-import AddClass from "../addClass";
+import AddClass from "./addClass";
 import { Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import AddPoints from "../Forms/addPoints";
@@ -56,8 +56,6 @@ const reducer = (state, action) => {
     case "maxEntries":
       return { ...state, [action.type]: action.value };
     case "classes":
-      console.log("Kommer hit");
-      console.log(action.value);
       return {
         ...state,
         [action.type]: [...action.value],
@@ -111,7 +109,7 @@ const AddCompetition = () => {
       classesObject.pointsToMultiply.push(item);
     });
   };
-  const createCompetition = async () => {
+  const createCompetition = () => {
     dispatch(actions.createCompetition(state));
   };
   return (
@@ -142,9 +140,7 @@ const AddCompetition = () => {
         disabled={classesObject.type === "forging"}
       />
 
-      <Button onClick={addNewClassHandler}>Add new class</Button>
-
-      <Button onClick={addNewClassHandler}>Save Competition</Button>
+    <Button onClick={addNewClassHandler}>Add new class</Button>
 
       <Button onClick={createCompetition}>Create Competition</Button>
     </div>

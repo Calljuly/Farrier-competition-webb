@@ -9,7 +9,11 @@ export const CREATE_COMPETITON = "CREATE_COMPETITION";
 export const enterCompetition = (data, index, id, state) => {
   const updatedState = [...state];
   return (dispatch) => {
-    if (updatedState[index].entries.find((user) => user === data)) return;
+    if (
+      updatedState[index].entries.find((user) => user === data) ||
+      updatedState[index].currentEntries === updatedState[index].maxEntries
+    )
+      return;
 
     updatedState[index].currentEntries += 1;
     updatedState[index].maxEntries -= 1;
@@ -61,7 +65,9 @@ export const createCompetition = (data) => {
         classes: data.classes,
         currentEntries: 0,
         result: [],
+        unPublishedResult: [],
         entries: [],
+        country: data.country,
         maxEntries: data.maxEntries,
         name: data.name,
         price: data.price,

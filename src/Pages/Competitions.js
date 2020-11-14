@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
+import { Grid } from "@material-ui/core";
 
 const useStyle = makeStyles({
   container: {
@@ -16,22 +17,27 @@ const Competitions = () => {
 
   return (
     <div className={classes.container}>
-      {competitions.map((item, index) => {
-        return (
-          <CompetitionsListItem
-            key={item.id}
-            index={index}
-            id={item.id}
-            name={item.name}
-            price={item.price}
-            referee={item.referee}
-            country={item.country}
-            maxEntries={item.maxEntries}
-            current={item.currentEntries}
-            compClasses={item.classes}
-          />
-        );
-      })}
+      <Grid container spacing={8}>
+        {competitions.map((item, index) => {
+          return (
+            <Grid item sm={4} xs={12}>
+              <CompetitionsListItem
+                key={item.id}
+                index={index}
+                id={item.id}
+                name={item.name}
+                price={item.price}
+                referee={item.referee}
+                country={item.country}
+                maxEntries={item.maxEntries}
+                current={item.currentEntries}
+                compClasses={item.classes}
+                disabled={item.maxEntries === item.currentEntries}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
     </div>
   );
 };

@@ -49,7 +49,6 @@ const ResultListItem = ({ competition, points, placing }) => {
         <p> Placering : {placing}</p>
       </div>
       <button className={classes.button} onClick={handleCompSeeMore}>
-        {" "}
         Show full scorelist
       </button>
       {seeComp && (

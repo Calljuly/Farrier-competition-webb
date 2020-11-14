@@ -1,7 +1,12 @@
+* {
+  box-sizing: border-box;
+}
 html {
   margin: 0;
+  padding: 0;
   height: "100vh";
-  background-color: #b9babe;
-  background-image: linear-gradient(180deg, #b9babe 33%, #595658 100%);
-  background-size: contain;
+  background-color: #ffffff;
+}
+p {
+  font-size: "15px";
 }
