@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { TextField, Button } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import Farrier from "../../assets/Images/farrier.jpg";
 import Spinner from "../../components/UI/Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions/auth";
-
+import CustomButton from "../CustomButton";
 const useStyle = makeStyles({
   loginContainer: {
     width: "40%",
@@ -18,8 +18,8 @@ const useStyle = makeStyles({
     overflow: "hidden",
   },
   img: {
-    width: "100%" /* width of container */,
-    height: 200 /* height of container */,
+    width: "100%",
+    height: 200,
     objectFit: "cover",
   },
   inputContainer: {
@@ -33,13 +33,6 @@ const useStyle = makeStyles({
     height: 50,
     fontSize: 20,
     margin: 10,
-  },
-  button: {
-    width: "20%",
-    padding: 10,
-    backgroundColor: "blue",
-    color: "white",
-    marginTop: 20,
   },
   screen: {
     width: "100%",
@@ -57,6 +50,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isError = useSelector((state) => state.auth.error);
+
   const [authState, setAuthState] = useState({
     email: {
       value: "",
@@ -94,19 +88,18 @@ const Login = () => {
               handleInputChange("password", text.target.value)
             }
             className={classes.input}
-            label="Lösenord"
+            label="Password"
             type="password"
           />
-          <Button
-            classes={{ root: classes.button }}
+
+          <CustomButton
+            title="Login"
             onClick={() =>
               dispatch(
                 actions.signIn(authState.email.value, authState.password.value)
               )
             }
-          >
-            Log in
-          </Button>
+          />
           {isLoading && <Spinner />}
           {isError && (
             <p className={classes.failedLogin}>Inloggningen misslyckades</p>

@@ -4,7 +4,8 @@ export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
 
 export const signUp = (email, pass) => {
-  return (dispath) => {
+  return (dispatch) => {
+    dispatch(isAuth(false, true, {}));
     auth.createUserWithEmailAndPassword(email, pass).then((cred) => {
       return firestore.collection("users").doc(cred.user.uid).set({
         info: "",
@@ -12,12 +13,14 @@ export const signUp = (email, pass) => {
         name: "",
         img: cred.user.photoURL,
       });
+    }).then(() =>{
+      signIn(email, pass);
     });
   };
 };
 export const signIn = (email, pass) => {
   return (dispatch) => {
-    dispatch(() => isLoadning(true));
+    dispatch(isAuth(false, true, {}));
     auth
       .signInWithEmailAndPassword(email, pass)
       .then((cred) => {
@@ -38,6 +41,7 @@ export const signIn = (email, pass) => {
 };
 export const logOut = () => {
   return (dispatch) => {
+    dispatch(isAuth(true, false, {}));
     auth.signOut().then((cred) => {});
     localStorage.removeItem("auth");
     dispatch(isAuth(false, false, {}));

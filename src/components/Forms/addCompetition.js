@@ -2,36 +2,41 @@ import React, { useReducer, useState } from "react";
 import TextInput from "../TextInput";
 import { compClasses, shoes } from "../../dummyData";
 import AddClass from "./addClass";
-import { Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import AddPoints from "../Forms/addPoints";
-import * as actions from "../../store/actions/CompActions";
+import * as actions from "../../store/actions/competitionAction";
+import CustomButton from "../CustomButton";
+import CreateCompetitionModal from "../CreateCompetitionModal";
 
 const textInputs = [
   {
     id: 0,
     label: "Name",
     value: "name",
+    type: "text",
   },
   {
     id: 1,
     label: "Price",
     value: "price",
+    type: "number",
   },
   {
     id: 2,
     label: "Referee",
     value: "referee",
+    type: "text",
   },
   {
     id: 3,
     label: "Country",
     value: "country",
+    type: "text",
   },
   {
     id: 4,
     label: "Max entries",
     value: "maxEntries",
+    type: "number",
   },
 ];
 const initialState = {
@@ -66,47 +71,15 @@ const reducer = (state, action) => {
 };
 const AddCompetition = () => {
   const [state, dispatchReducer] = useReducer(reducer, initialState);
-  const [classesObject, setClasses] = useState({
-    pointsToMultiply: [],
-    shoeToForge: "",
-    shoeToHorse: "",
-    time: "",
-    type: "",
-    result: [],
-  });
+
+  const [modalOpen, setOpenModal] = useState(false);
   const dispatch = useDispatch();
-  const array = [];
-
-  const handleClasses = (key, value, index) => {
-    setClasses((prev) => {
-      const a = {
-        ...prev,
-        [key]: value,
-      };
-      return a;
-    });
-  };
-
-  const addNewClassHandler = () => {
-    array.push(classesObject);
+  const array = [...state.classes];
+  const addNewClassHandler = (newClass) => {
+    array.push(newClass);
     dispatchReducer({
       type: "classes",
       value: array,
-    });
-
-    /*const newClassesArray = [...classesObject];
-    newClassesArray.push({
-      pointsToMultiply: [],
-      shoeToForge: "",
-      shoeToHorse: "",
-      time: "",
-      type: "",
-    });
-    setClasses(newClassesArray);*/
-  };
-  const confirmPoints = (data) => {
-    Object.values(data).map((item) => {
-      classesObject.pointsToMultiply.push(item);
     });
   };
   const createCompetition = () => {
@@ -114,35 +87,38 @@ const AddCompetition = () => {
   };
   return (
     <div>
+      <CreateCompetitionModal
+        isOpen={modalOpen}
+        handleClose={() => setOpenModal(false)}
+      >
+        <AddClass
+          shoes={shoes}
+          compClasses={compClasses}
+          label="New Class"
+          addNewClassHandler={addNewClassHandler}
+        />
+        <CustomButton onClick={() => setOpenModal(false)} title="Cancel" />
+      </CreateCompetitionModal>
+
       <h3>Competition</h3>
       {textInputs.map((item) => (
         <TextInput
           required
           key={item.id}
           label={item.label}
+          type={item.type}
           placeholder={item.label}
           onChange={(event) =>
             dispatchReducer({ type: item.value, value: event.target.value })
           }
         />
       ))}
+      {state.classes.length}
+      <div>
+        <CustomButton onClick={() => setOpenModal(true)} title="Add class" />
 
-      <AddClass
-        disabled={classesObject.type === "forging"}
-        shoes={shoes}
-        compClasses={compClasses}
-        handleClasses={handleClasses}
-        label=" New Class"
-      />
-
-      <AddPoints
-        confirmPoints={confirmPoints}
-        disabled={classesObject.type === "forging"}
-      />
-
-    <Button onClick={addNewClassHandler}>Add new class</Button>
-
-      <Button onClick={createCompetition}>Create Competition</Button>
+        <CustomButton onClick={createCompetition} title="Create Competition" />
+      </div>
     </div>
   );
 };

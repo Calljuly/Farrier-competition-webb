@@ -22,13 +22,14 @@ const ForgingClass = ({
   handleModalContent,
   pointsToMultiply,
   result,
+  index,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
   const { goBack } = useHistory();
   const classes = useStyles();
-
   return (
     <div>
+      <h3>Forging</h3>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -60,7 +61,8 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "one",
-                              compClasses[1].headerTitles[1]
+                              compClasses[1].headerTitles[1],
+                              index
                             )
                     }
                     align="left"
@@ -75,7 +77,8 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "two",
-                              compClasses[1].headerTitles[2]
+                              compClasses[1].headerTitles[2],
+                              index
                             )
                     }
                     align="left"
@@ -90,7 +93,8 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "three",
-                              compClasses[1].headerTitles[3]
+                              compClasses[1].headerTitles[3],
+                              index
                             )
                     }
                     align="left"
@@ -105,7 +109,8 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "four",
-                              compClasses[1].headerTitles[4]
+                              compClasses[1].headerTitles[4],
+                              index
                             )
                     }
                     align="left"

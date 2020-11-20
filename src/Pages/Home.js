@@ -1,13 +1,18 @@
 import React from "react";
 import HomeButton from "../components/HomeButton";
+import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import StarIcon from "@material-ui/icons/Star";
 import PhoneIcon from "@material-ui/icons/Phone";
 
+const useStyle = makeStyles({
+  container: {},
+});
 const Home = () => {
+  const classes = useStyle();
   return (
-    <>
+    <div className={classes.container}>
       <h1>Hom pages</h1>
       <Grid container spacing={2}>
         <Grid item md={4} xs={12}>
@@ -30,7 +35,7 @@ const Home = () => {
           />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 

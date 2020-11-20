@@ -6,15 +6,13 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import Handler from "./store/reducers/reducer";
-import CompReducer from "./store/reducers/CompReducer";
+import CompReducer from "./store/reducers/competitionReducer";
 import ResultReducer from "./store/reducers/resultReducer";
 
 import thunk from "redux-thunk";
 import { authReducer } from "./store/reducers/auth";
 
 const reducer = combineReducers({
-  shoes: Handler,
   competitions: CompReducer,
   auth: authReducer,
   result: ResultReducer,

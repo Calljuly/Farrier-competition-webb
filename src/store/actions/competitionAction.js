@@ -1,32 +1,42 @@
 import { firestore } from "../../components/firebase";
 
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
-export const SUB = "SUB";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
 export const CREATE_COMPETITON = "CREATE_COMPETITION";
 
-export const enterCompetition = (data, index, id, state) => {
+export const enterCompetition = (competitor, index, id, state) => {
   const updatedState = [...state];
   return (dispatch) => {
     if (
-      updatedState[index].entries.find((user) => user === data) ||
+      updatedState[index].entries.find((user) => user === competitor) ||
       updatedState[index].currentEntries === updatedState[index].maxEntries
     )
       return;
 
     updatedState[index].currentEntries += 1;
     updatedState[index].maxEntries -= 1;
-    updatedState[index].entries.push(data);
+    updatedState[index].entries.push(competitor);
     updatedState[index].result.push({
       id: updatedState[index].currentEntries,
-      competitor: data,
+      competitor: competitor,
       total: "",
     });
     updatedState[index].classes.map((item) => {
       return item.result.push({
         id: updatedState[index].currentEntries,
-        competitor: data,
+        competitor: competitor,
+        one: "",
+        two: "",
+        three: "",
+        four: "",
+        total: "",
+      });
+    });
+    updatedState[index].classes.map((item) => {
+      return item.unPublishedResult.push({
+        id: updatedState[index].currentEntries,
+        competitor: competitor,
         one: "",
         two: "",
         three: "",
@@ -85,16 +95,9 @@ export const createCompetition = (data) => {
   };
 };
 
-export const actionSub = (data) => {
-  return {
-    type: SUB,
-    data: data,
-  };
-};
-
-export const fetchCompetitions = (data) => {
+export const fetchCompetitions = (competitions) => {
   return {
     type: FETCH_COMPETITIONS,
-    data: data,
+    data: competitions,
   };
 };

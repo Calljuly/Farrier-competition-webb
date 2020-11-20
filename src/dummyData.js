@@ -192,8 +192,3 @@ export const result = {
   ],
   saved: false,
 };
-export const numbersToMultiply = 
-[  {
-    id:0,
-
-  }]

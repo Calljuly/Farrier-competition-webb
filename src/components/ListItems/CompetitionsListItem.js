@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { users } from "../../dummyData";
-import * as actions from "../../store/actions/CompActions";
+import * as actions from "../../store/actions/competitionAction";
 import { Paper } from "@material-ui/core";
 import MessageModal from "../MessageModal";
 

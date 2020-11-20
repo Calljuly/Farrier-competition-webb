@@ -22,6 +22,7 @@ const ShoingClass = ({
   handleModalContent,
   pointsToMultiply,
   result,
+  index,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
   //const result = useSelector((state) => state.result.result);
@@ -30,6 +31,7 @@ const ShoingClass = ({
   const classes = useStyles();
   return (
     <div>
+      <h3>Forging</h3>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -61,7 +63,8 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "one",
-                              compClasses[1].headerTitles[1]
+                              compClasses[1].headerTitles[1],
+                              index
                             )
                     }
                     align="left"
@@ -76,7 +79,8 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "two",
-                              compClasses[1].headerTitles[2]
+                              compClasses[1].headerTitles[2],
+                              index
                             )
                     }
                     align="left"
@@ -91,7 +95,8 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "three",
-                              compClasses[1].headerTitles[3]
+                              compClasses[1].headerTitles[3],
+                              index
                             )
                     }
                     align="left"
@@ -106,7 +111,8 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "four",
-                              compClasses[1].headerTitles[4]
+                              compClasses[1].headerTitles[4],
+                              index
                             )
                     }
                     align="left"

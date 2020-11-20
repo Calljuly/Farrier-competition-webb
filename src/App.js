@@ -3,15 +3,18 @@ import "./App.css";
 import { firestore } from "./components/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "./store/actions/auth";
-import * as actionComp from "./store/actions/CompActions";
+import * as actionComp from "./store/actions/competitionAction";
 import * as resultActions from "./store/actions/resultAction";
 import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
+import { useFirebase } from "./hooks/useFirebase";
+import Loading from "./components/IsLoading";
 
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   useEffect(() => {
     if (localStorage.getItem("auth")) {
@@ -23,36 +26,32 @@ function App() {
             .get()
             .then((item) => {
               dispatch(action.isAuth(true, false, item.data()));
-              if (item.data().admin) {
-                const user = item.data();
-                firestore
-                  .collection("competitions")
-                  .onSnapshot((collection) => {
-                    const competitionsAdmin = collection.docs.filter((item) => {
-                      if (item.data().admins.includes(user.name)) {
-                        return item.data();
-                      }
-                    });
-                    dispatch(resultActions.fetchAdminComps(competitionsAdmin));
-                  });
-              }
             });
         }
       });
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    firestore.collection("competitions").onSnapshot((collection) => {
-      const competitions = collection.docs.map((data) => data.data());
-      dispatch(actionComp.fetchCompetitions(competitions));
-    });
-  }, [dispatch]);
-
   let routes = getRoutes(isAuthenticated, true);
+
+  const { data, status, error } = useFirebase(
+    firestore.collection("competitions")
+  );
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (status === "error") {
+    return `Error: ${error.message}`;
+  }
+  if (data) {
+    dispatch(actionComp.fetchCompetitions(data));
+    dispatch(resultActions.fetchAdminComps(data));
+  }
 
   return (
     <>
+      {isLoading && <Loading />}
       <CookieConsent />
       {routes}
     </>

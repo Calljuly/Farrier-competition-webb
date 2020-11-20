@@ -1,9 +1,8 @@
-import { SUB } from "../actions/actions";
 import {
   FETCH_COMPETITIONS,
   ADD_COMPETITOR,
   CREATE_COMPETITON,
-} from "../actions/CompActions";
+} from "../actions/competitionAction";
 
 const initialState = {
   competitions: [],
@@ -17,15 +16,7 @@ const CompReducer = (state = initialState, actions) => {
         ...state,
         competitions: actions.data,
       };
-    case SUB:
-      const newState = updatedState.filter((item) => {
-        return item.title !== actions.data;
-      });
-      console.log(newState);
-      return {
-        ...state,
-        shoes: newState,
-      };
+  
     case FETCH_COMPETITIONS:
       return {
         competitions: actions.data,

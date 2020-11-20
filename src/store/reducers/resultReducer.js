@@ -1,25 +1,39 @@
 import { ADD_POINT, SAVED, FETCH_RESULTS } from "../actions/resultAction";
-//import { result } from "../../dummyData";
+import { firestore } from "../../components/firebase";
 
 const initialState = {
   result: [],
-  saved: false
+  saved: false,
 };
 
 const ResultReducer = (state = initialState, actions) => {
-  const updatedState = [...state.result];
-
   switch (actions.type) {
     case ADD_POINT:
-      const toUpdateTo = {
-        ...updatedState[actions.id],
-        [actions.cellId]: +actions.data,
-      };
-      const lastUpdatedState = {
-        ...toUpdateTo,
-        total: reCalculateTotal(toUpdateTo),
-      };
-      updatedState[actions.id] = lastUpdatedState;
+      const updatedState = [...state.result];
+      const competitor = [
+        ...state.result[0].classes[actions.index].unPublishedResult,
+      ];
+
+      const c = competitor.map((item) => {
+        if (item.id === actions.id) {
+          const a = {
+            ...item,
+            [actions.cellId]: +actions.data,
+          };
+          const b = {
+            ...a,
+            total: reCalculateTotal(a),
+          };
+
+          return b;
+        }
+        return item;
+      });
+
+      updatedState[0].classes[actions.index].unPublishedResult = c;
+      firestore.collection("competitions").doc("gjhAkbUpupIBrgysmoAG").update({
+        updatedState,
+      });
       return {
         ...state,
         result: updatedState,
@@ -33,7 +47,6 @@ const ResultReducer = (state = initialState, actions) => {
       return {
         ...state,
         result: actions.data,
-        saved: false,
       };
     default:
       return state;
