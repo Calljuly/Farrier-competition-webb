@@ -5,6 +5,7 @@ import { Grid } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import StarIcon from "@material-ui/icons/Star";
 import PhoneIcon from "@material-ui/icons/Phone";
+import Sponsors from "../components/Sponsors";
 
 const useStyle = makeStyles({
   container: {},
@@ -13,7 +14,10 @@ const Home = () => {
   const classes = useStyle();
   return (
     <div className={classes.container}>
-      <h1>Hom pages</h1>
+      <h1 style={{ fontSize: 50, textAlign: "center" }}>Name of side</h1>
+      <h1 style={{ fontSize: 30, textAlign: "center" }}> Welcome to "Name of Side". </h1>
+      <Sponsors data={null} />
+
       <Grid container spacing={2}>
         <Grid item md={4} xs={12}>
           <HomeButton path="/" Icon={HomeIcon} title="Home" />

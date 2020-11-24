@@ -11,6 +11,7 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import { Paper } from "@material-ui/core";
 import { Colors } from "../colors";
+import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -67,28 +68,40 @@ const Admin = () => {
   const user = useSelector((state) => state.auth.user);
 
   const compClasses = useSelector((state) => {
-    return state.result.result;
+    return state.competitions.competitions;
   });
-  console.log(compClasses);
   const handleChange = (event, newValue) => {
     event.preventDefault();
     setValue(newValue);
   };
 
-  const handleModalContent = (id, cell, title, index, value) => {
+  const handleModalContent = (id, cell, title, index, compIndex) => {
     setModalData({
       id: id,
       cellId: cell,
       title: title,
       index: index,
+      compIndex: compIndex,
     });
     setModal(true);
   };
-  const closeModalHandler = (data, id, cellId, index) => {
-    console.log(modalData);
-    console.log(data + id + cellId + index);
+
+  const adminCompetitions = compClasses.filter((item, index) => {
+    if (item.admins.includes(user.name)) {
+      return item;
+    }
+  });
+
+  const closeModalHandler = (data) => {
     dispatch(
-      actions.addPoint(data, modalData.id, modalData.cellId, modalData.index)
+      actions.addPoint(
+        data,
+        modalData.id,
+        modalData.cellId,
+        modalData.index,
+        modalData.compIndex,
+        compClasses
+      )
     );
     setModal(false);
   };
@@ -128,7 +141,7 @@ const Admin = () => {
           <Tab
             className={classes.tabs}
             classes={{ selected: classes.active }}
-            label="Edit scores"
+            label="My Competitions"
           />
         </Tabs>
         <TabPanel value={value} index={0}>
@@ -149,29 +162,55 @@ const Admin = () => {
           <AddCompetition />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <h1>Fill in results</h1>
-          {compClasses.map((item) => {
-            return item.classes.map((classes, index) => {
-              return classes.type === "Shoeing" ? (
-                <ShoingClass
-                  key={index}
-                  handleModalContent={handleModalContent}
-                  saveResults={saveResults}
-                  pointsToMultiply={classes.pointsToMultiply}
-                  result={classes.unPublishedResult}
+          <h1>My competitions</h1>
+          {adminCompetitions.length !== 0 ? (
+            adminCompetitions.map((item, index) => {
+              return (
+                <CompetitionListItemAdmin
+                  key={item.name}
                   index={index}
-                />
-              ) : (
-                <ForgingClass
-                  key={index}
-                  handleModalContent={handleModalContent}
-                  saveResults={saveResults}
-                  pointsToMultiply={classes.pointsToMultiply}
-                  result={classes.unPublishedResult}
-                  index={index}
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  referee={item.referee}
+                  country={item.country}
+                  maxEntries={item.maxEntries}
+                  current={item.currentEntries}
+                  compClasses={item.classes}
+                  disabled={item.maxEntries === item.currentEntries}
                 />
               );
-            });
+            })
+          ) : (
+            <p>No competitions to show</p>
+          )}
+
+          {compClasses.map((item, compIndex) => {
+            if (item.admins.includes(user.name)) {
+              return item.classes.map((classes, index) => {
+                return classes.type === "Shoeing" ? (
+                  <ShoingClass
+                    key={index}
+                    handleModalContent={handleModalContent}
+                    saveResults={saveResults}
+                    pointsToMultiply={classes.pointsToMultiply}
+                    result={classes.unPublishedResult}
+                    index={index}
+                    compIndex={compIndex}
+                  />
+                ) : (
+                  <ForgingClass
+                    key={index}
+                    handleModalContent={handleModalContent}
+                    saveResults={saveResults}
+                    pointsToMultiply={classes.pointsToMultiply}
+                    result={classes.unPublishedResult}
+                    index={index}
+                    compIndex={compIndex}
+                  />
+                );
+              });
+            }
           })}
         </TabPanel>
       </div>

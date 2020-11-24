@@ -6,7 +6,7 @@ const useStyle = makeStyles({
   button: {
     backgroundColor: Colors.black,
     color: Colors.orange,
-    width: "20%",
+    width: 200,
     padding: 10,
     margin: "20px",
   },

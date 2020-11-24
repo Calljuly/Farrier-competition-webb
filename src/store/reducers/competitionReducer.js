@@ -1,7 +1,9 @@
+import { compClasses } from "../../dummyData";
 import {
   FETCH_COMPETITIONS,
   ADD_COMPETITOR,
   CREATE_COMPETITON,
+  DELETE_COMPETITION,
 } from "../actions/competitionAction";
 
 const initialState = {
@@ -16,7 +18,7 @@ const CompReducer = (state = initialState, actions) => {
         ...state,
         competitions: actions.data,
       };
-  
+
     case FETCH_COMPETITIONS:
       return {
         competitions: actions.data,
@@ -35,6 +37,16 @@ const CompReducer = (state = initialState, actions) => {
       return {
         ...state,
         competitions: updatedState,
+      };
+    case DELETE_COMPETITION:
+      const a = updatedState.filter((item) => {
+        if (item.id !== actions.competition) {
+          return item;
+        }
+      });
+      return {
+        ...state,
+        competitions: a,
       };
     default:
       return state;

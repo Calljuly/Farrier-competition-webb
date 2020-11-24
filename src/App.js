@@ -10,8 +10,9 @@ import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
 import { useFirebase } from "./hooks/useFirebase";
 import Loading from "./components/IsLoading";
+import { getCompetitions } from "./components/apiFunctions";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const isLoading = useSelector((state) => state.auth.isLoading);
@@ -48,7 +49,6 @@ function App() {
     dispatch(actionComp.fetchCompetitions(data));
     dispatch(resultActions.fetchAdminComps(data));
   }
-
   return (
     <>
       {isLoading && <Loading />}
@@ -56,6 +56,6 @@ function App() {
       {routes}
     </>
   );
-}
+};
 
 export default App;

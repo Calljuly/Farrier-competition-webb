@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import CustomButton from "./CustomButton";
 
-function rand() {
+const rand = () => {
   return Math.round(Math.random() * 20) - 10;
-}
+};
 
-function getModalStyle() {
+const getModalStyle = () => {
   const top = 50 + rand();
   const left = 50 + rand();
 
@@ -15,13 +14,14 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
+    width: "90%",
   };
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 400,
+    width: 600,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -49,7 +49,6 @@ const CreateCompetitionModal = ({
 }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
-  const [text, setText] = useState(0);
 
   return (
     <Modal open={isOpen} onClose={handleClose}>

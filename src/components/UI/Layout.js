@@ -1,10 +1,10 @@
 import React from "react";
 import Navbar from "../Navbar";
 import cover from "../../assets/Images/newpic.jpg";
-
+import Footer from "../footer";
 const Layout = ({ children, logOut }) => {
   return (
-    <div style={{ height: "100vh", width: "200vh", margin: "0px" }}>
+    <>
       <div
         style={{
           width: "100%",
@@ -17,7 +17,8 @@ const Layout = ({ children, logOut }) => {
       </div>
       <Navbar logOut={logOut} />
       {children}
-    </div>
+      <Footer />
+    </>
   );
 };
 

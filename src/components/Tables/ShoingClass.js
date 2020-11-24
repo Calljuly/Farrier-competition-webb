@@ -23,6 +23,7 @@ const ShoingClass = ({
   pointsToMultiply,
   result,
   index,
+  compIndex,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
   //const result = useSelector((state) => state.result.result);
@@ -64,7 +65,8 @@ const ShoingClass = ({
                               item.id,
                               "one",
                               compClasses[1].headerTitles[1],
-                              index
+                              index,
+                              compIndex
                             )
                     }
                     align="left"
@@ -80,7 +82,8 @@ const ShoingClass = ({
                               item.id,
                               "two",
                               compClasses[1].headerTitles[2],
-                              index
+                              index,
+                              compIndex
                             )
                     }
                     align="left"
@@ -96,7 +99,8 @@ const ShoingClass = ({
                               item.id,
                               "three",
                               compClasses[1].headerTitles[3],
-                              index
+                              index,
+                              compIndex
                             )
                     }
                     align="left"
@@ -112,7 +116,8 @@ const ShoingClass = ({
                               item.id,
                               "four",
                               compClasses[1].headerTitles[4],
-                              index
+                              index,
+                              compIndex
                             )
                     }
                     align="left"

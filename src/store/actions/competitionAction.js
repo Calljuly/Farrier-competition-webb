@@ -4,6 +4,7 @@ export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
 export const CREATE_COMPETITON = "CREATE_COMPETITION";
+export const DELETE_COMPETITION = "DELETE_COMPETITION";
 
 export const enterCompetition = (competitor, index, id, state) => {
   const updatedState = [...state];
@@ -67,30 +68,61 @@ export const enterCompetition = (competitor, index, id, state) => {
   };
 };
 
-export const createCompetition = (data) => {
+export const createCompetition = (competition, user) => {
+  const admin = [];
+  admin.push(user);
   return (dispatch) => {
-    firestore
-      .collection("competitions")
-      .add({
-        classes: data.classes,
-        currentEntries: 0,
-        result: [],
-        unPublishedResult: [],
-        entries: [],
-        country: data.country,
-        maxEntries: data.maxEntries,
-        name: data.name,
-        price: data.price,
-        referee: data.referee,
-      })
-      .then(() => {
+    const comp = {
+      admins: admin,
+      classes: competition.classes,
+      currentEntries: 0,
+      result: [],
+      entries: [],
+      country: competition.country,
+      maxEntries: competition.maxEntries,
+      name: competition.name,
+      price: competition.price,
+      referee: competition.referee,
+      id: 6,
+    };
+    fetch(
+      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comp),
+      }
+    )
+      .then((data) => {
         dispatch({
           type: CREATE_COMPETITON,
-          data: data,
+          data: comp,
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+};
+export const deleteCompetition = (competition) => {
+  return (dispatch) => {
+    fetch(
+      `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competition}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => response.json())
+      .then((competition) => {
+        dispatch({
+          type: DELETE_COMPETITION,
+          data: competition,
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 };

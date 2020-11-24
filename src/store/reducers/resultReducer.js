@@ -9,34 +9,9 @@ const initialState = {
 const ResultReducer = (state = initialState, actions) => {
   switch (actions.type) {
     case ADD_POINT:
-      const updatedState = [...state.result];
-      const competitor = [
-        ...state.result[0].classes[actions.index].unPublishedResult,
-      ];
-
-      const c = competitor.map((item) => {
-        if (item.id === actions.id) {
-          const a = {
-            ...item,
-            [actions.cellId]: +actions.data,
-          };
-          const b = {
-            ...a,
-            total: reCalculateTotal(a),
-          };
-
-          return b;
-        }
-        return item;
-      });
-
-      updatedState[0].classes[actions.index].unPublishedResult = c;
-      firestore.collection("competitions").doc("gjhAkbUpupIBrgysmoAG").update({
-        updatedState,
-      });
       return {
         ...state,
-        result: updatedState,
+        result: actions.updatedState,
       };
     case SAVED:
       return {
@@ -53,12 +28,4 @@ const ResultReducer = (state = initialState, actions) => {
   }
 };
 
-const reCalculateTotal = (updatedState) => {
-  const first = +updatedState.one * 2.5;
-  const second = +updatedState.two * 2.5;
-  const third = +updatedState.three * 2.5;
-  const fourth = +updatedState.four * 2.5;
-
-  return first + second + third + fourth;
-};
 export default ResultReducer;

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import CustomButton from "../CustomButton";
 import CreateCompetitionModal from "../CreateCompetitionModal";
-
+import { useSelector } from "react-redux";
 const textInputs = [
   {
     id: 0,
@@ -46,6 +46,7 @@ const initialState = {
   country: "",
   maxEntries: "",
   classes: [],
+  admins: [],
 };
 
 const reducer = (state, action) => {
@@ -70,8 +71,9 @@ const reducer = (state, action) => {
   }
 };
 const AddCompetition = () => {
-  const [state, dispatchReducer] = useReducer(reducer, initialState);
+  const user = useSelector((state) => state.auth.user);
 
+  const [state, dispatchReducer] = useReducer(reducer, initialState);
   const [modalOpen, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const array = [...state.classes];
@@ -81,9 +83,10 @@ const AddCompetition = () => {
       type: "classes",
       value: array,
     });
+    setOpenModal(false);
   };
   const createCompetition = () => {
-    dispatch(actions.createCompetition(state));
+    dispatch(actions.createCompetition(state, user.name));
   };
   return (
     <div>
@@ -96,8 +99,8 @@ const AddCompetition = () => {
           compClasses={compClasses}
           label="New Class"
           addNewClassHandler={addNewClassHandler}
+          closeModal={() => setOpenModal(false)}
         />
-        <CustomButton onClick={() => setOpenModal(false)} title="Cancel" />
       </CreateCompetitionModal>
 
       <h3>Competition</h3>

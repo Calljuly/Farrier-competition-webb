@@ -1,11 +1,14 @@
 export const createCompetition = async (competition) => {
-  fetch("http://localhost:5001/farrier-project/us-central1/app/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(competition),
-  })
+  fetch(
+    "https://us-central1-farrier-project.cloudfunctions.net/app/competitions/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(competition),
+    }
+  )
     .then((response) => response.json())
     .then((data) => {
       console.log("Success:", competition);
@@ -17,7 +20,7 @@ export const createCompetition = async (competition) => {
 
 export const deleteCompetition = async (competitionId) => {
   fetch(
-    `http://localhost:5001/farrier-project/us-central1/app/delete/${competitionId}`,
+    `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competitionId}`,
     {
       method: "DELETE",
     }
@@ -34,7 +37,7 @@ export const deleteCompetition = async (competitionId) => {
 
 export const getCompetition = async (competitionId) => {
   fetch(
-    `http://localhost:5001/farrier-project/us-central1/app/competitions/${competitionId}`,
+    `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competitionId}`,
     {
       method: "GET",
       headers: {
@@ -51,15 +54,20 @@ export const getCompetition = async (competitionId) => {
     });
 };
 export const getCompetitions = async () => {
-  fetch(`http://localhost:5001/farrier-project/us-central1/app/competitions`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
+  fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
     .then((response) => response.json())
     .then((data) => {
       console.log("Success");
+      console.log(data);
+      return data;
     })
     .catch((error) => {
       console.error("Error:", error);

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { users } from "../../dummyData";
 import * as actions from "../../store/actions/competitionAction";
 import { Paper } from "@material-ui/core";
-import MessageModal from "../MessageModal";
+import CustomButton from "../CustomButton";
+import ValidationModal from "../ValidationModal";
 
 const useStyle = makeStyles({
   container: {
@@ -69,7 +69,7 @@ const useStyle = makeStyles({
     border: "none",
   },
 });
-const CompetitionsListItem = ({
+const CompetitionListItemAdmin = ({
   id,
   name,
   price,
@@ -78,22 +78,19 @@ const CompetitionsListItem = ({
   referee,
   current,
   maxEntries,
-  index,
-  disabled,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [modalOpen, setOpenModal] = useState(false);
   const comp = useSelector((state) => state.competitions.competitions);
+
   return (
     <>
-      <MessageModal
+      <ValidationModal
         isOpen={modalOpen}
         handleClose={() => setOpenModal(false)}
-        modalData={{
-          title: "Entered!",
-          description: "You have succsessfully entered the competition!",
-        }}
+        description="Are you sure you want to delete this competition ? All data will be remeoved"
+        action={() => dispatch(actions.deleteCompetition(id))}
       />
       <Paper elevation={4} className={classes.container}>
         <h1>{name}</h1>
@@ -111,9 +108,9 @@ const CompetitionsListItem = ({
         <div>
           <h3>Classes : </h3>
           <div className={classes.classesContainer}>
-            {compClasses.map((item, index) => {
+            {compClasses.map((item) => {
               return (
-                <div key={index} className={classes.classes}>
+                <div className={classes.classes} key={item.shoeToHorse}>
                   <p>Type: {item.type}</p>
                   <p>Time : {item.time}</p>
                   {item.type !== "Eagel eye" && (
@@ -128,19 +125,18 @@ const CompetitionsListItem = ({
             })}
           </div>
         </div>
-        <button
-          disabled={disabled}
-          className={disabled ? classes.buttonDisabled : classes.button}
-          onClick={() => {
-            dispatch(actions.enterCompetition(users[0].name, index, id, comp));
-            setOpenModal(true);
-          }}
-        >
-          {disabled ? "Competition is full" : "Enter competition"}
-        </button>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Fill in scores" onClick={() => {}} />
+          <CustomButton title="Edit competition" onClick={() => {}} />
+          <CustomButton title="Create proposition" onClick={() => {}} />
+          <CustomButton
+            title="Delete competition"
+            onClick={() => setOpenModal(true)}
+          />
+        </div>
       </Paper>
     </>
   );
 };
 
-export default CompetitionsListItem;
+export default CompetitionListItemAdmin;
