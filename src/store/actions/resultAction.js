@@ -7,7 +7,7 @@ export const FETCH_RESULTS = "FETCH_RESULTS";
 export const addPoint = (value, id, cellId, index, compIndex, state) => {
   return (dispatch) => {
     const updatedState = [...state];
-    const competitor = [...state[compIndex].classes[index].unPublishedResult];
+    const competitor = [...state[index].unPublishedResult];
 
     const c = competitor.map((item) => {
       if (item.id === id) {
@@ -17,7 +17,7 @@ export const addPoint = (value, id, cellId, index, compIndex, state) => {
         };
         const b = {
           ...a,
-          total: reCalculateTotal(a),
+          total: reCalculateTotal(a, updatedState[index].pointsToMultiply),
         };
 
         return b;
@@ -25,12 +25,12 @@ export const addPoint = (value, id, cellId, index, compIndex, state) => {
       return item;
     });
 
-    updatedState[compIndex].classes[index].unPublishedResult = c;
+    updatedState[index].unPublishedResult = c;
     firestore
       .collection("competitions")
-      .doc("gjhAkbUpupIBrgysmoAG")
+      .doc(compIndex)
       .update({
-        classes: updatedState[0].classes,
+        classes: updatedState,
       })
       .then(() => {
         dispatch({ type: ADD_POINT, updatedState: updatedState });
@@ -38,6 +38,17 @@ export const addPoint = (value, id, cellId, index, compIndex, state) => {
       .catch((err) => {
         console.log(err);
       });
+/*
+    fetch(
+      `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${compIndex}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ classes: updatedState }),
+      }
+    ).then(() => {});*/
   };
 };
 
@@ -58,11 +69,11 @@ export const fetchAdminComps = (competitions) => {
   };
 };
 
-const reCalculateTotal = (updatedState) => {
-  const first = +updatedState.one * 2.5;
-  const second = +updatedState.two * 2.5;
-  const third = +updatedState.three * 2.5;
-  const fourth = +updatedState.four * 2.5;
+const reCalculateTotal = (updatedState, points) => {
+  const first = +updatedState.one * points[0];
+  const second = +updatedState.two * points[1];
+  const third = +updatedState.three * points[2];
+  const fourth = +updatedState.four * points[3];
 
   return first + second + third + fourth;
 };

@@ -1,8 +1,8 @@
 import React from "react";
-import classes from "./spinner.css";
+import "./spinner.css";
 
 const Spinner = () => (
-  <div class="spinner">
+  <div className="spinner">
     <div class="double-bounce1"></div>
     <div class="double-bounce2"></div>
   </div>

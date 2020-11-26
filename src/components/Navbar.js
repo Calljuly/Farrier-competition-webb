@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { NavLink } from "react-router-dom";
 import * as actions from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-
+import MenuIcon from "@material-ui/icons/Menu";
+import CustomDrawer from "./CustomDrawer";
+import { Colors } from "../colors";
 const links = [
   {
     id: 0,
@@ -95,14 +97,46 @@ const useStyle = makeStyles({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    ["@media (max-width:1253px)"]: {
+      display: "none",
+    },
+  },
+  menuIcon: {
+    fontSize: 80,
+    color: Colors.orange,
+  },
+  menuIconContainer: {
+    display: "none",
+    ["@media (max-width:1253px)"]: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      margin: 20,
+    },
   },
 });
 const Navbar = () => {
+  const [drawerState, setDrawerState] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerState((prev) => !prev);
+  };
+
   const classes = useStyle();
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth.isAuth);
+  const user = useSelector((state) => state.auth.user);
   return (
     <div className={classes.container}>
+      <CustomDrawer
+        toggleDrawer={toggleDrawer}
+        drawerState={drawerState}
+        navLinks={links}
+        auth={user.admin}
+        logout={() => dispatch(actions.logOut())}
+      />
+      <div className={classes.menuIconContainer}>
+        <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />
+      </div>
       <div className={classes.contentContainer}>
         {links.map((item) => (
           <NavLink
@@ -115,7 +149,7 @@ const Navbar = () => {
             <p>{item.label}</p>
           </NavLink>
         ))}
-        {auth && (
+        {user.admin && (
           <NavLink
             className={classes.link}
             to="/admin"

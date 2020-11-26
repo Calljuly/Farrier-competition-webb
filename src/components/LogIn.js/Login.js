@@ -6,10 +6,13 @@ import Spinner from "../../components/UI/Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions/auth";
 import CustomButton from "../CustomButton";
+import P from "../UI/Paragraph";
+import PageHeader from "../UI/PageHeader";
+
 const useStyle = makeStyles({
   loginContainer: {
     width: "40%",
-    height: 600,
+    height: 700,
     borderRadius: 20,
     margin: "auto",
     backgroundColor: "white",
@@ -45,12 +48,13 @@ const useStyle = makeStyles({
     fontWeight: "bold",
   },
 });
+
 const Login = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isError = useSelector((state) => state.auth.error);
-
+  const [register, setRegister] = useState(false);
   const [authState, setAuthState] = useState({
     email: {
       value: "",
@@ -75,7 +79,11 @@ const Login = () => {
       <div className={classes.loginContainer}>
         <img className={classes.img} src={Farrier} alt="Bild" />
         <div className={classes.inputContainer}>
-          <h1>Logga in </h1>
+          {register ? (
+            <PageHeader>Register user</PageHeader>
+          ) : (
+            <PageHeader>Log in</PageHeader>
+          )}
           <TextField
             value={authState["email"].value}
             onChange={(event) => handleInputChange("email", event.target.value)}
@@ -93,17 +101,32 @@ const Login = () => {
           />
 
           <CustomButton
-            title="Login"
+            title={register ? "Register user" : "Login"}
             onClick={() =>
               dispatch(
-                actions.signIn(authState.email.value, authState.password.value)
+                register
+                  ? actions.signUp(
+                      authState.email.value,
+                      authState.password.value
+                    )
+                  : actions.signIn(
+                      authState.email.value,
+                      authState.password.value
+                    )
               )
             }
           />
           {isLoading && <Spinner />}
           {isError && (
-            <p className={classes.failedLogin}>Inloggningen misslyckades</p>
+            <P className={classes.failedLogin}>Inloggningen misslyckades</P>
           )}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {!register && <P>Do you want to register ?</P>}
+            <CustomButton
+              title={register ? "Go to Login" : "Register"}
+              onClick={() => setRegister((prev) => !prev)}
+            />
+          </div>
         </div>
       </div>
     </div>

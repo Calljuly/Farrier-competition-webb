@@ -7,11 +7,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-
 import { compClasses } from "../../dummyData";
 import { useSelector } from "react-redux";
-import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import P from "../UI/Paragraph";
+import CustomButton from "../CustomButton";
+import Devider from "../UI/Devider";
+import SubHeader from '../UI/SubHeader';
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -24,15 +27,15 @@ const ShoingClass = ({
   result,
   index,
   compIndex,
+  className
 }) => {
   const savedState = useSelector((state) => state.result.saved);
-  //const result = useSelector((state) => state.result.result);
 
-  const history = useHistory();
+  const { goBack } = useHistory();
   const classes = useStyles();
   return (
     <div>
-      <h3>Forging</h3>
+      <SubHeader>{className}</SubHeader>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -131,13 +134,14 @@ const ShoingClass = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <p>
+      <Devider margin={60} />
+      <P>
         If you press save the results will be saved but wont be shown to the
         pulic.
-      </p>
-      <p>You wont be able to edit these results after saving them</p>
-      <Button onClick={saveResults}>Save results</Button>
-      <Button onClick={() => history.goBack()}>Go Back</Button>
+      </P>
+      <P>You wont be able to edit these results after saving them</P>
+      <CustomButton onClick={saveResults} title="Save results" />
+      <CustomButton onClick={() => goBack()} title="Go Back" />
     </div>
   );
 };

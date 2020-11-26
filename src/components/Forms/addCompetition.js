@@ -7,6 +7,7 @@ import * as actions from "../../store/actions/competitionAction";
 import CustomButton from "../CustomButton";
 import CreateCompetitionModal from "../CreateCompetitionModal";
 import { useSelector } from "react-redux";
+import ClassItemAdmin from "../ListItems/ClassItemAdmin";
 const textInputs = [
   {
     id: 0,
@@ -38,6 +39,12 @@ const textInputs = [
     value: "maxEntries",
     type: "number",
   },
+  {
+    id: 5,
+    label: "Date MM/DD/YYYY",
+    value: "date",
+    type: "string",
+  },
 ];
 const initialState = {
   name: "",
@@ -47,6 +54,7 @@ const initialState = {
   maxEntries: "",
   classes: [],
   admins: [],
+  date: "",
 };
 
 const reducer = (state, action) => {
@@ -61,6 +69,8 @@ const reducer = (state, action) => {
       return { ...state, [action.type]: action.value };
     case "maxEntries":
       return { ...state, [action.type]: action.value };
+    case "date":
+      return { ...state, [action.type]: new Date(Date.parse(action.value)) };
     case "classes":
       return {
         ...state,
@@ -72,11 +82,11 @@ const reducer = (state, action) => {
 };
 const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
-
   const [state, dispatchReducer] = useReducer(reducer, initialState);
   const [modalOpen, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const array = [...state.classes];
+
   const addNewClassHandler = (newClass) => {
     array.push(newClass);
     dispatchReducer({
@@ -102,7 +112,6 @@ const AddCompetition = () => {
           closeModal={() => setOpenModal(false)}
         />
       </CreateCompetitionModal>
-
       <h3>Competition</h3>
       {textInputs.map((item) => (
         <TextInput
@@ -116,7 +125,18 @@ const AddCompetition = () => {
           }
         />
       ))}
-      {state.classes.length}
+      {state.classes.map((item) => (
+        <ClassItemAdmin
+          key={item.className}
+          className={item.className}
+          pointsToMultiply={item.pointsToMultiply}
+          shoeToForge={item.shoeToForge}
+          shoeToFoot={item.shoeToHorse}
+          time={item.time}
+          type={item.type}
+          sponsors={item.sponsors}
+        />
+      ))}
       <div>
         <CustomButton onClick={() => setOpenModal(true)} title="Add class" />
 

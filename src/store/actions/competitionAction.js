@@ -5,10 +5,15 @@ export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
 export const CREATE_COMPETITON = "CREATE_COMPETITION";
 export const DELETE_COMPETITION = "DELETE_COMPETITION";
+export const COMPETITION_LOADING = "COMPETITION_LOADING";
 
 export const enterCompetition = (competitor, index, id, state) => {
   const updatedState = [...state];
   return (dispatch) => {
+    dispatch({
+      type: COMPETITION_LOADING,
+      loading: true,
+    });
     if (
       updatedState[index].entries.find((user) => user === competitor) ||
       updatedState[index].currentEntries === updatedState[index].maxEntries
@@ -61,6 +66,11 @@ export const enterCompetition = (competitor, index, id, state) => {
           type: ADD_COMPETITOR,
           data: updatedState,
         });
+      }).then(()=>{
+        dispatch({
+          type: COMPETITION_LOADING,
+          isLoading: false,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -72,6 +82,10 @@ export const createCompetition = (competition, user) => {
   const admin = [];
   admin.push(user);
   return (dispatch) => {
+    dispatch({
+      type: COMPETITION_LOADING,
+      loading: true,
+    });
     const comp = {
       admins: admin,
       classes: competition.classes,
@@ -84,6 +98,7 @@ export const createCompetition = (competition, user) => {
       price: competition.price,
       referee: competition.referee,
       id: 6,
+      date: competition.date,
     };
     fetch(
       "https://us-central1-farrier-project.cloudfunctions.net/app/competitions/",
@@ -98,7 +113,13 @@ export const createCompetition = (competition, user) => {
       .then((data) => {
         dispatch({
           type: CREATE_COMPETITON,
-          data: comp,
+          data: data,
+        });
+      })
+      .then(() => {
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
         });
       })
       .catch((error) => {
@@ -108,6 +129,10 @@ export const createCompetition = (competition, user) => {
 };
 export const deleteCompetition = (competition) => {
   return (dispatch) => {
+    dispatch({
+      type: COMPETITION_LOADING,
+      loading: true,
+    });
     fetch(
       `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competition}`,
       {
@@ -121,15 +146,54 @@ export const deleteCompetition = (competition) => {
           data: competition,
         });
       })
+      .then(() => {
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
+        });
+      })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 };
 
-export const fetchCompetitions = (competitions) => {
-  return {
-    type: FETCH_COMPETITIONS,
-    data: competitions,
+export const fetchCompetitions = () => {
+  return (dispatch) => {
+    dispatch({
+      type: COMPETITION_LOADING,
+      loading: true,
+    });
+    fetch(
+      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((data) => {
+        return data.json();
+      })
+      .then((competition) => {
+        //Competition håller på mer data, mappar för att inte behöva bygga om appen nu
+        const comps = competition.competitions.map((item) => {
+          return item.competition;
+        });
+        dispatch({
+          type: FETCH_COMPETITIONS,
+          data: comps,
+        });
+      })
+      .then(() => {
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 };

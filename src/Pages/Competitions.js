@@ -17,12 +17,11 @@ const Competitions = () => {
 
   return (
     <div className={classes.container}>
-      <Grid container spacing={8}>
+      <Grid container spacing={2} justify="space-evenly" alignItems="center">
         {competitions.map((item, index) => {
           return (
-            <Grid item sm={4} xs={12}>
+            <Grid key={item.id} item lg={4} xs={12}>
               <CompetitionsListItem
-                key={item.id}
                 index={index}
                 id={item.id}
                 name={item.name}
@@ -33,6 +32,8 @@ const Competitions = () => {
                 current={item.currentEntries}
                 compClasses={item.classes}
                 disabled={item.maxEntries === item.currentEntries}
+                active={true}
+                date={item.date}
               />
             </Grid>
           );

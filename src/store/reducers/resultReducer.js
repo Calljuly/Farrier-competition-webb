@@ -1,5 +1,4 @@
 import { ADD_POINT, SAVED, FETCH_RESULTS } from "../actions/resultAction";
-import { firestore } from "../../components/firebase";
 
 const initialState = {
   result: [],

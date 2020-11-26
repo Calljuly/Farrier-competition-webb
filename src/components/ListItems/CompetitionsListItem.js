@@ -10,7 +10,7 @@ const useStyle = makeStyles({
   container: {
     borderRadius: 20,
     width: "90%",
-    height: "100%",
+    minHeight: 500,
     display: "flex",
     margin: 10,
     justifyContent: "space-around",
@@ -80,11 +80,14 @@ const CompetitionsListItem = ({
   maxEntries,
   index,
   disabled,
+  active,
+  date,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [modalOpen, setOpenModal] = useState(false);
   const comp = useSelector((state) => state.competitions.competitions);
+
   return (
     <>
       <MessageModal
@@ -96,7 +99,7 @@ const CompetitionsListItem = ({
         }}
       />
       <Paper elevation={4} className={classes.container}>
-        <h1>{name}</h1>
+        <h1>{name}</h1> {active && <p style={{ color: "green" }}>Active</p>}
         <div className={classes.infoContainer}>
           <div style={{ marginLeft: 10 }}>
             <p>Price : {price}</p>

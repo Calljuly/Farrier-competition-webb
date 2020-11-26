@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import TextInput from "../TextInput";
 import CustomSelect from "../Select";
-import { string, func } from "prop-types";
 import { compClasses, shoes } from "../../dummyData";
-
 import CustomButton from "../CustomButton";
 import { Grid } from "@material-ui/core";
 import P from "../UI/Paragraph";
-const AddClass = ({ label, addNewClassHandler, closeModal }) => {
+import { useHistory } from "react-router-dom";
+
+const EditCompetition = ({ addNewClassHandler }) => {
+  const { goBack } = useHistory();
   const [numberOne, setNumberOne] = useState(1);
   const [numberTwo, setNumberTwo] = useState(1);
   const [numberThree, setNumberThree] = useState(1);
@@ -23,6 +24,7 @@ const AddClass = ({ label, addNewClassHandler, closeModal }) => {
     unPublishedResult: [],
     sponsors: "",
   });
+
   const index = classesObject.type === "forging" ? 1 : 0;
   const points = compClasses[index].headerTitles.filter((item) => {
     if (item !== "Competitor" && item !== "Total Points") {
@@ -69,7 +71,7 @@ const AddClass = ({ label, addNewClassHandler, closeModal }) => {
   };
 
   return (
-    <div>
+    <div style={{ margin: 30 }}>
       <Grid container spacing={2}>
         <Grid item md={4} xs={12}>
           <h3>What shall I do ? </h3>
@@ -88,7 +90,7 @@ const AddClass = ({ label, addNewClassHandler, closeModal }) => {
           </P>
         </Grid>
         <Grid item md={8} xs={12}>
-          <h3>{label}</h3>
+          <h3>Class</h3>
           <TextInput
             required
             id="className"
@@ -147,16 +149,12 @@ const AddClass = ({ label, addNewClassHandler, closeModal }) => {
               onClick={() => submitNewClass()}
               title="Create class"
             />
-            <CustomButton onClick={closeModal} title="Cancel" />
+            <CustomButton onClick={() => goBack()} title="Go Back" />
           </div>
         </Grid>
       </Grid>
     </div>
   );
 };
-AddClass.propTypes = {
-  label: string,
-  handleClasses: func,
-  closeModal: func,
-};
-export default AddClass;
+
+export default EditCompetition;

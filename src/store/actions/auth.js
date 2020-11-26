@@ -6,21 +6,44 @@ export const ERROR = "ERROR";
 export const signUp = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}));
-    auth.createUserWithEmailAndPassword(email, pass).then((cred) => {
-      return firestore.collection("users").doc(cred.user.uid).set({
-        info: "",
-        result: "",
-        name: "",
-        img: cred.user.photoURL,
+    auth
+      .createUserWithEmailAndPassword(email, pass)
+      .then((cred) => {
+        return firestore.collection("users").doc(cred.user.uid).set({
+          info: "",
+          result: "",
+          name: "",
+          img: "",
+        });
+      })
+      .then(() => {
+        //signIn(email, pass);
+        dispatch(isAuth(false, false, {}));
+        alert("User sucsessfully created");
       });
-    }).then(() =>{
-      signIn(email, pass);
-    });
   };
 };
 export const signIn = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}));
+    /*
+    fetch(`https://us-central1-farrier-project.cloudfunctions.net/app/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: pass }),
+    })
+      .then((user) => {
+        console.log(user.json());
+        localStorage.setItem("auth", email);
+        dispatch(isAuth(true, false, user.json()));
+      })
+      .catch((err) => {
+        dispatch(isError(true));
+        dispatch(isAuth(false, false, {}));
+      });*/
+
     auth
       .signInWithEmailAndPassword(email, pass)
       .then((cred) => {
@@ -29,7 +52,7 @@ export const signIn = (email, pass) => {
           .doc(cred.user.uid)
           .get()
           .then((doc) => {
-            localStorage.setItem("auth", email);
+            localStorage.setItem("auth", cred.user.uid);
             dispatch(isAuth(true, false, doc.data()));
           });
       })

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { Grid } from "@material-ui/core";
+
+import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import { Paper } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import ValidationModal from "../ValidationModal";
+import { useHistory } from "react-router-dom";
 
 const useStyle = makeStyles({
   container: {
@@ -78,12 +81,12 @@ const CompetitionListItemAdmin = ({
   referee,
   current,
   maxEntries,
+  index,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [modalOpen, setOpenModal] = useState(false);
-  const comp = useSelector((state) => state.competitions.competitions);
-
+  const history = useHistory();
   return (
     <>
       <ValidationModal
@@ -126,13 +129,50 @@ const CompetitionListItemAdmin = ({
           </div>
         </div>
         <div style={{ display: "flex" }}>
-          <CustomButton title="Fill in scores" onClick={() => {}} />
-          <CustomButton title="Edit competition" onClick={() => {}} />
-          <CustomButton title="Create proposition" onClick={() => {}} />
-          <CustomButton
-            title="Delete competition"
-            onClick={() => setOpenModal(true)}
-          />
+          <Grid container>
+            <Grid item md={4} xs={12}>
+              <CustomButton
+                title="Fill in scores"
+                onClick={() =>
+                  history.push({
+                    pathname: "/admin/scores",
+                    state: compClasses,
+                    compIndex: id,
+                  })
+                }
+              />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton
+                title="Edit competition"
+                onClick={() =>
+                  history.push({
+                    pathname: "/admin/editCompetition",
+                    state: compClasses,
+                    compIndex: index,
+                  })
+                }
+              />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton
+                title="Create proposition"
+                onClick={() =>
+                  history.push({
+                    pathname: "/admin/createProposition",
+                    state: compClasses,
+                    compIndex: index,
+                  })
+                }
+              />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton
+                title="Delete competition"
+                onClick={() => setOpenModal(true)}
+              />
+            </Grid>
+          </Grid>
         </div>
       </Paper>
     </>

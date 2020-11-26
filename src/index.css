@@ -31,3 +31,9 @@ p {
     -webkit-transform: rotate(360deg);
   }
 }
+.MuiFormLabel-root.Mui-focused {
+  color: #101820ff !important;
+}
+.MuiOutlinedInput-root.Mui-focused.MuiOutlinedInput-notchedOutline {
+  border-bottom: "1px solid red" !important;
+}

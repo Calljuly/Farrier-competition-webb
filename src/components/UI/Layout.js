@@ -13,7 +13,7 @@ const Layout = ({ children, logOut }) => {
           overflow: "hidden",
         }}
       >
-        <img src={cover} style={{ width: "100%" }} />
+        <img src={cover} style={{ width: "100%" }} alt="Header" />
       </div>
       <Navbar logOut={logOut} />
       {children}

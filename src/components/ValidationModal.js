@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import CustomButton from "./CustomButton";
+import P from "./UI/Paragraph";
+import PageHeader from "./UI/PageHeader";
 const rand = () => {
   return Math.round(Math.random() * 20) - 10;
 };
@@ -20,7 +22,7 @@ const getModalStyle = () => {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 400,
+    width: 700,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -46,10 +48,10 @@ const CustomModal = ({ isOpen, handleClose, description, action }) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <div style={modalStyle} className={classes.paper}>
-        <h1>Are you sure ?</h1>
+        <PageHeader>Are you sure ?</PageHeader>
 
         <div>
-          <p>{description}</p>
+          <P>{description}</P>
         </div>
         <div style={{ display: "flex" }}>
           <CustomButton onClick={handleClose} title="Cancel" />

@@ -1,13 +1,14 @@
-import { compClasses } from "../../dummyData";
 import {
   FETCH_COMPETITIONS,
   ADD_COMPETITOR,
   CREATE_COMPETITON,
   DELETE_COMPETITION,
+  COMPETITION_LOADING,
 } from "../actions/competitionAction";
 
 const initialState = {
   competitions: [],
+  isLoading: true,
 };
 
 const CompReducer = (state = initialState, actions) => {
@@ -47,6 +48,11 @@ const CompReducer = (state = initialState, actions) => {
       return {
         ...state,
         competitions: a,
+      };
+    case COMPETITION_LOADING:
+      return {
+        ...state,
+        isLoading: actions.loading,
       };
     default:
       return state;

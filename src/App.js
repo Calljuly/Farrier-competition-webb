@@ -8,15 +8,16 @@ import * as resultActions from "./store/actions/resultAction";
 import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
-import { useFirebase } from "./hooks/useFirebase";
 import Loading from "./components/IsLoading";
-import { getCompetitions } from "./components/apiFunctions";
 
 const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
-  const isLoading = useSelector((state) => state.auth.isLoading);
-
+  const isLoadingAuth = useSelector((state) => state.auth.isLoading);
+  const isLoadingCompetition = useSelector(
+    (state) => state.competitions.isLoading
+  );
+  const user = useSelector((item) => item.auth.user);
   useEffect(() => {
     if (localStorage.getItem("auth")) {
       auth.onAuthStateChanged((user) => {
@@ -33,25 +34,19 @@ const App = () => {
     }
   }, [dispatch]);
 
-  let routes = getRoutes(isAuthenticated, true);
+  let routes = getRoutes(isAuthenticated, user.admin ? true : false);
 
-  const { data, status, error } = useFirebase(
-    firestore.collection("competitions")
-  );
-  if (status === "loading") {
+  useEffect(() => {
+    dispatch(actionComp.fetchCompetitions());
+  }, []);
+
+  if (isLoadingAuth || isLoadingCompetition) {
     return <Loading />;
   }
 
-  if (status === "error") {
-    return `Error: ${error.message}`;
-  }
-  if (data) {
-    dispatch(actionComp.fetchCompetitions(data));
-    dispatch(resultActions.fetchAdminComps(data));
-  }
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoadingAuth && isLoadingCompetition && <Loading />}
       <CookieConsent />
       {routes}
     </>

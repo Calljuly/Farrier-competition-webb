@@ -4,7 +4,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { string, func, array, boolean } from "prop-types";
+import { string, func, array } from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -44,7 +44,6 @@ CustomSelect.propTypes = {
   classTypes: array,
   label: string,
   handler: func,
-  disabled: boolean,
   key: string,
 };
 export default CustomSelect;
