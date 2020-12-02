@@ -51,7 +51,6 @@ export const getRoutes = (isAuthenticated, Admin) => {
     return getUnProtectedRoutes(isAuthenticated);
   }
   if (isAuthenticated) {
-    console.log(Admin);
     if (Admin) {
       return getProtectedAdminRoutes(isAuthenticated);
     } else {

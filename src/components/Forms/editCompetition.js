@@ -6,8 +6,15 @@ import CustomButton from "../CustomButton";
 import { Grid } from "@material-ui/core";
 import P from "../UI/Paragraph";
 import { useHistory } from "react-router-dom";
+import SubHeader from "../UI/SubHeader";
 
-const EditCompetition = ({ addNewClassHandler }) => {
+import ForgingClass from "../Classes/ForgingClass";
+import ShoeingClass from "../Classes/ShoeingClass";
+import ComboClass from "../Classes/ComboClass";
+import EagleEye from "../Classes/EagleEye";
+import { useLocation } from "react-router-dom";
+
+const EditCompetition = () => {
   const { goBack } = useHistory();
   const [numberOne, setNumberOne] = useState(1);
   const [numberTwo, setNumberTwo] = useState(1);
@@ -16,14 +23,17 @@ const EditCompetition = ({ addNewClassHandler }) => {
   const [classesObject, setClasses] = useState({
     className: "",
     pointsToMultiply: [],
-    shoeToForge: "",
-    shoeToHorse: "",
+    shoeOne: "",
+    shoeTwo: "",
     time: "",
     type: "",
     result: [],
     unPublishedResult: [],
     sponsors: "",
   });
+
+  const l = useLocation();
+  const id = l.id;
 
   const index = classesObject.type === "forging" ? 1 : 0;
   const points = compClasses[index].headerTitles.filter((item) => {
@@ -67,83 +77,65 @@ const EditCompetition = ({ addNewClassHandler }) => {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
-    addNewClassHandler(newClass);
+    console.log(newClass);
   };
+  const getClass = (type) => {
+    switch (type) {
+      case "Forging":
+        return (
+          <ForgingClass
+            pointsHandler={pointsHandler}
+            points={points}
+            handleClasses={handleClasses}
+          />
+        );
 
+      case "Shoeing":
+        return (
+          <ShoeingClass
+            pointsHandler={pointsHandler}
+            points={points}
+            handleClasses={handleClasses}
+          />
+        );
+      case "ComboClass":
+        return (
+          <ComboClass
+            pointsHandler={pointsHandler}
+            points={points}
+            handleClasses={handleClasses}
+          />
+        );
+      case "EagleEye":
+        return (
+          <EagleEye
+            pointsHandler={pointsHandler}
+            points={points}
+            handleClasses={handleClasses}
+          />
+        );
+      case "SpeedForging":
+        break;
+      case "Team":
+        break;
+      case "Pairs":
+        break;
+      default:
+        return;
+    }
+  };
   return (
     <div style={{ margin: 30 }}>
       <Grid container spacing={2}>
-        <Grid item md={4} xs={12}>
-          <h3>What shall I do ? </h3>
-          <P>
-            Here you specify the information you want for the class you want to
-            add to your competition. <br />
-            You shall fill in the form and press "Create class" to add the new
-            class to the competition. If you want to add more classes just keep
-            on adding new classes until you're done. <br />
-            <br />
-            Dont forget to check your data you're adding so it's what you wish
-            for before creating the class
-            <br />
-            If you want to change something afterwards dont worry, you can
-            navigate to edit your competitions
-          </P>
-        </Grid>
         <Grid item md={8} xs={12}>
-          <h3>Class</h3>
-          <TextInput
-            required
-            id="className"
-            label="ClassName"
-            placeholder="ClassName"
-            onChange={(event) => handleClasses("className", event.target.value)}
-          />
+          <SubHeader>Class</SubHeader>
           <CustomSelect
             handler={handleClasses}
             label="Type"
-            id={"type"}
+            id="type"
             classTypes={compClasses}
           />
-          <CustomSelect
-            handler={handleClasses}
-            label="Shoe to Forge"
-            id="shoeToForge"
-            classTypes={shoes}
-          />
-          <CustomSelect
-            handler={handleClasses}
-            label="Shoe to Horse"
-            id="shoeToHorse"
-            classTypes={shoes}
-            disabled={classesObject.type === "forging"}
-          />
-          <TextInput
-            required
-            id="time"
-            label="Time"
-            placeholder="time"
-            onChange={(event) => handleClasses("time", event.target.value)}
-          />
-          <h3>Add points</h3>
-          {points.map((item, index) => {
-            return (
-              <TextInput
-                required
-                key={index}
-                label={item}
-                placeholder={item}
-                onChange={(event) => pointsHandler(index, event)}
-              />
-            );
-          })}
-          <h3>Add sponsor</h3>
-          <TextInput
-            required
-            id="sponsor"
-            label="Sponsor"
-            placeholder="Sponsor"
-            onChange={(event) => handleClasses("sponsors", event.target.value)}
-          />
+          {getClass(classesObject.type)}
           <div style={{ display: "flex" }}>
             <CustomButton
               onClick={() => submitNewClass()}

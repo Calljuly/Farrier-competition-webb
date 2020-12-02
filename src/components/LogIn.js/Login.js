@@ -8,7 +8,8 @@ import * as actions from "../../store/actions/auth";
 import CustomButton from "../CustomButton";
 import P from "../UI/Paragraph";
 import PageHeader from "../UI/PageHeader";
-
+import { validPassword, validateEmail } from "../../helpers/validation";
+import { auth } from "firebase";
 const useStyle = makeStyles({
   loginContainer: {
     width: "40%",
@@ -54,26 +55,37 @@ const Login = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isError = useSelector((state) => state.auth.error);
+  const [validForm, setValidForm] = useState(false);
   const [register, setRegister] = useState(false);
   const [authState, setAuthState] = useState({
     email: {
       value: "",
+      valid: false,
     },
     password: {
       value: "",
+      valid: false,
     },
   });
 
   const handleInputChange = (id, text) => {
+    let valid;
+    if (id === "email") {
+      valid = validateEmail(text);
+    } else {
+      valid = validPassword(text);
+    }
     const updatedState = {
       ...authState,
       [id]: {
         ...authState[id],
         value: text,
+        valid: valid,
       },
     };
     setAuthState(updatedState);
   };
+
   return (
     <div className={classes.screen}>
       <div className={classes.loginContainer}>
@@ -117,6 +129,12 @@ const Login = () => {
             }
           />
           {isLoading && <Spinner />}
+          {validForm && (
+            <P>
+              Your input was not valid. Did you enter a real email adress or a
+              password according to security rules ?
+            </P>
+          )}
           {isError && (
             <P className={classes.failedLogin}>Inloggningen misslyckades</P>
           )}

@@ -1,4 +1,6 @@
 import { auth, firestore } from "../../components/firebase";
+import Cookies from "js-cookie";
+
 export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
@@ -26,25 +28,35 @@ export const signUp = (email, pass) => {
 export const signIn = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}));
-    /*
-    fetch(`https://us-central1-farrier-project.cloudfunctions.net/app/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email, password: pass }),
-    })
-      .then((user) => {
-        console.log(user.json());
-        localStorage.setItem("auth", email);
-        dispatch(isAuth(true, false, user.json()));
+    auth
+      .signInWithEmailAndPassword(email, pass)
+      .then(({ user }) => {
+        return user.getIdToken().then((token) => {
+          fetch(
+            "https://us-central1-farrier-project.cloudfunctions.net/app/logIn",
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "CSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+              },
+              body: JSON.stringify(token),
+            }
+          );
+        });
+      })
+      .then(() => {
+        dispatch(isAuth(true, false, {}));
+        localStorage.setItem("auth", true);
       })
       .catch((err) => {
-        dispatch(isError(true));
         dispatch(isAuth(false, false, {}));
-      });*/
+        localStorage.removeItem("auth");
+      });
 
-    auth
+    /*
+          auth
       .signInWithEmailAndPassword(email, pass)
       .then((cred) => {
         firestore
@@ -60,12 +72,26 @@ export const signIn = (email, pass) => {
         dispatch(isError(true));
         dispatch(isAuth(false, false, {}));
       });
+      */
   };
 };
+
 export const logOut = () => {
   return (dispatch) => {
     dispatch(isAuth(true, false, {}));
-    auth.signOut().then((cred) => {});
+    auth.signOut().then((cred) => {
+      fetch(
+        "https://us-central1-farrier-project.cloudfunctions.net/app/logOut",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "CSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+          },
+        }
+      );
+    });
     localStorage.removeItem("auth");
     dispatch(isAuth(false, false, {}));
   };

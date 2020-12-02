@@ -72,7 +72,7 @@ const User = () => {
   const classes = useStyle();
   const [value, setValue] = React.useState(0);
   const user = useSelector((state) => state.auth.user);
-
+  console.log(user);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

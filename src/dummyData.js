@@ -4,37 +4,37 @@ import timmy from "./assets/Images/bild8.jpg";
 
 export const shoes = [
   {
-    title: "Shoe 1",
+    type: "Shoe 1",
     price: 400,
     description: "Description",
     img: pic,
   },
   {
-    title: "Shoe 2",
+    type: "Shoe 2",
     price: 300,
     description: "Description",
     img: pic,
   },
   {
-    title: "Shoe 3",
+    type: "Shoe 3",
     price: 100,
     description: "Description",
     img: pic,
   },
   {
-    title: "Shoe 4",
+    type: "Shoe 4",
     price: 500,
     description: "Description",
     img: pic,
   },
   {
-    title: "Shoe 5",
+    type: "Shoe 5",
     price: 1200,
     description: "Description",
     img: pic,
   },
   {
-    title: "Shoe 6",
+    type: "Shoe 6",
     price: 400,
     description: "Description",
     img: pic,
@@ -72,7 +72,7 @@ export const users = [
 export const compClasses = [
   {
     type: "Forging",
-    title: "forging",
+    title: "Forging",
     headerTitles: [
       "Competitor",
       "Forging",
@@ -81,11 +81,11 @@ export const compClasses = [
       "Flat / Finish",
       "Total Points",
     ],
-    description: "Information",
+    description: "Two shoes after referres description",
   },
   {
     type: "Shoeing",
-    title: "shoeing",
+    title: "Shoeing",
     headerTitles: [
       "Competitor",
       "Shoe Fit",
@@ -94,6 +94,75 @@ export const compClasses = [
       "Nailing and Finish",
       "Total Points",
     ],
-    description: "Information",
+    description: "Two shoes to foot",
+  },
+  {
+    type: "ComboClass",
+    title: "Combination class",
+    headerTitles: [
+      "Competitor",
+      "Shoe Fit",
+      "Trimming/Balance",
+      "Shoe",
+      "Nailing and Finish",
+      "Total Points",
+    ],
+    description: "One shoe for foot and one to forge",
+  },
+  {
+    type: "SpeedForging",
+    title: "Speed Forging",
+    headerTitles: [
+      "Competitor",
+      "Forging",
+      "Measurements",
+      "Nailplacement/ Fit",
+      "Flat / Finish",
+      "Total Points",
+    ],
+    description: "One shoe for foot and one to forge on time",
+  },
+  {
+    type: "EagleEye",
+    title: "Eagle Eye",
+    headerTitles: [
+      "Competitor",
+      "Forging",
+      "Measurements",
+      "Nailplacement/ Fit",
+      "Flat / Finish",
+      "Total Points",
+    ],
+    description:
+      "One or two shoes that will be unknown until start time of class. Referee deciced which shoes",
+  },
+
+  {
+    type: "Pairs",
+    title: "Pairs",
+    headerTitles: [
+      "Competitor",
+      "Forging",
+      "Measurements",
+      "Nailplacement/ Fit",
+      "Flat / Finish",
+      "Total Points",
+    ],
+    description: "Pair competition, two feet each",
+  },
+
+  {
+    type: "Team",
+    title: "Team",
+    headerTitles: [
+      "Competitor",
+      "Forging",
+      "Measurements",
+      "Nailplacement/ Fit",
+      "Flat / Finish",
+      "Total Points",
+    ],
+    description:
+      "Team competition , 4 men on each team and ech one take one foot",
   },
 ];

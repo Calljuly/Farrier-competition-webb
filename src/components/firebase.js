@@ -14,31 +14,9 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-/*
-const auth = firebase.auth();
-const db = firebase.firestore();
 
-export const signUp = (email, password) => {
-  auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-    //If cred exist user are logged in
-  });
-};
-
-export const signIn = (email, password) => {
-  auth.signIn(email, password).then((cred) => {
-    //If cred exist user are logged in
-    //cred.user loggs the info about the user
-  });
-};
-export const logOut = () => {
-  auth.signOut().then(() => {
-    console.log("User logged out");
-  });
-};
-auth.onAuthStateChanged((user) => {
-  //methdo will keep track if a user signsin or out.
-  //u will get a user object back if sign in or null if logged out
-});
-*/

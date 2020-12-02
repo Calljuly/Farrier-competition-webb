@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 import { Paper } from "@material-ui/core";
 import { Colors } from "../colors";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
 import EditCompetition from "../components/Forms/editCompetition";
 
@@ -82,7 +82,7 @@ const Admin = () => {
   };
 
   return (
-    <BrowserRouter>
+    <>
       <h1>Admin</h1>
 
       <Switch>
@@ -167,7 +167,7 @@ const Admin = () => {
           <h1>Create Proposition</h1>
         </Route>
       </Switch>
-    </BrowserRouter>
+    </>
   );
 };
 

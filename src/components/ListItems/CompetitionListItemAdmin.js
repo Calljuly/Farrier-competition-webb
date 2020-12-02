@@ -149,7 +149,7 @@ const CompetitionListItemAdmin = ({
                   history.push({
                     pathname: "/admin/editCompetition",
                     state: compClasses,
-                    compIndex: index,
+                    id: id,
                   })
                 }
               />

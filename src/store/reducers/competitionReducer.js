@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   competitions: [],
-  isLoading: true,
+  isLoading: false,
 };
 
 const CompReducer = (state = initialState, actions) => {

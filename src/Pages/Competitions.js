@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import { Grid } from "@material-ui/core";
-
+import P from "../components/UI/Paragraph";
 const useStyle = makeStyles({
   container: {
     display: "flex",
@@ -18,6 +18,7 @@ const Competitions = () => {
   return (
     <div className={classes.container}>
       <Grid container spacing={2} justify="space-evenly" alignItems="center">
+        {competitions.length === 0 && <P>No competitions avalible</P>}
         {competitions.map((item, index) => {
           return (
             <Grid key={item.id} item lg={4} xs={12}>

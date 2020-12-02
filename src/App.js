@@ -37,8 +37,10 @@ const App = () => {
   let routes = getRoutes(isAuthenticated, user.admin ? true : false);
 
   useEffect(() => {
-    dispatch(actionComp.fetchCompetitions());
-  }, []);
+    if (isAuthenticated) {
+      //dispatch(actionComp.fetchCompetitions());
+    }
+  }, [isAuthenticated]);
 
   if (isLoadingAuth || isLoadingCompetition) {
     return <Loading />;
