@@ -1,35 +1,48 @@
 import React, { useState } from "react";
-import TextInput from "../TextInput";
 import CustomSelect from "../Select";
-import { compClasses, shoes } from "../../dummyData";
+import { compClasses } from "../../dummyData";
 import CustomButton from "../CustomButton";
 import { Grid } from "@material-ui/core";
-import P from "../UI/Paragraph";
 import { useHistory } from "react-router-dom";
 import SubHeader from "../UI/SubHeader";
-
 import ForgingClass from "../Classes/ForgingClass";
 import ShoeingClass from "../Classes/ShoeingClass";
 import ComboClass from "../Classes/ComboClass";
 import EagleEye from "../Classes/EagleEye";
 import { useLocation } from "react-router-dom";
+import { firestore } from "../firebase";
+import ChoiseModal from "../ChoiseModal";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
 
 const EditCompetition = () => {
   const { goBack } = useHistory();
+  const [isOpen, setIsOpen] = useState(false);
   const [numberOne, setNumberOne] = useState(1);
   const [numberTwo, setNumberTwo] = useState(1);
   const [numberThree, setNumberThree] = useState(1);
   const [numberFour, setNumberFour] = useState(1);
   const [classesObject, setClasses] = useState({
-    className: "",
+    className: {
+      value: '',
+      valid: true
+    },
     pointsToMultiply: [],
-    shoeOne: "",
-    shoeTwo: "",
-    time: "",
+    shoeToForge: '',
+    shoeToHorse: '',
+    time: {
+      value: '',
+      valid: true
+    },
     type: "",
     result: [],
     unPublishedResult: [],
-    sponsors: "",
+    sponsors: {
+      value: '',
+      valid: true
+    },
+    sponsorLoggo: "",
+    referee: "",
   });
 
   const l = useLocation();
@@ -46,39 +59,68 @@ const EditCompetition = () => {
     setClasses((prev) => {
       const newValue = {
         ...prev,
-        [key]: value,
+        [key]: value.value,
       };
       return newValue;
     });
   };
 
   const pointsHandler = (key, event) => {
-    event.preventDefault();
     switch (key) {
       case 0:
-        setNumberOne(event.target.value);
+        setNumberOne(event.value);
         break;
       case 1:
-        setNumberTwo(event.target.value);
+        setNumberTwo(event.value);
         break;
       case 2:
-        setNumberThree(event.target.value);
+        setNumberThree(event.value);
         break;
       case 3:
-        setNumberFour(event.target.value);
+        setNumberFour(event.value);
         break;
       default:
         return;
     }
   };
 
-  const submitNewClass = () => {
+  const submitNewClass = async () => {
     const newClass = {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
-    console.log(newClass);
+    await firestore
+      .collection("competitions")
+      .doc(id)
+      .collection("classes")
+      .doc(newClass.className)
+      .set({
+        className: newClass.className,
+        pointsToMultiply: newClass.pointsToMultiply,
+        shoeOne: newClass.shoeToForge,
+        shoeTwo: newClass.shoeToHorse,
+        time: newClass.time,
+        type: newClass.type,
+        unPublishedResult: newClass.unPublishedResult,
+      });
+
+    setClasses({
+      className: "",
+      pointsToMultiply: [],
+      shoeToForge: "",
+      shoeToHorse: "",
+      time: "",
+      type: "",
+      result: [],
+      unPublishedResult: [],
+      sponsors: "",
+      sponsorLoggo: "",
+      referee: "",
+    });
+    setIsOpen(false)
   };
+
+
   const getClass = (type) => {
     switch (type) {
       case "Forging":
@@ -126,9 +168,17 @@ const EditCompetition = () => {
   };
   return (
     <div style={{ margin: 30 }}>
+    <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <PageHeader>Are you sure ?</PageHeader>
+        <P> Are you sure you want to create this class ? </P>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
+          <CustomButton title="Im sure" onClick={() => submitNewClass()} />
+        </div>
+      </ChoiseModal>
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
-          <SubHeader>Class</SubHeader>
+          <SubHeader>Create new class</SubHeader>
           <CustomSelect
             handler={handleClasses}
             label="Type"
@@ -138,7 +188,7 @@ const EditCompetition = () => {
           {getClass(classesObject.type)}
           <div style={{ display: "flex" }}>
             <CustomButton
-              onClick={() => submitNewClass()}
+              onClick={() => setIsOpen(true)}
               title="Create class"
             />
             <CustomButton onClick={() => goBack()} title="Go Back" />

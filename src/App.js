@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { firestore } from "./components/firebase";
+import { firestore, storage } from "./components/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "./store/actions/auth";
 import * as actionComp from "./store/actions/competitionAction";
@@ -18,28 +18,38 @@ const App = () => {
     (state) => state.competitions.isLoading
   );
   const user = useSelector((item) => item.auth.user);
+
   useEffect(() => {
     if (localStorage.getItem("auth")) {
-      auth.onAuthStateChanged((user) => {
+      auth.onAuthStateChanged(async (user) => {
         if (user) {
-          firestore
+          const userData = await firestore
             .collection("users")
             .doc(user.uid)
-            .get()
-            .then((item) => {
-              dispatch(action.isAuth(true, false, item.data()));
-            });
+            .get();
+          if (userData.img !== "") {
+            storage
+              .ref()
+              .child(`images/${user.img}.jpg`)
+              .getDownloadURL()
+              .then((url) => {
+                const user = userData.data();
+                localStorage.setItem("auth", user.uid);
+                dispatch(action.isAuth(true, false, user, url));
+              });
+          } else {
+            localStorage.setItem("auth", user.uid);
+            dispatch(action.isAuth(true, false, user, ""));
+          }
         }
       });
     }
-  }, [dispatch]);
+  }, [isAuthenticated]);
 
-  let routes = getRoutes(isAuthenticated, user.admin ? true : false);
+  let routes = getRoutes(isAuthenticated, user?.admin ? true : false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      //dispatch(actionComp.fetchCompetitions());
-    }
+    dispatch(actionComp.fetchCompetitions());
   }, [isAuthenticated]);
 
   if (isLoadingAuth || isLoadingCompetition) {

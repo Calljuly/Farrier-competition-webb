@@ -2,6 +2,8 @@ import React from "react";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Colors } from "../colors";
+import P from "./UI/Paragraph";
+
 const useStyle = makeStyles({
   container: {
     position: "absolute",
@@ -27,7 +29,7 @@ const IsLoading = () => {
     <Paper className={classes.container}>
       <h3>Page is Is Loading..</h3>
       <div id="loading"></div>
-      <p>Please wait..</p>
+      <P>Please wait..</P>
     </Paper>
   );
 };

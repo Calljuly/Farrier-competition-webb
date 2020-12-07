@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import P from "../UI/Paragraph";
 import CustomButton from "../CustomButton";
 import Devider from "../UI/Devider";
-import SubHeader from '../UI/SubHeader';
+import SubHeader from "../UI/SubHeader";
 
 const useStyles = makeStyles({
   table: {
@@ -27,7 +27,7 @@ const ShoingClass = ({
   result,
   index,
   compIndex,
-  className
+  className,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
 
@@ -53,9 +53,13 @@ const ShoingClass = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {result.map((item) => {
+            {result.map((item, index) => {
+              const color = index % 2 === 0;
               return (
-                <TableRow key={item.id}>
+                <TableRow
+                  key={item.id}
+                  style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
+                >
                   <TableCell align="left">
                     {savedState ? item.competitor : item.id}
                   </TableCell>
@@ -141,6 +145,8 @@ const ShoingClass = ({
       </P>
       <P>You wont be able to edit these results after saving them</P>
       <CustomButton onClick={saveResults} title="Save results" />
+      <CustomButton onClick={() => {}} title="Publish result" />
+
       <CustomButton onClick={() => goBack()} title="Go Back" />
     </div>
   );

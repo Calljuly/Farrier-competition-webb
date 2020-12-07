@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
+import P from "../UI/Paragraph";
 
 const useStyle = makeStyles({
   container: {
@@ -45,15 +46,15 @@ const ResultListItem = ({ competition, points, placing }) => {
     <>
       <div className={classes.container}>
         <h2>{competition}</h2>
-        <p>Poäng : {points}</p>
-        <p> Placering : {placing}</p>
+        <P>Poäng : {points}</P>
+        <P> Placering : {placing}</P>
       </div>
       <button className={classes.button} onClick={handleCompSeeMore}>
         Show full scorelist
       </button>
       {seeComp && (
         <div className={classes.compContainer}>
-          <p>Results to come</p>
+          <P>Results to come</P>
         </div>
       )}
     </>

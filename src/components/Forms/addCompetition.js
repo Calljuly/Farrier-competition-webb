@@ -1,81 +1,195 @@
 import React, { useReducer, useState } from "react";
 import TextInput from "../TextInput";
-import { compClasses, shoes } from "../../dummyData";
-import AddClass from "./addClass";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import CustomButton from "../CustomButton";
-import CreateCompetitionModal from "../CreateCompetitionModal";
 import { useSelector } from "react-redux";
-import ClassItemAdmin from "../ListItems/ClassItemAdmin";
+import SubHeader from "../UI/SubHeader";
+import ChoiseModal from "../ChoiseModal";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+
 const textInputs = [
   {
     id: 0,
     label: "Name",
     value: "name",
     type: "text",
-  },
-  {
-    id: 1,
-    label: "Price",
-    value: "price",
-    type: "number",
+    multiline: false,
   },
   {
     id: 2,
     label: "Referee",
     value: "referee",
     type: "text",
+    multiline: false,
   },
   {
     id: 3,
     label: "Country",
     value: "country",
     type: "text",
+    multiline: false,
   },
   {
     id: 4,
-    label: "Max entries",
-    value: "maxEntries",
-    type: "number",
+    label: "Location",
+    value: "location",
+    type: "text",
+    multiline: false,
   },
   {
     id: 5,
-    label: "Date MM/DD/YYYY",
-    value: "date",
-    type: "string",
+    label: "Anvils avalible",
+    value: "anvils",
+    type: "number",
+    multiline: false,
+  },
+  {
+    id: 6,
+    label: "",
+    value: "dateFrom",
+    type: "date",
+    multiline: false,
+  },
+  {
+    id: 7,
+    label: "",
+    value: "dateTo",
+    type: "date",
+    multiline: false,
+  },
+  {
+    id: 8,
+    label: "Hotels",
+    value: "hotels",
+    type: "text",
+    multiline: true,
+  },
+  {
+    id: 9,
+    label: "Parking",
+    value: "parking",
+    type: "text",
+    multiline: true,
   },
 ];
 const initialState = {
-  name: "",
-  price: "",
-  referee: "",
-  country: "",
-  maxEntries: "",
-  classes: [],
+  name: {
+    value: "",
+    valid: true,
+  },
+  referee: {
+    value: "",
+    valid: true,
+  },
+  country: {
+    value: "",
+    valid: true,
+  },
+  location: {
+    value: "",
+    valid: true,
+  },
+  anvils: {
+    value: "",
+    valid: true,
+  },
   admins: [],
-  date: "",
+  dateFrom: {
+    value: "",
+    valid: true,
+  },
+  dateTo: {
+    value: "",
+    valid: true,
+  },
+
+  hotels: {
+    value: "",
+    valid: true,
+  },
+  parking: {
+    value: "",
+    valid: true,
+  },
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "name":
-      return { ...state, [action.type]: action.value };
-    case "price":
-      return { ...state, [action.type]: action.value };
-    case "referee":
-      return { ...state, [action.type]: action.value };
-    case "country":
-      return { ...state, [action.type]: action.value };
-    case "maxEntries":
-      return { ...state, [action.type]: action.value };
-    case "date":
-      return { ...state, [action.type]: new Date(Date.parse(action.value)) };
-    case "classes":
       return {
         ...state,
-        [action.type]: [...action.value],
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
       };
+    case "location":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "referee":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "country":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "anvils":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "dateFrom":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "dateTo":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "hotels":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "parking":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+
     default:
       return;
   }
@@ -83,36 +197,51 @@ const reducer = (state, action) => {
 const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
   const [state, dispatchReducer] = useReducer(reducer, initialState);
-  const [modalOpen, setOpenModal] = useState(false);
   const dispatch = useDispatch();
-  const array = [...state.classes];
-
-  const addNewClassHandler = (newClass) => {
-    array.push(newClass);
-    dispatchReducer({
-      type: "classes",
-      value: array,
-    });
-    setOpenModal(false);
-  };
+  const [formValid, setFormValid] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  let valid = true;
   const createCompetition = () => {
-    dispatch(actions.createCompetition(state, user.name));
+    const valid = formValidation();
+    if (valid) {
+      dispatch(actions.createCompetition(state, user.name));
+      setIsOpen(true);
+    }
+  };
+  const validateText = (text, key) => {
+    valid = true;
+    if (text.trim() === "") {
+      valid = false;
+    }
+    if (text.length < 3) {
+      valid = false;
+    }
+    dispatchReducer({ type: key, value: valid, key: "valid" });
+  };
+
+  const formValidation = () => {
+    const a = Object.keys(state);
+    let valid = true;
+    a.forEach((item) => {
+      const b = state[item];
+      if (b.valid === false || b.value === "") {
+        valid = false;
+      }
+    });
+    setFormValid(valid);
+    return valid;
   };
   return (
-    <div>
-      <CreateCompetitionModal
-        isOpen={modalOpen}
-        handleClose={() => setOpenModal(false)}
-      >
-        <AddClass
-          shoes={shoes}
-          compClasses={compClasses}
-          label="New Class"
-          addNewClassHandler={addNewClassHandler}
-          closeModal={() => setOpenModal(false)}
-        />
-      </CreateCompetitionModal>
-      <h3>Competition</h3>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <PageHeader>Are you sure ?</PageHeader>
+        <P> Are you sure you want to create yhis competition ? </P>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
+          <CustomButton title="Im sure" onClick={createCompetition} />
+        </div>
+      </ChoiseModal>
+      <SubHeader>Competition</SubHeader>
       {textInputs.map((item) => (
         <TextInput
           required
@@ -121,26 +250,25 @@ const AddCompetition = () => {
           type={item.type}
           placeholder={item.label}
           onChange={(event) =>
-            dispatchReducer({ type: item.value, value: event.target.value })
+            dispatchReducer({
+              type: item.value,
+              value: event.target.value,
+              key: "value",
+            })
+          }
+          onBlur={() => validateText(state[item.value].value, item.value)}
+          error={!state[item.value].valid}
+          helperText={
+            !state[item.value].valid &&
+            "You have to enter a valid input, atleast 3 characters"
           }
         />
       ))}
-      {state.classes.map((item) => (
-        <ClassItemAdmin
-          key={item.className}
-          className={item.className}
-          pointsToMultiply={item.pointsToMultiply}
-          shoeToForge={item.shoeToForge}
-          shoeToFoot={item.shoeToHorse}
-          time={item.time}
-          type={item.type}
-          sponsors={item.sponsors}
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <CustomButton
+          onClick={() => setIsOpen(true)}
+          title="Create Competition"
         />
-      ))}
-      <div>
-        <CustomButton onClick={() => setOpenModal(true)} title="Add class" />
-
-        <CustomButton onClick={createCompetition} title="Create Competition" />
       </div>
     </div>
   );

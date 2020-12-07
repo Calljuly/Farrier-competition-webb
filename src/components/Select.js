@@ -22,7 +22,7 @@ const CustomSelect = ({ classTypes, label, handler, index, disabled, id }) => {
   const handleChange = (event) => {
     event.preventDefault();
     setAge(event.target.value);
-    handler(id, event.target.value, index);
+    handler(id, event.target);
   };
 
   return (
@@ -31,7 +31,7 @@ const CustomSelect = ({ classTypes, label, handler, index, disabled, id }) => {
       <Select value={age} onChange={handleChange} disabled={disabled}>
         {classTypes.map((item) => {
           return (
-            <MenuItem key={item.title} value={item.type}>
+            <MenuItem key={item.type} value={item.type}>
               {item.type}
             </MenuItem>
           );

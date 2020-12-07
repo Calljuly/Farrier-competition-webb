@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
+import P from "./UI/Paragraph";
 
 const CookieConsent = () => {
   //localStorage.removeItem("cookieAccepted");
@@ -14,13 +15,13 @@ const CookieConsent = () => {
   }
   return (
     <div className={classes.container}>
-      <p>
+      <P>
         Vi använder cookies på den här sidan. Vill du läsa mer om vår policy
         klicka vidare på länkarna
         <a href="/">Policy</a>
         and
         <a href="/">Cookies</a>
-      </p>
+      </P>
 
       <button onClick={cookieAccepted}>Accept</button>
     </div>

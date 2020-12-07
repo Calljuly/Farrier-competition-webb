@@ -11,6 +11,7 @@ import CompetitionListItemAdmin from "../components/ListItems/CompetitionListIte
 import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
 import EditCompetition from "../components/Forms/editCompetition";
+import P from "../components/UI/Paragraph";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -69,10 +70,8 @@ const Admin = () => {
   });
 
   let adminCompetitions = compClasses.filter((item, index) => {
-    if (item.classes && item.admins) {
-      if (item.admins.includes(user.name)) {
-        return item;
-      }
+    if (item.admins.includes(user.name)) {
+      return item;
     }
   });
 
@@ -115,7 +114,7 @@ const Admin = () => {
             </Tabs>
             <TabPanel value={value} index={0}>
               <h1>Information</h1>
-              <p>
+              <P>
                 If you are authurized you can reach what your are authurized to
                 do here.
                 <br />
@@ -124,7 +123,7 @@ const Admin = () => {
                 <br />
                 If you have any ongoing competitions you can start adding scores
                 to the score board
-              </p>
+              </P>
             </TabPanel>
             <TabPanel value={value} index={1}>
               <h1>Add new competition</h1>
@@ -151,7 +150,7 @@ const Admin = () => {
                   );
                 })
               ) : (
-                <p>No competitions to show</p>
+                <P>No competitions to show</P>
               )}
             </TabPanel>
           </div>

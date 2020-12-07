@@ -11,10 +11,10 @@ const useStyle = makeStyles({
     margin: "20px",
   },
 });
-const CustomButton = ({ title, onClick }) => {
+const CustomButton = ({ title, onClick, disabled }) => {
   const classes = useStyle();
   return (
-    <Button className={classes.button} onClick={onClick}>
+    <Button disabled={disabled} className={classes.button} onClick={onClick}>
       {title}
     </Button>
   );

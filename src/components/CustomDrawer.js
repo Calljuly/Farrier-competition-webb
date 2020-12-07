@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Colors } from "../colors";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 const CustomDrawer = ({
   drawerState,
@@ -17,6 +17,8 @@ const CustomDrawer = ({
   logOut,
 }) => {
   const classes = useStyle();
+  const history = useHistory();
+
   return (
     <SwipeableDrawer
       anchor="left"
@@ -51,8 +53,14 @@ const CustomDrawer = ({
           </ListItem>
         )}
         <ListItem classes={{ root: classes.tabs }} button>
-          <NavLink onClick={logOut} className={classes.tabs} to="/">
-            <ListItemText primary={<h1>Logout</h1>} />
+          <NavLink
+            onClick={auth ? () => logOut() : () => history.push("/signIn")}
+            className={classes.tabs}
+            to={auth ? "/" : "/signIn"}
+          >
+            <ListItemText
+              primary={auth ? <h1>Sign out</h1> : <h1>Sign in</h1>}
+            />
           </NavLink>
         </ListItem>
       </List>

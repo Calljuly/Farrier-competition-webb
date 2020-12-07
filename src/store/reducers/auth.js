@@ -5,10 +5,10 @@ const initialState = {
   isLoading: false,
   error: false,
   user: {},
+  userImage: ''
 };
 
 export const authReducer = (state = initialState, action) => {
-  console.log(state);
   switch (action.type) {
     case IS_AUTH:
       return {
@@ -16,6 +16,7 @@ export const authReducer = (state = initialState, action) => {
         isAuth: action.auth,
         isLoading: action.isLoadning,
         user: action.user,
+        userImage: action.userImage
       };
     case IS_LOADING:
       return {

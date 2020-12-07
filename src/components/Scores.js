@@ -16,16 +16,18 @@ const Scores = () => {
   const compIndex = l.compIndex;
 
   const closeModalHandler = (data) => {
-    dispatch(
-      actions.addPoint(
-        data,
-        modalData.id,
-        modalData.cellId,
-        modalData.index,
-        modalData.compIndex,
-        compClasses
-      )
-    );
+    if (+data) {
+      dispatch(
+        actions.addPoint(
+          data,
+          modalData.id,
+          modalData.cellId,
+          modalData.index,
+          modalData.compIndex,
+          compClasses
+        )
+      );
+    }
     setModal(false);
   };
   const saveResults = () => {

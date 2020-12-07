@@ -1,40 +1,58 @@
 import React from "react";
-import { compClasses, shoes } from "../../dummyData";
+import { shoes } from "../../dummyData";
 import CustomSelect from "../Select";
 import TextInput from "../TextInput";
-import SubHeader from '../UI/SubHeader'
+import SubHeader from "../UI/SubHeader";
 
 const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <TextInput
         required
         id="className"
         label="ClassName"
         placeholder="ClassName"
-        onChange={(event) => handleClasses("className", event.target.value)}
-      />
-
-      <CustomSelect
-        handler={handleClasses}
-        label="Shoe One"
-        id="shoeOne"
-        classTypes={shoes}
+        onChange={(event) => handleClasses("className", event.target)}
       />
       <CustomSelect
         handler={handleClasses}
-        label="Shoe Two"
-        id="shoeTwo"
+        label="First shoe"
+        id="shoeToForge"
         classTypes={shoes}
+      />
+      <TextInput
+        required
+        id="shoeOneImg"
+        type="file"
+        onChange={(event) => handleClasses("shoeOneImg", event.target)}
+      />
+      <CustomSelect
+        handler={handleClasses}
+        label="Second shoe"
+        id="shoeToHorse"
+        classTypes={shoes}
+      />
+      <TextInput
+        required
+        id="shoeTwoImg"
+        type="file"
+        onChange={(event) => handleClasses("shoeTwoImg", event.target)}
       />
       <TextInput
         required
         id="time"
         label="Time"
         placeholder="time"
-        onChange={(event) => handleClasses("time", event.target.value)}
+        onChange={(event) => handleClasses("time", event.target)}
       />
-      <SubHeader>Add points</SubHeader>
+      <TextInput
+        required
+        id="referee"
+        label="Referee"
+        placeholder="Referee"
+        onChange={(event) => handleClasses("referee", event.target)}
+      />
+      <SubHeader>Add points for first shoe</SubHeader>
       {points.map((item, index) => {
         return (
           <TextInput
@@ -42,17 +60,38 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
             key={index}
             label={item}
             placeholder={item}
-            onChange={(event) => pointsHandler(index, event)}
+            onChange={(event) => pointsHandler(index, event.target)}
           />
         );
       })}
-      <h3>Add sponsor</h3>
+      <SubHeader>Add points for second shoe</SubHeader>
+
+      {points.map((item, index) => {
+        return (
+          <TextInput
+            required
+            key={index}
+            label={item}
+            placeholder={item}
+            onChange={(event) => pointsHandler(index, event.target)}
+          />
+        );
+      })}
+      <SubHeader>Add sponsor</SubHeader>
       <TextInput
         required
         id="sponsor"
         label="Sponsor"
         placeholder="Sponsor"
-        onChange={(event) => handleClasses("sponsors", event.target.value)}
+        onChange={(event) => handleClasses("sponsors", event.target)}
+      />
+      <TextInput
+        required
+        id="sponsorLoggo"
+        type="file"
+        label="Sponsor Loggo"
+        placeholder="Sponsor Loggo"
+        onChange={(event) => handleClasses("sponsorLoggo", event.target)}
       />
     </div>
   );

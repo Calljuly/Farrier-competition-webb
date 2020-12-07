@@ -46,11 +46,12 @@ const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
 
   const handler = (event) => {
     event.preventDefault();
-    setText(event.target.value);
+    if (Number.isFinite(+event.target.value)) {
+      setText(event.target.value);
+    }
   };
   const onSubmitHandler = () => {
     handleClose(text, modalData.id, modalData.cellId);
-    setText(0);
   };
   return (
     <Modal open={isOpen} onClose={handleClose}>

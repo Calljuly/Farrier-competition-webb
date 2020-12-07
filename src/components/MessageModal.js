@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { Button } from "@material-ui/core";
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+import P from "./UI/Paragraph";
 
-function getModalStyle() {
+const rand = () => {
+  return Math.round(Math.random() * 20) - 10;
+};
+
+const getModalStyle = () => {
   const top = 50 + rand();
   const left = 50 + rand();
 
@@ -15,7 +17,7 @@ function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
   };
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,7 +51,7 @@ const MessageModal = ({ isOpen, handleClose, modalData }) => {
           <h1>{modalData.title}</h1>
         </div>
         <div>
-          <p>{modalData.description}</p>
+          <P>{modalData.description}</P>
         </div>
 
         <Button onClick={handleClose}>Okey</Button>

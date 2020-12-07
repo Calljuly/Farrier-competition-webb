@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import 'firebase/storage'
 
 var firebaseConfig = {
   apiKey: "AIzaSyDPMpX_mWakVaDXRPeklWXMNxtciQPL_gI",
@@ -13,10 +14,10 @@ var firebaseConfig = {
   measurementId: "G-XTGZ5X7NCX",
 };
 firebase.initializeApp(firebaseConfig);
-
-
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+//firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export const storage = firebase.storage()
+
 

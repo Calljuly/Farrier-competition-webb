@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Colors } from "../colors";
 import { Grid } from "@material-ui/core";
+import P from "./UI/Paragraph";
 
 const useStyle = makeStyles({
   container: {
@@ -38,26 +39,26 @@ const Footer = () => {
     <div className={classes.container}>
       <Grid container spacing={2}>
         <Grid item md={4} xs={12} className={classes.gridItem}>
-          <p className={classes.text}>Logga</p>
+          <P style={{ color: Colors.orange }}>Logga</P>
         </Grid>
         <Grid item md={4} xs={12} className={classes.gridItem}>
           <div className={classes.itemContainer}>
-            <p>
+            <P>
               Email:
               <a className={classes.email} href="mailto: calljuly@gmail.com">
                 Calljuly@gmail.com
               </a>
-            </p>
+            </P>
           </div>
           <div className={classes.itemContainer}>
-            <p>
+            <P>
               Phone:
               <a className={classes.email} href="tel:0705222633">
                 +46705222633
               </a>
-            </p>
+            </P>
           </div>
-          <p className={classes.text}>Contact information</p>
+          <P style={{ color: Colors.orange }}>Contact information</P>
         </Grid>
         <Grid item md={4} xs={12} className={classes.gridItem}></Grid>
       </Grid>

@@ -8,6 +8,7 @@ import { Paper } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import ValidationModal from "../ValidationModal";
 import { useHistory } from "react-router-dom";
+import P from "../UI/Paragraph";
 
 const useStyle = makeStyles({
   container: {
@@ -99,29 +100,29 @@ const CompetitionListItemAdmin = ({
         <h1>{name}</h1>
         <div className={classes.infoContainer}>
           <div style={{ marginLeft: 10 }}>
-            <p>Price : {price}</p>
-            <p>Country : {country}</p>
-            <p> Referee: {referee}</p>
+            <P>Price : {price}</P>
+            <P>Country : {country}</P>
+            <P> Referee: {referee}</P>
           </div>
           <div style={{ marginLeft: 10 }}>
-            <p>Max Entries : {maxEntries}</p>
-            <p>Current Entries : {current}</p>
+            <P>Max Entries : {maxEntries}</P>
+            <P>Current Entries : {current}</P>
           </div>
         </div>
         <div>
           <h3>Classes : </h3>
           <div className={classes.classesContainer}>
-            {compClasses.map((item) => {
+            {compClasses && compClasses.map((item) => {
               return (
                 <div className={classes.classes} key={item.shoeToHorse}>
-                  <p>Type: {item.type}</p>
-                  <p>Time : {item.time}</p>
+                  <P>Type: {item.type}</P>
+                  <P>Time : {item.time}</P>
                   {item.type !== "Eagel eye" && (
-                    <p>
+                    <P>
                       Shoes:
                       {item.shoeToHorse}
                       {item.shoeToForge}
-                    </p>
+                    </P>
                   )}
                 </div>
               );
@@ -144,7 +145,7 @@ const CompetitionListItemAdmin = ({
             </Grid>
             <Grid item md={4} xs={12}>
               <CustomButton
-                title="Edit competition"
+                title="Create Class"
                 onClick={() =>
                   history.push({
                     pathname: "/admin/editCompetition",
@@ -153,6 +154,9 @@ const CompetitionListItemAdmin = ({
                   })
                 }
               />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton title="Publish all results" onClick={() => {}} />
             </Grid>
             <Grid item md={4} xs={12}>
               <CustomButton
@@ -166,11 +170,15 @@ const CompetitionListItemAdmin = ({
                 }
               />
             </Grid>
+
             <Grid item md={4} xs={12}>
-              <CustomButton
-                title="Delete competition"
-                onClick={() => setOpenModal(true)}
-              />
+              <CustomButton title="Print proposition" onClick={() => {}} />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton title="Print scoresheet" onClick={() => {}} />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <CustomButton title="Print startlist" onClick={() => {}} />
             </Grid>
           </Grid>
         </div>

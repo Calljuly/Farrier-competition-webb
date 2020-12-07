@@ -66,7 +66,8 @@ export const enterCompetition = (competitor, index, id, state) => {
           type: ADD_COMPETITOR,
           data: updatedState,
         });
-      }).then(()=>{
+      })
+      .then(() => {
         dispatch({
           type: COMPETITION_LOADING,
           isLoading: false,
@@ -86,35 +87,27 @@ export const createCompetition = (competition, user) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-    const comp = {
-      admins: admin,
-      classes: competition.classes,
-      currentEntries: 0,
-      result: [],
-      entries: [],
-      country: competition.country,
-      maxEntries: competition.maxEntries,
-      name: competition.name,
-      price: competition.price,
-      referee: competition.referee,
-      id: 6,
-      date: competition.date,
-    };
-    fetch(
-      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(comp),
-      }
-    )
-      .then((data) => {
-        dispatch({
-          type: CREATE_COMPETITON,
-          data: data,
-        });
+
+    firestore
+      .collection("competitions")
+      .add({
+        id: "1",
+        admins: admin,
+        currentEntries: 0,
+        result: [],
+        entries: [],
+        country: competition.country.value,
+        location: competition.location.value,
+        anvils: competition.anvils.value,
+        name: competition.name.value,
+        referee: competition.referee.value,
+        dateTo: competition.dateTo.value,
+        dateFrom: competition.dateFrom.value,
+        hotels: competition.hotels.value,
+        parking: competition.parking.value,
+      })
+      .then(() => {
+        fetchCompetitions();
       })
       .then(() => {
         dispatch({
@@ -125,6 +118,30 @@ export const createCompetition = (competition, user) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    /*
+    fetch(
+      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comp),
+      }
+    )
+      .then(() => {
+        fetchCompetitions();
+      })
+      .then(() => {
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+      */
   };
 };
 export const deleteCompetition = (competition) => {
@@ -164,6 +181,7 @@ export const fetchCompetitions = () => {
       type: COMPETITION_LOADING,
       loading: true,
     });
+
     fetch(
       "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
       {
@@ -181,6 +199,22 @@ export const fetchCompetitions = () => {
         const comps = competition.competitions.map((item) => {
           return item.competition;
         });
+        const array = [];
+        comps.forEach(async (item, index) => {
+          const data = await firestore
+            .collection("competitions")
+            .doc(item.id)
+            .collection("classes")
+            .get();
+          const classes = data.docs.map((doc) => {
+            return doc.data();
+          });
+          array.push({ competition: comps[index], classes: classes });
+        });
+        console.log(array);
+        console.log(array.length);
+        console.log(array[0]);
+
         dispatch({
           type: FETCH_COMPETITIONS,
           data: comps,

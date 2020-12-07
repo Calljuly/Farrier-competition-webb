@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
-import { users } from "../dummyData";
 import { makeStyles } from "@material-ui/styles";
 import ResultListItem from "../components/ListItems/ResultListItem";
 import Tabs from "@material-ui/core/Tabs";
@@ -9,6 +8,8 @@ import Box from "@material-ui/core/Box";
 import { useSelector } from "react-redux";
 import { Paper } from "@material-ui/core";
 import { Colors } from "../colors";
+import SubHeader from "../components/UI/SubHeader";
+import PageHeader from "../components/UI/PageHeader";
 
 const useStyle = makeStyles({
   avatar: {
@@ -70,15 +71,17 @@ const TabPanel = (props) => {
 
 const User = () => {
   const classes = useStyle();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  const userImage = useSelector((state) => state.auth.userImage);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  
   return (
     <div className={classes.container}>
-      <Avatar className={classes.avatar} src={users[0].img} />
+      <Avatar className={classes.avatar} src={userImage} alt={user.name} />
 
       <div className={classes.root}>
         <Tabs
@@ -110,14 +113,14 @@ const User = () => {
 
         <TabPanel value={value} index={0}>
           <Paper elevation={4} style={{ padding: 20 }}>
-            <h1>{user.name}</h1>
-            <h3>{user.location}</h3>
-            <h3>{user.info}</h3>
+            <PageHeader>{user.name}</PageHeader>
+            <SubHeader>{user.country}</SubHeader>
+            <SubHeader>{user.bio}</SubHeader>
           </Paper>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Paper elevation={4} style={{ padding: 20 }}>
-            <h1>Results</h1>
+            <PageHeader>Results</PageHeader>
             {user.result.length > 0 &&
               user.result.map((item) => {
                 return (

@@ -66,7 +66,7 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "one",
-                              compClasses[1].headerTitles[1],
+                              compClasses[0].headerTitles[1],
                               index,
                               compIndex
                             )
@@ -83,7 +83,7 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "two",
-                              compClasses[1].headerTitles[2],
+                              compClasses[0].headerTitles[2],
                               index,
                               compIndex
                             )
@@ -100,7 +100,7 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "three",
-                              compClasses[1].headerTitles[3],
+                              compClasses[0].headerTitles[3],
                               index,
                               compIndex
                             )
@@ -117,7 +117,7 @@ const ForgingClass = ({
                             handleModalContent(
                               item.id,
                               "four",
-                              compClasses[1].headerTitles[4],
+                              compClasses[0].headerTitles[4],
                               index,
                               compIndex
                             )

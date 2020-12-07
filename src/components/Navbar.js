@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import * as actions from "../store/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from "@material-ui/icons/Menu";
 import CustomDrawer from "./CustomDrawer";
 import { Colors } from "../colors";
-const links = [
+import P from "./UI/Paragraph";
+
+const linksAdmin = [
   {
     id: 0,
     label: "Home",
@@ -27,12 +29,63 @@ const links = [
   },
   {
     id: 3,
+    label: "Admin",
+    path: "/admin",
+    exact: false,
+  },
+  {
+    id: 4,
     label: "Contact",
     path: "/contact",
     exact: false,
   },
 ];
-
+const linksUnAuth = [
+  {
+    id: 0,
+    label: "Home",
+    path: "/",
+    exact: true,
+  },
+  {
+    id: 2,
+    label: "Competitions",
+    path: "/competitions",
+    exact: false,
+  },
+  {
+    id: 4,
+    label: "Contact",
+    path: "/contact",
+    exact: false,
+  },
+];
+const linksAuth = [
+  {
+    id: 0,
+    label: "Home",
+    path: "/",
+    exact: true,
+  },
+  {
+    id: 1,
+    label: "Profile",
+    path: "/myProfile",
+    exact: false,
+  },
+  {
+    id: 2,
+    label: "Competitions",
+    path: "/competitions",
+    exact: false,
+  },
+  {
+    id: 4,
+    label: "Contact",
+    path: "/contact",
+    exact: false,
+  },
+];
 const useStyle = makeStyles({
   avatar: {
     width: 100,
@@ -67,7 +120,7 @@ const useStyle = makeStyles({
     height: 60,
     margin: 20,
     textDecoration: "none",
-    color: "#F2AA4CFF",
+    color: Colors.orange,
     fontSize: 30,
     display: "flex",
     justifyContent: "center",
@@ -115,9 +168,10 @@ const useStyle = makeStyles({
     },
   },
 });
+
 const Navbar = () => {
   const [drawerState, setDrawerState] = useState(false);
-
+  const history = useHistory();
   const toggleDrawer = () => {
     setDrawerState((prev) => !prev);
   };
@@ -125,12 +179,14 @@ const Navbar = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const isAuth = useSelector((state) => state.auth.isAuth);
+
   return (
     <div className={classes.container}>
       <CustomDrawer
         toggleDrawer={toggleDrawer}
         drawerState={drawerState}
-        navLinks={links}
+        navLinks={user.admin ? linksAdmin : isAuth ? linksAuth : linksUnAuth}
         auth={user.admin}
         logout={() => dispatch(actions.logOut())}
       />
@@ -138,32 +194,51 @@ const Navbar = () => {
         <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />
       </div>
       <div className={classes.contentContainer}>
-        {links.map((item) => (
-          <NavLink
-            key={item.id}
-            className={classes.link}
-            activeClassName={classes.activeLink}
-            to={item.path}
-            exact={item.exact}
-          >
-            <p>{item.label}</p>
-          </NavLink>
-        ))}
-        {user.admin && (
-          <NavLink
-            className={classes.link}
-            to="/admin"
-            activeClassName={classes.activeLink}
-          >
-            Admin
-          </NavLink>
-        )}
+        {user.admin
+          ? linksAdmin.map((item) => (
+              <NavLink
+                key={item.id}
+                className={classes.link}
+                activeClassName={classes.activeLink}
+                to={item.path}
+                exact={item.exact}
+              >
+                <p>{item.label}</p>
+              </NavLink>
+            ))
+          : isAuth
+          ? linksAuth.map((item) => (
+              <NavLink
+                key={item.id}
+                className={classes.link}
+                activeClassName={classes.activeLink}
+                to={item.path}
+                exact={item.exact}
+              >
+                <p>{item.label}</p>
+              </NavLink>
+            ))
+          : linksUnAuth.map((item) => (
+              <NavLink
+                key={item.id}
+                className={classes.link}
+                activeClassName={classes.activeLink}
+                to={item.path}
+                exact={item.exact}
+              >
+                <p>{item.label}</p>
+              </NavLink>
+            ))}
         <NavLink
-          onClick={() => dispatch(actions.logOut())}
+          onClick={
+            isAuth
+              ? () => dispatch(actions.logOut())
+              : () => history.push("/signIn")
+          }
           className={classes.link}
-          to="/"
+          to={isAuth ? "/" : "/signIn"}
         >
-          Logout
+          {isAuth ? "Sign out" : "Sign in"}
         </NavLink>
       </div>
     </div>

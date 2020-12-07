@@ -7,10 +7,14 @@ const useStyle = makeStyles({
     fontSize: "20px",
     color: Colors.black,
   },
+  orange: {
+    fontSize: "20px",
+    color: Colors.orange,
+  },
 });
-const P = ({ children }) => {
+const P = ({ children, orange }) => {
   const classes = useStyle();
-  return <p className={classes.p}>{children}</p>;
+  return <p className={orange ? classes.orange : classes.p}>{children}</p>;
 };
 
 export default P;

@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { users } from "../../dummyData";
 import * as actions from "../../store/actions/competitionAction";
-import { Paper } from "@material-ui/core";
 import MessageModal from "../MessageModal";
+import PageHeader from "../UI/PageHeader";
+import SubHeader from "../UI/SubHeader";
+
+import P from "../UI/Paragraph";
+
+import { Colors } from "../../colors";
 
 const useStyle = makeStyles({
   container: {
-    borderRadius: 20,
-    width: "90%",
-    minHeight: 500,
+    width: "95%",
     display: "flex",
-    margin: 10,
-    justifyContent: "space-around",
-    alignItems: "flex-start",
+    margin: "auto",
     flexDirection: "column",
-    padding: 20,
-    "&>p": {
-      margin: 0,
+    padding: 10,
+    "&:hover": {
+      border: `1px solid ${Colors.orange}`,
     },
   },
   classesContainer: {
@@ -26,7 +26,6 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    flexWrap: "wrap",
   },
   infoContainer: {
     width: "100%",
@@ -87,7 +86,10 @@ const CompetitionsListItem = ({
   const dispatch = useDispatch();
   const [modalOpen, setOpenModal] = useState(false);
   const comp = useSelector((state) => state.competitions.competitions);
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const user = useSelector((state) => state.auth.user);
 
+  const [showProposition, setShowProposition] = useState(false);
   return (
     <>
       <MessageModal
@@ -98,50 +100,65 @@ const CompetitionsListItem = ({
           description: "You have succsessfully entered the competition!",
         }}
       />
-      <Paper elevation={4} className={classes.container}>
-        <h1>{name}</h1> {active && <p style={{ color: "green" }}>Active</p>}
-        <div className={classes.infoContainer}>
-          <div style={{ marginLeft: 10 }}>
-            <p>Price : {price}</p>
-            <p>Country : {country}</p>
-            <p> Referee: {referee}</p>
-          </div>
-          <div style={{ marginLeft: 10 }}>
-            <p>Max Entries : {maxEntries}</p>
-            <p>Current Entries : {current}</p>
-          </div>
-        </div>
-        <div>
-          <h3>Classes : </h3>
-          <div className={classes.classesContainer}>
-            {compClasses.map((item, index) => {
-              return (
-                <div key={index} className={classes.classes}>
-                  <p>Type: {item.type}</p>
-                  <p>Time : {item.time}</p>
-                  {item.type !== "Eagel eye" && (
-                    <p>
-                      Shoes:
-                      {item.shoeToHorse}
-                      {item.shoeToForge}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <button
-          disabled={disabled}
-          className={disabled ? classes.buttonDisabled : classes.button}
-          onClick={() => {
-            dispatch(actions.enterCompetition(users[0].name, index, id, comp));
-            setOpenModal(true);
+      <div className={classes.container}>
+        <div
+          onClick={() => setShowProposition((prev) => !prev)}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
-          {disabled ? "Competition is full" : "Enter competition"}
-        </button>
-      </Paper>
+          <PageHeader>{name}</PageHeader>
+          {active && <P style={{ color: "green" }}>Active</P>}
+        </div>
+        {showProposition && (
+          <>
+            <div className={classes.infoContainer}>
+              <P>Price : {price}</P>
+              <P>Country : {country}</P>
+              <P> Referee: {referee}</P>
+
+              <P>Max Entries : {maxEntries}</P>
+              <P>Current Entries : {current}</P>
+            </div>
+            {compClasses.length > 0 && (
+              <>
+                <SubHeader>Classes : </SubHeader>
+                {compClasses.map((item, index) => {
+                  return (
+                    <div key={index} className={classes.infoContainer}>
+                      <P>Type: {item.type}</P>
+                      <P>Time : {item.time}</P>
+                      {item.type !== "Eagel eye" && (
+                        <P>
+                          Shoes:
+                          {item.shoeToHorse}
+                          {item.shoeToForge}
+                        </P>
+                      )}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+            {isAuth && (
+              <button
+                disabled={disabled}
+                className={disabled ? classes.buttonDisabled : classes.button}
+                onClick={() => {
+                  dispatch(
+                    actions.enterCompetition(user.name, index, id, comp)
+                  );
+                  setOpenModal(true);
+                }}
+              >
+                {disabled ? "Competition is full" : "Enter competition"}
+              </button>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };
