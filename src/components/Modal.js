@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import { TextField, Button } from "@material-ui/core";
+import PageHeader from "./UI/PageHeader";
+import SubHeader from "./UI/SubHeader";
+import CustomButton from "./CustomButton";
+import TextInput from "./TextInput";
+
 const rand = () => {
   return Math.round(Math.random() * 20) - 10;
 };
@@ -21,12 +25,10 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    backgroundColor: "white",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
     display: "flex",
-    justifyContent: "cenetr",
+    justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
   },
@@ -56,20 +58,21 @@ const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <div style={modalStyle} className={classes.paper}>
-        <h4>Enter points for : </h4>
+        <PageHeader>Enter points for : </PageHeader>
+        <SubHeader>Competitor : {modalData.user}</SubHeader>
+        <div>
+          <SubHeader>{modalData.title}</SubHeader>
+        </div>
 
         <div>
-          <h2>{modalData.title}</h2>
-        </div>
-        <div>
-          <TextField
+          <TextInput
             InputProps={{ inputProps: { min: 0, max: 10 } }}
             type="number"
             onChange={(event) => handler(event)}
           />
         </div>
 
-        <Button onClick={onSubmitHandler}>Save</Button>
+        <CustomButton onClick={onSubmitHandler} title="Save" />
       </div>
     </Modal>
   );

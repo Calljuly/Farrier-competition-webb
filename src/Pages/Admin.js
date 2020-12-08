@@ -12,7 +12,7 @@ import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
 import EditCompetition from "../components/Forms/editCompetition";
 import P from "../components/UI/Paragraph";
-
+import PageHeader from "../components/UI/PageHeader";
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -82,8 +82,7 @@ const Admin = () => {
 
   return (
     <>
-      <h1>Admin</h1>
-
+      <PageHeader>Admin</PageHeader>
       <Switch>
         <Route path="/admin" exact>
           <div>
@@ -130,7 +129,7 @@ const Admin = () => {
               <AddCompetition />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <h1>My competitions</h1>
+              <PageHeader>My competitions</PageHeader>
               {adminCompetitions.length !== 0 ? (
                 adminCompetitions.map((item, index) => {
                   return (
@@ -159,7 +158,6 @@ const Admin = () => {
           <Scores compClasses={compClasses} />
         </Route>
         <Route path="/admin/editCompetition" exact>
-          <h1>Edit page</h1>
           <EditCompetition />
         </Route>
         <Route path="/admin/createProposition" exact>

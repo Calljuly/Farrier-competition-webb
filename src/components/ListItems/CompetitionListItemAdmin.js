@@ -9,6 +9,8 @@ import CustomButton from "../CustomButton";
 import ValidationModal from "../ValidationModal";
 import { useHistory } from "react-router-dom";
 import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
+import PageHeader from "../UI/PageHeader";
 
 const useStyle = makeStyles({
   container: {
@@ -93,11 +95,11 @@ const CompetitionListItemAdmin = ({
       <ValidationModal
         isOpen={modalOpen}
         handleClose={() => setOpenModal(false)}
-        description="Are you sure you want to delete this competition ? All data will be remeoved"
+        description="Are you sure you want to delete this competition ? All data will be removed"
         action={() => dispatch(actions.deleteCompetition(id))}
       />
       <Paper elevation={4} className={classes.container}>
-        <h1>{name}</h1>
+        <PageHeader>{name}</PageHeader>
         <div className={classes.infoContainer}>
           <div style={{ marginLeft: 10 }}>
             <P>Price : {price}</P>
@@ -105,28 +107,29 @@ const CompetitionListItemAdmin = ({
             <P> Referee: {referee}</P>
           </div>
           <div style={{ marginLeft: 10 }}>
-            <P>Max Entries : {maxEntries}</P>
+            <P>Anvils avaliabel : {maxEntries}</P>
             <P>Current Entries : {current}</P>
           </div>
         </div>
         <div>
-          <h3>Classes : </h3>
+          <SubHeader>Classes : </SubHeader>
           <div className={classes.classesContainer}>
-            {compClasses && compClasses.map((item) => {
-              return (
-                <div className={classes.classes} key={item.shoeToHorse}>
-                  <P>Type: {item.type}</P>
-                  <P>Time : {item.time}</P>
-                  {item.type !== "Eagel eye" && (
-                    <P>
-                      Shoes:
-                      {item.shoeToHorse}
-                      {item.shoeToForge}
-                    </P>
-                  )}
-                </div>
-              );
-            })}
+            {compClasses &&
+              compClasses.map((item) => {
+                return (
+                  <div className={classes.classes} key={item.shoeToHorse}>
+                    <P>Type: {item.type}</P>
+                    <P>Time : {item.time}</P>
+                    {item.type !== "Eagel eye" && (
+                      <P>
+                        Shoes:
+                        {item.shoeToHorse}
+                        {item.shoeToForge}
+                      </P>
+                    )}
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div style={{ display: "flex" }}>
@@ -156,7 +159,10 @@ const CompetitionListItemAdmin = ({
               />
             </Grid>
             <Grid item md={4} xs={12}>
-              <CustomButton title="Publish all results" onClick={() => {}} />
+              <CustomButton
+                title="Publish all results"
+                onClick={() => dispatch(actions.saveAllResult(id, compClasses))}
+              />
             </Grid>
             <Grid item md={4} xs={12}>
               <CustomButton

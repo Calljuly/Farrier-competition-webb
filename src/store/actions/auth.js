@@ -1,4 +1,5 @@
 import { auth, firestore, storage } from "../../components/firebase";
+import Cookies from 'js-cookie';
 
 export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";
@@ -120,6 +121,7 @@ export const signIn = (email, pass) => {
               .child(`images/${user.img}.jpg`)
               .getDownloadURL()
               .then((url) => {
+                Cookies.set('user', 'value', { expires: 7 })
                 localStorage.setItem("auth", cred.user.uid);
                 dispatch(isAuth(true, false, user, url));
               });
@@ -143,7 +145,7 @@ export const logOut = () => {
   return (dispatch) => {
     dispatch(isAuth(true, false, {}));
     auth.signOut().then((cred) => {
-      localStorage.removeItem("auth");
+      Cookies.remove('user')
       dispatch(isAuth(false, false, {}, ""));
     });
   };

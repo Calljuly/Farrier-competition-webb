@@ -9,6 +9,7 @@ import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
 import Loading from "./components/IsLoading";
+import Cookies from "js-cookie";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -20,30 +21,30 @@ const App = () => {
   const user = useSelector((item) => item.auth.user);
 
   useEffect(() => {
-    if (localStorage.getItem("auth")) {
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const userData = await firestore
-            .collection("users")
-            .doc(user.uid)
-            .get();
-          if (userData.img !== "") {
-            storage
-              .ref()
-              .child(`images/${user.img}.jpg`)
-              .getDownloadURL()
-              .then((url) => {
-                const user = userData.data();
-                localStorage.setItem("auth", user.uid);
-                dispatch(action.isAuth(true, false, user, url));
-              });
-          } else {
-            localStorage.setItem("auth", user.uid);
-            dispatch(action.isAuth(true, false, user, ""));
-          }
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userData = await firestore
+          .collection("users")
+          .doc(user.uid)
+          .get();
+        const a = userData.data();
+        if (a.img !== "") {
+          storage
+            .ref()
+            .child(`images/${a.img}.jpg`)
+            .getDownloadURL()
+            .then((url) => {
+              localStorage.setItem("auth", user.uid);
+              dispatch(action.isAuth(true, false, userData.data(), url));
+            });
+        } else {
+          localStorage.setItem("auth", user.uid);
+          dispatch(action.isAuth(true, false, user, ""));
         }
-      });
-    }
+      } else {
+        dispatch(action.isAuth(false, false, {}, ""));
+      }
+    });
   }, [isAuthenticated]);
 
   let routes = getRoutes(isAuthenticated, user?.admin ? true : false);

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import CustomSelect from "../Select";
 import { compClasses } from "../../dummyData";
 import CustomButton from "../CustomButton";
-import { Grid } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import SubHeader from "../UI/SubHeader";
 import ForgingClass from "../Classes/ForgingClass";
@@ -24,22 +23,22 @@ const EditCompetition = () => {
   const [numberFour, setNumberFour] = useState(1);
   const [classesObject, setClasses] = useState({
     className: {
-      value: '',
-      valid: true
+      value: "",
+      valid: true,
     },
     pointsToMultiply: [],
-    shoeToForge: '',
-    shoeToHorse: '',
+    shoeToForge: "",
+    shoeToHorse: "",
     time: {
-      value: '',
-      valid: true
+      value: "",
+      valid: true,
     },
     type: "",
     result: [],
     unPublishedResult: [],
     sponsors: {
-      value: '',
-      valid: true
+      value: "",
+      valid: true,
     },
     sponsorLoggo: "",
     referee: "",
@@ -102,6 +101,7 @@ const EditCompetition = () => {
         time: newClass.time,
         type: newClass.type,
         unPublishedResult: newClass.unPublishedResult,
+        savedResult: false
       });
 
     setClasses({
@@ -117,9 +117,8 @@ const EditCompetition = () => {
       sponsorLoggo: "",
       referee: "",
     });
-    setIsOpen(false)
+    setIsOpen(false);
   };
-
 
   const getClass = (type) => {
     switch (type) {
@@ -168,7 +167,7 @@ const EditCompetition = () => {
   };
   return (
     <div style={{ margin: 30 }}>
-    <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+      <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <PageHeader>Are you sure ?</PageHeader>
         <P> Are you sure you want to create this class ? </P>
         <div style={{ display: "flex" }}>
@@ -176,25 +175,21 @@ const EditCompetition = () => {
           <CustomButton title="Im sure" onClick={() => submitNewClass()} />
         </div>
       </ChoiseModal>
-      <Grid container spacing={2}>
-        <Grid item md={8} xs={12}>
-          <SubHeader>Create new class</SubHeader>
-          <CustomSelect
-            handler={handleClasses}
-            label="Type"
-            id="type"
-            classTypes={compClasses}
-          />
-          {getClass(classesObject.type)}
-          <div style={{ display: "flex" }}>
-            <CustomButton
-              onClick={() => setIsOpen(true)}
-              title="Create class"
-            />
-            <CustomButton onClick={() => goBack()} title="Go Back" />
-          </div>
-        </Grid>
-      </Grid>
+
+      <div style={{ margin: "auto", width: "80%" }}>
+        <SubHeader>Create new class</SubHeader>
+        <CustomSelect
+          handler={handleClasses}
+          label="Type"
+          id="type"
+          classTypes={compClasses}
+        />
+        {getClass(classesObject.type)}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <CustomButton onClick={() => setIsOpen(true)} title="Create class" />
+          <CustomButton onClick={() => goBack()} title="Go Back" />
+        </div>
+      </div>
     </div>
   );
 };

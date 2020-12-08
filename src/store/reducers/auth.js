@@ -2,7 +2,7 @@ import { IS_AUTH, IS_LOADING, ERROR } from "../actions/auth";
 
 const initialState = {
   isAuth: false,
-  isLoading: false,
+  isLoading: true,
   error: false,
   user: {},
   userImage: ''

@@ -5,11 +5,16 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import CustomModal from "../components/Modal";
 import * as actions from "../store/actions/resultAction";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import P from "./UI/Paragraph";
+import CustomButton from "./CustomButton";
+import Devider from "./UI/Devider";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const { goBack } = useHistory();
+
   const dispatch = useDispatch();
   const l = useLocation();
   const compClasses = l.state;
@@ -34,13 +39,14 @@ const Scores = () => {
     dispatch(actions.savePoints());
   };
 
-  const handleModalContent = (id, cell, title, index, compIndex) => {
+  const handleModalContent = (id, cell, title, index, compIndex, user) => {
     setModalData({
       id: id,
       cellId: cell,
       title: title,
       index: index,
       compIndex: compIndex,
+      user: user,
     });
     setModal(true);
   };
@@ -52,30 +58,57 @@ const Scores = () => {
         modalData={modalData}
       />
       {compClasses.map((classes, index) => {
-        return classes.type === "shoeing" ? (
-          <ShoingClass
-            key={index}
-            className={classes.className}
-            handleModalContent={handleModalContent}
-            saveResults={saveResults}
-            pointsToMultiply={classes.pointsToMultiply}
-            result={classes.unPublishedResult}
-            index={index}
-            compIndex={compIndex}
-          />
-        ) : (
-          <ForgingClass
-            key={index}
-            className={classes.className}
-            handleModalContent={handleModalContent}
-            saveResults={saveResults}
-            pointsToMultiply={classes.pointsToMultiply}
-            result={classes.unPublishedResult}
-            index={index}
-            compIndex={compIndex}
-          />
-        );
+        switch (classes.type) {
+          case "forging":
+            return (
+              <ForgingClass
+                key={index}
+                className={classes.className}
+                handleModalContent={handleModalContent}
+                saveResults={saveResults}
+                pointsToMultiply={classes.pointsToMultiply}
+                result={classes.unPublishedResult}
+                index={index}
+                compIndex={compIndex}
+              />
+            );
+
+          case "shoeing":
+            return (
+              <ShoingClass
+                key={index}
+                className={classes.className}
+                handleModalContent={handleModalContent}
+                saveResults={saveResults}
+                pointsToMultiply={classes.pointsToMultiply}
+                result={classes.unPublishedResult}
+                index={index}
+                compIndex={compIndex}
+              />
+            );
+          case "comboClass":
+            return <></>;
+          case "eagleEye":
+            return <></>;
+          case "speedForging":
+            break;
+          case "team":
+            break;
+          case "pairs":
+            break;
+          default:
+            return <></>;
+        }
       })}
+      <Devider margin={60} />
+
+      <P>
+        If you press save the results will be saved but wont be shown to the
+        pulic.
+      </P>
+      <P>You wont be able to edit these results after saving them</P>
+      <CustomButton onClick={() => {}} title="Publish result" />
+      <CustomButton onClick={() => goBack()} title="Go Back" />
     </div>
   );
 };

@@ -5,7 +5,8 @@ import * as actions from "../../store/actions/competitionAction";
 import MessageModal from "../MessageModal";
 import PageHeader from "../UI/PageHeader";
 import SubHeader from "../UI/SubHeader";
-
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import P from "../UI/Paragraph";
 
 import { Colors } from "../../colors";
@@ -106,11 +107,21 @@ const CompetitionsListItem = ({
           style={{
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             width: "100%",
           }}
         >
-          <PageHeader>{name}</PageHeader>
-          {active && <P style={{ color: "green" }}>Active</P>}
+          <div style={{ width: "300px" }}>
+            <PageHeader>{name}</PageHeader>
+          </div>
+          {showProposition ? (
+            <KeyboardArrowUpIcon />
+          ) : (
+            <KeyboardArrowDownIcon />
+          )}
+          {active && (
+            <p style={{ color: "green", fontWeight: "bold" }}>Active</p>
+          )}
         </div>
         {showProposition && (
           <>
@@ -122,7 +133,7 @@ const CompetitionsListItem = ({
               <P>Max Entries : {maxEntries}</P>
               <P>Current Entries : {current}</P>
             </div>
-            {compClasses.length > 0 && (
+            {compClasses && (
               <>
                 <SubHeader>Classes : </SubHeader>
                 {compClasses.map((item, index) => {

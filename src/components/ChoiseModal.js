@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 
+const rand = () => {
+  return Math.round(Math.random() * 20) - 10;
+};
+
 const getModalStyle = () => {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
   return {
-    margin: "auto",
-    width: "50%",
-    height: "50%",
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
   };
 };
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    width: "100%",
+    position: "absolute",
+    width: "40%",
     boxShadow: theme.shadows[5],
     backgroundColor: "white",
     padding: 20,
@@ -25,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     "scrollbar-width": "none",
     "&::-webkit-scrollbar": {
       display: "none",
+    },
+    ["@media (max-width:1200px)"]: {
+      width: "60%",
+    },
+    ["@media (max-width:800px)"]: {
+      width: "90%",
     },
   },
 }));

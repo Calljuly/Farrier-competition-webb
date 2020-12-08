@@ -9,10 +9,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import P from "../UI/Paragraph";
-import CustomButton from "../CustomButton";
-import Devider from "../UI/Devider";
 import SubHeader from "../UI/SubHeader";
 
 const useStyles = makeStyles({
@@ -30,8 +26,6 @@ const ShoingClass = ({
   className,
 }) => {
   const savedState = useSelector((state) => state.result.saved);
-
-  const { goBack } = useHistory();
   const classes = useStyles();
   return (
     <div>
@@ -73,7 +67,8 @@ const ShoingClass = ({
                               "one",
                               compClasses[1].headerTitles[1],
                               index,
-                              compIndex
+                              compIndex,
+                              item.id
                             )
                     }
                     align="left"
@@ -90,7 +85,8 @@ const ShoingClass = ({
                               "two",
                               compClasses[1].headerTitles[2],
                               index,
-                              compIndex
+                              compIndex,
+                              item.id
                             )
                     }
                     align="left"
@@ -107,7 +103,8 @@ const ShoingClass = ({
                               "three",
                               compClasses[1].headerTitles[3],
                               index,
-                              compIndex
+                              compIndex,
+                              item.id
                             )
                     }
                     align="left"
@@ -124,7 +121,8 @@ const ShoingClass = ({
                               "four",
                               compClasses[1].headerTitles[4],
                               index,
-                              compIndex
+                              compIndex,
+                              item.id
                             )
                     }
                     align="left"
@@ -137,17 +135,7 @@ const ShoingClass = ({
             })}
           </TableBody>
         </Table>
-      </TableContainer>
-      <Devider margin={60} />
-      <P>
-        If you press save the results will be saved but wont be shown to the
-        pulic.
-      </P>
-      <P>You wont be able to edit these results after saving them</P>
-      <CustomButton onClick={saveResults} title="Save results" />
-      <CustomButton onClick={() => {}} title="Publish result" />
-
-      <CustomButton onClick={() => goBack()} title="Go Back" />
+      </TableContainer>  
     </div>
   );
 };

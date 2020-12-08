@@ -1,4 +1,5 @@
 import { firestore } from "../../components/firebase";
+import { compClasses } from "../../dummyData";
 
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
@@ -32,22 +33,16 @@ export const enterCompetition = (competitor, index, id, state) => {
       return item.result.push({
         id: updatedState[index].currentEntries,
         competitor: competitor,
-        one: "",
-        two: "",
-        three: "",
-        four: "",
-        total: "",
+        shoeOne: { one: "", two: "", three: "", four: "", total: "" },
+        shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
       });
     });
     updatedState[index].classes.map((item) => {
       return item.unPublishedResult.push({
         id: updatedState[index].currentEntries,
         competitor: competitor,
-        one: "",
-        two: "",
-        three: "",
-        four: "",
-        total: "",
+        shoeOne: { one: "", two: "", three: "", four: "", total: "" },
+        shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
       });
     });
 
@@ -199,7 +194,8 @@ export const fetchCompetitions = () => {
         const comps = competition.competitions.map((item) => {
           return item.competition;
         });
-        const array = [];
+/*
+        let array = [];
         comps.forEach(async (item, index) => {
           const data = await firestore
             .collection("competitions")
@@ -211,10 +207,11 @@ export const fetchCompetitions = () => {
           });
           array.push({ competition: comps[index], classes: classes });
         });
+
         console.log(array);
         console.log(array.length);
         console.log(array[0]);
-
+        */
         dispatch({
           type: FETCH_COMPETITIONS,
           data: comps,
@@ -227,7 +224,70 @@ export const fetchCompetitions = () => {
         });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error(error);
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
+        });
+      });
+  };
+};
+export const saveAllResult = (competitionId, classes) => {
+  return (dispatch) => {
+    dispatch({
+      type: COMPETITION_LOADING,
+      loading: true,
+    });
+    console.log(classes);
+    console.log(competitionId);
+
+    const a = classes.map((item) => {
+      return {
+        className: item.className,
+        result: item.unPublishedResult,
+      };
+    });
+    console.log(a);
+
+    firestore
+      .collection("competitions")
+      .doc(competitionId)
+      .update({
+        result: a,
+      })
+      .then(() => {
+        compClasses.forEach((item) => {
+          firestore
+            .collection("competitions")
+            .doc(competitionId)
+            .collection("classes")
+            .update({
+              savedResult: true,
+            })
+            .then(() => {
+              dispatch({
+                type: COMPETITION_LOADING,
+                loading: false,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              dispatch({
+                type: COMPETITION_LOADING,
+                loading: false,
+              });
+            });
+        });
+      })
+      .then(() => {
+        fetchCompetitions();
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({
+          type: COMPETITION_LOADING,
+          loading: false,
+        });
       });
   };
 };

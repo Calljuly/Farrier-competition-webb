@@ -88,7 +88,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
   const [isOpen, setIsOpen] = useState(false);
-  const [formValid, setFormValid] = useState(false);
+  const [formValid, setFormValid] = useState(true);
 
   const [register, setRegister] = useState(false);
   const [authState, setAuthState] = useState({
@@ -202,7 +202,7 @@ const Login = () => {
           <PageHeader>Log in</PageHeader>
         )}
         {!formValid && (
-          <P> Your from was not valid. You need to enter valid data</P>
+          <P> You dont have a valid form to submit, please check you inputs</P>
         )}
         <TextInput
           value={authState["email"].value}

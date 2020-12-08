@@ -8,7 +8,7 @@ import SubHeader from "../UI/SubHeader";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";
-
+import {Alert} from "@material-ui/lab";
 const textInputs = [
   {
     id: 0,
@@ -198,15 +198,15 @@ const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
   const [state, dispatchReducer] = useReducer(reducer, initialState);
   const dispatch = useDispatch();
-  const [formValid, setFormValid] = useState(false);
+  const [formValid, setFormValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   let valid = true;
   const createCompetition = () => {
     const valid = formValidation();
     if (valid) {
       dispatch(actions.createCompetition(state, user.name));
-      setIsOpen(true);
     }
+    setIsOpen(false);
   };
   const validateText = (text, key) => {
     valid = true;
@@ -242,6 +242,11 @@ const AddCompetition = () => {
         </div>
       </ChoiseModal>
       <SubHeader>Competition</SubHeader>
+      {!formValid && (
+        <Alert severity="error">
+          You dont have a valid form to submit, please check you inputs
+        </Alert>
+      )}
       {textInputs.map((item) => (
         <TextInput
           required
