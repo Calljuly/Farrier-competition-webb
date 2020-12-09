@@ -5,6 +5,8 @@ import { Colors } from "../../colors";
 const useStyle = makeStyles({
   header: {
     color: Colors.black,
+    padding: 20,
+    margin: 0,
   },
 });
 const PageHeader = ({ children }) => {

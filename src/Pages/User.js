@@ -17,40 +17,39 @@ const useStyle = makeStyles({
     width: 400,
     height: 400,
   },
+  root: {
+    display: "flex",
+    width: "100%",
+  },
   container: {
     display: "flex",
-    flexDirection: "row",
-    marginTop: 20,
+    flexDirection: "column",
   },
   headContainer: {
     display: "flex",
     flexDirection: "column",
     marginLeft: 20,
   },
-  root: {
-    width: 700,
-    display: "flex",
-  },
   tabs: {
-    width: 250,
-    height: 100,
+    width: 210,
+    height: 50,
     textDecoration: "none",
-    color: Colors.orange,
-    backgroundColor: Colors.black,
-    fontSize: 30,
+    color: Colors.black,
+    fontSize: 20,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
     margin: 5,
   },
   active: {
     margin: 5,
+    marginBottom: 0,
     textDecoration: "none",
     color: "#101820FF",
     backgroundColor: "#F2AA4CFF",
-    fontSize: 30,
-    borderRadius: 10,
+    fontSize: 20,
+    borderRadius: 3,
+    padding: 5,
   },
 });
 const TabPanel = (props) => {
@@ -78,12 +77,11 @@ const User = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   return (
     <div className={classes.container}>
-      <Avatar className={classes.avatar} src={userImage} alt={user.name} />
-
-      <div className={classes.root}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <PageHeader>{user.name}</PageHeader>
         <Tabs
           TabIndicatorProps={{
             style: {
@@ -92,7 +90,7 @@ const User = () => {
           }}
           value={value}
           onChange={handleChange}
-          orientation="vertical"
+          orientation="horisontal"
         >
           <Tab
             className={classes.tabs}
@@ -110,34 +108,43 @@ const User = () => {
             label="Edit profile"
           />
         </Tabs>
+      </div>
+      <div
+        style={{
+          backgroundColor: Colors.orange,
+          height: "3px",
+          width: "50%",
+          marginBottom: 4,
+        }}
+      />
+      <div
+        style={{ backgroundColor: Colors.black, height: "3px", width: "60%" }}
+      />
 
-        <TabPanel value={value} index={0}>
-          <Paper elevation={4} style={{ padding: 20 }}>
-            <PageHeader>{user.name}</PageHeader>
-            <SubHeader>{user.country}</SubHeader>
-            <SubHeader>{user.bio}</SubHeader>
-          </Paper>
+      <div className={classes.root}>
+        <Avatar className={classes.avatar} src={userImage} alt={user.name} />
+
+        <TabPanel value={value} index={0} style={{ width: "90%" }}>
+          <PageHeader>{user.name}</PageHeader>
+          <SubHeader>{user.country}</SubHeader>
+          <SubHeader>{user.bio}</SubHeader>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Paper elevation={4} style={{ padding: 20 }}>
-            <PageHeader>Results</PageHeader>
-            {user.result.length > 0 &&
-              user.result.map((item) => {
-                return (
-                  <ResultListItem
-                    key={item.competition}
-                    competition={item.competition}
-                    points={item.points}
-                    placing={item.placing}
-                  />
-                );
-              })}
-          </Paper>
+        <TabPanel value={value} index={1} style={{ width: "90%" }}>
+          <SubHeader>Results</SubHeader>
+          {user.result.length > 0 &&
+            user.result.map((item) => {
+              return (
+                <ResultListItem
+                  key={item.competition}
+                  competition={item.competition}
+                  points={item.points}
+                  placing={item.placing}
+                />
+              );
+            })}
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Paper elevation={4}>
-            <h1>Edit profile</h1>
-          </Paper>
+        <TabPanel value={value} index={2} style={{ width: "90%" }}>
+          <SubHeader>Edit profile</SubHeader>
         </TabPanel>
       </div>
     </div>

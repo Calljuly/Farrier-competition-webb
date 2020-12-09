@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const useStyle = makeStyles({
   container: {
-    width: "100%",
-    height: "100%",
+    width: "90%",
+    height: "90%",
     backgroundColor: "#101820FF",
     color: "#F2AA4CFF",
     display: "flex",
@@ -16,6 +16,7 @@ const useStyle = makeStyles({
     borderRadius: 10,
     textDecoration: "none",
     padding: 20,
+    margin: 10,
     "&:hover": {
       opacity: "0.6",
     },

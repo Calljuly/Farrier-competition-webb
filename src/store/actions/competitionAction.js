@@ -194,7 +194,7 @@ export const fetchCompetitions = () => {
         const comps = competition.competitions.map((item) => {
           return item.competition;
         });
-/*
+
         let array = [];
         comps.forEach(async (item, index) => {
           const data = await firestore
@@ -207,14 +207,9 @@ export const fetchCompetitions = () => {
           });
           array.push({ competition: comps[index], classes: classes });
         });
-
-        console.log(array);
-        console.log(array.length);
-        console.log(array[0]);
-        */
         dispatch({
           type: FETCH_COMPETITIONS,
-          data: comps,
+          data: array,
         });
       })
       .then(() => {

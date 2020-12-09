@@ -9,7 +9,6 @@ const useStyle = makeStyles({
     width: "100%",
     height: 300,
     backgroundColor: Colors.black,
-    marginTop: 50,
     borderRadius: "10px 10px 0px 0px",
   },
   text: {

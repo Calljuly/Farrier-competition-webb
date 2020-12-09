@@ -145,6 +145,8 @@ const useStyle = makeStyles({
 
   contentContainer: {
     height: "100%",
+    margin: 0,
+    padding: 0,
     flex: 1,
     display: "flex",
     flexDirection: "row",

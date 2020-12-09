@@ -15,7 +15,7 @@ import PageHeader from "../UI/PageHeader";
 const useStyle = makeStyles({
   container: {
     borderRadius: 20,
-    width: "90%",
+    width: "100%",
     height: "100%",
     display: "flex",
     margin: 10,

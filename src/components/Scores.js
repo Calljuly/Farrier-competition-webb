@@ -107,8 +107,10 @@ const Scores = () => {
         pulic.
       </P>
       <P>You wont be able to edit these results after saving them</P>
-      <CustomButton onClick={() => {}} title="Publish result" />
-      <CustomButton onClick={() => goBack()} title="Go Back" />
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <CustomButton onClick={() => {}} title="Publish result" />
+        <CustomButton onClick={() => goBack()} title="Go Back" />
+      </div>
     </div>
   );
 };

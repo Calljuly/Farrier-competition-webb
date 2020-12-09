@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/styles";
 import AddCompetition from "../components/Forms/addCompetition";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import { Paper } from "@material-ui/core";
 import { Colors } from "../colors";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 import { Route, Switch } from "react-router-dom";
@@ -13,6 +11,8 @@ import Scores from "../components/Scores";
 import EditCompetition from "../components/Forms/editCompetition";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
+import Devider from '../components/UI/Devider'
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -25,11 +25,7 @@ const TabPanel = (props) => {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Paper elevation={4} style={{ padding: 20 }}>
-            {children}
-          </Paper>
-        </Box>
+        <div style={{ margin: "auto", width: "80%" }}>{children}</div>
       )}
     </div>
   );
@@ -37,25 +33,25 @@ const TabPanel = (props) => {
 
 const useStyle = makeStyles({
   tabs: {
-    width: 250,
-    height: 100,
+    width: 210,
+    height: 50,
     textDecoration: "none",
-    color: Colors.orange,
-    backgroundColor: Colors.black,
-    fontSize: 30,
+    color: Colors.black,
+    fontSize: 20,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
     margin: 5,
   },
   active: {
     margin: 5,
+    marginBottom: 0,
     textDecoration: "none",
     color: "#101820FF",
     backgroundColor: "#F2AA4CFF",
-    fontSize: 30,
-    borderRadius: 10,
+    fontSize: 20,
+    borderRadius: 3,
+    padding: 5,
   },
 });
 
@@ -70,7 +66,7 @@ const Admin = () => {
   });
 
   let adminCompetitions = compClasses.filter((item, index) => {
-    if (item.admins.includes(user.name)) {
+    if (item.competition.admins.includes(user.name)) {
       return item;
     }
   });
@@ -82,35 +78,51 @@ const Admin = () => {
 
   return (
     <>
-      <PageHeader>Admin</PageHeader>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <PageHeader>Admin</PageHeader>
+        <Tabs
+          TabIndicatorProps={{
+            style: {
+              height: "0px",
+            },
+          }}
+          value={value}
+          onChange={handleChange}
+          orientation="horisontal"
+        >
+          <Tab
+            className={classes.tabs}
+            classes={{ selected: classes.active, root: classes.tabs }}
+            label="Information"
+          />
+          <Tab
+            className={classes.tabs}
+            classes={{ selected: classes.active }}
+            label="New competition "
+          />
+          <Tab
+            className={classes.tabs}
+            classes={{ selected: classes.active }}
+            label="My competitions"
+          />
+        </Tabs>
+      </div>
+      <div
+        style={{
+          backgroundColor: Colors.orange,
+          height: "3px",
+          width: "50%",
+          marginBottom: 4,
+        }}
+      />
+      <div
+        style={{ backgroundColor: Colors.black, height: "3px", width: "60%" }}
+      />
+      <Devider margin={30} />
+
       <Switch>
         <Route path="/admin" exact>
           <div>
-            <Tabs
-              TabIndicatorProps={{
-                style: {
-                  height: "0px",
-                },
-              }}
-              value={value}
-              onChange={handleChange}
-            >
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active, root: classes.tabs }}
-                label="Information"
-              />
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active }}
-                label="Add competition"
-              />
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active }}
-                label="My Competitions"
-              />
-            </Tabs>
             <TabPanel value={value} index={0}>
               <h1>Information</h1>
               <P>
@@ -125,7 +137,7 @@ const Admin = () => {
               </P>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <h1>Add new competition</h1>
+              <PageHeader>Add new competition</PageHeader>
               <AddCompetition />
             </TabPanel>
             <TabPanel value={value} index={2}>
@@ -134,17 +146,19 @@ const Admin = () => {
                 adminCompetitions.map((item, index) => {
                   return (
                     <CompetitionListItemAdmin
-                      key={item.name}
+                      key={item.competition.id}
                       index={index}
-                      id={item.id}
-                      name={item.name}
-                      price={item.price}
-                      referee={item.referee}
-                      country={item.country}
-                      maxEntries={item.maxEntries}
-                      current={item.currentEntries}
+                      id={item.competition.id}
+                      name={item.competition.name}
+                      referee={item.competition.referee}
+                      country={item.competition.country}
+                      maxEntries={item.competition.anvils}
+                      current={item.competition.currentEntries}
                       compClasses={item.classes}
-                      disabled={item.maxEntries === item.currentEntries}
+                      disabled={
+                        item.competition.anvils ===
+                        item.competition.currentEntries
+                      }
                     />
                   );
                 })

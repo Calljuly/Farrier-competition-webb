@@ -5,7 +5,18 @@ html {
   margin: 0;
   padding: 0;
   height: "100vh";
-  background-color: #ffffff;
+  background-color: #DCDCDC;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: #e5e5e5
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 p {
   font-size: "20px";
@@ -36,4 +47,27 @@ p {
 }
 .MuiOutlinedInput-root.Mui-focused.MuiOutlinedInput-notchedOutline {
   border-bottom: "1px solid red" !important;
+}
+.divBlack {
+  background-color: #101820FF;
+   height: 3px ;
+    width: 60%;
+  animation-name: black;
+  animation-duration: 4s;
+}
+.divOrange {
+  margin-bottom: 4px;
+  background-color:#F2AA4CFF;
+   height: 3px ;
+    width: 50%;
+  animation-name: orange;
+  animation-duration: 4s;
+}
+@keyframes black {
+  0%   {width: 0%}
+  100% {width: 60%}
+}
+@keyframes orange {
+  0%   {width: 0%}
+  100% {width: 50%}
 }
