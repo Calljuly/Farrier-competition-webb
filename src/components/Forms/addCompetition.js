@@ -8,7 +8,8 @@ import SubHeader from "../UI/SubHeader";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";
-import {Alert} from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
+import Devider from "../UI/Devider";
 const textInputs = [
   {
     id: 0,
@@ -197,10 +198,12 @@ const reducer = (state, action) => {
 const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
   const [state, dispatchReducer] = useReducer(reducer, initialState);
+  const sucsess = useSelector((state) => state.competitions.sucsess);
   const dispatch = useDispatch();
   const [formValid, setFormValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   let valid = true;
+
   const createCompetition = () => {
     const valid = formValidation();
     if (valid) {
@@ -208,6 +211,7 @@ const AddCompetition = () => {
     }
     setIsOpen(false);
   };
+
   const validateText = (text, key) => {
     valid = true;
     if (text.trim() === "") {
@@ -247,6 +251,11 @@ const AddCompetition = () => {
           You dont have a valid form to submit, please check you inputs
         </Alert>
       )}
+      {sucsess && (
+        <Alert onClose={() => dispatch(actions.closeAlert())}>
+          You updated sucsessfully!
+        </Alert>
+      )}
       {textInputs.map((item) => (
         <TextInput
           required
@@ -269,6 +278,7 @@ const AddCompetition = () => {
           }
         />
       ))}
+      <Devider margin={30} />
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <CustomButton
           onClick={() => setIsOpen(true)}

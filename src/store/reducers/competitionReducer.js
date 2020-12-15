@@ -4,11 +4,13 @@ import {
   CREATE_COMPETITON,
   DELETE_COMPETITION,
   COMPETITION_LOADING,
+  SUCSESS,
 } from "../actions/competitionAction";
 
 const initialState = {
   competitions: [],
   isLoading: false,
+  sucsess: false,
 };
 
 const CompReducer = (state = initialState, actions) => {
@@ -53,6 +55,11 @@ const CompReducer = (state = initialState, actions) => {
       return {
         ...state,
         isLoading: actions.loading,
+      };
+    case SUCSESS:
+      return {
+        ...state,
+        sucsess: actions.sucsess,
       };
     default:
       return state;

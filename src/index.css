@@ -52,16 +52,12 @@ p {
   background-color: #101820FF;
    height: 3px ;
     width: 60%;
-  animation-name: black;
-  animation-duration: 4s;
 }
 .divOrange {
   margin-bottom: 4px;
   background-color:#F2AA4CFF;
    height: 3px ;
     width: 50%;
-  animation-name: orange;
-  animation-duration: 4s;
 }
 @keyframes black {
   0%   {width: 0%}
@@ -70,4 +66,8 @@ p {
 @keyframes orange {
   0%   {width: 0%}
   100% {width: 50%}
+}
+
+.MuiTableCell-sizeSmall{
+  padding: 0px
 }

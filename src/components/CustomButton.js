@@ -8,7 +8,10 @@ const useStyle = makeStyles({
     color: Colors.orange,
     width: 200,
     padding: 10,
-    margin: "20px",
+    margin: "10px 0px 10px 10px",
+    ["@media (max-width:956px)"]: {
+      width: "100%",
+    },
   },
 });
 const CustomButton = ({ title, onClick, disabled }) => {

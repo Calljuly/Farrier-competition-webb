@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
-import { useSelector } from "react-redux";
 import SubHeader from "../UI/SubHeader";
 
 const useStyles = makeStyles({
@@ -17,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 const ShoingClass = ({
-  saveResults,
+  savedResult,
   handleModalContent,
   pointsToMultiply,
   result,
@@ -25,7 +24,6 @@ const ShoingClass = ({
   compIndex,
   className,
 }) => {
-  const savedState = useSelector((state) => state.result.saved);
   const classes = useStyles();
   return (
     <div>
@@ -55,11 +53,11 @@ const ShoingClass = ({
                   style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
                 >
                   <TableCell align="left">
-                    {savedState ? item.competitor : item.id}
+                    {savedResult ? item.competitor : item.id}
                   </TableCell>
                   <TableCell
                     onClick={
-                      savedState
+                      savedResult
                         ? () => alert("You can no longer edit these results")
                         : () =>
                             handleModalContent(
@@ -77,7 +75,7 @@ const ShoingClass = ({
                   </TableCell>
                   <TableCell
                     onClick={
-                      savedState
+                      savedResult
                         ? () => alert("You can no longer edit these results")
                         : () =>
                             handleModalContent(
@@ -95,7 +93,7 @@ const ShoingClass = ({
                   </TableCell>
                   <TableCell
                     onClick={
-                      savedState
+                      savedResult
                         ? () => alert("You can no longer edit these results")
                         : () =>
                             handleModalContent(
@@ -113,7 +111,7 @@ const ShoingClass = ({
                   </TableCell>
                   <TableCell
                     onClick={
-                      savedState
+                      savedResult
                         ? () => alert("You can no longer edit these results")
                         : () =>
                             handleModalContent(
@@ -135,7 +133,7 @@ const ShoingClass = ({
             })}
           </TableBody>
         </Table>
-      </TableContainer>  
+      </TableContainer>
     </div>
   );
 };

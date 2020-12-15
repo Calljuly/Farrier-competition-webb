@@ -17,7 +17,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
       <CustomSelect
         handler={handleClasses}
         label="First shoe"
-        id="shoeToForge"
+        id="shoeOne"
         classTypes={shoes}
       />
       <TextInput
@@ -29,7 +29,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
       <CustomSelect
         handler={handleClasses}
         label="Second shoe"
-        id="shoeToHorse"
+        id="shoeTwo"
         classTypes={shoes}
       />
       <TextInput
@@ -64,19 +64,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
           />
         );
       })}
-      <SubHeader>Add points for second shoe</SubHeader>
-
-      {points.map((item, index) => {
-        return (
-          <TextInput
-            required
-            key={index}
-            label={item}
-            placeholder={item}
-            onChange={(event) => pointsHandler(index, event.target)}
-          />
-        );
-      })}
+     
       <SubHeader>Add sponsor</SubHeader>
       <TextInput
         required

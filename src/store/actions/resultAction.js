@@ -4,41 +4,56 @@ export const ADD_POINT = "ADD_POINT";
 export const SAVED = "SAVED";
 export const FETCH_RESULTS = "FETCH_RESULTS";
 
-export const addPoint = (value, id, cellId, index, compIndex, state) => {
+export const addPoint = (value, id, cellId, compIndex, state, type) => {
   return (dispatch) => {
-    const updatedState = [...state];
-    const competitor = [...state[index].unPublishedResult];
+    const competitor = state.unPublishedResult;
 
     const c = competitor.map((item) => {
+      let a;
       if (item.id === id) {
-        const a = {
-          ...item,
-          [cellId]: +value,
-        };
-        const b = {
-          ...a,
-          total: reCalculateTotal(a, updatedState[index].pointsToMultiply),
-        };
 
-        return b;
+        if (type === "shoeOne") {
+          a = {
+            ...item.shoeOne,
+            [cellId]: +value,
+          };
+          const b = {
+            ...a,
+            total: reCalculateTotal(a, state.pointsToMultiply),
+          };
+          item.shoeOne = b;
+        } else if (type === "shoeTwo") {
+          a = {
+            ...item.shoeTwo,
+            [cellId]: +value,
+          };
+          const b = {
+            ...a,
+            total: reCalculateTotal(a, state.pointsToMultiply),
+          };
+          item.shoeTwo = b;
+        }
+        
+        return item;
       }
       return item;
     });
-
-    updatedState[index].unPublishedResult = c;
+    state.unPublishedResult = c;
     firestore
       .collection("competitions")
       .doc(compIndex)
+      .collection("classes")
+      .doc(state.className)
       .update({
-        classes: updatedState,
+        unPublishedResult: state.unPublishedResult,
       })
       .then(() => {
-        dispatch({ type: ADD_POINT, updatedState: updatedState });
+        dispatch({ type: ADD_POINT, updatedState: state });
       })
       .catch((err) => {
         console.log(err);
       });
-/*
+    /*
     fetch(
       `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${compIndex}`,
       {

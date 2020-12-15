@@ -8,11 +8,12 @@ import { Colors } from "../colors";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
-import EditCompetition from "../components/Forms/editCompetition";
+import Edit from "./Edit";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
-import Devider from '../components/UI/Devider'
-
+import Devider from "../components/UI/Devider";
+import AddClass from "../components/Forms/addClass";
+import Result from "../components/Tables/Result";
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -78,51 +79,41 @@ const Admin = () => {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <PageHeader>Admin</PageHeader>
-        <Tabs
-          TabIndicatorProps={{
-            style: {
-              height: "0px",
-            },
-          }}
-          value={value}
-          onChange={handleChange}
-          orientation="horisontal"
-        >
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active, root: classes.tabs }}
-            label="Information"
-          />
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active }}
-            label="New competition "
-          />
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active }}
-            label="My competitions"
-          />
-        </Tabs>
-      </div>
-      <div
-        style={{
-          backgroundColor: Colors.orange,
-          height: "3px",
-          width: "50%",
-          marginBottom: 4,
-        }}
-      />
-      <div
-        style={{ backgroundColor: Colors.black, height: "3px", width: "60%" }}
-      />
-      <Devider margin={30} />
-
       <Switch>
         <Route path="/admin" exact>
           <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <PageHeader>Admin</PageHeader>
+              <Tabs
+                TabIndicatorProps={{
+                  style: {
+                    height: "0px",
+                  },
+                }}
+                value={value}
+                onChange={handleChange}
+                orientation="horizontal"
+              >
+                <Tab
+                  className={classes.tabs}
+                  classes={{ selected: classes.active, root: classes.tabs }}
+                  label="Information"
+                />
+                <Tab
+                  className={classes.tabs}
+                  classes={{ selected: classes.active }}
+                  label="New competition "
+                />
+                <Tab
+                  className={classes.tabs}
+                  classes={{ selected: classes.active }}
+                  label="My competitions"
+                />
+              </Tabs>
+            </div>
+            <div className="divOrange" />
+            <div className="divBlack" />
+            <Devider margin={30} />
             <TabPanel value={value} index={0}>
               <h1>Information</h1>
               <P>
@@ -152,13 +143,16 @@ const Admin = () => {
                       name={item.competition.name}
                       referee={item.competition.referee}
                       country={item.competition.country}
-                      maxEntries={item.competition.anvils}
+                      anvils={item.competition.anvils}
                       current={item.competition.currentEntries}
                       compClasses={item.classes}
                       disabled={
                         item.competition.anvils ===
                         item.competition.currentEntries
                       }
+                      dateFrom={item.competition.dateFrom}
+                      dateTo={item.competition.dateTo}
+                      result={item.competition.result}
                     />
                   );
                 })
@@ -172,10 +166,16 @@ const Admin = () => {
           <Scores compClasses={compClasses} />
         </Route>
         <Route path="/admin/editCompetition" exact>
-          <EditCompetition />
+          <Edit />
+        </Route>
+        <Route path="/admin/addClass" exact>
+          <AddClass />
         </Route>
         <Route path="/admin/createProposition" exact>
           <h1>Create Proposition</h1>
+        </Route>
+        <Route path="/admin/result" exact>
+          <Result />
         </Route>
       </Switch>
     </>

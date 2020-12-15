@@ -14,9 +14,9 @@ export const signUp = (user) => {
     auth
       .createUserWithEmailAndPassword(user.email.value, user.password.value)
       .then((cred) => {
-        /*
+        
         const uploadTask = storage
-          .ref(`profiles/${cred.user.uid}/${user.profileImage.value}`)
+          .ref(`images/${user.profileImage.value}`)
           .put(user.profileImage.value);
         uploadTask.on(
           "state_changed",
@@ -26,7 +26,7 @@ export const signUp = (user) => {
           (err) => {
             console.log(err);
           }
-        );*/
+        );
 
         return firestore.collection("users").doc(cred.user.uid).set({
           bio: user.bio.value,

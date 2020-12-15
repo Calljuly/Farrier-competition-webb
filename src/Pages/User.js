@@ -6,10 +6,10 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import { useSelector } from "react-redux";
-import { Paper } from "@material-ui/core";
 import { Colors } from "../colors";
 import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
+import EditProfile from "../components/Forms/edirProfil";
 
 const useStyle = makeStyles({
   avatar: {
@@ -90,7 +90,7 @@ const User = () => {
           }}
           value={value}
           onChange={handleChange}
-          orientation="horisontal"
+          orientation="horizontal"
         >
           <Tab
             className={classes.tabs}
@@ -109,17 +109,8 @@ const User = () => {
           />
         </Tabs>
       </div>
-      <div
-        style={{
-          backgroundColor: Colors.orange,
-          height: "3px",
-          width: "50%",
-          marginBottom: 4,
-        }}
-      />
-      <div
-        style={{ backgroundColor: Colors.black, height: "3px", width: "60%" }}
-      />
+      <div className="divOrange" />
+      <div className="divBlack" />
 
       <div className={classes.root}>
         <Avatar className={classes.avatar} src={userImage} alt={user.name} />
@@ -130,7 +121,7 @@ const User = () => {
           <SubHeader>{user.bio}</SubHeader>
         </TabPanel>
         <TabPanel value={value} index={1} style={{ width: "90%" }}>
-          <SubHeader>Results</SubHeader>
+          <PageHeader>Results</PageHeader>
           {user.result.length > 0 &&
             user.result.map((item) => {
               return (
@@ -144,7 +135,8 @@ const User = () => {
             })}
         </TabPanel>
         <TabPanel value={value} index={2} style={{ width: "90%" }}>
-          <SubHeader>Edit profile</SubHeader>
+          <PageHeader>Update profile</PageHeader>
+          <EditProfile />
         </TabPanel>
       </div>
     </div>

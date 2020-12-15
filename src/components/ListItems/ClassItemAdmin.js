@@ -11,7 +11,6 @@ const ClassItemAdmin = ({
   type,
   sponsors,
 }) => {
-  console.log(type);
   return (
     <div>
       {type === "shoeing" ? (

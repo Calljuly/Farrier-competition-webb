@@ -16,7 +16,14 @@ const Layout = ({ children, logOut }) => {
         <img src={cover} style={{ width: "100%" }} alt="Header" />
       </div>
       <Navbar logOut={logOut} />
-      <div style={{ width: "80%", margin: "auto", backgroundColor: "#FFFFFF", padding: 0 }}>
+      <div
+        style={{
+          width: "80%",
+          margin: "auto",
+          backgroundColor: "#FFFFFF",
+          padding: "30px 0px 30px 0px",
+        }}
+      >
         {children}
       </div>
       <Footer />

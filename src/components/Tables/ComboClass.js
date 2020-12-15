@@ -10,12 +10,13 @@ import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
 import SubHeader from "../UI/SubHeader";
 import Devider from "../UI/Devider";
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
-const ForgingClass = ({
+const ShoingClass = ({
   savedResult,
   handleModalContent,
   pointsToMultiply,
@@ -28,119 +29,7 @@ const ForgingClass = ({
   return (
     <div>
       <SubHeader>{className}</SubHeader>
-      <Devider margin={50} />
-
-      <SubHeader>Shoe one</SubHeader>
-      <TableContainer component={Paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="a dense table"
-        >
-          <TableHead>
-            <TableRow>
-              {compClasses[0].headerTitles.map((comp, index) => (
-                <TableCell key={comp} align="left">
-                  {` ${comp} , `}
-                  <strong>{index > 0 && pointsToMultiply[index - 1]}</strong>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {result.length > 0 &&
-              result.map((item, index) => {
-                const color = index % 2 === 0;
-                return (
-                  <TableRow
-                    key={item.id}
-                    style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
-                  >
-                    <TableCell align="left">
-                      {savedResult ? item.competitor : item.id}
-                    </TableCell>
-                    <TableCell
-                      onClick={
-                        savedResult
-                          ? () => alert("You can no longer edit these results")
-                          : () =>
-                              handleModalContent(
-                                item.id,
-                                "one",
-                                compClasses[0].headerTitles[1],
-                                compIndex,
-                                item.id,
-                                "shoeOne"
-                              )
-                      }
-                      align="left"
-                    >
-                      {item.shoeOne.one}
-                    </TableCell>
-                    <TableCell
-                      onClick={
-                        savedResult
-                          ? () => alert("You can no longer edit these results")
-                          : () =>
-                              handleModalContent(
-                                item.id,
-                                "two",
-                                compClasses[0].headerTitles[2],
-                                compIndex,
-                                item.id,
-                                "shoeOne"
-                              )
-                      }
-                      align="left"
-                    >
-                      {item.shoeOne.two}
-                    </TableCell>
-                    <TableCell
-                      onClick={
-                        savedResult
-                          ? () => alert("You can no longer edit these results")
-                          : () =>
-                              handleModalContent(
-                                item.id,
-                                "three",
-                                compClasses[0].headerTitles[3],
-                                compIndex,
-                                item.id,
-                                "shoeOne"
-                              )
-                      }
-                      align="left"
-                    >
-                      {item.shoeOne.three}
-                    </TableCell>
-                    <TableCell
-                      onClick={
-                        savedResult
-                          ? () => alert("You can no longer edit these results")
-                          : () =>
-                              handleModalContent(
-                                item.id,
-                                "four",
-                                compClasses[0].headerTitles[4],
-                                compIndex,
-                                item.id,
-                                "shoeOne"
-                              )
-                      }
-                      align="left"
-                    >
-                      {item.shoeOne.four}
-                    </TableCell>
-                    <TableCell align="left">{item.shoeOne.total}</TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Devider margin={50} />
-      <SubHeader>Shoe two</SubHeader>
-
+      <SubHeader>Shoe to forge</SubHeader>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -248,8 +137,117 @@ const ForgingClass = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <Devider margin={50} />
+      <SubHeader>Shoe to foot</SubHeader>
+
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="a dense table"
+        >
+          <TableHead>
+            <TableRow>
+              {compClasses[1].headerTitles.map((comp, index) => (
+                <TableCell key={comp} align="left">
+                  {` ${comp} , `}
+                  <strong>{index > 0 && pointsToMultiply[index - 1]}</strong>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {result.map((item, index) => {
+              const color = index % 2 === 0;
+              return (
+                <TableRow
+                  key={item.id}
+                  style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
+                >
+                  <TableCell align="left">
+                    {savedResult ? item.competitor : item.id}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "one",
+                              compClasses[1].headerTitles[1],
+                              index,
+                              compIndex,
+                              item.id
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.one}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "two",
+                              compClasses[1].headerTitles[2],
+                              index,
+                              compIndex,
+                              item.id
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.two}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "three",
+                              compClasses[1].headerTitles[3],
+                              index,
+                              compIndex,
+                              item.id
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.three}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "four",
+                              compClasses[1].headerTitles[4],
+                              index,
+                              compIndex,
+                              item.id
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.four}
+                  </TableCell>
+                  <TableCell align="left">{item.total}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
 
-export default ForgingClass;
+export default ShoingClass;

@@ -5,11 +5,13 @@ import { Grid } from "@material-ui/core";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import { makeStyles } from "@material-ui/styles";
-
+import { Route, Switch } from "react-router-dom";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { Colors } from "../colors";
 import Devider from "../components/UI/Devider";
+import StartList from "../components/Tables/Startlist";
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -59,96 +61,121 @@ const Competitions = () => {
     event.preventDefault();
     setValue(newValue);
   };
+  const todayDate = new Date();
 
   return (
     <div style={{ marginTop: 0, width: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <PageHeader>Admin</PageHeader>
-        <Tabs
-          TabIndicatorProps={{
-            style: {
-              height: "0px",
-            },
-          }}
-          value={value}
-          onChange={handleChange}
-          orientation="horisontal"
-        >
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active, root: classes.tabs }}
-            label="Active competitions"
-          />
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active }}
-            label="Past competitions"
-          />
-          <Tab
-            className={classes.tabs}
-            classes={{ selected: classes.active }}
-            label="Search"
-          />
-        </Tabs>
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
-      <Devider margin={30} />
-      <TabPanel value={value} index={0}>
-        <PageHeader>Active competitions</PageHeader>
-        {competitions.length === 0 && <P>No competitions avalible</P>}
-        {competitions.map((item, index) => {
-          return (
-            <CompetitionsListItem
-              key={item.competition.id}
-              index={index}
-              id={item.competition.id}
-              name={item.competition.name}
-              price={item.competition.price}
-              referee={item.competition.referee}
-              country={item.competition.country}
-              maxEntries={item.competition.anvils}
-              current={item.competition.currentEntries}
-              compClasses={item.classes}
-              disabled={
-                item.competition.anvils === item.competition.currentEntries
+      <Switch>
+        <Route exact path="/competitions">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <PageHeader>Competitions</PageHeader>
+            <Tabs
+              TabIndicatorProps={{
+                style: {
+                  height: "0px",
+                },
+              }}
+              value={value}
+              onChange={handleChange}
+              orientation="horizontal"
+            >
+              <Tab
+                className={classes.tabs}
+                classes={{ selected: classes.active, root: classes.tabs }}
+                label="Active"
+              />
+              <Tab
+                className={classes.tabs}
+                classes={{ selected: classes.active }}
+                label="Past"
+              />
+              <Tab
+                className={classes.tabs}
+                classes={{ selected: classes.active }}
+                label="Search"
+              />
+            </Tabs>
+          </div>
+          <div className="divOrange" />
+          <div className="divBlack" />
+          <Devider margin={30} />
+          <TabPanel value={value} index={0}>
+            <div style={{ marginLeft: 160 }}>
+              <PageHeader>Active competitions</PageHeader>
+            </div>
+            {competitions.length === 0 && <P>No competitions avalible</P>}
+            {competitions.map((item, index) => {
+              const competitionEndDate = new Date(item.competition.dateTo);
+
+              if (competitionEndDate > todayDate) {
+                return (
+                  <CompetitionsListItem
+                    key={item.competition.id}
+                    index={index}
+                    id={item.competition.id}
+                    name={item.competition.name}
+                    referee={item.competition.referee}
+                    country={item.competition.country}
+                    anvils={item.competition.anvils}
+                    current={item.competition.currentEntries}
+                    compClasses={item.classes}
+                    disabled={
+                      item.competition.anvils ===
+                      item.competition.currentEntries
+                    }
+                    entries={item.competition.entries}
+                    dateFrom={item.competition.dateFrom}
+                    dateTo={item.competition.dateTo}
+                    result={item.competition.result}
+                  />
+                );
               }
-              active={true}
-              date={item.date}
-            />
-          );
-        })}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <PageHeader>Past competitions</PageHeader>
-        {competitions.length === 0 && <P>No competitions avalible</P>}
-        {competitions.map((item, index) => {
-          return (
-            <CompetitionsListItem
-              key={item.competition.id}
-              index={index}
-              id={item.competition.id}
-              name={item.competition.name}
-              price={item.competition.price}
-              referee={item.competition.referee}
-              country={item.competition.country}
-              maxEntries={item.competition.anvils}
-              current={item.competition.currentEntries}
-              compClasses={item.classes}
-              disabled={
-                item.competition.anvils === item.competition.currentEntries
+            })}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <div style={{ marginLeft: 160 }}>
+              <PageHeader>Past competitions</PageHeader>
+            </div>
+            {competitions.length === 0 && <P>No competitions avalible</P>}
+            {competitions.map((item, index) => {
+              const competitionToDate = new Date(item.competition.dateTo);
+
+              if (competitionToDate < todayDate) {
+                return (
+                  <CompetitionsListItem
+                    key={item.competition.id}
+                    index={index}
+                    id={item.competition.id}
+                    name={item.competition.name}
+                    referee={item.competition.referee}
+                    country={item.competition.country}
+                    anvils={item.competition.anvils}
+                    current={item.competition.currentEntries}
+                    compClasses={item.classes}
+                    disabled={
+                      item.competition.anvils ===
+                      item.competition.currentEntries
+                    }
+                    active={true}
+                    dateFrom={item.competition.dateFrom}
+                    dateTo={item.competition.dateTo}
+                  />
+                );
               }
-              active={true}
-              date={item.date}
-            />
-          );
-        })}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Grid container spacing={2}>
-          <PageHeader>Search for results</PageHeader>
-        </Grid>
-      </TabPanel>
+            })}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Grid container spacing={2}>
+              <div style={{ marginLeft: 160 }}>
+                <PageHeader>Search for results</PageHeader>
+              </div>
+            </Grid>
+          </TabPanel>
+        </Route>
+        <Route path="/competitions/startList">
+          <StartList />
+        </Route>
+      </Switch>
     </div>
   );
 };

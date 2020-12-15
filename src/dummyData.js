@@ -89,7 +89,7 @@ export const compClasses = [
     headerTitles: [
       "Competitor",
       "Shoe Fit",
-      "Trimming/Balance",
+      "Trimming/ Balance",
       "Shoe",
       "Nailing and Finish",
       "Total Points",

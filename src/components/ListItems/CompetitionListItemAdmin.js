@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
-import { Paper } from "@material-ui/core";
 import CustomButton from "../CustomButton";
-import ValidationModal from "../ValidationModal";
 import { useHistory } from "react-router-dom";
 import P from "../UI/Paragraph";
 import SubHeader from "../UI/SubHeader";
@@ -14,14 +11,14 @@ import PageHeader from "../UI/PageHeader";
 
 const useStyle = makeStyles({
   container: {
-    borderRadius: 20,
     width: "100%",
     height: "100%",
     display: "flex",
     margin: 10,
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     alignItems: "flex-start",
     flexDirection: "column",
+    borderBottom: "1px solid black",
     padding: 20,
     "&>p": {
       margin: 0,
@@ -32,7 +29,9 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    flexDirection: "column",
     flexWrap: "wrap",
+    cursor: "pointer",
   },
   infoContainer: {
     width: "100%",
@@ -78,36 +77,34 @@ const useStyle = makeStyles({
 const CompetitionListItemAdmin = ({
   id,
   name,
-  price,
   country,
   compClasses,
   referee,
   current,
-  maxEntries,
+  anvils,
   index,
+  dateFrom,
+  dateTo,
+  result,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const [modalOpen, setOpenModal] = useState(false);
   const history = useHistory();
+  const competitionEndDate = new Date(dateTo);
+  const competitionStartDate = new Date(dateFrom);
+  const todayDate = new Date();
+
   return (
     <>
-      <ValidationModal
-        isOpen={modalOpen}
-        handleClose={() => setOpenModal(false)}
-        description="Are you sure you want to delete this competition ? All data will be removed"
-        action={() => dispatch(actions.deleteCompetition(id))}
-      />
-      <Paper elevation={4} className={classes.container}>
+      <div className={classes.container}>
         <PageHeader>{name}</PageHeader>
         <div className={classes.infoContainer}>
           <div style={{ marginLeft: 10 }}>
-            <P>Price : {price}</P>
             <P>Country : {country}</P>
             <P> Referee: {referee}</P>
           </div>
           <div style={{ marginLeft: 10 }}>
-            <P>Anvils avaliabel : {maxEntries}</P>
+            <P>Anvils avaliabel : {anvils}</P>
             <P>Current Entries : {current}</P>
           </div>
         </div>
@@ -117,7 +114,17 @@ const CompetitionListItemAdmin = ({
             {compClasses &&
               compClasses.map((item) => {
                 return (
-                  <div className={classes.classes} key={item.shoeToHorse}>
+                  <div
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/scores",
+                        state: item,
+                        id: id,
+                      })
+                    }
+                    className={classes.classes}
+                    key={item.className}
+                  >
                     <P>Type: {item.type}</P>
                     <P>Time : {item.time}</P>
                     {item.type !== "Eagel eye" && (
@@ -134,61 +141,81 @@ const CompetitionListItemAdmin = ({
         </div>
         <div style={{ display: "flex" }}>
           <Grid container>
-            <Grid item md={4} xs={12}>
-              <CustomButton
-                title="Fill in scores"
-                onClick={() =>
-                  history.push({
-                    pathname: "/admin/scores",
-                    state: compClasses,
-                    compIndex: id,
-                  })
-                }
-              />
-            </Grid>
-            <Grid item md={4} xs={12}>
-              <CustomButton
-                title="Create Class"
-                onClick={() =>
-                  history.push({
-                    pathname: "/admin/editCompetition",
-                    state: compClasses,
-                    id: id,
-                  })
-                }
-              />
-            </Grid>
-            <Grid item md={4} xs={12}>
-              <CustomButton
-                title="Publish all results"
-                onClick={() => dispatch(actions.saveAllResult(id, compClasses))}
-              />
-            </Grid>
-            <Grid item md={4} xs={12}>
-              <CustomButton
-                title="Create proposition"
-                onClick={() =>
-                  history.push({
-                    pathname: "/admin/createProposition",
-                    state: compClasses,
-                    compIndex: index,
-                  })
-                }
-              />
-            </Grid>
+            {todayDate < competitionStartDate && (
+              <>
+                <Grid item md={4} xs={12}>
+                  <CustomButton
+                    title="Create Class"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/addClass",
+                        state: compClasses,
+                        id: id,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <CustomButton
+                    title="Edit competition"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/editCompetition",
+                        state: compClasses,
+                        id: id,
+                      })
+                    }
+                  />
+                </Grid>
 
-            <Grid item md={4} xs={12}>
-              <CustomButton title="Print proposition" onClick={() => {}} />
+                <Grid item md={4} xs={12}>
+                  <CustomButton
+                    title="Create proposition"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/createProposition",
+                        state: compClasses,
+                        compIndex: index,
+                      })
+                    }
+                  />
+                </Grid>
+              </>
+            )}
+            <Grid container>
+              <Grid item md={4} xs={12}>
+                <CustomButton
+                  title="Publish all results"
+                  onClick={() =>
+                    dispatch(actions.saveAllResult(id, compClasses))
+                  }
+                />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print proposition" onClick={() => {}} />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print scoresheet" onClick={() => {}} />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print startlist" onClick={() => {}} />
+              </Grid>
             </Grid>
-            <Grid item md={4} xs={12}>
-              <CustomButton title="Print scoresheet" onClick={() => {}} />
-            </Grid>
-            <Grid item md={4} xs={12}>
-              <CustomButton title="Print startlist" onClick={() => {}} />
-            </Grid>
+            {todayDate < competitionEndDate && result.length > 0 && (
+              <CustomButton
+                title="Result"
+                onClick={() =>
+                  history.push({
+                    pathname: "/admin/result",
+                    result: result,
+                    name: name,
+                  })
+                }
+              />
+            )}
           </Grid>
         </div>
-      </Paper>
+      </div>
     </>
   );
 };

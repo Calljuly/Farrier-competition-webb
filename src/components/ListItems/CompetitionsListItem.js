@@ -8,16 +8,18 @@ import SubHeader from "../UI/SubHeader";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import P from "../UI/Paragraph";
-
+import CustomButton from "../CustomButton";
 import { Colors } from "../../colors";
+import { useHistory } from "react-router-dom";
 
 const useStyle = makeStyles({
   container: {
-    width: "95%",
+    width: "80%",
     display: "flex",
     margin: "auto",
     flexDirection: "column",
     padding: 10,
+    cursor: "pointer",
     "&:hover": {
       border: `1px solid ${Colors.orange}`,
     },
@@ -33,7 +35,8 @@ const useStyle = makeStyles({
     display: "flex",
     flexDirection: "row",
     borderBottom: "1px solid black",
-    justifyContent: "flex-start",
+    justifyContent: "space-around",
+    alignItems: "flex-start",
     flexWrap: "wrap",
     "&>p": {
       marginLeft: 10,
@@ -68,27 +71,37 @@ const useStyle = makeStyles({
     borderRadius: "0px 0px 10px 10px",
     border: "none",
   },
+  classContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
 const CompetitionsListItem = ({
   id,
   name,
-  price,
   country,
   compClasses,
   referee,
   current,
-  maxEntries,
+  anvils,
   index,
   disabled,
-  active,
-  date,
+  dateFrom,
+  dateTo,
+  entries,
+  result,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [modalOpen, setOpenModal] = useState(false);
   const comp = useSelector((state) => state.competitions.competitions);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
+  const competitionStartDate = new Date(dateFrom);
+  const competitionEndDate = new Date(dateTo);
+  const todayDate = new Date();
 
   const [showProposition, setShowProposition] = useState(false);
   return (
@@ -119,33 +132,40 @@ const CompetitionsListItem = ({
           ) : (
             <KeyboardArrowDownIcon />
           )}
-          {active && (
+          {competitionStartDate > todayDate ? (
             <p style={{ color: "green", fontWeight: "bold" }}>Active</p>
+          ) : todayDate < competitionEndDate ? (
+            <p style={{ color: "blue", fontWeight: "bold" }}>Ongoing</p>
+          ) : (
+            <p style={{ color: "red", fontWeight: "bold" }}>Finished</p>
           )}
         </div>
         {showProposition && (
           <>
             <div className={classes.infoContainer}>
-              <P>Price : {price}</P>
               <P>Country : {country}</P>
               <P> Referee: {referee}</P>
 
-              <P>Max Entries : {maxEntries}</P>
+              <P>Anvils: {anvils}</P>
               <P>Current Entries : {current}</P>
+            </div>
+            <div className={classes.infoContainer}>
+              <P>Start date : {dateFrom}</P>
+              <P> Ending: {dateTo}</P>
             </div>
             {compClasses && (
               <>
                 <SubHeader>Classes : </SubHeader>
                 {compClasses.map((item, index) => {
                   return (
-                    <div key={index} className={classes.infoContainer}>
+                    <div key={index} className={classes.classContainer}>
                       <P>Type: {item.type}</P>
                       <P>Time : {item.time}</P>
                       {item.type !== "Eagel eye" && (
                         <P>
                           Shoes:
-                          {item.shoeToHorse}
-                          {item.shoeToForge}
+                          {item.shoeOne}
+                          {item.shoeTwo}
                         </P>
                       )}
                     </div>
@@ -153,6 +173,28 @@ const CompetitionsListItem = ({
                 })}
               </>
             )}
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <CustomButton
+                title="Show starts"
+                onClick={() =>
+                  history.push({
+                    pathname: "/competitions/startList",
+                    entries: entries,
+                    name: name,
+                  })
+                }
+              />
+              <CustomButton
+                title="Result"
+                onClick={() =>
+                  history.push({
+                    pathname: "/admin/result",
+                    result: result,
+                    name: name,
+                  })
+                }
+              />
+            </div>
             {isAuth && (
               <button
                 disabled={disabled}
