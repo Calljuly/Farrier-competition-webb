@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState } from "react";
 import TextInput from "../TextInput";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
@@ -11,6 +11,7 @@ import { Alert } from "@material-ui/lab";
 import { useLocation, useHistory } from "react-router-dom";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import { auth } from "../firebase";
 
 const textInputs = [
   {
@@ -207,20 +208,70 @@ const EditCompetition = () => {
   const [isOpen, setIsOpen] = useState(false);
   let valid = true;
   const history = useHistory();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (!id) {
-      history.push("/admin");
-    }
-  }, [id]);
+  if (!id) {
+    history.push("/admin");
+  }
 
   const updateCompetition = () => {
     const valid = formValidation();
     if (valid) {
-      dispatch(actions.updateCompetition(state, id));
+      dispatch(actions.loading(true));
+      var user = auth.currentUser;
+      return user.getIdToken().then(async (token) => {
+        const comp = {
+          country: state.country.value,
+          anvils: state.anvils.value,
+          name: state.name.value,
+          referee: state.referee.value,
+          dateTo: state.dateTo.value,
+          dateFrom: state.dateFrom.value,
+          location: state.location.value,
+          hotels: state.hotels.value,
+          parking: state.parking.value,
+        };
+        fetch(
+          `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(comp),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((res) => {
+            console.log(res.message);
+            if (res.message === "Succsess") {
+              setSuccess(true);
+              dispatch(actions.fetchCompetitions());
+              dispatch(actions.loading(false));
+              setIsOpen(false);
+            } else {
+              setError(res.message);
+              dispatch(actions.loading(false));
+              setIsOpen(false);
+            }
+          })
+          .then(() => {})
+          .catch((error) => {
+            console.error("Error:", error);
+            setError(error.message);
+            dispatch(actions.loading(false));
+
+            setIsOpen(false);
+          });
+      });
     }
     setIsOpen(false);
   };
+
   const validateText = (text, key) => {
     valid = true;
     if (text.trim() === "") {
@@ -255,6 +306,7 @@ const EditCompetition = () => {
           <CustomButton title="Im sure" onClick={updateCompetition} />
         </div>
       </ChoiseModal>
+
       <div
         style={{
           margin: "auto",
@@ -278,6 +330,16 @@ const EditCompetition = () => {
         {!formValid && (
           <Alert severity="error">
             You dont have a valid form to submit, please check you inputs
+          </Alert>
+        )}
+        {success && (
+          <Alert onClick={() => setSuccess(false)}>
+            You updated succsessfully!
+          </Alert>
+        )}
+        {error.length > 3 && (
+          <Alert severity="error" onClick={() => setError("")}>
+            {error}
           </Alert>
         )}
         {show && (

@@ -14,7 +14,7 @@ import P from "../UI/Paragraph";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import Devider from "../UI/Devider";
-import { storage } from "../../components/firebase";
+import { storage, auth } from "../../components/firebase";
 import { Alert } from "@material-ui/lab";
 
 const AddClass = () => {
@@ -25,6 +25,8 @@ const AddClass = () => {
   const [numberTwo, setNumberTwo] = useState(1);
   const [numberThree, setNumberThree] = useState(1);
   const [numberFour, setNumberFour] = useState(1);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   const [classesObject, setClasses] = useState({
     className: {
       value: "",
@@ -50,7 +52,6 @@ const AddClass = () => {
     savedResult: false,
     feet: "right",
   });
-  const sucsess = useSelector((state) => state.competitions.sucsess);
   const l = useLocation();
   const id = l.id;
 
@@ -62,13 +63,24 @@ const AddClass = () => {
   });
 
   const handleClasses = (key, value) => {
-    setClasses((prev) => {
-      const newValue = {
-        ...prev,
-        [key]: value.value,
-      };
-      return newValue;
-    });
+    if (key === "sponsorLoggo") {
+      console.log(value.target.files[0]);
+      setClasses((prev) => {
+        const newValue = {
+          ...prev,
+          [key]: value.target.files[0],
+        };
+        return newValue;
+      });
+    } else {
+      setClasses((prev) => {
+        const newValue = {
+          ...prev,
+          [key]: value.value,
+        };
+        return newValue;
+      });
+    }
   };
 
   const pointsHandler = (key, event) => {
@@ -96,24 +108,118 @@ const AddClass = () => {
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
 
-    dispatch(actions.addNewClass(id, newClass));
+    var user = auth.currentUser;
+    dispatch(actions.loading(true));
+    console.log(classesObject.sponsorLoggo);
+    const uploadTask = storage
+      .ref()
+      .child(`images/${classesObject.sponsorLoggo.name}`)
+      .put(classesObject.sponsorLoggo);
+    await uploadTask.on(
+      "state_changed",
+      (snapShot) => {
+        console.log(snapShot);
+      },
+      (err) => {
+        console.log(err);
+        dispatch(actions.loading(false));
+      }
+    );
+    console.log(compClasses);
+    storage
+      .ref()
+      .child(`images/${classesObject.sponsorLoggo.name}`)
+      .getDownloadURL()
+      .then((url) => {
+        console.log(url);
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            sponsorLogggo: url,
+          };
+          return newValue;
+        });
+      });
 
-    setClasses({
-      pointsToMultiply: [],
-      shoeOne: "",
-      shoeOneImg: "",
-      shoeTwo: "",
-      shoeTwoImg: "",
-      time: "",
-      type: "",
-      result: [],
-      unPublishedResult: [],
-      sponsors: "",
-      sponsorLoggo: "",
-      referee: "",
-      feet: "right",
+    return user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newClass),
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((res) => {
+          if (res.message === "Succsess") {
+            setSuccess(true);
+            dispatch(actions.fetchCompetitions());
+            dispatch(actions.loading(false));
+            setClasses({
+              pointsToMultiply: [],
+              shoeOne: "",
+              shoeOneImg: "",
+              shoeTwo: "",
+              shoeTwoImg: "",
+              time: "",
+              type: "",
+              result: [],
+              unPublishedResult: [],
+              sponsors: "",
+              sponsorLoggo: "",
+              referee: "",
+              feet: "right",
+            });
+            setIsOpen(false);
+          } else {
+            setError(res.message);
+            dispatch(actions.loading(false));
+            setClasses({
+              pointsToMultiply: [],
+              shoeOne: "",
+              shoeOneImg: "",
+              shoeTwo: "",
+              shoeTwoImg: "",
+              time: "",
+              type: "",
+              result: [],
+              unPublishedResult: [],
+              sponsors: "",
+              sponsorLoggo: "",
+              referee: "",
+              feet: "right",
+            });
+            setIsOpen(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setError(error.message);
+          dispatch(actions.loading(false));
+          setClasses({
+            pointsToMultiply: [],
+            shoeOne: "",
+            shoeOneImg: "",
+            shoeTwo: "",
+            shoeTwoImg: "",
+            time: "",
+            type: "",
+            result: [],
+            unPublishedResult: [],
+            sponsors: "",
+            sponsorLoggo: "",
+            referee: "",
+            feet: "right",
+          });
+          setIsOpen(false);
+        });
     });
-    setIsOpen(false);
   };
   useEffect(() => {
     if (!id) {
@@ -170,22 +276,27 @@ const AddClass = () => {
   };
   return (
     <>
+      <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <PageHeader>Are you sure ?</PageHeader>
+        <P> Are you sure you want to create this class ? </P>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
+          <CustomButton title="Im sure" onClick={() => submitNewClass()} />
+        </div>
+      </ChoiseModal>
       <PageHeader>Add new class</PageHeader>
       <div className="divOrange" />
       <div className="divBlack" />
       <div style={{ margin: 30 }}>
-        <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
-          <PageHeader>Are you sure ?</PageHeader>
-          <P> Are you sure you want to create this class ? </P>
-          <div style={{ display: "flex" }}>
-            <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
-            <CustomButton title="Im sure" onClick={() => submitNewClass()} />
-          </div>
-        </ChoiseModal>
         <div style={{ margin: "auto", width: "80%" }}>
-          {sucsess && (
-            <Alert onClose={() => dispatch(actions.closeAlert())}>
-              You updated sucsessfully!
+          {success && (
+            <Alert onClick={() => setSuccess(false)}>
+              Your input to update is not valid, please check your input
+            </Alert>
+          )}
+          {error.length > 3 && (
+            <Alert severity="error" onClick={() => setError("")}>
+              {error}
             </Alert>
           )}
           <SubHeader>Create new class</SubHeader>

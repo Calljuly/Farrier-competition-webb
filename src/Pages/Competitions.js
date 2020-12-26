@@ -156,9 +156,10 @@ const Competitions = () => {
                       item.competition.anvils ===
                       item.competition.currentEntries
                     }
-                    active={true}
                     dateFrom={item.competition.dateFrom}
                     dateTo={item.competition.dateTo}
+                    result={item.competition.result}
+                    entries={item.competition.entries}
                   />
                 );
               }

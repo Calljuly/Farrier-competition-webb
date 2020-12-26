@@ -12,10 +12,15 @@ const useStyle = makeStyles({
 });
 const Home = () => {
   const classes = useStyle();
+  
   return (
     <div className={classes.container}>
-      <h1 style={{ fontSize: 50, textAlign: "center", margin:0 }}>Name of side</h1>
-      <h1 style={{ fontSize: 30, textAlign: "center" }}> Welcome to "Name of Side". </h1>
+      <h1 style={{ fontSize: 50, textAlign: "center", margin: 0 }}>
+        Name of side
+      </h1>
+      <h1 style={{ fontSize: 30, textAlign: "center" }}>
+        Welcome to "Name of Side".{" "}
+      </h1>
       <Sponsors data={null} />
 
       <Grid container spacing={2}>

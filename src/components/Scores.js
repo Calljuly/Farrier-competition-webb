@@ -10,6 +10,8 @@ import CustomButton from "./CustomButton";
 import Devider from "./UI/Devider";
 import PageHeader from "./UI/PageHeader";
 import ComboClass from "./Tables/ComboClass";
+import { Alert } from "@material-ui/lab";
+import { storage } from "./firebase";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -19,7 +21,7 @@ const Scores = () => {
   const l = useLocation();
   const compClasses = l.state;
   const compIndex = l.id;
-
+  const [sponsor, setSponsor] = useState("");
   const closeModalHandler = (data) => {
     if (+data) {
       dispatch(
@@ -52,6 +54,17 @@ const Scores = () => {
       history.push("/admin");
     }
   }, [compClasses]);
+  console.log(compClasses);
+  if (compClasses.sponsorLoggo) {
+    storage
+      .ref()
+      .child(`images/${compClasses.sponsorLoggo}`)
+      .getDownloadURL()
+      .then((url) => {
+        console.log(url);
+        setSponsor(url);
+      });
+  }
 
   if (compClasses.length === 0) {
     return (
@@ -114,25 +127,38 @@ const Scores = () => {
     }
   };
   return (
-    <div style={{ margin: 30 }}>
-      <CustomModal
-        isOpen={modalopen}
-        handleClose={closeModalHandler}
-        modalData={modalData}
-      />
-      {getScore(compClasses)}
-      <Devider margin={60} />
+    <>
+      <PageHeader>Scores</PageHeader>
+      <div className="divOrange" />
+      <div className="divBlack" />
+      <div style={{ margin: 30 }}>
+        <CustomModal
+          isOpen={modalopen}
+          handleClose={closeModalHandler}
+          modalData={modalData}
+        />
+        {compClasses.savedResult && (
+          <Alert>
+            <P>This class is saved and you wont be able to change the scores</P>
+          </Alert>
+        )}
+        <img src={sponsor} />
+        {getScore(compClasses)}
+        <Devider margin={60} />
 
-      <P>
-        If you press save the results will be saved but wont be shown to the
-        pulic.
-      </P>
-      <P>You wont be able to edit these results after saving them</P>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <CustomButton onClick={() => {}} title="Publish result" />
-        <CustomButton onClick={() => history.goBack()} title="Go Back" />
+        <P>
+          If you press save the results will be saved but wont be shown to the
+          pulic.
+        </P>
+        <P>You wont be able to edit these results after saving them</P>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          {!compClasses.savedResult && (
+            <CustomButton onClick={() => {}} title="Publish result" />
+          )}
+          <CustomButton onClick={() => history.goBack()} title="Go Back" />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ const useStyle = makeStyles({
     color: Colors.black,
     padding: 20,
     margin: 0,
+    fontFamily: "Constantia",
   },
 });
 const PageHeader = ({ children }) => {

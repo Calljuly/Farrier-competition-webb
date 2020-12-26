@@ -19,35 +19,63 @@ const App = () => {
     (state) => state.competitions.isLoading
   );
   const user = useSelector((item) => item.auth.user);
+  const admin = useSelector((state) => state.auth.admin);
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const userData = await firestore
-          .collection("users")
-          .doc(user.uid)
-          .get();
-        const a = userData.data();
-        if (a.img !== "") {
-          storage
-            .ref()
-            .child(`images/${a.img}.jpg`)
-            .getDownloadURL()
-            .then((url) => {
-              localStorage.setItem("auth", user.uid);
-              dispatch(action.isAuth(true, false, userData.data(), url));
+        //Kollar om användaren är admin
+        user.getIdTokenResult().then((idTokenResult) => {
+          fetch(
+            `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((users) => {
+              const a = users.user.find((u) => u.id === user.uid);
+              return a.users;
+            })
+            .then((a) => {
+              if (a.img !== "") {
+                storage
+                  .ref()
+                  .child(`images/${a.img}.jpg`)
+                  .getDownloadURL()
+                  .then((url) => {
+                    localStorage.setItem("auth", user.uid);
+                    dispatch(
+                      action.isAuth(
+                        true,
+                        false,
+                        a,
+                        url,
+                        idTokenResult.claims.admin
+                      )
+                    );
+                  });
+              } else {
+                localStorage.setItem("auth", user.uid);
+                dispatch(action.isAuth(true, false, a, "", false));
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              dispatch(action.isError(true));
+              dispatch(action.isAuth(false, false, {}, "", false));
             });
-        } else {
-          localStorage.setItem("auth", user.uid);
-          dispatch(action.isAuth(true, false, user, ""));
-        }
-      } else {
-        dispatch(action.isAuth(false, false, {}, ""));
+        });
       }
     });
   }, [isAuthenticated]);
 
-  let routes = getRoutes(isAuthenticated, user?.admin ? true : false);
+  let routes = getRoutes(isAuthenticated, admin);
 
   useEffect(() => {
     dispatch(actionComp.fetchCompetitions());

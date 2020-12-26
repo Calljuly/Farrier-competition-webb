@@ -5,11 +5,12 @@ import ResultListItem from "../components/ListItems/ResultListItem";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Colors } from "../colors";
 import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
 import EditProfile from "../components/Forms/edirProfil";
+import EditEmailAndPassword from "../components/Forms/editEmailAndPassword";
 
 const useStyle = makeStyles({
   avatar: {
@@ -32,7 +33,7 @@ const useStyle = makeStyles({
   },
   tabs: {
     width: 210,
-    height: 50,
+    height: 80,
     textDecoration: "none",
     color: Colors.black,
     fontSize: 20,
@@ -73,11 +74,11 @@ const User = () => {
   const [value, setValue] = useState(0);
   const user = useSelector((state) => state.auth.user);
   const userImage = useSelector((state) => state.auth.userImage);
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   return (
     <div className={classes.container}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -106,6 +107,11 @@ const User = () => {
             className={classes.tabs}
             classes={{ selected: classes.active }}
             label="Edit profile"
+          />
+          <Tab
+            className={classes.tabs}
+            classes={{ selected: classes.active }}
+            label="Password and Email"
           />
         </Tabs>
       </div>
@@ -137,6 +143,9 @@ const User = () => {
         <TabPanel value={value} index={2} style={{ width: "90%" }}>
           <PageHeader>Update profile</PageHeader>
           <EditProfile />
+        </TabPanel>
+        <TabPanel value={value} index={3} style={{ width: "90%" }}>
+          <EditEmailAndPassword />
         </TabPanel>
       </div>
     </div>

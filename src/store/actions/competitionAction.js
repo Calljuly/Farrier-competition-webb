@@ -1,4 +1,4 @@
-import { firestore } from "../../components/firebase";
+import { firestore, auth } from "../../components/firebase";
 
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
@@ -98,7 +98,6 @@ export const createCompetition = (competition, user) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-
     const comp = {
       currentEntries: 0,
       result: [],
@@ -114,46 +113,50 @@ export const createCompetition = (competition, user) => {
       hotels: competition.hotels.value,
       parking: competition.parking.value,
     };
-    fetch(
-      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(comp),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        if (res.message === "Succsess") {
-          dispatch({
-            type: SUCSESS,
-            sucsess: true,
-          });
-          fetchCompetitions();
-        } else {
-          dispatch({
-            type: SUCSESS,
-            sucsess: false,
-          });
+    var user = auth.currentUser;
+    return user.getIdToken().then((token) => {
+      fetch(
+        "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(comp),
         }
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((res) => {
+          if (res.message === "Succsess") {
+            dispatch({
+              type: SUCSESS,
+              sucsess: true,
+            });
+            dispatch(fetchCompetitions());
+          } else {
+            dispatch({
+              type: SUCSESS,
+              sucsess: false,
+            });
+          }
+        })
+        .then(() => {
+          dispatch({
+            type: COMPETITION_LOADING,
+            loading: false,
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          dispatch({
+            type: COMPETITION_LOADING,
+            loading: false,
+          });
         });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
+    });
   };
 };
 //Inte i behov av
@@ -252,33 +255,49 @@ export const saveAllResult = (competitionId, classes) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(),
-      }
-    )
-      .then(() => {
-        fetchCompetitions();
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
+    const result = classes.map((item) => {
+      return {
+        className: item.className,
+        result: item.unPublishedResult.map((res) => {
+          return {
+            competitor: res.competitor,
+            id: res.id,
+            shoeOne: res.shoeOne,
+            shoeTwo: res.shoeTwo,
+          };
+        }),
+      };
+    });
+    var user = auth.currentUser;
+    return user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ competition: result, classes: classes }),
+        }
+      )
+        .then(() => {
+          dispatch(fetchCompetitions());
+        })
+        .then(() => {
+          dispatch({
+            type: COMPETITION_LOADING,
+            loading: false,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          dispatch({
+            type: COMPETITION_LOADING,
+            loading: false,
+          });
         });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
+    });
   };
 };
 
@@ -313,7 +332,7 @@ export const saveClassResult = (competitionId, classes) => {
       }
     )
       .then(() => {
-        fetchCompetitions();
+        dispatch(fetchCompetitions());
       })
       .then(() => {
         dispatch({
@@ -356,7 +375,7 @@ export const addNewClass = (competitionId, classes) => {
             type: SUCSESS,
             sucsess: true,
           });
-          fetchCompetitions();
+          dispatch(fetchCompetitions());
         } else {
           dispatch({
             type: SUCSESS,
@@ -407,7 +426,7 @@ export const updateClass = (competitionId, classes, className) => {
             type: SUCSESS,
             sucsess: true,
           });
-          fetchCompetitions();
+          dispatch(fetchCompetitions());
         } else {
           dispatch({
             type: SUCSESS,
@@ -468,7 +487,7 @@ export const updateCompetition = (competition, id) => {
             type: SUCSESS,
             sucsess: true,
           });
-          fetchCompetitions();
+          dispatch(fetchCompetitions());
         } else {
           dispatch({
             type: SUCSESS,
@@ -492,11 +511,11 @@ export const updateCompetition = (competition, id) => {
   };
 };
 
-export const closeAlert = () => {
+export const loading = (value) => {
   return (dispatch) => {
     dispatch({
-      type: SUCSESS,
-      sucsess: false,
+      type: COMPETITION_LOADING,
+      loading: value,
     });
   };
 };

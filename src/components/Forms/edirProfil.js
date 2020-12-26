@@ -4,14 +4,15 @@ import CustomButton from "../CustomButton";
 import P from "../UI/Paragraph";
 import PageHeader from "../UI/PageHeader";
 import {
-  validatePassword,
-  validateEmail,
   validateText,
   validateAge,
 } from "../../helpers/validation";
 import TextInput from "../TextInput";
 import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
+import { auth } from "../firebase";
+import * as actions from "../../store/actions/auth";
+import { useSelector } from "react-redux";
 
 const textFieldsRegister = [
   {
@@ -63,21 +64,8 @@ const useStyle = makeStyles({
 const EditProfile = () => {
   const classes = useStyle();
   const [isOpen, setIsOpen] = useState(false);
-  const [formValid, setFormValid] = useState(true);
-
+  const userState = useSelector((state) => state.auth.user);
   const [authState, setAuthState] = useState({
-    email: {
-      value: "",
-      valid: true,
-    },
-    password: {
-      value: "",
-      valid: true,
-    },
-    passwordConfirmed: {
-      value: "",
-      valid: true,
-    },
     name: {
       value: "",
       valid: true,
@@ -139,24 +127,57 @@ const EditProfile = () => {
       validateText(authState[item.key].value, handleInputValidation, item.key);
     }
   };
-  const formValidation = () => {
-    const a = Object.keys(authState);
-    let valid = true;
-    a.forEach((item) => {
-      const b = authState[item];
-      if (b.valid === false || b.value === "") {
-        valid = false;
+  const updateUser = () => {
+    let user = {};
+    let newUser = userState;
+
+    Object.keys(authState).forEach((item, index) => {
+      const data = Object.values(authState)[index];
+      console.log(data);
+      if (data.valid && data.value !== "") {
+        user[item] = data.value;
       }
     });
-    setFormValid(valid);
-    return valid;
-  };
-  const updateUser = () => {
-    const valid = formValidation();
+    Object.keys(user).forEach((item, index) => {
+      const data = Object.values(authState)[index];
 
-    if (valid) {
-      //actions.signUp(authState);
-    }
+      newUser[item] = data.value;
+    });
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        actions.updateUser(user.uid, newUser);
+      }
+    });
+    setAuthState({
+      name: {
+        value: "",
+        valid: true,
+      },
+      phone: {
+        value: "",
+        valid: true,
+      },
+      address: {
+        value: "",
+        valid: true,
+      },
+      country: {
+        value: "",
+        valid: true,
+      },
+      age: {
+        value: "",
+        valid: true,
+      },
+      bio: {
+        value: "",
+        valid: true,
+      },
+      profileImage: {
+        value: "",
+        valid: true,
+      },
+    });
     setIsOpen(false);
   };
   return (
@@ -170,69 +191,7 @@ const EditProfile = () => {
         </div>
       </ChoiseModal>
       <div className={classes.inputContainer}>
-        {!formValid && (
-          <P> You dont have a valid form to submit, please check you inputs</P>
-        )}
-        <TextInput
-          value={authState["email"].value}
-          onChange={(event) => handleInputChange("email", event.target.value)}
-          className={classes.input}
-          label="Email"
-          onBlur={() =>
-            validateEmail(
-              authState["email"].value,
-              handleInputValidation,
-              "email"
-            )
-          }
-          error={!authState["email"].valid}
-          helperText={
-            !authState["email"].valid &&
-            "You have to enter a valid email , test@test.com"
-          }
-        />
-        <TextInput
-          value={authState["password"].value}
-          onChange={(text) => handleInputChange("password", text.target.value)}
-          className={classes.input}
-          label="Password"
-          type="password"
-          onBlur={() =>
-            validatePassword(
-              authState["password"].value,
-              handleInputValidation,
-              "password"
-            )
-          }
-          error={!authState["password"].valid}
-          helperText={
-            !authState["password"].valid &&
-            "You have to enter a valid password, aleast 6 characters"
-          }
-        />
-
-        <TextInput
-          value={authState["passwordConfirmed"].value}
-          onChange={(text) =>
-            handleInputChange("passwordConfirmed", text.target.value)
-          }
-          className={classes.input}
-          label="Confirm password"
-          type="password"
-          onBlur={() =>
-            validatePassword(
-              authState["passwordConfirmed"].value,
-              handleInputValidation,
-              "passwordConfirmed"
-            )
-          }
-          error={!authState["passwordConfirmed"].valid}
-          helperText={
-            !authState["passwordConfirmed"].valid &&
-            "You have to enter a valid password, aleast 6 characters"
-          }
-        />
-
+        
         {textFieldsRegister.map((item) => (
           <TextInput
             key={item.id}
@@ -241,13 +200,7 @@ const EditProfile = () => {
             className={classes.input}
             label={item.label}
             type={item.type}
-            onBlur={() =>
-              handleValidation(
-                authState[item.key].value,
-                handleInputValidation,
-                item.key
-              )
-            }
+            onBlur={() => handleValidation(item)}
             error={!authState[item.key].valid}
             helperText={
               !authState[item.key].valid &&

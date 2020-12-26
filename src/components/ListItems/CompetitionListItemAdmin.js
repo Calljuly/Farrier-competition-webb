@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import P from "../UI/Paragraph";
 import SubHeader from "../UI/SubHeader";
 import PageHeader from "../UI/PageHeader";
+import { Colors } from "../../colors";
 
 const useStyle = makeStyles({
   container: {
@@ -58,10 +59,9 @@ const useStyle = makeStyles({
     },
   },
   classes: {
-    display: "flex",
-    flexDirection: "row",
-    "&>p": {
-      margin: 10,
+    width: "100%",
+    "&:hover": {
+      borderBottom: `1px solid ${Colors.orange}`,
     },
   },
   buttonDisabled: {
@@ -102,43 +102,56 @@ const CompetitionListItemAdmin = ({
           <div style={{ marginLeft: 10 }}>
             <P>Country : {country}</P>
             <P> Referee: {referee}</P>
-          </div>
-          <div style={{ marginLeft: 10 }}>
+
             <P>Anvils avaliabel : {anvils}</P>
             <P>Current Entries : {current}</P>
+            <P>Start Date: {dateFrom}</P>
+            <P>End Date : {dateTo}</P>
           </div>
         </div>
-        <div>
-          <SubHeader>Classes : </SubHeader>
-          <div className={classes.classesContainer}>
-            {compClasses &&
-              compClasses.map((item) => {
-                return (
-                  <div
-                    onClick={() =>
-                      history.push({
-                        pathname: "/admin/scores",
-                        state: item,
-                        id: id,
-                      })
-                    }
-                    className={classes.classes}
-                    key={item.className}
+        <SubHeader>Classes : </SubHeader>
+        <div className={classes.classesContainer}>
+          {compClasses &&
+            compClasses.map((item) => {
+              return (
+                <div
+                  onClick={() =>
+                    history.push({
+                      pathname: "/admin/scores",
+                      state: item,
+                      id: id,
+                    })
+                  }
+                  className={classes.classes}
+                  key={item.className}
+                >
+                  <h2>{item.className}</h2>
+                  <Grid
+                    container
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "start",
+                      margin: 0,
+                    }}
                   >
-                    <P>Type: {item.type}</P>
-                    <P>Time : {item.time}</P>
-                    {item.type !== "Eagel eye" && (
-                      <P>
-                        Shoes:
-                        {item.shoeToHorse}
-                        {item.shoeToForge}
-                      </P>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
+                    <Grid item xs={12} sm={4}>
+                      <P>Type: {item.type}</P>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <P>Time : {item.time}</P>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <SubHeader>Shoes</SubHeader>
+                      <P>{item.shoeOne}</P>
+                      <P>{item.shoeTwo}</P>
+                    </Grid>
+                  </Grid>
+                </div>
+              );
+            })}
         </div>
+        <SubHeader>Handle your competition</SubHeader>
         <div style={{ display: "flex" }}>
           <Grid container>
             {todayDate < competitionStartDate && (

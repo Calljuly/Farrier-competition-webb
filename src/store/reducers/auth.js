@@ -5,7 +5,8 @@ const initialState = {
   isLoading: true,
   error: false,
   user: {},
-  userImage: ''
+  userImage: "",
+  admin: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ export const authReducer = (state = initialState, action) => {
         isAuth: action.auth,
         isLoading: action.isLoadning,
         user: action.user,
-        userImage: action.userImage
+        userImage: action.userImage,
+        admin: action.admin,
       };
     case IS_LOADING:
       return {

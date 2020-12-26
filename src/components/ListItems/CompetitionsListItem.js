@@ -11,6 +11,7 @@ import P from "../UI/Paragraph";
 import CustomButton from "../CustomButton";
 import { Colors } from "../../colors";
 import { useHistory } from "react-router-dom";
+import { storage } from "../firebase";
 
 const useStyle = makeStyles({
   container: {
@@ -102,8 +103,10 @@ const CompetitionsListItem = ({
   const competitionStartDate = new Date(dateFrom);
   const competitionEndDate = new Date(dateTo);
   const todayDate = new Date();
+  const [sponsor, setSponsor] = useState("");
 
   const [showProposition, setShowProposition] = useState(false);
+
   return (
     <>
       <MessageModal
@@ -195,7 +198,7 @@ const CompetitionsListItem = ({
                 }
               />
             </div>
-            {isAuth && (
+            {isAuth && competitionStartDate > todayDate && (
               <button
                 disabled={disabled}
                 className={disabled ? classes.buttonDisabled : classes.button}

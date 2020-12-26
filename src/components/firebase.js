@@ -1,10 +1,11 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-import 'firebase/storage'
+import "firebase/storage";
+const APIKEY = process.env.REACT_APP_FIREBASE_KEY;
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDPMpX_mWakVaDXRPeklWXMNxtciQPL_gI",
+  apiKey: APIKEY,
   authDomain: "farrier-project.firebaseapp.com",
   databaseURL: "https://farrier-project.firebaseio.com",
   projectId: "farrier-project",
@@ -18,6 +19,4 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-export const storage = firebase.storage()
-
-
+export const storage = firebase.storage();

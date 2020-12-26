@@ -1,23 +1,3 @@
-export const createCompetition = async (competition) => {
-  fetch(
-    "https://us-central1-farrier-project.cloudfunctions.net/app/competitions/",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(competition),
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", competition);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-};
-
 export const deleteCompetition = async (competitionId) => {
   fetch(
     `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competitionId}`,
@@ -34,42 +14,25 @@ export const deleteCompetition = async (competitionId) => {
       console.error("Error:", error);
     });
 };
-
-export const getCompetition = async (competitionId) => {
+export const createCompetition = async (token, competition) => {
   fetch(
-    `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competitionId}`,
+    "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
     {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify(competition),
     }
   )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success" + data);
+    .then((response) => {
+      return response.json();
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-};
-export const getCompetitions = async () => {
-  fetch(
-    `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((response) => response.json())
     .then((data) => {
-      console.log("Success");
-      console.log(data);
       return data;
     })
     .catch((error) => {
-      console.error("Error:", error);
+      return error;
     });
 };

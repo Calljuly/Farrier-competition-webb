@@ -78,7 +78,7 @@ const Result = () => {
                     return (
                       <TableCell
                         key={comp}
-                        style={{ verticalAlign: "bottom", marginRight: 0 }}
+                        style={{ verticalAlign: "bottom", padding: 0 }}
                       >
                         <p>{comp}</p>
                       </TableCell>
@@ -125,6 +125,7 @@ const Result = () => {
           </Table>
         </TableContainer>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <CustomButton onClick={() => {}} title="Print result" />
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </div>
       </div>

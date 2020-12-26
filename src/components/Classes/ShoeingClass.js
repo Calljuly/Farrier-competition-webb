@@ -108,7 +108,7 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
         type="file"
         label="Sponsor Loggo"
         placeholder="Sponsor Loggo"
-        onChange={(event) => handleClasses("sponsorLoggo", event.target)}
+        onChange={(event) => handleClasses("sponsorLoggo", event)}
       />
     </div>
   );

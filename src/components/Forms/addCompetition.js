@@ -10,6 +10,8 @@ import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";
 import { Alert } from "@material-ui/lab";
 import Devider from "../UI/Devider";
+import { auth } from "../firebase";
+
 const textInputs = [
   {
     id: 0,
@@ -198,18 +200,73 @@ const reducer = (state, action) => {
 const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
   const [state, dispatchReducer] = useReducer(reducer, initialState);
-  const sucsess = useSelector((state) => state.competitions.sucsess);
   const dispatch = useDispatch();
   const [formValid, setFormValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
   let valid = true;
 
-  const createCompetition = () => {
+  const createCompetition = (userName) => {
     const valid = formValidation();
     if (valid) {
-      dispatch(actions.createCompetition(state, user.name));
+      dispatch(actions.loading(true));
+      const admin = [];
+      admin.push(userName);
+      const comp = {
+        currentEntries: 0,
+        result: [],
+        entries: [],
+        country: state.country.value,
+        anvils: state.anvils.value,
+        name: state.name.value,
+        referee: state.referee.value,
+        admins: admin,
+        dateTo: state.dateTo.value,
+        dateFrom: state.dateFrom.value,
+        location: state.location.value,
+        hotels: state.hotels.value,
+        parking: state.parking.value,
+      };
+
+      var user = auth.currentUser;
+      return user.getIdToken().then(async (token) => {
+        fetch(
+          "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(comp),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((res) => {
+            if (res.message === "Succsess") {
+              setSuccess(true);
+              setIsOpen(false);
+              dispatch(actions.fetchCompetitions());
+              dispatch(actions.loading(false));
+            } else {
+              setError(res.message);
+              setIsOpen(false);
+              dispatch(actions.loading(false));
+            }
+          })
+          .catch((error) => {
+            setError(error.message);
+            setIsOpen(false);
+            dispatch(actions.loading(false));
+
+            return error;
+          });
+      });
     }
-    setIsOpen(false);
   };
 
   const validateText = (text, key) => {
@@ -242,7 +299,10 @@ const AddCompetition = () => {
         <P> Are you sure you want to create yhis competition ? </P>
         <div style={{ display: "flex" }}>
           <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
-          <CustomButton title="Im sure" onClick={createCompetition} />
+          <CustomButton
+            title="Im sure"
+            onClick={() => createCompetition(user.name)}
+          />
         </div>
       </ChoiseModal>
       <SubHeader>Competition</SubHeader>
@@ -251,9 +311,14 @@ const AddCompetition = () => {
           You dont have a valid form to submit, please check you inputs
         </Alert>
       )}
-      {sucsess && (
-        <Alert onClose={() => dispatch(actions.closeAlert())}>
+      {success && (
+        <Alert onClose={() => setSuccess(false)}>
           You updated sucsessfully!
+        </Alert>
+      )}
+      {error.length > 4 && (
+        <Alert security="error" onClose={() => setError("")}>
+          {error}
         </Alert>
       )}
       {textInputs.map((item) => (

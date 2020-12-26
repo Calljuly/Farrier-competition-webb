@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions/auth";
@@ -14,6 +14,7 @@ import {
 import TextInput from "../TextInput";
 import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
+import { useHistory } from "react-router-dom";
 
 const textFieldsRegister = [
   {
@@ -87,9 +88,11 @@ const Login = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
+  const auth = useSelector((state) => state.auth.isAuth);
+
   const [isOpen, setIsOpen] = useState(false);
   const [formValid, setFormValid] = useState(true);
-
+  const history = useHistory();
   const [register, setRegister] = useState(false);
   const [authState, setAuthState] = useState({
     email: {
@@ -185,6 +188,11 @@ const Login = () => {
     }
     setIsOpen(false);
   };
+
+  if (auth) {
+    history.push("/myProfile");
+  }
+
   return (
     <div>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>

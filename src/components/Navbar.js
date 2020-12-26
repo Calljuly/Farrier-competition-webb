@@ -182,6 +182,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isAuth = useSelector((state) => state.auth.isAuth);
+  const admin = useSelector((state) => state.auth.admin);
 
   return (
     <div className={classes.container}>
@@ -189,14 +190,14 @@ const Navbar = () => {
         toggleDrawer={toggleDrawer}
         drawerState={drawerState}
         navLinks={user.admin ? linksAdmin : isAuth ? linksAuth : linksUnAuth}
-        auth={user.admin}
+        auth={admin}
         logout={() => dispatch(actions.logOut())}
       />
       <div className={classes.menuIconContainer}>
         <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />
       </div>
       <div className={classes.contentContainer}>
-        {user.admin
+        {admin
           ? linksAdmin.map((item) => (
               <NavLink
                 key={item.id}

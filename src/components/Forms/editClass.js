@@ -15,7 +15,7 @@ import * as actions from "../../store/actions/competitionAction";
 import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-
+import { auth } from "../firebase";
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -26,6 +26,9 @@ const EditClass = ({ classes }) => {
   const [numberFour, setNumberFour] = useState(1);
   const [classesObject, setClasses] = useState(classes);
   const [formValid, setFormValid] = useState(true);
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   let valid = true;
   const l = useLocation();
   const id = l.id;
@@ -94,24 +97,85 @@ const EditClass = ({ classes }) => {
       }
     });
     valid = formValidation();
-    
+
     if (true) {
-      dispatch(actions.updateClass(id, o, classes.className));
-      setClasses({
-        className: "",
-        pointsToMultiply: [],
-        shoeOne: "",
-        shoeTwo: "",
-        time: "",
-        type: "",
-        unPublishedResult: [],
-        sponsors: "",
-        sponsorLoggo: "",
-        referee: "",
+      dispatch(actions.loading(true));
+
+      var user = auth.currentUser;
+      return user.getIdToken().then(async (token) => {
+        fetch(
+          `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ className: classes.className, classes: o }),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((res) => {
+            console.log(res.message);
+            if (res.message === "Succsess") {
+              setSuccess(true);
+              dispatch(actions.fetchCompetitions());
+              dispatch(actions.loading(false));
+              setClasses({
+                className: "",
+                pointsToMultiply: [],
+                shoeOne: "",
+                shoeTwo: "",
+                time: "",
+                type: "",
+                unPublishedResult: [],
+                sponsors: "",
+                sponsorLoggo: "",
+                referee: "",
+              });
+              setIsOpen(false);
+            } else {
+              setError(res.message);
+              dispatch(actions.loading(false));
+
+              setClasses({
+                className: "",
+                pointsToMultiply: [],
+                shoeOne: "",
+                shoeTwo: "",
+                time: "",
+                type: "",
+                unPublishedResult: [],
+                sponsors: "",
+                sponsorLoggo: "",
+                referee: "",
+              });
+              setIsOpen(false);
+            }
+          })
+          .then(() => {})
+          .catch((error) => {
+            console.error("Error:", error);
+            setError(error.message);
+            dispatch(actions.loading(false));
+            setClasses({
+              className: "",
+              pointsToMultiply: [],
+              shoeOne: "",
+              shoeTwo: "",
+              time: "",
+              type: "",
+              unPublishedResult: [],
+              sponsors: "",
+              sponsorLoggo: "",
+              referee: "",
+            });
+            setIsOpen(false);
+          });
       });
     }
-
-    setIsOpen(false);
   };
   const formValidation = () => {
     const a = Object.keys(classesObject);
@@ -199,6 +263,16 @@ const EditClass = ({ classes }) => {
       {!formValid && (
         <Alert severity="error">
           Your input to update is not valid, please check your input
+        </Alert>
+      )}
+      {success && (
+        <Alert onClick={() => setSuccess(false)}>
+          You updated succsessfully!
+        </Alert>
+      )}
+      {error.length > 3 && (
+        <Alert severity="error" onClick={() => setError("")}>
+          {error}
         </Alert>
       )}
       {show && (
