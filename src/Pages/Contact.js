@@ -5,6 +5,7 @@ import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import { Colors } from "../colors";
 import Devider from "../components/UI/Devider";
+import TextInput from "../components/TextInput";
 
 const useStyle = makeStyles({
   email: {
@@ -40,6 +41,63 @@ const Contact = () => {
       >
         <Grid container>
           <Grid item xs={12} md={6}>
+            <form
+              className={classes.formContainer}
+              name="contact"
+              method="post"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+
+              <div>
+                <TextInput
+                  type="text"
+                  style={{ width: "300px", margin: 20 }}
+                  label="First name"
+                  placeholder="First name"
+                  name="firstName"
+                />
+                <TextInput
+                  type="text"
+                  style={{ width: "300px", margin: 20 }}
+                  label="Last name"
+                  placeholder="Last name"
+                  name="lastName"
+                />
+              </div>
+              <div>
+                <TextInput
+                  type="text"
+                  style={{ width: "300px", margin: 20 }}
+                  label="Email"
+                  placeholder="Email"
+                  name="email"
+                />
+                <TextInput
+                  style={{ width: "300px", margin: 20 }}
+                  label="Phone"
+                  placeholder="Phone"
+                  type="number"
+                  name="phone"
+                />
+              </div>
+              <div>
+                <TextInput
+                  type="text"
+                  style={{ width: "630px", margin: 20 }}
+                  label="Meddelande"
+                  multiline
+                  rows={4}
+                  name="message"
+                />
+              </div>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button name="button" type="submit">
+                  Skicka Meddelande
+                </button>
+              </div>
+            </form>
+          </Grid>
+          <Grid item xs={12} md={6}>
             <P>
               If you want to get in touch with the creator please contact me by
               the email or phone number beside.
@@ -55,24 +113,6 @@ const Contact = () => {
             <P>
               <strong>Mvh Julia Call</strong>
             </P>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <div className={classes.itemContainer}>
-              <P>
-                Email:
-                <a className={classes.email} href="mailto: calljuly@gmail.com">
-                  Calljuly@gmail.com
-                </a>
-              </P>
-            </div>
-            <div className={classes.itemContainer}>
-              <P>
-                Phone:
-                <a className={classes.email} href="tel:0705222633">
-                  +46705222633
-                </a>
-              </P>
-            </div>
           </Grid>
         </Grid>
       </div>

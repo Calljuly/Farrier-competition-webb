@@ -15,6 +15,7 @@ const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const isLoadingAuth = useSelector((state) => state.auth.isLoading);
+  
   const isLoadingCompetition = useSelector(
     (state) => state.competitions.isLoading
   );

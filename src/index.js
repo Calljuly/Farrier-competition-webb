@@ -17,6 +17,7 @@ const reducer = combineReducers({
   auth: authReducer,
   result: ResultReducer,
 });
+
 const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
