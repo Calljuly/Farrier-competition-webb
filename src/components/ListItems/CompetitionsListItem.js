@@ -12,6 +12,7 @@ import CustomButton from "../CustomButton";
 import { Colors } from "../../colors";
 import { useHistory } from "react-router-dom";
 import { storage } from "../firebase";
+import { Alert } from "@material-ui/lab";
 
 const useStyle = makeStyles({
   container: {
@@ -86,7 +87,6 @@ const CompetitionsListItem = ({
   referee,
   current,
   anvils,
-  index,
   disabled,
   dateFrom,
   dateTo,
@@ -96,28 +96,46 @@ const CompetitionsListItem = ({
   const classes = useStyle();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [modalOpen, setOpenModal] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
   const comp = useSelector((state) => state.competitions.competitions);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
   const competitionStartDate = new Date(dateFrom);
   const competitionEndDate = new Date(dateTo);
   const todayDate = new Date();
-  const [sponsor, setSponsor] = useState("");
 
   const [showProposition, setShowProposition] = useState(false);
+  const competition = {
+    id: id,
+    country: country,
+    name: name,
+    anvils: anvils,
+    entries: entries,
+  };
+  const enterCompetition = () => {
+    if (entries.includes(user.name)) {
+      setError(true);
+      return;
+    }
+    dispatch(actions.enterCompetition(user, compClasses, competition, id));
+    setSuccess(true);
+  };
 
   return (
     <>
-      <MessageModal
-        isOpen={modalOpen}
-        handleClose={() => setOpenModal(false)}
-        modalData={{
-          title: "Entered!",
-          description: "You have succsessfully entered the competition!",
-        }}
-      />
       <div className={classes.container}>
+        {success && (
+          <Alert onClick={() => setSuccess(false)}>
+            Your input to update is not valid, please check your input
+          </Alert>
+        )}
+        {error && (
+          <Alert severity="error" onClick={() => setError(false)}>
+            You could not enter the competition
+          </Alert>
+        )}
         <div
           onClick={() => setShowProposition((prev) => !prev)}
           style={{
@@ -177,6 +195,17 @@ const CompetitionsListItem = ({
               </>
             )}
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              {isAuth &&
+                competitionStartDate > todayDate &&
+                !entries.includes(user.name) && (
+                  <CustomButton
+                    disabled={disabled}
+                    onClick={enterCompetition}
+                    title={
+                      disabled ? "Competition is full" : "Enter competition"
+                    }
+                  />
+                )}
               <CustomButton
                 title="Show starts"
                 onClick={() =>
@@ -194,24 +223,11 @@ const CompetitionsListItem = ({
                     pathname: "/admin/result",
                     result: result,
                     name: name,
+                    classes: compClasses,
                   })
                 }
               />
             </div>
-            {isAuth && competitionStartDate > todayDate && (
-              <button
-                disabled={disabled}
-                className={disabled ? classes.buttonDisabled : classes.button}
-                onClick={() => {
-                  dispatch(
-                    actions.enterCompetition(user.name, index, id, comp)
-                  );
-                  setOpenModal(true);
-                }}
-              >
-                {disabled ? "Competition is full" : "Enter competition"}
-              </button>
-            )}
           </>
         )}
       </div>

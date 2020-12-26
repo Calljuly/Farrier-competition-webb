@@ -6,7 +6,8 @@ import PageHeader from "../components/UI/PageHeader";
 import { Colors } from "../colors";
 import Devider from "../components/UI/Devider";
 import TextInput from "../components/TextInput";
-
+import { Button } from "@material-ui/core";
+import SubHeader from "../components/UI/SubHeader";
 const useStyle = makeStyles({
   email: {
     textDecoration: "none",
@@ -20,6 +21,16 @@ const useStyle = makeStyles({
   itemContainer: {
     display: "flex",
     flexDirection: "row",
+  },
+  button: {
+    backgroundColor: Colors.black,
+    color: Colors.orange,
+    width: 200,
+    padding: 10,
+    margin: "10px 0px 10px 10px",
+    ["@media (max-width:956px)"]: {
+      width: "100%",
+    },
   },
 });
 const Contact = () => {
@@ -41,6 +52,7 @@ const Contact = () => {
       >
         <Grid container>
           <Grid item xs={12} md={6}>
+            <SubHeader>Fill out the form to contact me</SubHeader>
             <form
               className={classes.formContainer}
               name="contact"
@@ -48,52 +60,52 @@ const Contact = () => {
             >
               <input type="hidden" name="form-name" value="contact" />
 
-              <div>
-                <TextInput
-                  type="text"
-                  style={{ width: "300px", margin: 20 }}
-                  label="First name"
-                  placeholder="First name"
-                  name="firstName"
-                />
-                <TextInput
-                  type="text"
-                  style={{ width: "300px", margin: 20 }}
-                  label="Last name"
-                  placeholder="Last name"
-                  name="lastName"
-                />
-              </div>
-              <div>
-                <TextInput
-                  type="text"
-                  style={{ width: "300px", margin: 20 }}
-                  label="Email"
-                  placeholder="Email"
-                  name="email"
-                />
-                <TextInput
-                  style={{ width: "300px", margin: 20 }}
-                  label="Phone"
-                  placeholder="Phone"
-                  type="number"
-                  name="phone"
-                />
-              </div>
-              <div>
-                <TextInput
-                  type="text"
-                  style={{ width: "630px", margin: 20 }}
-                  label="Meddelande"
-                  multiline
-                  rows={4}
-                  name="message"
-                />
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button name="button" type="submit">
-                  Skicka Meddelande
-                </button>
+              <TextInput
+                type="text"
+                style={{ width: "90%", margin: 20 }}
+                label="First name"
+                placeholder="First name"
+                name="firstName"
+              />
+              <TextInput
+                type="text"
+                style={{ width: "90%", margin: 20 }}
+                label="Last name"
+                placeholder="Last name"
+                name="lastName"
+              />
+              <TextInput
+                type="text"
+                style={{ width: "90%", margin: 20 }}
+                label="Email"
+                placeholder="Email"
+                name="email"
+              />
+              <TextInput
+                style={{ width: "90%", margin: 20 }}
+                label="Phone"
+                placeholder="Phone"
+                type="number"
+                name="phone"
+              />
+              <TextInput
+                type="text"
+                style={{ width: "90%", margin: 20 }}
+                label="Message"
+                multiline
+                rows={4}
+                name="message"
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginRight: 60,
+                }}
+              >
+                <Button name="button" type="submit" className={classes.button}>
+                  Send Message
+                </Button>
               </div>
             </form>
           </Grid>

@@ -3,10 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import CustomButton from "../CustomButton";
 import P from "../UI/Paragraph";
 import PageHeader from "../UI/PageHeader";
-import {
-  validateText,
-  validateAge,
-} from "../../helpers/validation";
+import { validateText, validateAge } from "../../helpers/validation";
 import TextInput from "../TextInput";
 import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
@@ -145,6 +142,7 @@ const EditProfile = () => {
     });
     auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user);
         actions.updateUser(user.uid, newUser);
       }
     });
@@ -191,7 +189,6 @@ const EditProfile = () => {
         </div>
       </ChoiseModal>
       <div className={classes.inputContainer}>
-        
         {textFieldsRegister.map((item) => (
           <TextInput
             key={item.id}

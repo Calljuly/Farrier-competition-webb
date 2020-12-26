@@ -12,6 +12,7 @@ import PageHeader from "./UI/PageHeader";
 import ComboClass from "./Tables/ComboClass";
 import { Alert } from "@material-ui/lab";
 import { storage } from "./firebase";
+import SubHeader from "./UI/SubHeader";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -54,7 +55,6 @@ const Scores = () => {
       history.push("/admin");
     }
   }, [compClasses]);
-  console.log(compClasses);
   if (compClasses.sponsorLoggo) {
     storage
       .ref()
@@ -142,7 +142,15 @@ const Scores = () => {
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
         )}
-        <img src={sponsor} />
+        <div>
+          <SubHeader>Sponsor of the class</SubHeader>
+          {compClasses.sponsors}
+          <img
+            src={sponsor}
+            style={{ width: "200px" }}
+            alt={compClasses.sponsors}
+          />
+        </div>
         {getScore(compClasses)}
         <Devider margin={60} />
 

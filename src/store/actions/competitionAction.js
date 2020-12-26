@@ -9,47 +9,45 @@ export const COMPETITION_LOADING = "COMPETITION_LOADING";
 export const SUCSESS = "SUCSESS";
 
 //Ska få route i api, inte klar
-export const enterCompetition = (competitor, index, id, state) => {
-  const updatedState = [...state];
+export const enterCompetition = (competitor, classes, competition, id) => {
+  const updatedState = competition;
   return (dispatch) => {
     dispatch({
       type: COMPETITION_LOADING,
       loading: true,
     });
     if (
-      updatedState[index].entries.find((user) => user === competitor) ||
-      updatedState[index].currentEntries === updatedState[index].maxEntries
-    )
+      updatedState.entries.find((user) => user === competitor) ||
+      updatedState.currentEntries === updatedState.anvils
+    ) {
+      dispatch({
+        type: COMPETITION_LOADING,
+        loading: false,
+      });
       return;
+    }
 
-    updatedState[index].currentEntries += 1;
-    updatedState[index].maxEntries -= 1;
-    updatedState[index].entries.push(competitor);
+    updatedState.currentEntries += 1;
+    updatedState.maxEntries -= 1;
+    updatedState.entries.push({
+      competitor: competitor.name,
+      country: competitor.country,
+      id: 0,
+    });
+    console.log(updatedState);
 
-    updatedState[index].classes.map((item) => {
-      return item.result.push({
-        id: updatedState[index].currentEntries,
+    const updatedClass = classes.map((item) => {
+      console.log(item);
+      item.unPublishedResult.push({
+        id: updatedState.currentEntries,
         competitor: competitor,
         shoeOne: { one: "", two: "", three: "", four: "", total: "" },
         shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
       });
+      return item;
     });
-    updatedState[index].classes.map((item) => {
-      return item.unPublishedResult.push({
-        id: updatedState[index].currentEntries,
-        competitor: competitor,
-        shoeOne: { one: "", two: "", three: "", four: "", total: "" },
-        shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
-      });
-    });
-    const classes = {
-      classes: updatedState[index].classes,
-    };
-    const comp = {
-      currentEntries: updatedState[index].currentEntries,
-      anvils: updatedState[index].anvils,
-      entries: updatedState[index].entries,
-    };
+    console.log(updatedClass);
+
     /*
     //Bygga en api route för att anmäla en user till tävling 
     fetch(
@@ -66,17 +64,29 @@ export const enterCompetition = (competitor, index, id, state) => {
       .collection("competitions")
       .doc(id)
       .update({
-        currentEntries: updatedState[index].currentEntries,
-        maxEntries: updatedState[index].maxEntries,
-        entries: updatedState[index].entries,
-        result: updatedState[index].result,
-        classes: updatedState[index].classes,
+        currentEntries: updatedState.currentEntries,
+        anvils: updatedState.anvils,
+        entries: updatedState.entries,
       })
       .then(() => {
-        dispatch({
-          type: ADD_COMPETITOR,
-          data: updatedState,
+        classes.forEach((item, index) => {
+          firestore
+            .collection("competitions")
+            .doc(id)
+            .collection("classes")
+            .doc(item.className)
+            .update({
+              unPublishedResult: updatedClass[index].unPublishedResult,
+            })
+            .catch((err) => {
+              console.log(err);
+              dispatch({
+                type: COMPETITION_LOADING,
+                isLoading: false,
+              });
+            });
         });
+        dispatch(fetchCompetitions());
       })
       .then(() => {
         dispatch({
@@ -86,6 +96,10 @@ export const enterCompetition = (competitor, index, id, state) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch({
+          type: COMPETITION_LOADING,
+          isLoading: false,
+        });
       });
   };
 };

@@ -41,8 +41,9 @@ const Result = () => {
   const l = useLocation();
   const result = l.result;
   const competitionName = l.name;
+  const sponsor = l.classes
   const history = useHistory();
-
+console.log(sponsor)
   if (!result) {
     history.push("/admin");
   }
