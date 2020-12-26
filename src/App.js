@@ -71,6 +71,8 @@ const App = () => {
               dispatch(action.isAuth(false, false, {}, "", false));
             });
         });
+      } else {
+        dispatch(action.isAuth(false, false, {}, "", false));
       }
     });
   }, [isAuthenticated]);
