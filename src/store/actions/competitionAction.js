@@ -40,7 +40,7 @@ export const enterCompetition = (competitor, classes, competition, id) => {
       console.log(item);
       item.unPublishedResult.push({
         id: updatedState.currentEntries,
-        competitor: competitor,
+        competitor: competitor.name,
         shoeOne: { one: "", two: "", three: "", four: "", total: "" },
         shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
       });

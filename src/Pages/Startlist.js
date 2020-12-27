@@ -7,11 +7,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import SubHeader from "../UI/SubHeader";
-import PageHeader from "../UI/PageHeader";
+import SubHeader from "../components/UI/SubHeader";
+import PageHeader from "../components/UI/PageHeader";
 import { useLocation, useHistory } from "react-router-dom";
-import CustomButton from "../CustomButton";
-import P from "../UI/Paragraph";
+import CustomButton from "../components/CustomButton";
 import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles({

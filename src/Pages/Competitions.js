@@ -6,29 +6,13 @@ import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import { makeStyles } from "@material-ui/styles";
 import { Route, Switch } from "react-router-dom";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import { Colors } from "../colors";
 import Devider from "../components/UI/Devider";
-import StartList from "../components/Tables/Startlist";
+import StartList from "./Startlist";
+import Result from "./Result";
+import TabPanel from "../components/UI/TabPanel";
+import CustomTab from "../components/UI/Tabs";
 
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <div style={{ margin: "auto", width: "100%" }}>{children}</div>
-      )}
-    </div>
-  );
-};
 const useStyle = makeStyles({
   tabs: {
     width: 210,
@@ -52,8 +36,8 @@ const useStyle = makeStyles({
     padding: 5,
   },
 });
+
 const Competitions = () => {
-  const classes = useStyle();
   const [value, setValue] = useState(0);
   const competitions = useSelector((state) => state.competitions.competitions);
 
@@ -62,39 +46,31 @@ const Competitions = () => {
     setValue(newValue);
   };
   const todayDate = new Date();
-
+  const buttons = [
+    {
+      id: 0,
+      label: "Active",
+    },
+    {
+      id: 1,
+      label: "Past",
+    },
+    {
+      id: 2,
+      label: "Searchs",
+    },
+  ];
   return (
     <div style={{ marginTop: 0, width: "100%" }}>
       <Switch>
         <Route exact path="/competitions">
           <div style={{ display: "flex", alignItems: "center" }}>
             <PageHeader>Competitions</PageHeader>
-            <Tabs
-              TabIndicatorProps={{
-                style: {
-                  height: "0px",
-                },
-              }}
+            <CustomTab
+              buttons={buttons}
               value={value}
-              onChange={handleChange}
-              orientation="horizontal"
-            >
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active, root: classes.tabs }}
-                label="Active"
-              />
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active }}
-                label="Past"
-              />
-              <Tab
-                className={classes.tabs}
-                classes={{ selected: classes.active }}
-                label="Search"
-              />
-            </Tabs>
+              handleChange={handleChange}
+            />
           </div>
           <div className="divOrange" />
           <div className="divBlack" />
@@ -175,6 +151,9 @@ const Competitions = () => {
         </Route>
         <Route path="/competitions/startList">
           <StartList />
+        </Route>
+        <Route path="/competitions/result" exact>
+          <Result />
         </Route>
       </Switch>
     </div>

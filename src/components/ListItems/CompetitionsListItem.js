@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
-import MessageModal from "../MessageModal";
 import PageHeader from "../UI/PageHeader";
 import SubHeader from "../UI/SubHeader";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -220,7 +219,7 @@ const CompetitionsListItem = ({
                 title="Result"
                 onClick={() =>
                   history.push({
-                    pathname: "/admin/result",
+                    pathname: "/competitions/result",
                     result: result,
                     name: name,
                     classes: compClasses,

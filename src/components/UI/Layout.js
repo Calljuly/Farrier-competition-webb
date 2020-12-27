@@ -3,6 +3,7 @@ import Navbar from "../Navbar";
 import cover from "../../assets/Images/newpic.jpg";
 import Footer from "../footer";
 import { makeStyles } from "@material-ui/styles";
+
 const useStyle = makeStyles({
   layout: {
     width: "100%",
@@ -23,13 +24,11 @@ const useStyle = makeStyles({
     },
   },
 });
+
 const Layout = ({ children, logOut }) => {
   const classes = useStyle();
   return (
     <>
-      <div className={classes.layout}>
-        <img src={cover} style={{ width: "100%" }} alt="Header" />
-      </div>
       <Navbar logOut={logOut} />
       <div className={classes.contentContainer}>{children}</div>
       <Footer />

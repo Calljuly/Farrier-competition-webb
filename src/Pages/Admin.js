@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/styles";
 import AddCompetition from "../components/Forms/addCompetition";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { Colors } from "../colors";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
@@ -13,51 +9,11 @@ import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import Devider from "../components/UI/Devider";
 import AddClass from "../components/Forms/addClass";
-import Result from "../components/Tables/Result";
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <div style={{ margin: "auto", width: "80%" }}>{children}</div>
-      )}
-    </div>
-  );
-};
-
-const useStyle = makeStyles({
-  tabs: {
-    width: 210,
-    height: 50,
-    textDecoration: "none",
-    color: Colors.black,
-    fontSize: 20,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5,
-  },
-  active: {
-    margin: 5,
-    marginBottom: 0,
-    textDecoration: "none",
-    color: "#101820FF",
-    backgroundColor: "#F2AA4CFF",
-    fontSize: 20,
-    borderRadius: 3,
-    padding: 5,
-  },
-});
+import Result from "./Result";
+import TabPanel from "../components/UI/TabPanel";
+import CustomTab from "../components/UI/Tabs";
 
 const Admin = () => {
-  const classes = useStyle();
 
   const [value, setValue] = useState(0);
   const user = useSelector((state) => state.auth.user);
@@ -76,7 +32,20 @@ const Admin = () => {
     event.preventDefault();
     setValue(newValue);
   };
-
+  const buttons = [
+    {
+      id: 0,
+      label: "Information",
+    },
+    {
+      id: 1,
+      label: "Create Competition",
+    },
+    {
+      id: 2,
+      label: "My Competitions",
+    },
+  ];
   return (
     <>
       <Switch>
@@ -84,32 +53,11 @@ const Admin = () => {
           <div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <PageHeader>Admin</PageHeader>
-              <Tabs
-                TabIndicatorProps={{
-                  style: {
-                    height: "0px",
-                  },
-                }}
+              <CustomTab
+                buttons={buttons}
                 value={value}
-                onChange={handleChange}
-                orientation="horizontal"
-              >
-                <Tab
-                  className={classes.tabs}
-                  classes={{ selected: classes.active, root: classes.tabs }}
-                  label="Information"
-                />
-                <Tab
-                  className={classes.tabs}
-                  classes={{ selected: classes.active }}
-                  label="New competition "
-                />
-                <Tab
-                  className={classes.tabs}
-                  classes={{ selected: classes.active }}
-                  label="My competitions"
-                />
-              </Tabs>
+                handleChange={handleChange}
+              />
             </div>
             <div className="divOrange" />
             <div className="divBlack" />

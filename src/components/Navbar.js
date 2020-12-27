@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from "@material-ui/icons/Menu";
 import CustomDrawer from "./CustomDrawer";
 import { Colors } from "../colors";
-import P from "./UI/Paragraph";
 
 const linksAdmin = [
   {
@@ -96,7 +95,6 @@ const useStyle = makeStyles({
     backgroundColor: "#101820FF",
     display: "flex",
     flexDirection: "row",
-    margin: 0,
     borderRadius: "0px 0px 10px 10px",
   },
   logo: {
@@ -116,19 +114,19 @@ const useStyle = makeStyles({
     },
   },
   link: {
-    width: 170,
-    height: 60,
+    width: 140,
+    height: 40,
     margin: 20,
     textDecoration: "none",
     color: Colors.orange,
-    fontSize: 30,
+    fontSize: 20,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     "&:hover": {
       color: "#101820FF",
       backgroundColor: "#F2AA4CFF",
-      borderRadius: 10,
+      borderRadius: 5,
     },
   },
   activeLink: {
@@ -136,21 +134,15 @@ const useStyle = makeStyles({
     textDecoration: "none",
     color: "#101820FF",
     backgroundColor: "#F2AA4CFF",
-    fontSize: 30,
-    borderRadius: 10,
+    fontSize: 20,
+    borderRadius: 5,
     "&:hover": {
       color: "white",
     },
   },
 
   contentContainer: {
-    height: "100%",
-    margin: 0,
-    padding: 0,
-    flex: 1,
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
     alignItems: "center",
     ["@media (max-width:1253px)"]: {
       display: "none",
