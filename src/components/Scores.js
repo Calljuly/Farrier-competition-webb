@@ -39,6 +39,13 @@ const Scores = () => {
     setModal(false);
   };
   const handleModalContent = (id, cell, title, compIndex, user, type) => {
+    console.log(id);
+    console.log(cell);
+    console.log(title);
+    console.log(compIndex);
+    console.log(user);
+    console.log(type);
+
     setModalData({
       id: id,
       cellId: cell,
@@ -79,6 +86,7 @@ const Scores = () => {
     );
   }
   const getScore = (classes) => {
+    console.log(classes);
     switch (classes.type) {
       case "Forging":
         return (

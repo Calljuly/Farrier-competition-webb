@@ -12,10 +12,10 @@ import { Colors } from "../../colors";
 
 const useStyle = makeStyles({
   container: {
-    width: "100%",
+    width: "80%",
     height: "100%",
     display: "flex",
-    margin: 10,
+    margin: "auto",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     flexDirection: "column",

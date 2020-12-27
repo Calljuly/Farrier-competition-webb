@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
 import SubHeader from "../UI/SubHeader";
+import Devider from "../UI/Devider";
 
 const useStyles = makeStyles({
   table: {
@@ -25,6 +26,7 @@ const ShoingClass = ({
   className,
 }) => {
   const classes = useStyles();
+  console.log(result);
   return (
     <div>
       <SubHeader>{className}</SubHeader>
@@ -64,14 +66,14 @@ const ShoingClass = ({
                               item.id,
                               "one",
                               compClasses[1].headerTitles[1],
-                              index,
                               compIndex,
-                              item.id
+                              item.id,
+                              "shoeOne"
                             )
                     }
                     align="left"
                   >
-                    {item.one}
+                    {item.shoeOne.one}
                   </TableCell>
                   <TableCell
                     onClick={
@@ -81,15 +83,15 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "two",
-                              compClasses[1].headerTitles[2],
-                              index,
+                              compClasses[1].headerTitles[1],
                               compIndex,
-                              item.id
+                              item.id,
+                              "shoeOne"
                             )
                     }
                     align="left"
                   >
-                    {item.two}
+                    {item.shoeOne.two}
                   </TableCell>
                   <TableCell
                     onClick={
@@ -99,15 +101,15 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "three",
-                              compClasses[1].headerTitles[3],
-                              index,
+                              compClasses[1].headerTitles[1],
                               compIndex,
-                              item.id
+                              item.id,
+                              "shoeOne"
                             )
                     }
                     align="left"
                   >
-                    {item.three}
+                    {item.shoeOne.three}
                   </TableCell>
                   <TableCell
                     onClick={
@@ -117,17 +119,125 @@ const ShoingClass = ({
                             handleModalContent(
                               item.id,
                               "four",
-                              compClasses[1].headerTitles[4],
-                              index,
+                              compClasses[1].headerTitles[1],
                               compIndex,
-                              item.id
+                              item.id,
+                              "shoeOne"
                             )
                     }
                     align="left"
                   >
-                    {item.four}
+                    {item.shoeOne.four}
                   </TableCell>
-                  <TableCell align="left">{item.total}</TableCell>
+                  <TableCell align="left">{item.shoeOne.total}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Devider margin={50} />
+      <SubHeader>Shoe two</SubHeader>
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="a dense table"
+        >
+          <TableHead>
+            <TableRow>
+              {compClasses[1].headerTitles.map((comp, index) => (
+                <TableCell key={comp} align="left">
+                  {` ${comp} , `}
+                  <strong>{index > 0 && pointsToMultiply[index - 1]}</strong>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {result.map((item, index) => {
+              const color = index % 2 === 0;
+              return (
+                <TableRow
+                  key={item.id}
+                  style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
+                >
+                  <TableCell align="left">
+                    {savedResult ? item.competitor : item.id}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "one",
+                              compClasses[1].headerTitles[1],
+                              compIndex,
+                              item.id,
+                              "shoeTwo"
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.shoeTwo.one}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "two",
+                              compClasses[1].headerTitles[1],
+                              compIndex,
+                              item.id,
+                              "shoeTwo"
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.shoeTwo.two}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "three",
+                              compClasses[1].headerTitles[1],
+                              compIndex,
+                              item.id,
+                              "shoeTwo"
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.shoeTwo.three}
+                  </TableCell>
+                  <TableCell
+                    onClick={
+                      savedResult
+                        ? () => alert("You can no longer edit these results")
+                        : () =>
+                            handleModalContent(
+                              item.id,
+                              "four",
+                              compClasses[1].headerTitles[1],
+                              compIndex,
+                              item.id,
+                              "shoeTwo"
+                            )
+                    }
+                    align="left"
+                  >
+                    {item.shoeTwo.four}
+                  </TableCell>
+                  <TableCell align="left">{item.shoeTwo.total}</TableCell>
                 </TableRow>
               );
             })}

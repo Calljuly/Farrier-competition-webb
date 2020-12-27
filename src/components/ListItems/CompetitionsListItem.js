@@ -12,6 +12,7 @@ import { Colors } from "../../colors";
 import { useHistory } from "react-router-dom";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
+import { Grid } from "@material-ui/core";
 
 const useStyle = makeStyles({
   container: {
@@ -98,7 +99,6 @@ const CompetitionsListItem = ({
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const comp = useSelector((state) => state.competitions.competitions);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
   const competitionStartDate = new Date(dateFrom);
@@ -193,40 +193,49 @@ const CompetitionsListItem = ({
                 })}
               </>
             )}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Grid
+              container
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
               {isAuth &&
                 competitionStartDate > todayDate &&
                 !entries.includes(user.name) && (
-                  <CustomButton
-                    disabled={disabled}
-                    onClick={enterCompetition}
-                    title={
-                      disabled ? "Competition is full" : "Enter competition"
-                    }
-                  />
+                  <Grid item md={4} xs={12}>
+                    <CustomButton
+                      disabled={disabled}
+                      onClick={enterCompetition}
+                      title={
+                        disabled ? "Competition is full" : "Enter competition"
+                      }
+                    />
+                  </Grid>
                 )}
-              <CustomButton
-                title="Show starts"
-                onClick={() =>
-                  history.push({
-                    pathname: "/competitions/startList",
-                    entries: entries,
-                    name: name,
-                  })
-                }
-              />
-              <CustomButton
-                title="Result"
-                onClick={() =>
-                  history.push({
-                    pathname: "/competitions/result",
-                    result: result,
-                    name: name,
-                    classes: compClasses,
-                  })
-                }
-              />
-            </div>
+              <Grid item md={4} xs={12}>
+                <CustomButton
+                  title="Show starts"
+                  onClick={() =>
+                    history.push({
+                      pathname: "/competitions/startList",
+                      entries: entries,
+                      name: name,
+                    })
+                  }
+                />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton
+                  title="Result"
+                  onClick={() =>
+                    history.push({
+                      pathname: "/competitions/result",
+                      result: result,
+                      name: name,
+                      classes: compClasses,
+                    })
+                  }
+                />
+              </Grid>
+            </Grid>
           </>
         )}
       </div>

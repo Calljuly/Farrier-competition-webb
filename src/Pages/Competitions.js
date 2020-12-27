@@ -4,38 +4,12 @@ import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import { Grid } from "@material-ui/core";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
-import { makeStyles } from "@material-ui/styles";
 import { Route, Switch } from "react-router-dom";
-import { Colors } from "../colors";
 import Devider from "../components/UI/Devider";
 import StartList from "./Startlist";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-
-const useStyle = makeStyles({
-  tabs: {
-    width: 210,
-    height: 50,
-    textDecoration: "none",
-    color: Colors.black,
-    fontSize: 20,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5,
-  },
-  active: {
-    margin: 5,
-    marginBottom: 0,
-    textDecoration: "none",
-    color: "#101820FF",
-    backgroundColor: "#F2AA4CFF",
-    fontSize: 20,
-    borderRadius: 3,
-    padding: 5,
-  },
-});
 
 const Competitions = () => {
   const [value, setValue] = useState(0);
