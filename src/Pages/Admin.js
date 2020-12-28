@@ -12,12 +12,22 @@ import AddClass from "../components/Forms/addClass";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyle = makeStyles({
+  headerContainer: {
+    display: "flex",
+    alignItems: "center",
+    ["@media (max-width:1000px)"]: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+  },
+});
 const Admin = () => {
-
   const [value, setValue] = useState(0);
   const user = useSelector((state) => state.auth.user);
-
+  const classes = useStyle();
   const compClasses = useSelector((state) => {
     return state.competitions.competitions;
   });
@@ -51,7 +61,7 @@ const Admin = () => {
       <Switch>
         <Route path="/admin" exact>
           <div>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={classes.headerContainer}>
               <PageHeader>Admin</PageHeader>
               <CustomTab
                 buttons={buttons}

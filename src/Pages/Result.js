@@ -36,6 +36,16 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
+  sponsorContainer: {
+    display: "flex",
+    justifyContent: "space-around",
+    width: "100%",
+    marginBottom: 30,
+    ["@media (max-width: 1000px)"]: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+  },
 });
 
 const Result = () => {
@@ -60,14 +70,7 @@ const Result = () => {
         <SubHeader>{competitionName}</SubHeader>
         <SubHeader>Sponsors of all classes this competition</SubHeader>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            width: "100%",
-            marginBottom: 30,
-          }}
-        >
+        <div className={classes.sponsorContainer}>
           {sponsor.map((item) => (
             <SponsorCard
               sponsorName={item.sponsors}

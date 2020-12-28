@@ -16,10 +16,18 @@ const useStyle = makeStyles({
     margin: 40,
     width: 400,
     height: 400,
+    ["@media (max-width:1000px)"]: {
+      width: "80%",
+      height: "80%",
+    },
   },
   root: {
     display: "flex",
     width: "100%",
+    ["@media (max-width:1000px)"]: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
   },
   container: {
     display: "flex",
@@ -29,6 +37,13 @@ const useStyle = makeStyles({
     display: "flex",
     flexDirection: "column",
     marginLeft: 20,
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    ["@media (max-width:1000px)"]: {
+      flexDirection: "column",
+    },
   },
 });
 
@@ -41,7 +56,7 @@ const User = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const buttons = [
     {
       id: 0,
@@ -63,7 +78,7 @@ const User = () => {
 
   return (
     <div className={classes.container}>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div className={classes.header}>
         <PageHeader>{user.name}</PageHeader>
         <CustomTab
           buttons={buttons}

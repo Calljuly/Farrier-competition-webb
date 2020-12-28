@@ -10,11 +10,22 @@ import StartList from "./Startlist";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyle = makeStyles({
+  headerContainer: {
+    display: "flex",
+    alignItems: "center",
+    ["@media (max-width:1000px)"]: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+  },
+});
 const Competitions = () => {
   const [value, setValue] = useState(0);
   const competitions = useSelector((state) => state.competitions.competitions);
-
+  const classes = useStyle();
   const handleChange = (event, newValue) => {
     event.preventDefault();
     setValue(newValue);
@@ -38,7 +49,7 @@ const Competitions = () => {
     <div style={{ marginTop: 0, width: "100%" }}>
       <Switch>
         <Route exact path="/competitions">
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={classes.headerContainer}>
             <PageHeader>Competitions</PageHeader>
             <CustomTab
               buttons={buttons}

@@ -14,6 +14,9 @@ const useStyle = makeStyles({
     fontSize: 10,
     margin: 5,
     padding: 5,
+    ["@media (max-width:1253px)"]: {
+      width: 300,
+    },
   },
   active: {
     minWidth: 120,
@@ -26,11 +29,15 @@ const useStyle = makeStyles({
     fontSize: 10,
     borderRadius: 3,
     padding: 5,
+    ["@media (max-width:1253px)"]: {
+      width: 300,
+    },
   },
 });
 
 const CustomTab = ({ buttons, value, handleChange }) => {
   const classes = useStyle();
+  const { innerWidth: width } = window;
   return (
     <Tabs
       TabIndicatorProps={{
@@ -40,7 +47,7 @@ const CustomTab = ({ buttons, value, handleChange }) => {
       }}
       value={value}
       onChange={handleChange}
-      orientation="horizontal"
+      orientation={width < 1000 ? "vertical" : "horizontal"}
     >
       {buttons.map((item) => {
         return (
