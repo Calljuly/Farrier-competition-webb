@@ -95,7 +95,6 @@ const useStyle = makeStyles({
     backgroundColor: "#101820FF",
     display: "flex",
     flexDirection: "row",
-    borderRadius: "0px 0px 10px 10px",
   },
   logo: {
     width: "15%",

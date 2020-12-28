@@ -16,15 +16,13 @@ import { Grid } from "@material-ui/core";
 
 const useStyle = makeStyles({
   container: {
-    width: "80%",
+    width: "100%",
+    height: "100%",
     display: "flex",
-    margin: "auto",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     flexDirection: "column",
-    padding: 10,
-    cursor: "pointer",
-    "&:hover": {
-      border: `1px solid ${Colors.orange}`,
-    },
+    borderBottom: "1px solid #DCDCDC",
   },
   classesContainer: {
     width: "100%",
@@ -64,19 +62,23 @@ const useStyle = makeStyles({
       margin: 10,
     },
   },
-  buttonDisabled: {
-    borderTop: "1px solid black",
-    width: "100%",
-    padding: 10,
-    fontSize: 15,
-    backgroundColor: "#b9babe",
-    borderRadius: "0px 0px 10px 10px",
-    border: "none",
-  },
   classContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  header: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    "&:hover": {
+      backgroundColor: "#DCDCDC",
+    },
+  },
+  icon: {
+    marginRight: 20,
+    fontSize: 30,
   },
 });
 const CompetitionsListItem = ({
@@ -137,28 +139,46 @@ const CompetitionsListItem = ({
         )}
         <div
           onClick={() => setShowProposition((prev) => !prev)}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-          }}
+          className={classes.header}
         >
-          <div style={{ width: "300px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <PageHeader>{name}</PageHeader>
+            <SubHeader>{dateFrom}</SubHeader>
           </div>
-          {showProposition ? (
-            <KeyboardArrowUpIcon />
-          ) : (
-            <KeyboardArrowDownIcon />
-          )}
-          {competitionStartDate > todayDate ? (
-            <p style={{ color: "green", fontWeight: "bold" }}>Active</p>
-          ) : todayDate < competitionEndDate ? (
-            <p style={{ color: "blue", fontWeight: "bold" }}>Ongoing</p>
-          ) : (
-            <p style={{ color: "red", fontWeight: "bold" }}>Finished</p>
-          )}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {competitionStartDate > todayDate ? (
+              <p
+                style={{ color: "green", fontWeight: "bold", marginRight: 20 }}
+              >
+                Active
+              </p>
+            ) : todayDate < competitionEndDate ? (
+              <p style={{ color: "blue", fontWeight: "bold", marginRight: 20 }}>
+                Ongoing
+              </p>
+            ) : (
+              <p style={{ color: "red", fontWeight: "bold", marginRight: 20 }}>
+                Finished
+              </p>
+            )}
+            {showProposition ? (
+              <KeyboardArrowUpIcon className={classes.icon} />
+            ) : (
+              <KeyboardArrowDownIcon className={classes.icon} />
+            )}
+          </div>
         </div>
         {showProposition && (
           <>
