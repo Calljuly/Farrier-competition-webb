@@ -36,7 +36,7 @@ const useStyle = makeStyles({
 const Contact = () => {
   const classes = useStyle();
   return (
-    <div style={{ width: "100%" }}>
+    <>
       <div style={{ display: "flex", alignItems: "center" }}>
         <PageHeader>Contact</PageHeader>
       </div>
@@ -46,8 +46,7 @@ const Contact = () => {
       <div
         style={{
           display: "flex",
-          margin: "auto",
-          width: "80%",
+          margin: 40,
         }}
       >
         <Grid container>
@@ -128,7 +127,7 @@ const Contact = () => {
           </Grid>
         </Grid>
       </div>
-    </div>
+    </>
   );
 };
 export default Contact;

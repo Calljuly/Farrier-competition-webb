@@ -26,7 +26,26 @@ const ShoingClass = ({
   className,
 }) => {
   const classes = useStyles();
-  console.log(result);
+
+  const rows = [
+    {
+      id: 0,
+      cell: "one",
+    },
+    {
+      id: 1,
+      cell: "two",
+    },
+    {
+      id: 2,
+      cell: "three",
+    },
+    {
+      id: 3,
+      cell: "four",
+    },
+  ];
+
   return (
     <div>
       <SubHeader>{className}</SubHeader>
@@ -57,78 +76,28 @@ const ShoingClass = ({
                   <TableCell align="left">
                     {savedResult ? item.competitor : item.id}
                   </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "one",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeOne"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeOne.one}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "two",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeOne"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeOne.two}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "three",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeOne"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeOne.three}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "four",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeOne"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeOne.four}
-                  </TableCell>
+                  {rows.map((row) => (
+                    <TableCell
+                      key={row.id}
+                      onClick={
+                        savedResult
+                          ? () => alert("You can no longer edit these results")
+                          : () =>
+                              handleModalContent(
+                                item.id,
+                                row.cell,
+                                compClasses[1].headerTitles[1],
+                                compIndex,
+                                item.id,
+                                "shoeOne"
+                              )
+                      }
+                      align="left"
+                    >
+                      {item.shoeOne[row.cell]}
+                    </TableCell>
+                  ))}
+
                   <TableCell align="left">{item.shoeOne.total}</TableCell>
                 </TableRow>
               );
@@ -165,78 +134,27 @@ const ShoingClass = ({
                   <TableCell align="left">
                     {savedResult ? item.competitor : item.id}
                   </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "one",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeTwo"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeTwo.one}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "two",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeTwo"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeTwo.two}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "three",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeTwo"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeTwo.three}
-                  </TableCell>
-                  <TableCell
-                    onClick={
-                      savedResult
-                        ? () => alert("You can no longer edit these results")
-                        : () =>
-                            handleModalContent(
-                              item.id,
-                              "four",
-                              compClasses[1].headerTitles[1],
-                              compIndex,
-                              item.id,
-                              "shoeTwo"
-                            )
-                    }
-                    align="left"
-                  >
-                    {item.shoeTwo.four}
-                  </TableCell>
+                  {rows.map((row) => (
+                    <TableCell
+                      key={row.id}
+                      onClick={
+                        savedResult
+                          ? () => alert("You can no longer edit these results")
+                          : () =>
+                              handleModalContent(
+                                item.id,
+                                row.cell,
+                                compClasses[1].headerTitles[1],
+                                compIndex,
+                                item.id,
+                                "shoeTwo"
+                              )
+                      }
+                      align="left"
+                    >
+                      {item.shoeTwo[row.cell]}
+                    </TableCell>
+                  ))}
                   <TableCell align="left">{item.shoeTwo.total}</TableCell>
                 </TableRow>
               );

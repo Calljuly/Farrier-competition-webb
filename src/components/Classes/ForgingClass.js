@@ -64,7 +64,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
           />
         );
       })}
-     
+
       <SubHeader>Add sponsor</SubHeader>
       <TextInput
         required
@@ -79,7 +79,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         type="file"
         label="Sponsor Loggo"
         placeholder="Sponsor Loggo"
-        onChange={(event) => handleClasses("sponsorLoggo", event.target)}
+        onChange={(event) => handleClasses("sponsorLoggo", event)}
       />
     </div>
   );

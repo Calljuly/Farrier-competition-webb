@@ -269,13 +269,22 @@ const AddCompetition = () => {
     }
   };
 
-  const validateText = (text, key) => {
+  const validateText = (text, key, type) => {
     valid = true;
-    if (text.trim() === "") {
-      valid = false;
-    }
-    if (text.length < 3) {
-      valid = false;
+    if (type === "number") {
+      if (text.trim() === "") {
+        valid = false;
+      }
+      if (text.length === 0) {
+        valid = false;
+      }
+    } else {
+      if (text.trim() === "") {
+        valid = false;
+      }
+      if (text.length < 3) {
+        valid = false;
+      }
     }
     dispatchReducer({ type: key, value: valid, key: "valid" });
   };
@@ -292,8 +301,16 @@ const AddCompetition = () => {
     setFormValid(valid);
     return valid;
   };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "80%",
+        margin: "auto",
+      }}
+    >
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <PageHeader>Are you sure ?</PageHeader>
         <P> Are you sure you want to create yhis competition ? </P>
@@ -335,7 +352,7 @@ const AddCompetition = () => {
               key: "value",
             })
           }
-          onBlur={() => validateText(state[item.value].value, item.value)}
+          onBlur={() => validateText(state[item.value].value, item.value, item.type)}
           error={!state[item.value].valid}
           helperText={
             !state[item.value].valid &&
