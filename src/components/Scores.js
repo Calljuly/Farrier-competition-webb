@@ -12,7 +12,6 @@ import PageHeader from "./UI/PageHeader";
 import ComboClass from "./Tables/ComboClass";
 import { Alert } from "@material-ui/lab";
 import { storage } from "./firebase";
-import SponsorCard from "./SponsorCard";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -151,15 +150,6 @@ const Scores = () => {
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
         )}
-        <div
-          style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-        >
-          <SponsorCard
-            sponsorName={compClasses.sponsors}
-            sponsorUrl={compClasses.sponsorLoggo}
-            className={compClasses.className}
-          />
-        </div>
         {getScore(compClasses)}
         <Devider margin={60} />
 

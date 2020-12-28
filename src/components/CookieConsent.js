@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/styles";
 import P from "./UI/Paragraph";
 
 const CookieConsent = () => {
-  //localStorage.removeItem("cookieAccepted");
   const classes = useStyle();
   const [accept, setAccept] = useState(false);
   const cookieAccepted = () => {
@@ -40,6 +39,10 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    ["@media (max-width:1253px)"]: {
+      flexDirection: "column",
+      alignItems: "start",
+    },
     "& > p ": {
       margin: 20,
       textDecoration: "none",

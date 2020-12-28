@@ -46,8 +46,9 @@ const Result = () => {
   const sponsor = l.classes;
   const history = useHistory();
   console.log(sponsor);
-  if (!result) {
+  if (!result || !sponsor) {
     history.push("/competitions");
+    return null;
   }
 
   return (
@@ -79,6 +80,7 @@ const Result = () => {
           result.map((item, index) => {
             return (
               <TableContainer
+                key={item.competitor}
                 component={Paper}
                 style={{ marginBottom: "20px" }}
               >
