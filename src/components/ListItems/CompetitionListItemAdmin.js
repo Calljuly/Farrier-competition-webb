@@ -11,6 +11,7 @@ import PageHeader from "../UI/PageHeader";
 import { Colors } from "../../colors";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const useStyle = makeStyles({
   container: {
@@ -67,6 +68,11 @@ const useStyle = makeStyles({
   icon: {
     marginRight: 20,
     fontSize: 30,
+  },
+  classIcon: {
+    fontSize: 20,
+    marginRight: 20,
+    marginLeft: 20,
   },
 });
 
@@ -146,16 +152,29 @@ const CompetitionListItemAdmin = ({
                         margin: 0,
                       }}
                     >
-                      <Grid item xs={12} sm={4}>
+                      <Grid item xs={12} sm={3}>
                         <P>Type: {item.type}</P>
                       </Grid>
-                      <Grid item xs={12} sm={4}>
+                      <Grid item xs={12} sm={3}>
                         <P>Time : {item.time}</P>
                       </Grid>
-                      <Grid item xs={12} sm={4}>
+                      <Grid item xs={12} sm={3}>
                         <SubHeader>Shoes</SubHeader>
                         <P>{item.shoeOne}</P>
                         <P>{item.shoeTwo}</P>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={3}
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                        }}
+                      >
+                        <P>Fill in scores</P>
+                        <ArrowForwardIosIcon className={classes.classIcon} />
                       </Grid>
                     </Grid>
                   </div>

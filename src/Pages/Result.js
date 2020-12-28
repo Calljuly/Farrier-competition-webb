@@ -12,6 +12,8 @@ import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
 import { useLocation, useHistory } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
+import SponsorCard from "../components/SponsorCard";
+
 const useStyles = makeStyles({
   table: {
     width: "95%",
@@ -41,96 +43,135 @@ const Result = () => {
   const l = useLocation();
   const result = l.result;
   const competitionName = l.name;
-  const sponsor = l.classes
+  const sponsor = l.classes;
   const history = useHistory();
-console.log(sponsor)
+  console.log(sponsor);
   if (!result) {
-    history.push("/admin");
+    history.push("/competitions");
   }
+
   return (
-    <div>
+    <>
       <PageHeader>Result</PageHeader>
       <div className="divOrange" />
       <div className="divBlack" />
-      <div style={{ margin: "auto", width: "80%" }}>
+      <div style={{ margin: 40 }}>
         <SubHeader>{competitionName}</SubHeader>
-        <TableContainer component={Paper}>
-          <Table
-            className={classes.table}
-            size="small"
-            aria-label="a dense table"
-          >
-            <TableHead>
-              <TableRow>
-                {compClasses[1].headerTitles.map((comp, index) => {
-                  if (comp !== "Total Points") {
-                    return (
-                      <TableCell
-                        key={comp}
-                        style={{ verticalAlign: "bottom", padding: 0 }}
-                      >
-                        <p>{comp}</p>
-                      </TableCell>
-                    );
-                  }
-                })}
-                {compClasses[0].headerTitles.map((comp, index) => {
-                  if (comp !== "Competitor") {
-                    return (
-                      <TableCell
-                        key={comp}
-                        style={{ verticalAlign: "bottom", padding: 0 }}
-                      >
-                        <p>{comp}</p>
-                      </TableCell>
-                    );
-                  }
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {result &&
-                result.map((item, index) => {
-                  const color = index % 2 === 0;
-                  return item.result.map((res) => {
-                    if (res.shoeOne && res.shoeTwo) {
-                      return (
-                        <TableRow
-                          key={item.id}
-                          style={{
-                            backgroundColor: color ? "#DCDCDC" : "white",
-                          }}
-                        >
-                          <TableCell align="left">{res.competitor}</TableCell>
-                          <TableCell align="left">{res.shoeOne.one}</TableCell>
-                          <TableCell align="left">{res.shoeOne.two}</TableCell>
-                          <TableCell align="left">
-                            {res.shoeOne.three}
-                          </TableCell>
-                          <TableCell align="left">{res.shoeOne.four}</TableCell>
-                          <TableCell align="left">{res.shoeTwo.one}</TableCell>
-                          <TableCell align="left">{res.shoeTwo.two}</TableCell>
-                          <TableCell align="left">
-                            {res.shoeTwo.three}
-                          </TableCell>
-                          <TableCell align="left">{res.shoeTwo.four}</TableCell>
-                          <TableCell align="left">
-                            {res.shoeOne.total + res.shoeTwo.total}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
-                  });
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <SubHeader>Sponsors of all classes this competition</SubHeader>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "100%",
+            marginBottom: 30,
+          }}
+        >
+          {sponsor.map((item) => (
+            <SponsorCard
+              sponsorName={item.sponsors}
+              sponsorUrl={item.sponsorLoggo}
+              className={item.className}
+            />
+          ))}
+        </div>
+        {result &&
+          result.map((item, index) => {
+            return (
+              <TableContainer
+                component={Paper}
+                style={{ marginBottom: "20px" }}
+              >
+                <SubHeader>{item.className}</SubHeader>
+                <Table
+                  className={classes.table}
+                  size="small"
+                  aria-label="a dense table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      {compClasses[1].headerTitles.map((comp, index) => {
+                        if (comp !== "Total Points") {
+                          return (
+                            <TableCell
+                              key={comp}
+                              style={{ verticalAlign: "bottom", padding: 0 }}
+                            >
+                              <p>{comp}</p>
+                            </TableCell>
+                          );
+                        }
+                      })}
+                      {compClasses[0].headerTitles.map((comp, index) => {
+                        if (comp !== "Competitor") {
+                          return (
+                            <TableCell
+                              key={comp}
+                              style={{ verticalAlign: "bottom", padding: 0 }}
+                            >
+                              <p>{comp}</p>
+                            </TableCell>
+                          );
+                        }
+                      })}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {item.result.map((res, index) => {
+                      const color = index % 2 === 0;
+
+                      if (res.shoeOne && res.shoeTwo) {
+                        return (
+                          <TableRow
+                            key={item.id}
+                            style={{
+                              backgroundColor: color ? "#DCDCDC" : "white",
+                            }}
+                          >
+                            <TableCell align="left">{res.competitor}</TableCell>
+                            <TableCell align="left">
+                              {res.shoeOne.one}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeOne.two}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeOne.three}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeOne.four}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeTwo.one}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeTwo.two}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeTwo.three}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeTwo.four}
+                            </TableCell>
+                            <TableCell align="left">
+                              {res.shoeOne.total + res.shoeTwo.total}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      }
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            );
+          })}
+
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <CustomButton onClick={() => {}} title="Print result" />
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
