@@ -17,7 +17,7 @@ const useStyle = makeStyles({
 const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
   const classes = useStyle();
   const [sponsor, setSponsor] = useState("");
-
+  console.log(sponsorUrl);
   if (sponsorUrl) {
     storage
       .ref()

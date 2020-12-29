@@ -182,7 +182,6 @@ const Navbar = () => {
         drawerState={drawerState}
         navLinks={user.admin ? linksAdmin : isAuth ? linksAuth : linksUnAuth}
         auth={admin}
-        logout={() => dispatch(actions.logOut())}
       />
       <div className={classes.menuIconContainer}>
         <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />

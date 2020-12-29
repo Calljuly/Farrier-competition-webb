@@ -72,6 +72,15 @@ const AddClass = () => {
         };
         return newValue;
       });
+    } else if (key === "shoeOneImg" || key === "shoeTwoImg") {
+      console.log(value.target.files[0]);
+      setClasses((prev) => {
+        const newValue = {
+          ...prev,
+          [key]: value.target.files[0],
+        };
+        return newValue;
+      });
     } else {
       setClasses((prev) => {
         const newValue = {
@@ -103,7 +112,7 @@ const AddClass = () => {
   };
 
   const submitNewClass = async () => {
-    const newClass = {
+    let newClass = {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
@@ -118,28 +127,44 @@ const AddClass = () => {
     await uploadTask.on(
       "state_changed",
       (snapShot) => {
-        console.log(snapShot);
+        newClass.sponsorLoggo = newClass.sponsorLoggo.name;
       },
       (err) => {
         console.log(err);
         dispatch(actions.loading(false));
       }
     );
-    console.log(compClasses);
-    storage
-      .ref()
-      .child(`images/${classesObject.sponsorLoggo.name}`)
-      .getDownloadURL()
-      .then((url) => {
-        console.log(url);
-        setClasses((prev) => {
-          const newValue = {
-            ...prev,
-            sponsorLogggo: url,
-          };
-          return newValue;
-        });
-      });
+    if (newClass.type === "Forging") {
+      const uploadTaskOne = storage
+        .ref()
+        .child(`shoes/${newClass.shoeOneImg.name}`)
+        .put(newClass.shoeOneImg);
+      await uploadTaskOne.on(
+        "state_changed",
+        (snapShot) => {
+          newClass.shoeOneImg = newClass.shoeOneImg.name;
+        },
+        (err) => {
+          console.log(err);
+          dispatch(actions.loading(false));
+        }
+      );
+      const uploadTaskTwo = storage
+        .ref()
+        .child(`shoes/${newClass.shoeTwoImg.name}`)
+        .put(classesObject.shoeTwoImg);
+      await uploadTaskTwo.on(
+        "state_changed",
+        (snapShot) => {
+          newClass.shoeTwoImg = newClass.shoeTwoImg.name;
+        },
+        (err) => {
+          console.log(err);
+          dispatch(actions.loading(false));
+        }
+      );
+    }
+    console.log(newClass);
 
     return user.getIdToken().then(async (token) => {
       fetch(

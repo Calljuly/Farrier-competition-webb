@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +12,8 @@ import PageHeader from "../components/UI/PageHeader";
 import { useLocation, useHistory } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import { Alert } from "@material-ui/lab";
+import ComponentToPrint from "../components/PdfGenerator";
+import { useReactToPrint } from "react-to-print";
 
 const useStyles = makeStyles({
   table: {
@@ -44,9 +46,15 @@ const StartList = () => {
   const competitionName = l.name;
   const history = useHistory();
 
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   if (!entries) {
     history.push("/admin");
   }
+
   return (
     <>
       <PageHeader>Startlist</PageHeader>
@@ -54,57 +62,66 @@ const StartList = () => {
       <div className="divBlack" />
       <div
         style={{
-          margin: "auto",
-          width: "80%",
           display: "flex",
           flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "start",
+          margin: 30,
+          marginBottom: 30,
         }}
       >
-        <SubHeader>{competitionName}</SubHeader>
+        <ComponentToPrint ref={componentRef}>
+          <SubHeader>{competitionName}</SubHeader>
 
-        {entries && entries.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table
-              className={classes.table}
-              size="small"
-              aria-label="a dense table"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                    <p>Id</p>
-                  </TableCell>
-                  <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                    <p>Competitor</p>
-                  </TableCell>
-                  <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                    <p>Country</p>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {entries &&
-                  entries.map((item, index) => {
-                    const color = index % 2 === 0;
-                    return (
-                      <TableRow
-                        key={item.id}
-                        style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
-                      >
-                        <TableCell align="left">{item.competitor}</TableCell>
-                        <TableCell align="left">{item.id}</TableCell>
-                        <TableCell align="left">{item.country}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Alert severity="error">No startlist avalibale</Alert>
-        )}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <CustomButton title="Print startlist" onClick={() => {}} />
+          {entries && entries.length > 0 ? (
+            <TableContainer component={Paper}>
+              <Table
+                className={classes.table}
+                size="small"
+                aria-label="a dense table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
+                      <p>Id</p>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
+                      <p>Competitor</p>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
+                      <p>Country</p>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {entries &&
+                    entries.map((item, index) => {
+                      const color = index % 2 === 0;
+                      return (
+                        <TableRow
+                          key={item.id}
+                          style={{
+                            backgroundColor: color ? "#DCDCDC" : "white",
+                          }}
+                        >
+                          <TableCell align="left">{item.competitor}</TableCell>
+                          <TableCell align="left">{item.id}</TableCell>
+                          <TableCell align="left">{item.country}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Alert severity="error">No startlist avalibale</Alert>
+          )}
+        </ComponentToPrint>
+
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+        >
+          <CustomButton title="Print startlist" onClick={handlePrint} />
           <CustomButton title="Go back" onClick={() => history.goBack()} />
         </div>
       </div>

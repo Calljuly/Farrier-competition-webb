@@ -3,7 +3,6 @@ import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import ResultListItem from "../components/ListItems/ResultListItem";
 import { useSelector } from "react-redux";
-import { Colors } from "../colors";
 import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
 import EditProfile from "../components/Forms/edirProfil";

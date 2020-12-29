@@ -12,7 +12,7 @@ const useStyle = makeStyles({
 });
 const Home = () => {
   const classes = useStyle();
-  
+
   return (
     <div className={classes.container}>
       <h1 style={{ fontSize: 50, textAlign: "center", margin: 0 }}>

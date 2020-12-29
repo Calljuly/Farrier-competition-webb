@@ -24,7 +24,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         required
         id="shoeOneImg"
         type="file"
-        onChange={(event) => handleClasses("shoeOneImg", event.target)}
+        onChange={(event) => handleClasses("shoeOneImg", event)}
       />
       <CustomSelect
         handler={handleClasses}
@@ -36,7 +36,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         required
         id="shoeTwoImg"
         type="file"
-        onChange={(event) => handleClasses("shoeTwoImg", event.target)}
+        onChange={(event) => handleClasses("shoeTwoImg", event)}
       />
       <TextInput
         required

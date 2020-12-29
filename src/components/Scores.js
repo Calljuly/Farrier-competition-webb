@@ -136,7 +136,17 @@ const Scores = () => {
   };
   return (
     <>
-      <PageHeader>Scores</PageHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginRight: 30,
+        }}
+      >
+        <PageHeader>Scores</PageHeader>
+        <CustomButton onClick={() => history.goBack()} title="Go Back" />
+      </div>
       <div className="divOrange" />
       <div className="divBlack" />
       <div style={{ margin: 30 }}>

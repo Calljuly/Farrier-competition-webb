@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -13,6 +13,8 @@ import PageHeader from "../components/UI/PageHeader";
 import { useLocation, useHistory } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import SponsorCard from "../components/SponsorCard";
+import ComponentToPrint from "../components/PdfGenerator";
+import { useReactToPrint } from "react-to-print";
 
 const useStyles = makeStyles({
   table: {
@@ -55,7 +57,12 @@ const Result = () => {
   const competitionName = l.name;
   const sponsor = l.classes;
   const history = useHistory();
-  console.log(sponsor);
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   if (!result || !sponsor) {
     history.push("/competitions");
     return null;
@@ -63,7 +70,17 @@ const Result = () => {
 
   return (
     <>
-      <PageHeader>Result</PageHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginRight: 30,
+        }}
+      >
+        <PageHeader>Result</PageHeader>
+        <CustomButton onClick={() => history.goBack()} title="Go Back" />
+      </div>
       <div className="divOrange" />
       <div className="divBlack" />
       <div style={{ margin: 40 }}>
@@ -79,100 +96,103 @@ const Result = () => {
             />
           ))}
         </div>
-        {result &&
-          result.map((item, index) => {
-            return (
-              <TableContainer
-                key={item.competitor}
-                component={Paper}
-                style={{ marginBottom: "20px" }}
-              >
-                <SubHeader>{item.className}</SubHeader>
-                <Table
-                  className={classes.table}
-                  size="small"
-                  aria-label="a dense table"
+        <ComponentToPrint ref={componentRef}>
+          {result &&
+            result.map((item, index) => {
+              return (
+                <TableContainer
+                  key={item.competitor}
+                  component={Paper}
+                  style={{ marginBottom: "20px" }}
                 >
-                  <TableHead>
-                    <TableRow>
-                      {compClasses[1].headerTitles.map((comp, index) => {
-                        if (comp !== "Total Points") {
+                  <SubHeader>{item.className}</SubHeader>
+                  <Table
+                    className={classes.table}
+                    size="small"
+                    aria-label="a dense table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        {compClasses[1].headerTitles.map((comp, index) => {
+                          if (comp !== "Total Points") {
+                            return (
+                              <TableCell
+                                key={comp}
+                                style={{ verticalAlign: "bottom", padding: 0 }}
+                              >
+                                <p>{comp}</p>
+                              </TableCell>
+                            );
+                          }
+                        })}
+                        {compClasses[0].headerTitles.map((comp, index) => {
+                          if (comp !== "Competitor") {
+                            return (
+                              <TableCell
+                                key={comp}
+                                style={{ verticalAlign: "bottom", padding: 0 }}
+                              >
+                                <p>{comp}</p>
+                              </TableCell>
+                            );
+                          }
+                        })}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {item.result.map((res, index) => {
+                        const color = index % 2 === 0;
+
+                        if (res.shoeOne && res.shoeTwo) {
                           return (
-                            <TableCell
-                              key={comp}
-                              style={{ verticalAlign: "bottom", padding: 0 }}
+                            <TableRow
+                              key={item.id}
+                              style={{
+                                backgroundColor: color ? "#DCDCDC" : "white",
+                              }}
                             >
-                              <p>{comp}</p>
-                            </TableCell>
+                              <TableCell align="left">
+                                {res.competitor}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeOne.one}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeOne.two}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeOne.three}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeOne.four}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeTwo.one}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeTwo.two}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeTwo.three}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeTwo.four}
+                              </TableCell>
+                              <TableCell align="left">
+                                {res.shoeOne.total + res.shoeTwo.total}
+                              </TableCell>
+                            </TableRow>
                           );
                         }
                       })}
-                      {compClasses[0].headerTitles.map((comp, index) => {
-                        if (comp !== "Competitor") {
-                          return (
-                            <TableCell
-                              key={comp}
-                              style={{ verticalAlign: "bottom", padding: 0 }}
-                            >
-                              <p>{comp}</p>
-                            </TableCell>
-                          );
-                        }
-                      })}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {item.result.map((res, index) => {
-                      const color = index % 2 === 0;
-
-                      if (res.shoeOne && res.shoeTwo) {
-                        return (
-                          <TableRow
-                            key={item.id}
-                            style={{
-                              backgroundColor: color ? "#DCDCDC" : "white",
-                            }}
-                          >
-                            <TableCell align="left">{res.competitor}</TableCell>
-                            <TableCell align="left">
-                              {res.shoeOne.one}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeOne.two}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeOne.three}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeOne.four}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeTwo.one}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeTwo.two}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeTwo.three}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeTwo.four}
-                            </TableCell>
-                            <TableCell align="left">
-                              {res.shoeOne.total + res.shoeTwo.total}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      }
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            );
-          })}
-
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              );
+            })}
+        </ComponentToPrint>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <CustomButton onClick={() => {}} title="Print result" />
+          <CustomButton onClick={handlePrint} title="Print result" />
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </div>
       </div>

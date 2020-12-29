@@ -12,7 +12,7 @@ import { Colors } from "../../colors";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-
+import ChoiseModal from "../ChoiseModal";
 const useStyle = makeStyles({
   container: {
     width: "100%",
@@ -96,9 +96,23 @@ const CompetitionListItemAdmin = ({
   const competitionStartDate = new Date(dateFrom);
   const todayDate = new Date();
   const [showProposition, setShowProposition] = useState(false);
-
+  const [modal, setModal] = useState(false);
   return (
     <div className={classes.container}>
+      <ChoiseModal isOpen={modal} handleClose={() => setModal(false)}>
+        <PageHeader>Are you sure ?</PageHeader>
+        <P>
+          Are you sure you want to publish these results ? You wont be able to
+          change them afterwords{" "}
+        </P>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Cancel" onClick={() => setModal(false)} />
+          <CustomButton
+            title="Im sure"
+            onClick={() => dispatch(actions.saveAllResult(id, compClasses))}
+          />
+        </div>
+      </ChoiseModal>
       <div
         onClick={() => setShowProposition((prev) => !prev)}
         className={classes.competitionRow}
@@ -229,9 +243,7 @@ const CompetitionListItemAdmin = ({
                 <Grid item md={4} xs={12}>
                   <CustomButton
                     title="Publish all results"
-                    onClick={() =>
-                      dispatch(actions.saveAllResult(id, compClasses))
-                    }
+                    onClick={() => setModal(true)}
                   />
                 </Grid>
                 <Grid item md={4} xs={12}>
@@ -249,7 +261,7 @@ const CompetitionListItemAdmin = ({
                   title="Result"
                   onClick={() =>
                     history.push({
-                      pathname: "/admin/result",
+                      pathname: "/competitions/result",
                       result: result,
                       name: name,
                     })

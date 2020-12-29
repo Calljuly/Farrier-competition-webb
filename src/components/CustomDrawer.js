@@ -8,16 +8,13 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { Colors } from "../colors";
 import { NavLink, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import * as actions from "../store/actions/auth";
 
-const CustomDrawer = ({
-  drawerState,
-  toggleDrawer,
-  navLinks,
-  auth,
-  logOut,
-}) => {
+const CustomDrawer = ({ drawerState, toggleDrawer, navLinks, auth }) => {
   const classes = useStyle();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <SwipeableDrawer
@@ -54,7 +51,11 @@ const CustomDrawer = ({
         )}
         <ListItem classes={{ root: classes.tabs }} button>
           <NavLink
-            onClick={auth ? () => logOut() : () => history.push("/signIn")}
+            onClick={
+              auth
+                ? () => dispatch(actions.logOut())
+                : () => history.push("/signIn")
+            }
             className={classes.tabs}
             to={auth ? "/" : "/signIn"}
           >
