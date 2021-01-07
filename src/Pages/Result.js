@@ -15,6 +15,7 @@ import CustomButton from "../components/CustomButton";
 import SponsorCard from "../components/SponsorCard";
 import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
+import ButtonContainer from "../components/UI/ButtonContainer";
 
 const useStyles = makeStyles({
   table: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
   sponsorContainer: {
     display: "flex",
     justifyContent: "space-around",
+    flexWrap: "wrap",
     width: "100%",
     marginBottom: 30,
     ["@media (max-width: 1000px)"]: {
@@ -118,7 +120,12 @@ const Result = () => {
                             return (
                               <TableCell
                                 key={comp}
-                                style={{ verticalAlign: "bottom", padding: 0 }}
+                                style={{
+                                  verticalAlign: "bottom",
+                                  padding: 0,
+                                  fontSize: 10,
+                                }}
+                                classes={{ root: { fontSize: 10 } }}
                               >
                                 <p>{comp}</p>
                               </TableCell>
@@ -191,10 +198,10 @@ const Result = () => {
               );
             })}
         </ComponentToPrint>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <ButtonContainer>
           <CustomButton onClick={handlePrint} title="Print result" />
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
-        </div>
+        </ButtonContainer>
       </div>
     </>
   );

@@ -6,34 +6,24 @@ export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
 
 export const signUp = (user) => {
+  console.log('kommer hit')
   return (dispatch) => {
+    console.log('kommer hit 2')
+
     dispatch(isAuth(false, true, {}, false));
-    if (user.password === user.passwordConfirmed) {
+    if (user.password.value === user.passwordConfirmed.value) {
       throw new Error("Passwords not alike");
     }
 
     auth
       .createUserWithEmailAndPassword(user.email.value, user.password.value)
       .then((cred) => {
-        const uploadTask = storage
-          .ref()
-          .child(`images/${user.profileImage.value}`)
-          .put(user.profileImage.value);
-        uploadTask.on(
-          "state_changed",
-          (snapShot) => {
-            console.log(snapShot);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-
+       
         const newUser = {
           bio: user.bio.value,
           result: [],
           name: user.name.value,
-          img: user.profileImage.value,
+          profileImage: user.profileImage.value.name,
           address: user.address.value,
           phone: user.phone.value,
           country: user.country.value,

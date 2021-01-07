@@ -12,6 +12,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
+import ButtonContainer from "../UI/ButtonContainer";
 
 const textInputs = [
   {
@@ -366,12 +367,12 @@ const EditCompetition = () => {
                 }
               />
             ))}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <ButtonContainer>
               <CustomButton
                 onClick={() => setIsOpen(true)}
                 title="Update competition"
               />
-            </div>
+            </ButtonContainer>
           </>
         )}
       </div>

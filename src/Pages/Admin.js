@@ -111,6 +111,7 @@ const Admin = () => {
                       dateFrom={item.competition.dateFrom}
                       dateTo={item.competition.dateTo}
                       result={item.competition.result}
+                      openForEntries={item.competition.openForEntries}
                     />
                   );
                 })

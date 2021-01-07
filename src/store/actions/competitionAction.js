@@ -112,21 +112,7 @@ export const createCompetition = (competition, user) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-    const comp = {
-      currentEntries: 0,
-      result: [],
-      entries: [],
-      country: competition.country.value,
-      anvils: competition.anvils.value,
-      name: competition.name.value,
-      referee: competition.referee.value,
-      admins: admin,
-      dateTo: competition.dateTo.value,
-      dateFrom: competition.dateFrom.value,
-      location: competition.location.value,
-      hotels: competition.hotels.value,
-      parking: competition.parking.value,
-    };
+    
     var user = auth.currentUser;
     return user.getIdToken().then((token) => {
       fetch(
@@ -137,7 +123,7 @@ export const createCompetition = (competition, user) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(comp),
+          body: JSON.stringify(competition),
         }
       )
         .then((response) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions/auth";
@@ -15,6 +15,7 @@ import TextInput from "../TextInput";
 import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
 import { useHistory } from "react-router-dom";
+import { storage, auth } from "../firebase";
 
 const textFieldsRegister = [
   {
@@ -46,12 +47,6 @@ const textFieldsRegister = [
     label: "Country",
     type: "text",
     key: "country",
-  },
-  {
-    id: 6,
-    label: "",
-    type: "file",
-    key: "profileImage",
   },
 ];
 
@@ -88,7 +83,7 @@ const Login = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
-  const auth = useSelector((state) => state.auth.isAuth);
+  const isAuth = useSelector((state) => state.auth.isAuth);
 
   const [isOpen, setIsOpen] = useState(false);
   const [formValid, setFormValid] = useState(true);
@@ -138,13 +133,27 @@ const Login = () => {
   });
 
   const handleInputChange = (id, text) => {
-    const updatedState = {
-      ...authState,
-      [id]: {
-        ...authState[id],
-        value: text,
-      },
-    };
+    console.log(id);
+    let updatedState;
+    if (id === "profileImage") {
+      updatedState = {
+        ...authState,
+        [id]: {
+          ...authState[id],
+          value: text.target.files[0],
+        },
+      };
+      console.log(updatedState);
+    } else {
+      updatedState = {
+        ...authState,
+        [id]: {
+          ...authState[id],
+          value: text.target.value,
+        },
+      };
+    }
+
     setAuthState(updatedState);
   };
   const handleInputValidation = (id, value) => {
@@ -164,10 +173,12 @@ const Login = () => {
   const handleValidation = (item) => {
     if (item.type === "number") {
       validateAge(authState[item.key].value, handleInputValidation, item.key);
+    } else if (item.key === "profileImage") {
     } else {
       validateText(authState[item.key].value, handleInputValidation, item.key);
     }
   };
+
   const formValidation = () => {
     const a = Object.keys(authState);
     let valid = true;
@@ -180,16 +191,77 @@ const Login = () => {
     setFormValid(valid);
     return valid;
   };
-  const createUser = () => {
+  const createUser = async () => {
     const valid = formValidation();
 
     if (valid) {
-      actions.signUp(authState);
+      //actions.signUp(authState);
+      if (authState.profileImage.name) {
+        const uploadTask = storage
+          .ref()
+          .child(`images/${authState.profileImage.name}`)
+          .put(authState.profileImage);
+        await uploadTask.on(
+          "state_changed",
+          (snapShot) => {
+            authState.profileImage = authState.profileImage.name;
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
+
+      auth
+        .createUserWithEmailAndPassword(
+          authState.email.value,
+          authState.password.value
+        )
+        .then((cred) => {
+          const newUser = {
+            bio: authState.bio.value,
+            result: [],
+            name: authState.name.value,
+            profileImage: authState.profileImage.value.name,
+            address: authState.address.value,
+            phone: authState.phone.value,
+            country: authState.country.value,
+            age: authState.age.value,
+            uid: cred.user.uid,
+          };
+          fetch(
+            `https://us-central1-farrier-project.cloudfunctions.net/app/user/create`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newUser),
+            }
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((users) => {
+              console.log(users);
+              return users;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .then(() => {
+          alert("User sucsessfully created");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
+
     setIsOpen(false);
   };
 
-  if (auth) {
+  if (isAuth) {
     history.push("/myProfile");
   }
 
@@ -214,7 +286,7 @@ const Login = () => {
         )}
         <TextInput
           value={authState["email"].value}
-          onChange={(event) => handleInputChange("email", event.target.value)}
+          onChange={(event) => handleInputChange("email", event)}
           className={classes.input}
           label="Email"
           onBlur={() =>
@@ -232,7 +304,7 @@ const Login = () => {
         />
         <TextInput
           value={authState["password"].value}
-          onChange={(text) => handleInputChange("password", text.target.value)}
+          onChange={(text) => handleInputChange("password", text)}
           className={classes.input}
           label="Password"
           type="password"
@@ -254,9 +326,7 @@ const Login = () => {
           <>
             <TextInput
               value={authState["passwordConfirmed"].value}
-              onChange={(text) =>
-                handleInputChange("passwordConfirmed", text.target.value)
-              }
+              onChange={(text) => handleInputChange("passwordConfirmed", text)}
               className={classes.input}
               label="Confirm password"
               type="password"
@@ -278,19 +348,11 @@ const Login = () => {
               <TextInput
                 key={item.id}
                 value={authState[item.key].value}
-                onChange={(text) =>
-                  handleInputChange(item.key, text.target.value)
-                }
+                onChange={(text) => handleInputChange(item.key, text)}
                 className={classes.input}
                 label={item.label}
                 type={item.type}
-                onBlur={() =>
-                  handleValidation(
-                    authState[item.key].value,
-                    handleInputValidation,
-                    item.key
-                  )
-                }
+                onBlur={() => handleValidation(item)}
                 error={!authState[item.key].valid}
                 helperText={
                   !authState[item.key].valid &&
@@ -299,8 +361,19 @@ const Login = () => {
               />
             ))}
             <TextInput
+              onChange={(text) => handleInputChange("profileImage", text)}
+              className={classes.input}
+              label={"Profil bild"}
+              type="file"
+              error={!authState["profileImage"].valid}
+              helperText={
+                !authState["profileImage"].valid &&
+                "You have to enter a valid password, aleast 6 characters"
+              }
+            />
+            <TextInput
               value={authState["bio"].value}
-              onChange={(text) => handleInputChange("bio", text.target.value)}
+              onChange={(text) => handleInputChange("bio", text)}
               className={classes.input}
               label="Write something about yourself"
               type="text"

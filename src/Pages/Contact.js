@@ -8,6 +8,8 @@ import Devider from "../components/UI/Devider";
 import TextInput from "../components/TextInput";
 import { Button } from "@material-ui/core";
 import SubHeader from "../components/UI/SubHeader";
+import ButtonContainer from "../components/UI/ButtonContainer";
+
 const useStyle = makeStyles({
   email: {
     textDecoration: "none",
@@ -33,6 +35,7 @@ const useStyle = makeStyles({
     },
   },
 });
+
 const Contact = () => {
   const classes = useStyle();
   return (
@@ -95,17 +98,11 @@ const Contact = () => {
                 rows={4}
                 name="message"
               />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginRight: 60,
-                }}
-              >
+              <ButtonContainer>
                 <Button name="button" type="submit" className={classes.button}>
                   Send Message
                 </Button>
-              </div>
+              </ButtonContainer>
             </form>
           </Grid>
           <Grid item xs={12} md={6}>

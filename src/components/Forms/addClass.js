@@ -16,15 +16,12 @@ import * as actions from "../../store/actions/competitionAction";
 import Devider from "../UI/Devider";
 import { storage, auth } from "../../components/firebase";
 import { Alert } from "@material-ui/lab";
+import ButtonContainer from "../UI/ButtonContainer";
 
 const AddClass = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const [numberOne, setNumberOne] = useState(1);
-  const [numberTwo, setNumberTwo] = useState(1);
-  const [numberThree, setNumberThree] = useState(1);
-  const [numberFour, setNumberFour] = useState(1);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [classesObject, setClasses] = useState({
@@ -62,17 +59,25 @@ const AddClass = () => {
     }
   });
 
+  const [numberOne, setNumberOne] = useState(
+    classesObject.type === "Shoeing" ? 2.5 : 1.5
+  );
+  const [numberTwo, setNumberTwo] = useState(
+    classesObject.type === "Shoeing" ? 2.5 : 1
+  );
+  const [numberThree, setNumberThree] = useState(
+    classesObject.type === "Shoeing" ? 2.5 : 1.5
+  );
+  const [numberFour, setNumberFour] = useState(
+    classesObject.type === "Shoeing" ? 2.5 : 1
+  );
+
   const handleClasses = (key, value) => {
-    if (key === "sponsorLoggo") {
-      console.log(value.target.files[0]);
-      setClasses((prev) => {
-        const newValue = {
-          ...prev,
-          [key]: value.target.files[0],
-        };
-        return newValue;
-      });
-    } else if (key === "shoeOneImg" || key === "shoeTwoImg") {
+    if (
+      key === "shoeOneImg" ||
+      key === "shoeTwoImg" ||
+      key === "sponsorLoggo"
+    ) {
       console.log(value.target.files[0]);
       setClasses((prev) => {
         const newValue = {
@@ -334,13 +339,13 @@ const AddClass = () => {
           {getClass(classesObject.type)}
           <Devider margin={30} />
 
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <ButtonContainer>
             <CustomButton
               onClick={() => setIsOpen(true)}
               title="Create class"
             />
             <CustomButton onClick={() => history.goBack()} title="Go Back" />
-          </div>
+          </ButtonContainer>
         </div>
       </div>
     </>

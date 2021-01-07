@@ -11,6 +11,8 @@ import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
 import { makeStyles } from "@material-ui/styles";
+import EnterCompetition from "../Pages/EnterCompetition";
+import { Alert } from "@material-ui/lab";
 
 const useStyle = makeStyles({
   headerContainer: {
@@ -61,10 +63,10 @@ const Competitions = () => {
           <div className="divBlack" />
           <Devider margin={30} />
           <TabPanel value={value} index={0}>
-            <div style={{ marginLeft: 160 }}>
-              <PageHeader>Active competitions</PageHeader>
-            </div>
-            {competitions.length === 0 && <P>No competitions avalible</P>}
+            <PageHeader>Active competitions</PageHeader>
+            {competitions.length === 0 && (
+              <Alert severity="error">No competitions avalible</Alert>
+            )}
             {competitions.map((item, index) => {
               const competitionEndDate = new Date(item.competition.dateTo);
 
@@ -88,16 +90,17 @@ const Competitions = () => {
                     dateFrom={item.competition.dateFrom}
                     dateTo={item.competition.dateTo}
                     result={item.competition.result}
+                    openForEntries={item.competition.openForEntries}
                   />
                 );
               }
             })}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <div style={{ marginLeft: 160 }}>
-              <PageHeader>Past competitions</PageHeader>
-            </div>
-            {competitions.length === 0 && <P>No competitions avalible</P>}
+            <PageHeader>Past competitions</PageHeader>
+            {competitions.length === 0 && (
+              <Alert severity="error">No competitions avalible</Alert>
+            )}
             {competitions.map((item, index) => {
               const competitionToDate = new Date(item.competition.dateTo);
 
@@ -121,6 +124,7 @@ const Competitions = () => {
                     dateTo={item.competition.dateTo}
                     result={item.competition.result}
                     entries={item.competition.entries}
+                    openForEntries={item.competition.openForEntries}
                   />
                 );
               }
@@ -128,9 +132,7 @@ const Competitions = () => {
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Grid container spacing={2}>
-              <div style={{ marginLeft: 160 }}>
-                <PageHeader>Search for results</PageHeader>
-              </div>
+              <PageHeader>Search for results</PageHeader>
             </Grid>
           </TabPanel>
         </Route>
@@ -139,6 +141,9 @@ const Competitions = () => {
         </Route>
         <Route path="/competitions/result" exact>
           <Result />
+        </Route>
+        <Route path="/competitions/enterCompetition" exact>
+          <EnterCompetition />
         </Route>
       </Switch>
     </div>

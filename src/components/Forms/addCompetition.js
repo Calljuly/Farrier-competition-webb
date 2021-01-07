@@ -11,6 +11,7 @@ import P from "../UI/Paragraph";
 import { Alert } from "@material-ui/lab";
 import Devider from "../UI/Devider";
 import { auth } from "../firebase";
+import ButtonContainer from "../UI/ButtonContainer";
 
 const textInputs = [
   {
@@ -76,6 +77,13 @@ const textInputs = [
     type: "text",
     multiline: true,
   },
+  {
+    id: 10,
+    label: "Other information",
+    value: "information",
+    type: "text",
+    multiline: true,
+  },
 ];
 const initialState = {
   name: {
@@ -113,6 +121,10 @@ const initialState = {
     valid: true,
   },
   parking: {
+    value: "",
+    valid: true,
+  },
+  information: {
     value: "",
     valid: true,
   },
@@ -228,6 +240,7 @@ const AddCompetition = () => {
         location: state.location.value,
         hotels: state.hotels.value,
         parking: state.parking.value,
+        information: state.information.value,
       };
 
       var user = auth.currentUser;
@@ -352,7 +365,9 @@ const AddCompetition = () => {
               key: "value",
             })
           }
-          onBlur={() => validateText(state[item.value].value, item.value, item.type)}
+          onBlur={() =>
+            validateText(state[item.value].value, item.value, item.type)
+          }
           error={!state[item.value].valid}
           helperText={
             !state[item.value].valid &&
@@ -361,12 +376,12 @@ const AddCompetition = () => {
         />
       ))}
       <Devider margin={30} />
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <ButtonContainer>
         <CustomButton
           onClick={() => setIsOpen(true)}
           title="Create Competition"
         />
-      </div>
+      </ButtonContainer>
     </div>
   );
 };

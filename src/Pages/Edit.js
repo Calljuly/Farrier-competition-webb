@@ -5,6 +5,7 @@ import Devider from "../components/UI/Devider";
 import { useLocation, useHistory } from "react-router-dom";
 import EditCompetition from "../components/Forms/editCompetition";
 import PageHeader from "../components/UI/PageHeader";
+import ButtonContainer from "../components/UI/ButtonContainer";
 
 const Edit = () => {
   const l = useLocation();
@@ -35,9 +36,9 @@ const Edit = () => {
         })}
         <Devider margin={30} />
 
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <ButtonContainer>
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
-        </div>
+        </ButtonContainer>
       </div>
     </>
   );

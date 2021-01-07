@@ -13,6 +13,10 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ChoiseModal from "../ChoiseModal";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import { firestore } from "../firebase";
+
 const useStyle = makeStyles({
   container: {
     width: "100%",
@@ -88,6 +92,7 @@ const CompetitionListItemAdmin = ({
   dateFrom,
   dateTo,
   result,
+  openForEntries,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -97,6 +102,15 @@ const CompetitionListItemAdmin = ({
   const todayDate = new Date();
   const [showProposition, setShowProposition] = useState(false);
   const [modal, setModal] = useState(false);
+  const [open, setOpen] = useState(openForEntries);
+  const openCompetitionForEntries = async (event) => {
+    setOpen(event.target.checked);
+    await firestore.collection("competitions").doc(id).update({
+      openForEntries: event.target.checked,
+    });
+    dispatch(actions.fetchCompetitions());
+  };
+
   return (
     <div className={classes.container}>
       <ChoiseModal isOpen={modal} handleClose={() => setModal(false)}>
@@ -197,6 +211,16 @@ const CompetitionListItemAdmin = ({
           </div>
           <h2>Handle your competition</h2>
           <div style={{ display: "flex" }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={open}
+                  onChange={openCompetitionForEntries}
+                  name="Open competition"
+                />
+              }
+              label="Open competitions for entries"
+            />
             <Grid container>
               {todayDate < competitionStartDate && (
                 <>

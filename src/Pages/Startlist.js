@@ -14,6 +14,7 @@ import CustomButton from "../components/CustomButton";
 import { Alert } from "@material-ui/lab";
 import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
+import ButtonContainer from "../components/UI/ButtonContainer";
 
 const useStyles = makeStyles({
   table: {
@@ -118,12 +119,10 @@ const StartList = () => {
           )}
         </ComponentToPrint>
 
-        <div
-          style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-        >
+        <ButtonContainer>
           <CustomButton title="Print startlist" onClick={handlePrint} />
           <CustomButton title="Go back" onClick={() => history.goBack()} />
-        </div>
+        </ButtonContainer>
       </div>
     </>
   );

@@ -94,6 +94,7 @@ const CompetitionsListItem = ({
   dateTo,
   entries,
   result,
+  openForEntries,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -116,7 +117,10 @@ const CompetitionsListItem = ({
     entries: entries,
   };
   const enterCompetition = () => {
-    if (entries.includes(user.name)) {
+    const a = entries.filter((item) => {
+      return user.name === item.competitor;
+    });
+    if (a) {
       setError(true);
       return;
     }
@@ -218,17 +222,36 @@ const CompetitionsListItem = ({
               style={{ display: "flex", justifyContent: "flex-end" }}
             >
               {isAuth &&
+                openForEntries &&
                 competitionStartDate > todayDate &&
                 !entries.includes(user.name) && (
-                  <Grid item md={4} xs={12}>
-                    <CustomButton
-                      disabled={disabled}
-                      onClick={enterCompetition}
-                      title={
-                        disabled ? "Competition is full" : "Enter competition"
-                      }
-                    />
-                  </Grid>
+                  <>
+                    <Grid item md={4} xs={12}>
+                      <CustomButton
+                        disabled={disabled}
+                        onClick={enterCompetition}
+                        title={
+                          disabled ? "Competition is full" : "Enter competition"
+                        }
+                      />
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                      <CustomButton
+                        disabled={disabled}
+                        onClick={() =>
+                          history.push({
+                            pathname: "/competitions/enterCompetition",
+                            compClasses: compClasses,
+                          })
+                        }
+                        title={
+                          disabled
+                            ? "Competition is full"
+                            : "Enter competition New page"
+                        }
+                      />
+                    </Grid>
+                  </>
                 )}
               <Grid item md={4} xs={12}>
                 <CustomButton

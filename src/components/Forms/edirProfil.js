@@ -10,6 +10,7 @@ import ChoiseModal from "../ChoiseModal";
 import { auth } from "../firebase";
 import * as actions from "../../store/actions/auth";
 import { useSelector } from "react-redux";
+import ButtonContainer from "../UI/ButtonContainer";
 
 const textFieldsRegister = [
   {
@@ -216,12 +217,12 @@ const EditProfile = () => {
         />
         <Devider margin={30} />
 
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <ButtonContainer>
           <CustomButton
             title="Update profile"
             onClick={() => setIsOpen((prev) => !prev)}
           />
-        </div>
+        </ButtonContainer>
       </div>
     </div>
   );

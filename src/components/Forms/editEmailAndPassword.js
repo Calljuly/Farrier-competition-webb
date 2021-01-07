@@ -8,6 +8,8 @@ import TextInput from "../TextInput";
 import PageHeader from "../UI/PageHeader";
 import ChoiseModal from "../ChoiseModal";
 import { Alert } from "@material-ui/lab";
+import ButtonContainer from "../UI/ButtonContainer";
+
 
 let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -98,9 +100,9 @@ const EditEmailAndPassword = () => {
         email adress. Follow the link in your email and you will be able to
         change your password
       </P>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <ButtonContainer>
         <CustomButton title="Change password" onClick={changePassword} />
-      </div>
+      </ButtonContainer>
       <PageHeader>Change Email</PageHeader>
       {error.length > 0 && <Alert severity="error">{error}</Alert>}
       {success && (
@@ -120,12 +122,12 @@ const EditEmailAndPassword = () => {
         label="Password"
         type="password"
       />
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <ButtonContainer>
         <CustomButton
           title="Change Email"
           onClick={() => setIsOpen((prev) => !prev)}
         />
-      </div>
+      </ButtonContainer>
     </div>
   );
 };

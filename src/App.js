@@ -15,7 +15,7 @@ const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const isLoadingAuth = useSelector((state) => state.auth.isLoading);
-  
+
   const isLoadingCompetition = useSelector(
     (state) => state.competitions.isLoading
   );
@@ -57,6 +57,18 @@ const App = () => {
                         false,
                         a,
                         url,
+                        idTokenResult.claims.admin
+                      )
+                    );
+                  })
+                  .catch(() => {
+                    localStorage.setItem("auth", user.uid);
+                    dispatch(
+                      action.isAuth(
+                        true,
+                        false,
+                        a,
+                        "",
                         idTokenResult.claims.admin
                       )
                     );
