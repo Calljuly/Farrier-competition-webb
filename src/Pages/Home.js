@@ -19,15 +19,33 @@ const Home = () => {
         Name of side
       </h1>
       <h1 style={{ fontSize: 30, textAlign: "center" }}>
-        Welcome to "Name of Side".{" "}
+        Welcome to "Name of Side".
       </h1>
       <Sponsors data={null} />
 
-      <Grid container spacing={2}>
-        <Grid item md={4} xs={12}>
+      <Grid container>
+        <Grid
+          item
+          md={4}
+          xs={12}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <HomeButton path="/" Icon={HomeIcon} title="Home" />
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid
+          item
+          md={4}
+          xs={12}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <HomeButton
             path="/competitions"
             Icon={StarIcon}
@@ -35,7 +53,16 @@ const Home = () => {
             description="If you want see what competitions that are avalible to enter or just serach through results from past competitions"
           />
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid
+          item
+          md={4}
+          xs={12}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <HomeButton
             path="/contact"
             Icon={PhoneIcon}

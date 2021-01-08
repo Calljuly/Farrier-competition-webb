@@ -72,6 +72,7 @@ const useStyle = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    cursor: "pointer",
     "&:hover": {
       backgroundColor: "#DCDCDC",
     },
@@ -120,7 +121,8 @@ const CompetitionsListItem = ({
     const a = entries.filter((item) => {
       return user.name === item.competitor;
     });
-    if (a) {
+    console.log(a);
+    if (a.length > 0) {
       setError(true);
       return;
     }

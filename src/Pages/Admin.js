@@ -24,6 +24,8 @@ const useStyle = makeStyles({
     },
   },
 });
+
+
 const Admin = () => {
   const [value, setValue] = useState(0);
   const user = useSelector((state) => state.auth.user);
@@ -56,6 +58,7 @@ const Admin = () => {
       label: "My Competitions",
     },
   ];
+
   return (
     <>
       <Switch>
@@ -108,10 +111,12 @@ const Admin = () => {
                         item.competition.anvils ===
                         item.competition.currentEntries
                       }
+                      entries={item.competition.entries}
                       dateFrom={item.competition.dateFrom}
                       dateTo={item.competition.dateTo}
                       result={item.competition.result}
                       openForEntries={item.competition.openForEntries}
+                      startCompetition={item.competition.startCompetition}
                     />
                   );
                 })

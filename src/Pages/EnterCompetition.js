@@ -76,7 +76,17 @@ const EnterCompetition = () => {
 
   return (
     <>
-      <PageHeader>Enter Competition</PageHeader>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginRight: 30,
+        }}
+      >
+        <PageHeader>Enter Competition</PageHeader>
+        <CustomButton onClick={() => history.goBack()} title="Go Back" />
+      </div>
       <div className="divOrange" />
       <div className="divBlack" />
       <div
@@ -121,6 +131,7 @@ const EnterCompetition = () => {
           </FormHelperText>
         </FormControl>
         <ButtonContainer>
+          <CustomButton onClick={() => history.goBack()} title="Go Back" />
           <CustomButton
             onClick={enterCompetition}
             title="Enter classes and divisions"

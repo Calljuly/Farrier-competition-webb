@@ -31,6 +31,7 @@ const useStyle = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    cursor: "pointer",
   },
   classesContainer: {
     width: "100%",
@@ -65,6 +66,7 @@ const useStyle = makeStyles({
     alignItems: "center",
     width: "100%",
     margin: 0,
+    cursor: "pointer",
     "&:hover": {
       backgroundColor: "#DCDCDC",
     },
@@ -93,6 +95,8 @@ const CompetitionListItemAdmin = ({
   dateTo,
   result,
   openForEntries,
+  startCompetition,
+  entries,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -103,12 +107,63 @@ const CompetitionListItemAdmin = ({
   const [showProposition, setShowProposition] = useState(false);
   const [modal, setModal] = useState(false);
   const [open, setOpen] = useState(openForEntries);
+  const [started, setStarted] = useState(startCompetition);
+
   const openCompetitionForEntries = async (event) => {
     setOpen(event.target.checked);
     await firestore.collection("competitions").doc(id).update({
       openForEntries: event.target.checked,
     });
     dispatch(actions.fetchCompetitions());
+  };
+
+  const startCompetitionHandler = async (event) => {
+    const a = shuffleArray(entries);
+    const heat = entries.length / (entries.length / anvils);
+    let array = [];
+    let numberOfHeat = 1;
+    do {
+      const amountOfStarts = a.splice(0, heat);
+      array.push({
+        heat: numberOfHeat,
+        starts: amountOfStarts.map((item) => {
+          return {
+            competitor: item.competitor,
+            shoeOne: { one: "", two: "", three: "", four: "", total: "" },
+            shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
+          };
+        }),
+      });
+      numberOfHeat++;
+    } while (a.length !== 0);
+
+    setStarted(event.target.checked);
+
+    await firestore.collection("competitions").doc(id).update({
+      startCompetition: event.target.checked,
+    });
+    compClasses.forEach(async (item) => {
+      await firestore
+        .collection("competitions")
+        .doc(id)
+        .collection("classes")
+        .doc(item.className)
+        .update({
+          unPublishedResult: array,
+        });
+    });
+    dispatch(actions.fetchCompetitions());
+  };
+
+  const shuffleArray = (listOfEntries) => {
+    let array = [...listOfEntries];
+    for (var i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
   };
 
   return (
@@ -191,19 +246,21 @@ const CompetitionListItemAdmin = ({
                         <P>{item.shoeOne}</P>
                         <P>{item.shoeTwo}</P>
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        sm={3}
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          alignItems: "center",
-                        }}
-                      >
-                        <P>Fill in scores</P>
-                        <ArrowForwardIosIcon className={classes.classIcon} />
-                      </Grid>
+                      {startCompetition && (
+                        <Grid
+                          item
+                          xs={12}
+                          sm={3}
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                          }}
+                        >
+                          <P>Fill in scores</P>
+                          <ArrowForwardIosIcon className={classes.classIcon} />
+                        </Grid>
+                      )}
                     </Grid>
                   </div>
                 );
@@ -220,6 +277,18 @@ const CompetitionListItemAdmin = ({
                 />
               }
               label="Open competitions for entries"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={started}
+                  onChange={
+                    startCompetition ? () => {} : startCompetitionHandler
+                  }
+                  name="Open competition for entries"
+                />
+              }
+              label="Start competition"
             />
             <Grid container>
               {todayDate < competitionStartDate && (
