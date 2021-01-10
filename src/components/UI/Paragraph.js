@@ -7,7 +7,7 @@ const useStyle = makeStyles({
     fontSize: "20px",
     color: Colors.black,
     fontFamily: "Constantia",
-
+    margin: 5,
   },
   orange: {
     fontSize: "20px",

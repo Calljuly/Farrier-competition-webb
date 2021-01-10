@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PageHeader from "../components/UI/PageHeader";
 import SubHeader from "../components/UI/SubHeader";
@@ -47,7 +47,7 @@ const EnterCompetition = () => {
     history.push("/competitions");
   }
 
-  const [newstate, setnewState] = React.useState(
+  const [newstate, setnewState] = useState(
     compClasses.map((item) => {
       return {
         name: item.className,

@@ -40,6 +40,7 @@ const useStyle = makeStyles({
     alignItems: "flex-start",
     flexDirection: "column",
     cursor: "pointer",
+    paddingBottom: 20,
   },
   infoContainer: {
     width: "100%",
@@ -48,6 +49,7 @@ const useStyle = makeStyles({
     borderBottom: "1px solid black",
     justifyContent: "flex-start",
     flexWrap: "wrap",
+    marginBottom: 10,
     "&>p": {
       marginLeft: 10,
     },
@@ -79,6 +81,30 @@ const useStyle = makeStyles({
     fontSize: 20,
     marginRight: 20,
     marginLeft: 20,
+  },
+  switch_track: {
+    backgroundColor: Colors.black,
+    color: Colors.black,
+  },
+  switch_base: {
+    color: Colors.black,
+    "&.Mui-disabled": {
+      color: "#e886a9",
+    },
+    "&.Mui-checked": {
+      color: Colors.orange,
+    },
+    "&.Mui-checked + .MuiSwitch-track": {
+      backgroundColor: Colors.black,
+    },
+  },
+  switch_primary: {
+    "&.Mui-checked": {
+      color: "#4CAF50",
+    },
+    "&.Mui-checked + .MuiSwitch-track": {
+      backgroundColor: Colors.orange,
+    },
   },
 });
 
@@ -118,7 +144,7 @@ const CompetitionListItemAdmin = ({
   };
 
   const startCompetitionHandler = async (event) => {
-    const a = shuffleArray(entries);
+    const a = randomnizeEntries(entries);
     const heat = entries.length / (entries.length / anvils);
     let array = [];
     let numberOfHeat = 1;
@@ -129,6 +155,8 @@ const CompetitionListItemAdmin = ({
         starts: amountOfStarts.map((item) => {
           return {
             competitor: item.competitor,
+            id: item.id,
+            country: item.country,
             shoeOne: { one: "", two: "", three: "", four: "", total: "" },
             shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
           };
@@ -155,7 +183,7 @@ const CompetitionListItemAdmin = ({
     dispatch(actions.fetchCompetitions());
   };
 
-  const shuffleArray = (listOfEntries) => {
+  const randomnizeEntries = (listOfEntries) => {
     let array = [...listOfEntries];
     for (var i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -172,7 +200,7 @@ const CompetitionListItemAdmin = ({
         <PageHeader>Are you sure ?</PageHeader>
         <P>
           Are you sure you want to publish these results ? You wont be able to
-          change them afterwords{" "}
+          change them afterwords
         </P>
         <div style={{ display: "flex" }}>
           <CustomButton title="Cancel" onClick={() => setModal(false)} />
@@ -201,7 +229,7 @@ const CompetitionListItemAdmin = ({
           <div className={classes.infoContainer}>
             <div style={{ marginLeft: 10 }}>
               <P>Country : {country}</P>
-              <P> Referee: {referee}</P>
+              <P>Referee: {referee}</P>
 
               <P>Anvils avaliabel : {anvils}</P>
               <P>Current Entries : {current}</P>
@@ -214,17 +242,7 @@ const CompetitionListItemAdmin = ({
             {compClasses &&
               compClasses.map((item) => {
                 return (
-                  <div
-                    onClick={() =>
-                      history.push({
-                        pathname: "/admin/scores",
-                        state: item,
-                        id: id,
-                      })
-                    }
-                    className={classes.classes}
-                    key={item.className}
-                  >
+                  <div className={classes.classes} key={item.className}>
                     <h2>{item.className}</h2>
                     <Grid
                       container
@@ -257,8 +275,25 @@ const CompetitionListItemAdmin = ({
                             alignItems: "center",
                           }}
                         >
-                          <P>Fill in scores</P>
-                          <ArrowForwardIosIcon className={classes.classIcon} />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                            onClick={() =>
+                              history.push({
+                                pathname: "/admin/pickScore",
+                                state: item,
+                                id: id,
+                              })
+                            }
+                          >
+                            <P>Fill in scores</P>
+                            <ArrowForwardIosIcon
+                              className={classes.classIcon}
+                            />
+                          </div>
                         </Grid>
                       )}
                     </Grid>
@@ -271,6 +306,11 @@ const CompetitionListItemAdmin = ({
             <FormControlLabel
               control={
                 <Switch
+                  classes={{
+                    track: classes.switch_track,
+                    switchBase: classes.switch_base,
+                    colorPrimary: classes.switch_primary,
+                  }}
                   checked={open}
                   onChange={openCompetitionForEntries}
                   name="Open competition"
@@ -281,6 +321,11 @@ const CompetitionListItemAdmin = ({
             <FormControlLabel
               control={
                 <Switch
+                  classes={{
+                    track: classes.switch_track,
+                    switchBase: classes.switch_base,
+                    colorPrimary: classes.switch_primary,
+                  }}
                   checked={started}
                   onChange={
                     startCompetition ? () => {} : startCompetitionHandler
@@ -290,79 +335,79 @@ const CompetitionListItemAdmin = ({
               }
               label="Start competition"
             />
-            <Grid container>
-              {todayDate < competitionStartDate && (
-                <>
-                  <Grid item md={4} xs={12}>
-                    <CustomButton
-                      title="Create Class"
-                      onClick={() =>
-                        history.push({
-                          pathname: "/admin/addClass",
-                          state: compClasses,
-                          id: id,
-                        })
-                      }
-                    />
-                  </Grid>
-                  <Grid item md={4} xs={12}>
-                    <CustomButton
-                      title="Edit competition"
-                      onClick={() =>
-                        history.push({
-                          pathname: "/admin/editCompetition",
-                          state: compClasses,
-                          id: id,
-                        })
-                      }
-                    />
-                  </Grid>
-
-                  <Grid item md={4} xs={12}>
-                    <CustomButton
-                      title="Create proposition"
-                      onClick={() =>
-                        history.push({
-                          pathname: "/admin/createProposition",
-                          state: compClasses,
-                          compIndex: index,
-                        })
-                      }
-                    />
-                  </Grid>
-                </>
-              )}
-              <Grid container>
+          </div>
+          <Grid container>
+            {todayDate < competitionStartDate && (
+              <>
                 <Grid item md={4} xs={12}>
                   <CustomButton
-                    title="Publish all results"
-                    onClick={() => setModal(true)}
+                    title="Create Class"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/addClass",
+                        state: compClasses,
+                        id: id,
+                      })
+                    }
                   />
                 </Grid>
                 <Grid item md={4} xs={12}>
-                  <CustomButton title="Print proposition" onClick={() => {}} />
+                  <CustomButton
+                    title="Edit competition"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/editCompetition",
+                        state: compClasses,
+                        id: id,
+                      })
+                    }
+                  />
                 </Grid>
+
                 <Grid item md={4} xs={12}>
-                  <CustomButton title="Print scoresheet" onClick={() => {}} />
+                  <CustomButton
+                    title="Create proposition"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/admin/createProposition",
+                        state: compClasses,
+                        compIndex: index,
+                      })
+                    }
+                  />
                 </Grid>
-                <Grid item md={4} xs={12}>
-                  <CustomButton title="Print startlist" onClick={() => {}} />
-                </Grid>
-              </Grid>
-              {todayDate < competitionEndDate && result.length > 0 && (
+              </>
+            )}
+            <Grid container>
+              <Grid item md={4} xs={12}>
                 <CustomButton
-                  title="Result"
-                  onClick={() =>
-                    history.push({
-                      pathname: "/competitions/result",
-                      result: result,
-                      name: name,
-                    })
-                  }
+                  title="Publish all results"
+                  onClick={() => setModal(true)}
                 />
-              )}
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print proposition" onClick={() => {}} />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print scoresheet" onClick={() => {}} />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <CustomButton title="Print startlist" onClick={() => {}} />
+              </Grid>
             </Grid>
-          </div>
+            {todayDate < competitionEndDate && result.length > 0 && (
+              <CustomButton
+                title="Result"
+                onClick={() =>
+                  history.push({
+                    pathname: "/competitions/result",
+                    result: result,
+                    name: name,
+                  })
+                }
+              />
+            )}
+          </Grid>
         </>
       )}
     </div>

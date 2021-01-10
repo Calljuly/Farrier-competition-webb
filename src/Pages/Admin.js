@@ -13,6 +13,7 @@ import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
 import { makeStyles } from "@material-ui/styles";
+import ScorePicker from "./ScorePicker";
 
 const useStyle = makeStyles({
   headerContainer: {
@@ -24,7 +25,6 @@ const useStyle = makeStyles({
     },
   },
 });
-
 
 const Admin = () => {
   const [value, setValue] = useState(0);
@@ -127,7 +127,7 @@ const Admin = () => {
           </div>
         </Route>
         <Route path="/admin/scores" exact>
-          <Scores compClasses={compClasses} />
+          <Scores />
         </Route>
         <Route path="/admin/editCompetition" exact>
           <Edit />
@@ -140,6 +140,9 @@ const Admin = () => {
         </Route>
         <Route path="/admin/result" exact>
           <Result />
+        </Route>
+        <Route path="/admin/pickScore" exact>
+          <ScorePicker />
         </Route>
       </Switch>
     </>

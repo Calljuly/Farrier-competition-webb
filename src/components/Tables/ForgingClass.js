@@ -25,6 +25,8 @@ const ForgingClass = ({
   index,
   compIndex,
   className,
+  shoe,
+  heatId,
 }) => {
   const classes = useStyles();
   const rows = [
@@ -45,6 +47,7 @@ const ForgingClass = ({
       cell: "four",
     },
   ];
+
   return (
     <div>
       <SubHeader>{className}</SubHeader>
@@ -88,82 +91,23 @@ const ForgingClass = ({
                                 alert("You can no longer edit these results")
                             : () =>
                                 handleModalContent(
-                                  item.id,
+                                  heatId,
                                   row.cell,
                                   compClasses[0].headerTitles[1],
                                   compIndex,
                                   item.id,
-                                  "shoeOne"
+                                  shoe
                                 )
                         }
                         align="left"
                       >
-                        {item.shoeTwo[row.cell]}
+                        {item[shoe][row.cell]}
                       </TableCell>
                     ))}
-                    <TableCell align="left">{item.shoeOne.total}</TableCell>
+                    <TableCell align="left">{item[shoe].total}</TableCell>
                   </TableRow>
                 );
               })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Devider margin={50} />
-      <SubHeader>Shoe two</SubHeader>
-
-      <TableContainer component={Paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="a dense table"
-        >
-          <TableHead>
-            <TableRow>
-              {compClasses[0].headerTitles.map((comp, index) => (
-                <TableCell key={comp} align="left">
-                  {` ${comp} , `}
-                  <strong>{index > 0 && pointsToMultiply[index - 1]}</strong>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {result.map((item, index) => {
-              const color = index % 2 === 0;
-
-              return (
-                <TableRow
-                  key={item.id}
-                  style={{ backgroundColor: color ? "#DCDCDC" : "white" }}
-                >
-                  <TableCell align="left">
-                    {savedResult ? item.competitor : item.id}
-                  </TableCell>
-                  {rows.map((row) => (
-                    <TableCell
-                      key={row.id}
-                      onClick={
-                        savedResult
-                          ? () => alert("You can no longer edit these results")
-                          : () =>
-                              handleModalContent(
-                                item.id,
-                                row.cell,
-                                compClasses[0].headerTitles[1],
-                                compIndex,
-                                item.id,
-                                "shoeOne"
-                              )
-                      }
-                      align="left"
-                    >
-                      {item.shoeOne[row.cell]}
-                    </TableCell>
-                  ))}
-                  <TableCell align="left">{item.shoeTwo.total}</TableCell>
-                </TableRow>
-              );
-            })}
           </TableBody>
         </Table>
       </TableContainer>

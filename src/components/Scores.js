@@ -21,24 +21,31 @@ const Scores = () => {
   const l = useLocation();
   const compClasses = l.state;
   const compIndex = l.id;
+  const heat = l.heat;
+  const heatId = l.heatId;
+  const shoe = l.shoe;
+  console.log(compIndex);
   const [sponsor, setSponsor] = useState("");
+
   const closeModalHandler = (data) => {
     if (+data) {
       dispatch(
         actions.addPoint(
           data,
-          modalData.id,
+          modalData.user,
           modalData.cellId,
           compIndex,
           compClasses,
-          modalData.type
+          modalData.type,
+          modalData.heat
         )
       );
     }
     setModal(false);
   };
-  const handleModalContent = (id, cell, title, compIndex, user, type) => {
-    console.log(id);
+  
+  const handleModalContent = (heat, cell, title, compIndex, user, type) => {
+    console.log(heat);
     console.log(cell);
     console.log(title);
     console.log(compIndex);
@@ -46,7 +53,7 @@ const Scores = () => {
     console.log(type);
 
     setModalData({
-      id: id,
+      heat: heat,
       cellId: cell,
       title: title,
       compIndex: compIndex,
@@ -58,7 +65,7 @@ const Scores = () => {
 
   useEffect(() => {
     if (!compIndex) {
-      history.push("/admin");
+      //history.push("/admin");
     }
   }, [compClasses]);
 
@@ -160,7 +167,17 @@ const Scores = () => {
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
         )}
-        {getScore(compClasses)}
+        <ForgingClass
+          className={compClasses.className}
+          handleModalContent={handleModalContent}
+          savedResult={compClasses.savedResult}
+          pointsToMultiply={compClasses.pointsToMultiply}
+          result={heat}
+          compIndex={compIndex}
+          shoe={shoe}
+          heatId={heatId}
+        />
+        {/*getScore(compClasses)*/}
         <Devider margin={60} />
 
         <P>

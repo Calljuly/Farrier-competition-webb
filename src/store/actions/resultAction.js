@@ -4,40 +4,51 @@ export const ADD_POINT = "ADD_POINT";
 export const SAVED = "SAVED";
 export const FETCH_RESULTS = "FETCH_RESULTS";
 
-export const addPoint = (value, id, cellId, compIndex, state, type) => {
+export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
   return (dispatch) => {
     const competitor = state.unPublishedResult;
 
-    const c = competitor.map((item) => {
-      let a;
-      if (item.id === id) {
+    const c = competitor.map((item, index) => {
+      if (item.heat === heat) {
+        const aa = item.starts.map((comp) => {
+          let a;
+          if (comp.id === id) {
+            if (type === "shoeOne") {
+              a = {
+                ...comp.shoeOne,
+                [cellId]: +value,
+              };
+              const b = {
+                ...a,
+                total: reCalculateTotal(a, state.pointsToMultiply),
+              };
+              console.log(b);
 
-        if (type === "shoeOne") {
-          a = {
-            ...item.shoeOne,
-            [cellId]: +value,
-          };
-          const b = {
-            ...a,
-            total: reCalculateTotal(a, state.pointsToMultiply),
-          };
-          item.shoeOne = b;
-        } else if (type === "shoeTwo") {
-          a = {
-            ...item.shoeTwo,
-            [cellId]: +value,
-          };
-          const b = {
-            ...a,
-            total: reCalculateTotal(a, state.pointsToMultiply),
-          };
-          item.shoeTwo = b;
-        }
-        
+              comp.shoeOne = b;
+            } else if (type === "shoeTwo") {
+              a = {
+                ...comp.shoeTwo,
+                [cellId]: +value,
+              };
+              const b = {
+                ...a,
+                total: reCalculateTotal(a, state.pointsToMultiply),
+              };
+              comp.shoeTwo = b;
+            }
+          }
+          return comp;
+        });
+        console.log(aa);
+
+        return { starts: aa };
+      } else {
         return item;
       }
-      return item;
     });
+
+    console.log(c);
+
     state.unPublishedResult = c;
     firestore
       .collection("competitions")
