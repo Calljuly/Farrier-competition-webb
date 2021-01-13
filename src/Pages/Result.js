@@ -105,7 +105,7 @@ const Result = () => {
                 <TableContainer
                   key={item.competitor}
                   component={Paper}
-                  style={{ marginBottom: "20px" }}
+                  style={{ margin: "50px" }}
                 >
                   <SubHeader>{item.className}</SubHeader>
                   <Table
@@ -123,9 +123,9 @@ const Result = () => {
                                 style={{
                                   verticalAlign: "bottom",
                                   padding: 0,
-                                  fontSize: 10,
+                                  fontSize: 16,
                                 }}
-                                classes={{ root: { fontSize: 10 } }}
+                                classes={{ root: { fontSize: 16 } }}
                               >
                                 <p>{comp}</p>
                               </TableCell>

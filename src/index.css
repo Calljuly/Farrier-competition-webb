@@ -8,7 +8,17 @@ html {
   height: "100vh";
   background-color: #DCDCDC;
 }
+ol{
+  list-style-type: "none";
+  font-weight: "thin";
+  font-size: 40px;
+  font-family: "Constantia";
 
+}
+li{
+  font-family: "Constantia";
+
+}
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -50,6 +50,20 @@ const textInputs = [
     multiline: false,
   },
   {
+    id: 11,
+    label: "Semi final spaces",
+    value: "semi",
+    type: "number",
+    multiline: false,
+  },
+  {
+    id: 12,
+    label: "Final spaces",
+    value: "final",
+    type: "number",
+    multiline: false,
+  },
+  {
     id: 6,
     label: "",
     value: "dateFrom",
@@ -103,6 +117,14 @@ const initialState = {
     valid: true,
   },
   anvils: {
+    value: "",
+    valid: true,
+  },
+  semi: {
+    value: "",
+    valid: true,
+  },
+  final: {
     value: "",
     valid: true,
   },
@@ -172,6 +194,22 @@ const reducer = (state, action) => {
           [action.key]: action.value,
         },
       };
+    case "semi":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "final":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
     case "dateFrom":
       return {
         ...state,
@@ -232,6 +270,8 @@ const AddCompetition = () => {
         entries: [],
         country: state.country.value,
         anvils: state.anvils.value,
+        semi: state.semi.value,
+        final: state.final.value,
         name: state.name.value,
         referee: state.referee.value,
         admins: admin,

@@ -112,7 +112,7 @@ export const createCompetition = (competition, user) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-    
+
     var user = auth.currentUser;
     return user.getIdToken().then((token) => {
       fetch(
@@ -255,19 +255,19 @@ export const saveAllResult = (competitionId, classes) => {
       type: COMPETITION_LOADING,
       loading: true,
     });
-    const result = classes.map((item) => {
+    let resultArray = [];
+    const result = classes.map((item, index) => {
+      resultArray = [];
+      item.unPublishedResult.forEach((items) => {
+        const a = [...resultArray];
+        resultArray = a.concat(items.starts);
+      });
       return {
         className: item.className,
-        result: item.unPublishedResult.map((res) => {
-          return {
-            competitor: res.competitor,
-            id: res.id,
-            shoeOne: res.shoeOne,
-            shoeTwo: res.shoeTwo,
-          };
-        }),
+        result: resultArray,
       };
     });
+
     var user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
       fetch(

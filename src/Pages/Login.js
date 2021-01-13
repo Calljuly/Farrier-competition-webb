@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../store/actions/auth";
-import CustomButton from "../CustomButton";
-import P from "../UI/Paragraph";
-import PageHeader from "../UI/PageHeader";
+import * as actions from "../store/actions/auth";
+import CustomButton from "../components/CustomButton";
+import P from "../components/UI/Paragraph";
+import PageHeader from "../components/UI/PageHeader";
 import {
   validatePassword,
   validateEmail,
   validateText,
   validateAge,
-} from "../../helpers/validation";
-import TextInput from "../TextInput";
-import Devider from "../UI/Devider";
-import ChoiseModal from "../ChoiseModal";
+} from "../helpers/validation";
+import TextInput from "../components/TextInput";
+import Devider from "../components/UI/Devider";
+import ChoiseModal from "../components/ChoiseModal";
 import { useHistory } from "react-router-dom";
-import { storage, auth } from "../firebase";
+import { storage, auth } from "../components/firebase";
 
 const textFieldsRegister = [
   {
@@ -133,7 +133,6 @@ const Login = () => {
   });
 
   const handleInputChange = (id, text) => {
-    console.log(id);
     let updatedState;
     if (id === "profileImage") {
       updatedState = {
@@ -243,7 +242,6 @@ const Login = () => {
               return response.json();
             })
             .then((users) => {
-              console.log(users);
               return users;
             })
             .catch((error) => {
@@ -262,7 +260,7 @@ const Login = () => {
   };
 
   if (isAuth) {
-    history.push("/myProfile");
+    history.push("/");
   }
 
   return (

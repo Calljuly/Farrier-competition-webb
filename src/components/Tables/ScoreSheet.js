@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
 import SubHeader from "../UI/SubHeader";
 import Devider from "../UI/Devider";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   table: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ForgingClass = ({
+const ScoreSheet = ({
   savedResult,
   handleModalContent,
   pointsToMultiply,
@@ -27,6 +28,7 @@ const ForgingClass = ({
   className,
   shoe,
   heatId,
+  type,
 }) => {
   const classes = useStyles();
   const rows = [
@@ -47,7 +49,12 @@ const ForgingClass = ({
       cell: "four",
     },
   ];
+  const history = useHistory();
+  const tableTitlesIndex = type === "Shoeing" ? 1 : 0;
 
+  if (!result) {
+    history.push("/admin");
+  }
   return (
     <div>
       <SubHeader>{className}</SubHeader>
@@ -62,7 +69,7 @@ const ForgingClass = ({
         >
           <TableHead>
             <TableRow>
-              {compClasses[0].headerTitles.map((comp, index) => (
+              {compClasses[tableTitlesIndex].headerTitles.map((comp, index) => (
                 <TableCell key={comp} align="left">
                   {` ${comp} , `}
                   <strong>{index > 0 && pointsToMultiply[index - 1]}</strong>
@@ -93,7 +100,7 @@ const ForgingClass = ({
                                 handleModalContent(
                                   heatId,
                                   row.cell,
-                                  compClasses[0].headerTitles[1],
+                                  compClasses[tableTitlesIndex].headerTitles[1],
                                   compIndex,
                                   item.id,
                                   shoe
@@ -115,4 +122,4 @@ const ForgingClass = ({
   );
 };
 
-export default ForgingClass;
+export default ScoreSheet;

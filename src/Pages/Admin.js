@@ -141,7 +141,7 @@ const Admin = () => {
         <Route path="/admin/result" exact>
           <Result />
         </Route>
-        <Route path="/admin/pickScore" exact>
+        <Route path="/admin/pickScore/:id" exact>
           <ScorePicker />
         </Route>
       </Switch>

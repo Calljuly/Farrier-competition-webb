@@ -169,6 +169,7 @@ const CompetitionListItemAdmin = ({
 
     await firestore.collection("competitions").doc(id).update({
       startCompetition: event.target.checked,
+      openForEntries: false,
     });
     compClasses.forEach(async (item) => {
       await firestore
@@ -283,7 +284,7 @@ const CompetitionListItemAdmin = ({
                             }}
                             onClick={() =>
                               history.push({
-                                pathname: "/admin/pickScore",
+                                pathname: `/admin/pickScore/${id}`,
                                 state: item,
                                 id: id,
                               })
@@ -339,18 +340,20 @@ const CompetitionListItemAdmin = ({
           <Grid container>
             {todayDate < competitionStartDate && (
               <>
-                <Grid item md={4} xs={12}>
-                  <CustomButton
-                    title="Create Class"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/admin/addClass",
-                        state: compClasses,
-                        id: id,
-                      })
-                    }
-                  />
-                </Grid>
+                {!startCompetition && (
+                  <Grid item md={4} xs={12}>
+                    <CustomButton
+                      title="Create Class"
+                      onClick={() =>
+                        history.push({
+                          pathname: "/admin/addClass",
+                          state: compClasses,
+                          id: id,
+                        })
+                      }
+                    />
+                  </Grid>
+                )}
                 <Grid item md={4} xs={12}>
                   <CustomButton
                     title="Edit competition"

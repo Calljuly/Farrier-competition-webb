@@ -5,9 +5,10 @@ import Layout from "../components/UI/Layout";
 import User from "../Pages/User";
 import Home from "../Pages/Home";
 import Contact from "../Pages/Contact";
-import Login from "../components/LogIn.js/Login";
+import Login from "../Pages/Login";
 import Admin from "../Pages/Admin";
 import ErrorPage from "./UI/ErrorPage";
+
 export const getUnProtectedRoutes = () => {
   return (
     <Layout>
@@ -49,6 +50,7 @@ export const getProtectedAdminRoutes = () => {
         <Route path="/competitions" component={Competitions} />
         <Route path="/admin" component={Admin} />
         <Route path="/contact" component={Contact} />
+        <Route path="/signIn" component={Login} />
         <Route>
           <ErrorPage />
         </Route>

@@ -56,14 +56,9 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
           onChange={(event) => handleClasses("feet", event.target)}
         >
           <FormControlLabel
-            value="right"
+            value="side"
             control={<Radio />}
-            label="Right side feet"
-          />
-          <FormControlLabel
-            value="left"
-            control={<Radio />}
-            label="Left side feet"
+            label="Left/Right side"
           />
           <FormControlLabel
             value="diagonal"

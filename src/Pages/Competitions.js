@@ -91,6 +91,7 @@ const Competitions = () => {
                     dateTo={item.competition.dateTo}
                     result={item.competition.result}
                     openForEntries={item.competition.openForEntries}
+                    startCompetition={item.competition.startCompetition}
                   />
                 );
               }

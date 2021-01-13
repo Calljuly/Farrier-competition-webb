@@ -1,21 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, useParams } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import PageHeader from "../components/UI/PageHeader";
+import P from "../components/UI/Paragraph";
+import ButtonContainer from "../components/UI/ButtonContainer";
+import { firestore } from "../components/firebase";
+
 const useStyles = makeStyles({});
 
 const ScorePicker = () => {
-  const [modalopen, setModal] = useState(false);
-  const [modalData, setModalData] = useState({});
   const history = useHistory();
-  const dispatch = useDispatch();
   const l = useLocation();
   const compClasses = l.state;
-  const compIndex = l.id;
-
+  const { id } = useParams();
   const classes = useStyles();
+
+  if (!compClasses) {
+    history.push("/admin");
+  }
+
+  const saveClassResult = async () => {
+    await firestore
+      .collection("competitions")
+      .doc(id)
+      .collection("classes")
+      .doc(compClasses.className)
+      .update({
+        savedResult: true,
+      });
+  };
 
   return (
     <>
@@ -32,42 +46,59 @@ const ScorePicker = () => {
       </div>
       <div className="divOrange" />
       <div className="divBlack" />
-      <div>
+      <div style={{ margin: 40 }}>
+        <P>Pick the shoe or heat you would like to fill the scores for below</P>
+
         {compClasses.unPublishedResult.map((item, index) => {
           return (
             <>
-              <p>Heat {item.heat}</p>
-              <p
-                onClick={() =>
-                  history.push({
-                    pathname: "/admin/scores",
-                    state: compClasses,
-                    id: compIndex,
-                    heat: item.starts,
-                    heatId: item.heat,
-                    shoe: "shoeOne",
-                  })
-                }
+              <PageHeader>Heat {item.heat}</PageHeader>
+              <ol
+                style={{
+                  listStyleType: "none",
+                  fontSize: 30,
+                  fontFamily: "Constantia",
+                  cursor: "pointer",
+                }}
               >
-                Shoe One
-              </p>
-              <p
-                onClick={() =>
-                  history.push({
-                    pathname: "/admin/scores",
-                    state: compClasses,
-                    id: compIndex,
-                    heat: item.starts,
-                    heatId: item.heat,
-                    shoe: "shoeTwo",
-                  })
-                }
-              >
-                Shoe Two
-              </p>
+                <li
+                  onClick={() =>
+                    history.push({
+                      pathname: "/admin/scores",
+                      state: compClasses,
+                      id: id,
+                      heat: item.starts,
+                      heatId: item.heat,
+                      shoe: "shoeOne",
+                    })
+                  }
+                >
+                  Shoe One
+                </li>
+                <li
+                  onClick={() =>
+                    history.push({
+                      pathname: "/admin/scores",
+                      state: compClasses,
+                      id: id,
+                      heat: item.starts,
+                      heatId: item.heat,
+                      shoe: "shoeTwo",
+                    })
+                  }
+                >
+                  Shoe Two
+                </li>
+              </ol>
             </>
           );
         })}
+        <ButtonContainer>
+          {!compClasses.savedResult && (
+            <CustomButton onClick={saveClassResult} title="Publish result" />
+          )}
+          <CustomButton onClick={() => history.goBack()} title="Go Back" />
+        </ButtonContainer>
       </div>
     </>
   );

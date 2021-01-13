@@ -11,7 +11,7 @@ import EagleEye from "../Classes/EagleEye";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import Devider from "../UI/Devider";
 import { storage, auth } from "../../components/firebase";
@@ -24,6 +24,7 @@ const AddClass = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
   const [classesObject, setClasses] = useState({
     className: {
       value: "",
@@ -31,8 +32,10 @@ const AddClass = () => {
     },
     pointsToMultiply: [],
     shoeOne: "",
+    shoeOneType: "",
     shoeOneImg: "",
     shoeTwo: "",
+    shoeTwoType: "",
     shoeTwoImg: "",
     time: {
       value: "",
@@ -49,6 +52,7 @@ const AddClass = () => {
     savedResult: false,
     feet: "right",
   });
+
   const l = useLocation();
   const id = l.id;
 
@@ -124,7 +128,6 @@ const AddClass = () => {
 
     var user = auth.currentUser;
     dispatch(actions.loading(true));
-    console.log(classesObject.sponsorLoggo);
     const uploadTask = storage
       .ref()
       .child(`images/${classesObject.sponsorLoggo.name}`)
@@ -169,8 +172,6 @@ const AddClass = () => {
         }
       );
     }
-    console.log(newClass);
-
     return user.getIdToken().then(async (token) => {
       fetch(
         `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
@@ -256,6 +257,43 @@ const AddClass = () => {
       history.push("/admin");
     }
   }, [compClasses]);
+
+  useEffect(() => {
+    switch (classesObject.type) {
+      case "Shoeing":
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            ["shoeOneType"]: "Shoeing",
+            ["shoeTwoType"]: "Shoeing",
+          };
+          return newValue;
+        });
+        return;
+      case "Forging":
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            ["shoeOneType"]: "Forging",
+            ["shoeTwoType"]: "Forging",
+          };
+          return newValue;
+        });
+        return;
+      case "Combo":
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            ["shoeOneType"]: "Shoeing",
+            ["shoeTwoType"]: "Forging",
+          };
+          return newValue;
+        });
+        return;
+      default:
+        return;
+    }
+  }, [classesObject.type]);
 
   const getClass = (type) => {
     switch (type) {

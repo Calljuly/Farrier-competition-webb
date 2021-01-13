@@ -6,9 +6,7 @@ export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
 
 export const signUp = (user) => {
-  console.log('kommer hit')
   return (dispatch) => {
-    console.log('kommer hit 2')
 
     dispatch(isAuth(false, true, {}, false));
     if (user.password.value === user.passwordConfirmed.value) {
@@ -107,6 +105,7 @@ export const signIn = (email, pass) => {
               .child(`images/${user.img}.jpg`)
               .getDownloadURL()
               .then((url) => {
+                
                 Cookies.set("user", "value", { expires: 7 });
                 localStorage.setItem("auth", user.uid);
                 dispatch(isAuth(true, false, user, url, false));
@@ -135,20 +134,12 @@ export const updateUser = (id, user) => {
     }
   )
     .then((response) => {
-      console.log("Hej");
-
       return response.json();
     })
     .then((users) => {
-      console.log(users);
       return users.user;
     })
-    .then((user) => {
-      console.log("Hej");
-    })
     .catch((error) => {
-      console.log("Hej");
-
       console.log(error);
     });
 };

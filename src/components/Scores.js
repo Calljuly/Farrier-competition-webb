@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import ShoingClass from "./Tables/ShoingClass";
-import ForgingClass from "./Tables/ForgingClass";
+import React, { useState } from "react";
+import ScoreSheet from "./Tables/ScoreSheet";
 import { useDispatch } from "react-redux";
 import CustomModal from "../components/Modal";
 import * as actions from "../store/actions/resultAction";
@@ -9,9 +8,8 @@ import P from "./UI/Paragraph";
 import CustomButton from "./CustomButton";
 import Devider from "./UI/Devider";
 import PageHeader from "./UI/PageHeader";
-import ComboClass from "./Tables/ComboClass";
 import { Alert } from "@material-ui/lab";
-import { storage } from "./firebase";
+import ButtonContainer from "./UI/ButtonContainer";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -24,8 +22,6 @@ const Scores = () => {
   const heat = l.heat;
   const heatId = l.heatId;
   const shoe = l.shoe;
-  console.log(compIndex);
-  const [sponsor, setSponsor] = useState("");
 
   const closeModalHandler = (data) => {
     if (+data) {
@@ -43,14 +39,8 @@ const Scores = () => {
     }
     setModal(false);
   };
-  
+
   const handleModalContent = (heat, cell, title, compIndex, user, type) => {
-    console.log(heat);
-    console.log(cell);
-    console.log(title);
-    console.log(compIndex);
-    console.log(user);
-    console.log(type);
 
     setModalData({
       heat: heat,
@@ -63,84 +53,10 @@ const Scores = () => {
     setModal(true);
   };
 
-  useEffect(() => {
-    if (!compIndex) {
-      //history.push("/admin");
-    }
-  }, [compClasses]);
-
-  if (compClasses.sponsorLoggo) {
-    storage
-      .ref()
-      .child(`images/${compClasses.sponsorLoggo}`)
-      .getDownloadURL()
-      .then((url) => {
-        console.log(url);
-        setSponsor(url);
-      });
+  if (!compClasses || !heat) {
+    history.push("/admin");
   }
 
-  if (compClasses.length === 0) {
-    return (
-      <>
-        <PageHeader>
-          No classes to add scores to
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <CustomButton onClick={() => history.goBack()} title="Go Back" />
-          </div>
-        </PageHeader>
-      </>
-    );
-  }
-  const getScore = (classes) => {
-    console.log(classes);
-    switch (classes.type) {
-      case "Forging":
-        return (
-          <ForgingClass
-            className={classes.className}
-            handleModalContent={handleModalContent}
-            savedResult={classes.savedResult}
-            pointsToMultiply={classes.pointsToMultiply}
-            result={classes.unPublishedResult}
-            compIndex={compIndex}
-          />
-        );
-
-      case "Shoeing":
-        return (
-          <ShoingClass
-            className={classes.className}
-            handleModalContent={handleModalContent}
-            savedResult={classes.savedResult}
-            pointsToMultiply={classes.pointsToMultiply}
-            result={classes.unPublishedResult}
-            compIndex={compIndex}
-          />
-        );
-      case "ComboClass":
-        return (
-          <ComboClass
-            className={classes.className}
-            handleModalContent={handleModalContent}
-            savedResult={classes.savedResult}
-            pointsToMultiply={classes.pointsToMultiply}
-            result={classes.unPublishedResult}
-            compIndex={compIndex}
-          />
-        );
-      case "eagleEye":
-        return <></>;
-      case "speedForging":
-        break;
-      case "team":
-        break;
-      case "pairs":
-        break;
-      default:
-        return <></>;
-    }
-  };
   return (
     <>
       <div
@@ -167,7 +83,7 @@ const Scores = () => {
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
         )}
-        <ForgingClass
+        <ScoreSheet
           className={compClasses.className}
           handleModalContent={handleModalContent}
           savedResult={compClasses.savedResult}
@@ -176,8 +92,8 @@ const Scores = () => {
           compIndex={compIndex}
           shoe={shoe}
           heatId={heatId}
+          type={shoe === 'shoeOne' ? compClasses.shoeOneType: compClasses.shoeTwoType}
         />
-        {/*getScore(compClasses)*/}
         <Devider margin={60} />
 
         <P>
@@ -185,12 +101,9 @@ const Scores = () => {
           pulic.
         </P>
         <P>You wont be able to edit these results after saving them</P>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          {!compClasses.savedResult && (
-            <CustomButton onClick={() => {}} title="Publish result" />
-          )}
+        <ButtonContainer>
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
-        </div>
+        </ButtonContainer>
       </div>
     </>
   );

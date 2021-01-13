@@ -6,9 +6,7 @@ import P from "./UI/Paragraph";
 
 const useStyle = makeStyles({
   container: {
-    position: "absolute",
-    top: 200,
-    left: "45%",
+   
     boxShadow: " 0px 2px 20px rgba(0, 0, 0, 0.07)",
     borderRadius: 10,
     border: ` 1px solid ${Colors.orange}`,

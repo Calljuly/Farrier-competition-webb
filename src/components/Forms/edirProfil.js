@@ -131,7 +131,6 @@ const EditProfile = () => {
 
     Object.keys(authState).forEach((item, index) => {
       const data = Object.values(authState)[index];
-      console.log(data);
       if (data.valid && data.value !== "") {
         user[item] = data.value;
       }
@@ -143,7 +142,6 @@ const EditProfile = () => {
     });
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         actions.updateUser(user.uid, newUser);
       }
     });

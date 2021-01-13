@@ -10,7 +10,6 @@ import ChoiseModal from "../ChoiseModal";
 import { Alert } from "@material-ui/lab";
 import ButtonContainer from "../UI/ButtonContainer";
 
-
 let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const EditEmailAndPassword = () => {
@@ -31,15 +30,13 @@ const EditEmailAndPassword = () => {
 
   const changePassword = () => {
     const user = auth.currentUser;
-    let credential;
 
     if (user) {
-      console.log(user);
       resetPassword(user.email);
     }
   };
+
   const updateEmail = () => {
-    console.log(authState.email.value);
     if (authState.email.value.length > 5 && authState.email.value === "") {
       setIsOpen(false);
       setError("Your email is not valid");
@@ -61,8 +58,7 @@ const EditEmailAndPassword = () => {
     auth
       .signInWithEmailAndPassword(user.email, authState.password.value)
       .then((userCredential) => {
-        console.log(authState.email.value);
-        //userCredential.user.updateEmail(newEmail);
+        userCredential.user.updateEmail(authState.email.value);
         setSuccess(true);
       })
       .catch((error) => {
@@ -87,7 +83,7 @@ const EditEmailAndPassword = () => {
     <div style={{ display: "flex", flexDirection: "column", width: "90%" }}>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <PageHeader>Are you sure ?</PageHeader>
-        <P> Are you sure you want update this class ? </P>
+        <P> Are you sure you want update your email address ? </P>
         <div style={{ display: "flex" }}>
           <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
           <CustomButton title="Im sure" onClick={() => updateEmail()} />
@@ -115,12 +111,14 @@ const EditEmailAndPassword = () => {
         onChange={(text) => handleInputChange("email", text.target.value)}
         label="New email"
         type="text"
+        required
       />
       <TextInput
         value={authState.password.value}
         onChange={(text) => handleInputChange("password", text.target.value)}
         label="Password"
         type="password"
+        required
       />
       <ButtonContainer>
         <CustomButton

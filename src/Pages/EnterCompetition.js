@@ -12,6 +12,10 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import CustomButton from "../components/CustomButton";
 import ButtonContainer from "../components/UI/ButtonContainer";
+import ChoiseModal from "../components/ChoiseModal";
+import P from "../components/UI/Paragraph";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../store/actions/competitionAction";
 
 const useStyles = makeStyles({
   table: {
@@ -42,6 +46,11 @@ const EnterCompetition = () => {
   const l = useLocation();
   const compClasses = l.compClasses;
   const history = useHistory();
+  const [modal, setModal] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   if (!compClasses) {
     history.push("/competitions");
@@ -55,8 +64,13 @@ const EnterCompetition = () => {
       };
     })
   );
+
   const enterCompetition = () => {
-    /* if (entries.includes(user.name)) {
+   /* const a = entries.filter((item) => {
+      return user.name === item.competitor;
+    });
+    console.log(a);
+    if (a.length > 0) {
       setError(true);
       return;
     }
@@ -76,6 +90,14 @@ const EnterCompetition = () => {
 
   return (
     <>
+      <ChoiseModal isOpen={modal} handleClose={() => setModal(false)}>
+        <PageHeader>Are you sure ?</PageHeader>
+        <P>Are you sure you want to enter these divisions and classes ?</P>
+        <div style={{ display: "flex" }}>
+          <CustomButton title="Cancel" onClick={() => setModal(false)} />
+          <CustomButton title="Im sure" onClick={enterCompetition} />
+        </div>
+      </ChoiseModal>
       <div
         style={{
           display: "flex",
@@ -133,7 +155,7 @@ const EnterCompetition = () => {
         <ButtonContainer>
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
           <CustomButton
-            onClick={enterCompetition}
+            onClick={() => setModal(true)}
             title="Enter classes and divisions"
           />
         </ButtonContainer>
