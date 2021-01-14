@@ -6,7 +6,8 @@ import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import { firestore } from "../components/firebase";
-
+import { useDispatch } from "react-redux";
+import { fetchCompetitions } from "../store/actions/competitionAction";
 const useStyles = makeStyles({});
 
 const ScorePicker = () => {
@@ -14,6 +15,7 @@ const ScorePicker = () => {
   const l = useLocation();
   const compClasses = l.state;
   const { id } = useParams();
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   if (!compClasses) {
@@ -29,6 +31,8 @@ const ScorePicker = () => {
       .update({
         savedResult: true,
       });
+    history.push("/admin");
+    dispatch(fetchCompetitions());
   };
 
   return (

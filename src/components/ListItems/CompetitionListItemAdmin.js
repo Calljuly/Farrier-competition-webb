@@ -329,7 +329,9 @@ const CompetitionListItemAdmin = ({
                   }}
                   checked={started}
                   onChange={
-                    startCompetition ? () => {} : startCompetitionHandler
+                    startCompetition || compClasses.length === 0
+                      ? () => {}
+                      : startCompetitionHandler
                   }
                   name="Open competition for entries"
                 />
@@ -362,19 +364,6 @@ const CompetitionListItemAdmin = ({
                         pathname: "/admin/editCompetition",
                         state: compClasses,
                         id: id,
-                      })
-                    }
-                  />
-                </Grid>
-
-                <Grid item md={4} xs={12}>
-                  <CustomButton
-                    title="Create proposition"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/admin/createProposition",
-                        state: compClasses,
-                        compIndex: index,
                       })
                     }
                   />

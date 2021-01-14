@@ -107,7 +107,6 @@ const CompetitionsListItem = ({
   const history = useHistory();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
- 
 
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
@@ -116,6 +115,7 @@ const CompetitionsListItem = ({
   const todayDate = new Date();
 
   const [showProposition, setShowProposition] = useState(false);
+  
   const competition = {
     id: id,
     country: country,
@@ -139,13 +139,17 @@ const CompetitionsListItem = ({
   return (
     <div className={classes.container}>
       {success && (
-        <Alert onClick={() => setSuccess(false)}>
+        <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
           Your input to update is not valid, please check your input
         </Alert>
       )}
       {error && (
-        <Alert severity="error" onClick={() => setError(false)}>
-          You could not enter the competition
+        <Alert
+          style={{ width: "100%" }}
+          severity="error"
+          onClick={() => setError(false)}
+        >
+          <P>You could not enter the competition</P>
         </Alert>
       )}
       <div
@@ -225,7 +229,12 @@ const CompetitionsListItem = ({
           </div>
           <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
-            {compClasses &&
+            {compClasses.length === 0 && (
+              <Alert style={{ width: "100%" }} severity="error">
+                <P>No classes to show yet</P>
+              </Alert>
+            )}
+            {compClasses.length > 0 &&
               compClasses.map((item) => {
                 return (
                   <div className={classes.classes} key={item.className}>
@@ -257,7 +266,6 @@ const CompetitionsListItem = ({
           </div>
           <Grid
             container
-            style={{ display: "flex", justifyContent: "flex-end" }}
           >
             {isAuth &&
               openForEntries &&

@@ -78,23 +78,6 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
   };
 };
 
-export const savePoints = () => {
-  return {
-    type: SAVED,
-  };
-};
-export const fetchAdminComps = (competitions) => {
-  const adminCompetitions = competitions.filter((item) => {
-    if (item.admins.includes("Julia Call")) {
-      return item;
-    }
-  });
-  return {
-    type: FETCH_RESULTS,
-    data: adminCompetitions,
-  };
-};
-
 const reCalculateTotal = (updatedState, points) => {
   const first = +updatedState.one * points[0];
   const second = +updatedState.two * points[1];

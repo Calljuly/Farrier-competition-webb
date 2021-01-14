@@ -248,7 +248,6 @@ const EditCompetition = () => {
             return response.json();
           })
           .then((res) => {
-            console.log(res.message);
             if (res.message === "Succsess") {
               setSuccess(true);
               dispatch(actions.fetchCompetitions());

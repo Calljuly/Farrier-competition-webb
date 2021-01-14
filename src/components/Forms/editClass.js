@@ -16,6 +16,7 @@ import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
+
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -98,7 +99,7 @@ const EditClass = ({ classes }) => {
     });
     valid = formValidation();
 
-    if (true) {
+    if (valid) {
       dispatch(actions.loading(true));
 
       var user = auth.currentUser;

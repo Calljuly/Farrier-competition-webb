@@ -24,7 +24,8 @@ const AddClass = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-
+  
+  console.log('Hejeh '+success);
   const [classesObject, setClasses] = useState({
     className: {
       value: "",
@@ -128,9 +129,10 @@ const AddClass = () => {
 
     var user = auth.currentUser;
     dispatch(actions.loading(true));
+    /*
     const uploadTask = storage
       .ref()
-      .child(`images/${classesObject.sponsorLoggo.name}`)
+      .child(`sponsors/${classesObject.sponsorLoggo.name}`)
       .put(classesObject.sponsorLoggo);
     await uploadTask.on(
       "state_changed",
@@ -172,6 +174,7 @@ const AddClass = () => {
         }
       );
     }
+    */
     return user.getIdToken().then(async (token) => {
       fetch(
         `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
@@ -189,7 +192,6 @@ const AddClass = () => {
         })
         .then((res) => {
           if (res.message === "Succsess") {
-            setSuccess(true);
             dispatch(actions.fetchCompetitions());
             dispatch(actions.loading(false));
             setClasses({
@@ -208,6 +210,8 @@ const AddClass = () => {
               feet: "right",
             });
             setIsOpen(false);
+            setSuccess(true);
+
           } else {
             setError(res.message);
             dispatch(actions.loading(false));
@@ -252,6 +256,7 @@ const AddClass = () => {
         });
     });
   };
+
   useEffect(() => {
     if (!id) {
       history.push("/admin");
@@ -358,7 +363,7 @@ const AddClass = () => {
       <div style={{ margin: 30 }}>
         <div style={{ margin: "auto", width: "80%" }}>
           {success && (
-            <Alert onClick={() => setSuccess(false)}>
+            <Alert onClose={() => setSuccess(false)}>
               Your input to update is not valid, please check your input
             </Alert>
           )}

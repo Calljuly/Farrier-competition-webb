@@ -28,8 +28,10 @@ const useStyle = makeStyles({
 
 const Admin = () => {
   const [value, setValue] = useState(0);
+  
   const user = useSelector((state) => state.auth.user);
   const classes = useStyle();
+
   const compClasses = useSelector((state) => {
     return state.competitions.competitions;
   });

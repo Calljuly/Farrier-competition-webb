@@ -99,6 +99,7 @@ const textInputs = [
     multiline: true,
   },
 ];
+
 const initialState = {
   name: {
     value: "",
@@ -235,6 +236,14 @@ const reducer = (state, action) => {
         },
       };
     case "parking":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "information":
       return {
         ...state,
         [action.type]: {
@@ -381,7 +390,7 @@ const AddCompetition = () => {
           You dont have a valid form to submit, please check you inputs
         </Alert>
       )}
-      {success && (
+      {true && (
         <Alert onClose={() => setSuccess(false)}>
           You updated sucsessfully!
         </Alert>

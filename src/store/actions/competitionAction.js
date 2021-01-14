@@ -8,7 +8,7 @@ export const DELETE_COMPETITION = "DELETE_COMPETITION";
 export const COMPETITION_LOADING = "COMPETITION_LOADING";
 export const SUCSESS = "SUCSESS";
 
-//Ska få route i api, inte klar
+//Ska få route i api, logik för att anmäla sig till olika divisioner ska in innan funktion
 export const enterCompetition = (competitor, classes, competition, id) => {
   const updatedState = competition;
   return (dispatch) => {
@@ -34,32 +34,9 @@ export const enterCompetition = (competitor, classes, competition, id) => {
       country: competitor.country,
       id: 0,
     });
-    console.log(updatedState);
 
-    const updatedClass = classes.map((item) => {
-      console.log(item);
-      item.unPublishedResult.push({
-        id: updatedState.currentEntries,
-        competitor: competitor.name,
-        shoeOne: { one: "", two: "", three: "", four: "", total: "" },
-        shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
-      });
-      return item;
-    });
-    console.log(updatedClass);
+    const updatedClass = {};
 
-    /*
-    //Bygga en api route för att anmäla en user till tävling 
-    fetch(
-      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({classes: classes, competition: comp}),
-      }
-    )*/
     firestore
       .collection("competitions")
       .doc(id)
@@ -100,93 +77,6 @@ export const enterCompetition = (competitor, classes, competition, id) => {
           type: COMPETITION_LOADING,
           isLoading: false,
         });
-      });
-  };
-};
-//Fungerar
-export const createCompetition = (competition, user) => {
-  const admin = [];
-  admin.push(user);
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-
-    var user = auth.currentUser;
-    return user.getIdToken().then((token) => {
-      fetch(
-        "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(competition),
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((res) => {
-          if (res.message === "Succsess") {
-            dispatch({
-              type: SUCSESS,
-              sucsess: true,
-            });
-            dispatch(fetchCompetitions());
-          } else {
-            dispatch({
-              type: SUCSESS,
-              sucsess: false,
-            });
-          }
-        })
-        .then(() => {
-          dispatch({
-            type: COMPETITION_LOADING,
-            loading: false,
-          });
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          dispatch({
-            type: COMPETITION_LOADING,
-            loading: false,
-          });
-        });
-    });
-  };
-};
-//Inte i behov av
-export const deleteCompetition = (competition) => {
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${competition}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((response) => response.json())
-      .then((competition) => {
-        dispatch({
-          type: DELETE_COMPETITION,
-          data: competition,
-        });
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
       });
   };
 };
@@ -319,8 +209,7 @@ export const saveClassResult = (competitionId, classes) => {
         savedResult: true,
       };
     });
-    console.log(updateClasses);
-    console.log(a);
+
     fetch(
       `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
       {
@@ -349,168 +238,6 @@ export const saveClassResult = (competitionId, classes) => {
       });
   };
 };
-//Fungerar
-export const addNewClass = (competitionId, classes) => {
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${competitionId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(classes),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        if (res.message === "Succsess") {
-          dispatch({
-            type: SUCSESS,
-            sucsess: true,
-          });
-          dispatch(fetchCompetitions());
-        } else {
-          dispatch({
-            type: SUCSESS,
-            sucsess: false,
-          });
-        }
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
-  };
-};
-//Inte kopplad , ska modifieras
-export const updateClass = (competitionId, classes, className) => {
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${competitionId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ className: className, classes: classes }),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        console.log(res.message);
-        if (res.message === "Succsess") {
-          dispatch({
-            type: SUCSESS,
-            sucsess: true,
-          });
-          dispatch(fetchCompetitions());
-        } else {
-          dispatch({
-            type: SUCSESS,
-            sucsess: false,
-          });
-        }
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
-  };
-};
-//Fungerar , ska modifieras
-export const updateCompetition = (competition, id) => {
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-
-    const comp = {
-      country: competition.country.value,
-      anvils: competition.anvils.value,
-      name: competition.name.value,
-      referee: competition.referee.value,
-      dateTo: competition.dateTo.value,
-      dateFrom: competition.dateFrom.value,
-      location: competition.location.value,
-      hotels: competition.hotels.value,
-      parking: competition.parking.value,
-    };
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(comp),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((res) => {
-        if (res.message === "Succsess") {
-          dispatch({
-            type: SUCSESS,
-            sucsess: true,
-          });
-          dispatch(fetchCompetitions());
-        } else {
-          dispatch({
-            type: SUCSESS,
-            sucsess: false,
-          });
-        }
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
-  };
-};
-
 export const loading = (value) => {
   return (dispatch) => {
     dispatch({
