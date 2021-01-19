@@ -1,8 +1,14 @@
-import { ADD_POINT, SAVED, FETCH_RESULTS } from "../actions/resultAction";
+import {
+  ADD_POINT,
+  SAVED,
+  FETCH_RESULTS,
+  CHANGE_FILTER,
+} from "../actions/resultAction";
 
 const initialState = {
   result: [],
   saved: false,
+  sortName: false,
 };
 
 const ResultReducer = (state = initialState, actions) => {
@@ -21,6 +27,11 @@ const ResultReducer = (state = initialState, actions) => {
       return {
         ...state,
         result: actions.data,
+      };
+    case CHANGE_FILTER:
+      return {
+        ...state,
+        sortName: actions.value,
       };
     default:
       return state;

@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 const CustomSelect = ({ classTypes, label, handler, disabled, id }) => {
   const [value, setValue] = useState("");
   const classes = useStyles();

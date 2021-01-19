@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import AddCompetition from "../components/Forms/addCompetition";
+import AddCompetition from "../components/DataCreators/addCompetition";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 import { Route, Switch } from "react-router-dom";
 import Scores from "../components/Scores";
@@ -8,7 +8,7 @@ import Edit from "./Edit";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import Devider from "../components/UI/Devider";
-import AddClass from "../components/Forms/addClass";
+import AddClass from "../components/DataCreators/addClass";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
@@ -28,7 +28,7 @@ const useStyle = makeStyles({
 
 const Admin = () => {
   const [value, setValue] = useState(0);
-  
+
   const user = useSelector((state) => state.auth.user);
   const classes = useStyle();
 
@@ -78,17 +78,19 @@ const Admin = () => {
             <div className="divBlack" />
             <Devider margin={30} />
             <TabPanel value={value} index={0}>
-              <h1>Information</h1>
-              <P>
-                If you are authurized you can reach what your are authurized to
-                do here.
-                <br />
-                To create a competition click on "New Competition" and fill in
-                the form given to you. Remeber to fill a the inputs
-                <br />
-                If you have any ongoing competitions you can start adding scores
-                to the score board
-              </P>
+              <div style={{ padding: 20 }}>
+                <h1>Information</h1>
+                <P>
+                  If you are authurized you can reach what your are authurized
+                  to do here.
+                  <br />
+                  To create a competition click on "New Competition" and fill in
+                  the form given to you. Remeber to fill a the inputs
+                  <br />
+                  If you have any ongoing competitions you can start adding
+                  scores to the score board
+                </P>
+              </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
               <PageHeader>Add new competition</PageHeader>
@@ -119,6 +121,7 @@ const Admin = () => {
                       result={item.competition.result}
                       openForEntries={item.competition.openForEntries}
                       startCompetition={item.competition.startCompetition}
+                      divisions={item.competition.divisions}
                     />
                   );
                 })

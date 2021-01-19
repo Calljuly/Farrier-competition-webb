@@ -34,6 +34,9 @@ const useStyle = makeStyles({
       width: "100%",
     },
   },
+  input: {
+    width: "96%", margin: 20
+  }
 });
 
 const Contact = () => {
@@ -52,7 +55,7 @@ const Contact = () => {
           margin: 40,
         }}
       >
-        <Grid container>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <SubHeader>Fill out the form to contact me</SubHeader>
             <form
@@ -64,27 +67,27 @@ const Contact = () => {
 
               <TextInput
                 type="text"
-                style={{ width: "90%", margin: 20 }}
+                className={classes.input}
                 label="First name"
                 placeholder="First name"
                 name="firstName"
               />
               <TextInput
                 type="text"
-                style={{ width: "90%", margin: 20 }}
+                className={classes.input}
                 label="Last name"
                 placeholder="Last name"
                 name="lastName"
               />
               <TextInput
                 type="text"
-                style={{ width: "90%", margin: 20 }}
+                className={classes.input}
                 label="Email"
                 placeholder="Email"
                 name="email"
               />
               <TextInput
-                style={{ width: "90%", margin: 20 }}
+              className={classes.input}
                 label="Phone"
                 placeholder="Phone"
                 type="number"
@@ -92,7 +95,7 @@ const Contact = () => {
               />
               <TextInput
                 type="text"
-                style={{ width: "90%", margin: 20 }}
+                className={classes.input}
                 label="Message"
                 multiline
                 rows={4}

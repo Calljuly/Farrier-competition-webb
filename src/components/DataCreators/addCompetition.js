@@ -12,6 +12,12 @@ import { Alert } from "@material-ui/lab";
 import Devider from "../UI/Devider";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { createCompetition } from "../../ApiFunctions/Api";
 
 const textInputs = [
   {
@@ -151,6 +157,7 @@ const initialState = {
     value: "",
     valid: true,
   },
+  divisions: [],
 };
 
 const reducer = (state, action) => {
@@ -251,11 +258,19 @@ const reducer = (state, action) => {
           [action.key]: action.value,
         },
       };
-
+    case "divisions":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
     default:
       return;
   }
 };
+
 const AddCompetition = () => {
   const user = useSelector((state) => state.auth.user);
   const [state, dispatchReducer] = useReducer(reducer, initialState);
@@ -264,10 +279,25 @@ const AddCompetition = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [divisions, setDivisions] = useState({
+    div1: false,
+    div2: false,
+    div3: false,
+  });
+
+  const changeDivisions = (event) => {
+    setDivisions({ ...divisions, [event.target.name]: event.target.checked });
+  };
 
   let valid = true;
 
   const createCompetition = (userName) => {
+    const divs = Object.keys(divisions).filter((item, index) => {
+      if (Object.values(divisions)[index]) {
+        return item;
+      }
+    });
+
     const valid = formValidation();
     if (valid) {
       dispatch(actions.loading(true));
@@ -290,24 +320,12 @@ const AddCompetition = () => {
         hotels: state.hotels.value,
         parking: state.parking.value,
         information: state.information.value,
+        divisions: divs,
       };
 
-      var user = auth.currentUser;
-      return user.getIdToken().then(async (token) => {
-        fetch(
-          "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(comp),
-          }
-        )
-          .then((response) => {
-            return response.json();
-          })
+      const user = auth.currentUser;
+      user.getIdToken().then(async (token) => {
+        createCompetition(token, comp)
           .then((res) => {
             if (res.message === "Succsess") {
               setSuccess(true);
@@ -390,9 +408,9 @@ const AddCompetition = () => {
           You dont have a valid form to submit, please check you inputs
         </Alert>
       )}
-      {true && (
+      {success && (
         <Alert onClose={() => setSuccess(false)}>
-          You updated sucsessfully!
+          You created your competition sucsessfully!
         </Alert>
       )}
       {error.length > 4 && (
@@ -424,6 +442,44 @@ const AddCompetition = () => {
           }
         />
       ))}
+      <FormControl component="fieldset" style={{ marginTop: 20 }}>
+        <FormLabel component="legend">
+          Choose which divisions to include in you competition
+        </FormLabel>
+        <FormGroup style={{ display: "flex", flexDirection: "row" }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={divisions.div1}
+                onChange={changeDivisions}
+                name="div1"
+              />
+            }
+            label="Div 1"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={divisions.div2}
+                onChange={changeDivisions}
+                name="div2"
+              />
+            }
+            label="Div 2"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={divisions.div3}
+                onChange={changeDivisions}
+                name="div3"
+              />
+            }
+            label="Div 3"
+          />
+        </FormGroup>
+      </FormControl>
+
       <Devider margin={30} />
       <ButtonContainer>
         <CustomButton

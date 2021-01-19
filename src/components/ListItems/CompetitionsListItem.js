@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
 import { Grid } from "@material-ui/core";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyle = makeStyles({
   container: {
@@ -32,6 +33,7 @@ const useStyle = makeStyles({
     flexDirection: "column",
     cursor: "pointer",
     paddingBottom: 20,
+    padding: 10,
   },
   classes: {
     width: "100%",
@@ -115,7 +117,7 @@ const CompetitionsListItem = ({
   const todayDate = new Date();
 
   const [showProposition, setShowProposition] = useState(false);
-  
+
   const competition = {
     id: id,
     country: country,
@@ -123,6 +125,7 @@ const CompetitionsListItem = ({
     anvils: anvils,
     entries: entries,
   };
+
   const enterCompetition = () => {
     const a = entries.filter((item) => {
       return user.name === item.competitor;
@@ -140,7 +143,7 @@ const CompetitionsListItem = ({
     <div className={classes.container}>
       {success && (
         <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
-          Your input to update is not valid, please check your input
+          You entered the competition!
         </Alert>
       )}
       {error && (
@@ -201,10 +204,10 @@ const CompetitionsListItem = ({
                 color: "red",
                 fontWeight: "bold",
                 marginRight: 20,
-                fontSize: 20,
+                fontSize: 30,
               }}
             >
-              Finished
+              <HighlightOffIcon alt="Competition has ended" />
             </p>
           )}
           {showProposition ? (
@@ -264,9 +267,7 @@ const CompetitionsListItem = ({
                 );
               })}
           </div>
-          <Grid
-            container
-          >
+          <Grid container style={{ padding: 10 }}>
             {isAuth &&
               openForEntries &&
               !startCompetition &&

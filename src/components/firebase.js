@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/storage";
 const APIKEY = process.env.REACT_APP_FIREBASE_KEY;
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: APIKEY,
   authDomain: "farrier-project.firebaseapp.com",
   databaseURL: "https://farrier-project.firebaseio.com",

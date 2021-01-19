@@ -7,7 +7,6 @@ export const ERROR = "ERROR";
 
 export const signUp = (user) => {
   return (dispatch) => {
-
     dispatch(isAuth(false, true, {}, false));
     if (user.password.value === user.passwordConfirmed.value) {
       throw new Error("Passwords not alike");
@@ -16,7 +15,6 @@ export const signUp = (user) => {
     auth
       .createUserWithEmailAndPassword(user.email.value, user.password.value)
       .then((cred) => {
-       
         const newUser = {
           bio: user.bio.value,
           result: [],
@@ -55,17 +53,6 @@ export const signUp = (user) => {
               admin: false,
             });
           });
-        /*
-        return firestore.collection("users").doc(cred.user.uid).set({
-          bio: user.bio.value,
-          result: [],
-          name: user.name.value,
-          img: user.profileImage.value,
-          address: user.address.value,
-          phone: user.phone.value,
-          country: user.country.value,
-          age: user.age.value,
-        });*/
       })
       .then(() => {
         dispatch(isAuth(false, false, {}));
@@ -76,6 +63,7 @@ export const signUp = (user) => {
       });
   };
 };
+
 export const signIn = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}, false));
@@ -83,38 +71,39 @@ export const signIn = (email, pass) => {
     auth
       .signInWithEmailAndPassword(email, pass)
       .then(async (cred) => {
-        fetch(
-          `https://us-central1-farrier-project.cloudfunctions.net/app/user/${cred.user.uid}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-          .then((response) => {
-            return response.json();
-          })
-          .then((users) => {
-            const a = users.user.find((u) => u.id === cred.user.uid);
-            return a.users;
-          })
-          .then((user) => {
-            storage
-              .ref()
-              .child(`images/${user.img}.jpg`)
-              .getDownloadURL()
-              .then((url) => {
-                
-                Cookies.set("user", "value", { expires: 7 });
-                localStorage.setItem("auth", user.uid);
-                dispatch(isAuth(true, false, user, url, false));
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-            dispatch(isAuth(false, false, {}, "", false));
-          });
+        await cred.user.getIdTokenResult(async (token) => {
+          fetch(
+            `https://us-central1-farrier-project.cloudfunctions.net/app/user/${cred.user.uid}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((users) => {
+              const a = users.user.find((u) => u.id === cred.user.uid);
+              return a.users;
+            })
+            .then((user) => {
+              storage
+                .ref()
+                .child(`images/${user.img}.jpg`)
+                .getDownloadURL()
+                .then((url) => {
+                  Cookies.set("user", "value", { expires: 7 });
+                  localStorage.setItem("auth", user.uid);
+                  dispatch(isAuth(true, false, user, url, false));
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+              dispatch(isAuth(false, false, {}, "", false));
+            });
+        });
       })
       .catch((err) => {
         dispatch(isError(true));
@@ -123,25 +112,29 @@ export const signIn = (email, pass) => {
   };
 };
 export const updateUser = (id, user) => {
-  fetch(
-    `https://us-central1-farrier-project.cloudfunctions.net/app/user/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user: user }),
-    }
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((users) => {
-      return users.user;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  const currentUser = auth.currentUser();
+  currentUser.getIdTokenResult(async (token) => {
+    fetch(
+      `https://us-central1-farrier-project.cloudfunctions.net/app/user/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user: user }),
+        Authorization: `Bearer ${token}`,
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((users) => {
+        return users.user;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 };
 
 export const logOut = () => {

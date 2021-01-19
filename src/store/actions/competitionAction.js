@@ -7,6 +7,7 @@ export const CREATE_COMPETITON = "CREATE_COMPETITION";
 export const DELETE_COMPETITION = "DELETE_COMPETITION";
 export const COMPETITION_LOADING = "COMPETITION_LOADING";
 export const SUCSESS = "SUCSESS";
+export const ADD_POINT = "ADD_POINT";
 
 //Ska få route i api, logik för att anmäla sig till olika divisioner ska in innan funktion
 export const enterCompetition = (competitor, classes, competition, id) => {
@@ -158,7 +159,7 @@ export const saveAllResult = (competitionId, classes) => {
       };
     });
 
-    var user = auth.currentUser;
+    const user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
       fetch(
         `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
@@ -245,4 +246,88 @@ export const loading = (value) => {
       loading: value,
     });
   };
+};
+
+
+export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
+  return (dispatch) => {
+    const competitor = state.unPublishedResult;
+
+    const c = competitor.map((item, index) => {
+      if (item.heat === heat) {
+        const aa = item.starts.map((comp) => {
+          let a;
+          if (comp.id === id) {
+            if (type === "shoeOne") {
+              a = {
+                ...comp.shoeOne,
+                [cellId]: +value,
+              };
+              const b = {
+                ...a,
+                total: reCalculateTotal(a, state.pointsToMultiply),
+              };
+              console.log(b);
+
+              comp.shoeOne = b;
+            } else if (type === "shoeTwo") {
+              a = {
+                ...comp.shoeTwo,
+                [cellId]: +value,
+              };
+              const b = {
+                ...a,
+                total: reCalculateTotal(a, state.pointsToMultiply),
+              };
+              comp.shoeTwo = b;
+            }
+          }
+          return comp;
+        });
+        console.log(aa);
+
+        return { starts: aa };
+      } else {
+        return item;
+      }
+    });
+
+    console.log(c);
+
+    state.unPublishedResult = c;
+    firestore
+      .collection("competitions")
+      .doc(compIndex)
+      .collection("classes")
+      .doc(state.className)
+      .update({
+        unPublishedResult: state.unPublishedResult,
+      })
+      .then(() => {
+        dispatch({ type: ADD_POINT, updatedState: state });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    /*
+    fetch(
+      `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${compIndex}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ classes: updatedState }),
+      }
+    ).then(() => {});*/
+  };
+};
+
+const reCalculateTotal = (updatedState, points) => {
+  const first = +updatedState.one * points[0];
+  const second = +updatedState.two * points[1];
+  const third = +updatedState.three * points[2];
+  const fourth = +updatedState.four * points[3];
+
+  return first + second + third + fourth;
 };

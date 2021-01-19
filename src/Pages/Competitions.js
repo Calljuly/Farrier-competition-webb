@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import { Grid } from "@material-ui/core";
@@ -13,6 +13,7 @@ import CustomTab from "../components/UI/Tabs";
 import { makeStyles } from "@material-ui/styles";
 import EnterCompetition from "../Pages/EnterCompetition";
 import { Alert } from "@material-ui/lab";
+import FilterController from "../components/FilterController";
 
 const useStyle = makeStyles({
   headerContainer: {
@@ -26,7 +27,21 @@ const useStyle = makeStyles({
 });
 const Competitions = () => {
   const [value, setValue] = useState(0);
-  const competitions = useSelector((state) => state.competitions.competitions);
+  const filter = useSelector((state) => state.result.sortName);
+
+  const competitions = useSelector((state) => {
+    const a = state.competitions.competitions;
+    if (filter) {
+      return a.sort((a, b) =>
+        a.competition.name > b.competition.name ? 1 : -1
+      );
+    } else {
+      return a;
+    }
+  });
+
+  console.log(competitions);
+  
   const classes = useStyle();
   const handleChange = (event, newValue) => {
     event.preventDefault();
@@ -42,11 +57,8 @@ const Competitions = () => {
       id: 1,
       label: "Past",
     },
-    {
-      id: 2,
-      label: "Searchs",
-    },
   ];
+
   return (
     <div style={{ marginTop: 0, width: "100%" }}>
       <Switch>
@@ -62,6 +74,9 @@ const Competitions = () => {
           <div className="divOrange" />
           <div className="divBlack" />
           <Devider margin={30} />
+
+          <FilterController />
+
           <TabPanel value={value} index={0}>
             <PageHeader>Active competitions</PageHeader>
             {competitions.length === 0 && (
@@ -130,11 +145,6 @@ const Competitions = () => {
                 );
               }
             })}
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <Grid container spacing={2}>
-              <PageHeader>Search for results</PageHeader>
-            </Grid>
           </TabPanel>
         </Route>
         <Route path="/competitions/startList">

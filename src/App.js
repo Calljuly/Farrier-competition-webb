@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
-import "./App.css";
-import { firestore, storage } from "./components/firebase";
+import { storage } from "./components/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "./store/actions/auth";
 import * as actionComp from "./store/actions/competitionAction";
-import * as resultActions from "./store/actions/resultAction";
 import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
 import Loading from "./components/IsLoading";
-import Cookies from "js-cookie";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,7 +16,7 @@ const App = () => {
   const isLoadingCompetition = useSelector(
     (state) => state.competitions.isLoading
   );
-  const user = useSelector((item) => item.auth.user);
+
   const admin = useSelector((state) => state.auth.admin);
 
   useEffect(() => {
@@ -96,10 +93,9 @@ const App = () => {
     dispatch(actionComp.fetchCompetitions());
   }, [isAuthenticated]);
 
-  if (isLoadingAuth || isLoadingCompetition) {
+  if (isLoadingAuth) {
     return <Loading />;
   }
-
   return (
     <>
       {isLoadingAuth && isLoadingCompetition && <Loading />}

@@ -28,6 +28,7 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
         setSponsor(url);
       });
   }
+  
   return (
     <div className={classes.card}>
       <SubHeader>Sponsor of {className}</SubHeader>

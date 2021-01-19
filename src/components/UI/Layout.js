@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "../Navbar";
-import cover from "../../assets/Images/newpic.jpg";
 import Footer from "../footer";
 import { makeStyles } from "@material-ui/styles";
 
@@ -21,6 +20,7 @@ const useStyle = makeStyles({
     padding: "30px 0px 30px 0px",
     ["@media (max-width: 1000px)"]: {
       width: "100%",
+      padding: 0,
     },
   },
 });

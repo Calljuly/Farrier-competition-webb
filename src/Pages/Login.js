@@ -142,7 +142,6 @@ const Login = () => {
           value: text.target.files[0],
         },
       };
-      console.log(updatedState);
     } else {
       updatedState = {
         ...authState,
@@ -194,7 +193,6 @@ const Login = () => {
     const valid = formValidation();
 
     if (valid) {
-      //actions.signUp(authState);
       if (authState.profileImage.name) {
         const uploadTask = storage
           .ref()

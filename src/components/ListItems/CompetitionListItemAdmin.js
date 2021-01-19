@@ -32,6 +32,7 @@ const useStyle = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
+    padding: 10,
   },
   classesContainer: {
     width: "100%",
@@ -41,6 +42,7 @@ const useStyle = makeStyles({
     flexDirection: "column",
     cursor: "pointer",
     paddingBottom: 20,
+    padding: 10,
   },
   infoContainer: {
     width: "100%",
@@ -123,6 +125,7 @@ const CompetitionListItemAdmin = ({
   openForEntries,
   startCompetition,
   entries,
+  divisions
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -186,7 +189,7 @@ const CompetitionListItemAdmin = ({
 
   const randomnizeEntries = (listOfEntries) => {
     let array = [...listOfEntries];
-    for (var i = array.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = array[i];
       array[i] = array[j];
@@ -302,42 +305,44 @@ const CompetitionListItemAdmin = ({
                 );
               })}
           </div>
-          <h2>Handle your competition</h2>
-          <div style={{ display: "flex" }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  classes={{
-                    track: classes.switch_track,
-                    switchBase: classes.switch_base,
-                    colorPrimary: classes.switch_primary,
-                  }}
-                  checked={open}
-                  onChange={openCompetitionForEntries}
-                  name="Open competition"
-                />
-              }
-              label="Open competitions for entries"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  classes={{
-                    track: classes.switch_track,
-                    switchBase: classes.switch_base,
-                    colorPrimary: classes.switch_primary,
-                  }}
-                  checked={started}
-                  onChange={
-                    startCompetition || compClasses.length === 0
-                      ? () => {}
-                      : startCompetitionHandler
-                  }
-                  name="Open competition for entries"
-                />
-              }
-              label="Start competition"
-            />
+          <div style={{ padding: 15 }}>
+            <h2>Handle your competition</h2>
+            <div style={{ display: "flex", marginTop: 10 }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    classes={{
+                      track: classes.switch_track,
+                      switchBase: classes.switch_base,
+                      colorPrimary: classes.switch_primary,
+                    }}
+                    checked={open}
+                    onChange={openCompetitionForEntries}
+                    name="Open competition"
+                  />
+                }
+                label="Open competitions for entries"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    classes={{
+                      track: classes.switch_track,
+                      switchBase: classes.switch_base,
+                      colorPrimary: classes.switch_primary,
+                    }}
+                    checked={started}
+                    onChange={
+                      startCompetition || compClasses.length === 0
+                        ? () => {}
+                        : startCompetitionHandler
+                    }
+                    name="Open competition for entries"
+                  />
+                }
+                label="Start competition"
+              />
+            </div>
           </div>
           <Grid container>
             {todayDate < competitionStartDate && (
@@ -351,6 +356,7 @@ const CompetitionListItemAdmin = ({
                           pathname: "/admin/addClass",
                           state: compClasses,
                           id: id,
+                          competitionDivisions: divisions
                         })
                       }
                     />

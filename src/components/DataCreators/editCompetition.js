@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
+import { editCompetition } from "../../ApiFunctions/Api";
 
 const textInputs = [
   {
@@ -220,7 +221,7 @@ const EditCompetition = () => {
     const valid = formValidation();
     if (valid) {
       dispatch(actions.loading(true));
-      var user = auth.currentUser;
+      const user = auth.currentUser;
       return user.getIdToken().then(async (token) => {
         const comp = {
           country: state.country.value,
@@ -233,20 +234,8 @@ const EditCompetition = () => {
           hotels: state.hotels.value,
           parking: state.parking.value,
         };
-        fetch(
-          `https://us-central1-farrier-project.cloudfunctions.net/app/competitions/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(comp),
-          }
-        )
-          .then((response) => {
-            return response.json();
-          })
+
+        editCompetition(token, id, comp)
           .then((res) => {
             if (res.message === "Succsess") {
               setSuccess(true);

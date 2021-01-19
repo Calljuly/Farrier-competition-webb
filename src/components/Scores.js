@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ScoreSheet from "./Tables/ScoreSheet";
 import { useDispatch } from "react-redux";
 import CustomModal from "../components/Modal";
-import * as actions from "../store/actions/resultAction";
+import * as actions from "../store/actions/competitionAction";
 import { useLocation, useHistory } from "react-router-dom";
 import P from "./UI/Paragraph";
 import CustomButton from "./CustomButton";

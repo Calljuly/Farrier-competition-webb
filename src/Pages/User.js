@@ -5,10 +5,11 @@ import ResultListItem from "../components/ListItems/ResultListItem";
 import { useSelector } from "react-redux";
 import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
-import EditProfile from "../components/Forms/edirProfil";
-import EditEmailAndPassword from "../components/Forms/editEmailAndPassword";
+import EditProfile from "../components/DataCreators/edirProfil";
+import EditEmailAndPassword from "../components/DataCreators/editEmailAndPassword";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
+import { auth } from "../components/firebase";
 
 const useStyle = makeStyles({
   avatar: {
@@ -75,6 +76,32 @@ const User = () => {
     },
   ];
 
+  const createAdmin = () => {
+    const user = auth.currentUser;
+    user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: "hoastimmy@gmail.com",
+        }
+      )
+        .then((res) => {
+          return res;
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  };
+  
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -96,7 +123,7 @@ const User = () => {
           <SubHeader>{user.country}</SubHeader>
           <SubHeader>{user.bio}</SubHeader>
         </TabPanel>
-        <TabPanel value={value} index={1} style={{ width: "90%" }}>
+        <TabPanel value={value} index={1} >
           <PageHeader>Results</PageHeader>
           {user.result.length > 0 &&
             user.result.map((item) => {
@@ -110,11 +137,11 @@ const User = () => {
               );
             })}
         </TabPanel>
-        <TabPanel value={value} index={2} style={{ width: "90%" }}>
+        <TabPanel value={value} index={2} >
           <PageHeader>Update profile</PageHeader>
           <EditProfile />
         </TabPanel>
-        <TabPanel value={value} index={3} style={{ width: "90%" }}>
+        <TabPanel value={value} index={3} >
           <EditEmailAndPassword />
         </TabPanel>
       </div>

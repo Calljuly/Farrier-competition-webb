@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CustomSelect from "../Select";
+import { makeStyles } from "@material-ui/styles";
 import { compClasses } from "../../dummyData";
 import CustomButton from "../CustomButton";
 import { useHistory, useLocation } from "react-router-dom";
@@ -17,6 +17,34 @@ import Devider from "../UI/Devider";
 import { storage, auth } from "../../components/firebase";
 import { Alert } from "@material-ui/lab";
 import ButtonContainer from "../UI/ButtonContainer";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import { Colors } from "../../colors";
+import { createClass } from "../../ApiFunctions/Api";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    minWidth: 120,
+    marginRight: 20,
+  },
+  "&.makeStyles-formControl-42": {
+    margin: 0,
+  },
+  select: {
+    "&:before": {
+      margin: 0,
+      borderBottom: `1px solid ${Colors.black}`,
+    },
+    "&:after": {
+      borderBottom: `1px solid ${Colors.orange}`,
+    },
+    "&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before": {
+      borderBottom: `1px solid ${Colors.orange}`,
+    },
+  },
+}));
 
 const AddClass = () => {
   const dispatch = useDispatch();
@@ -24,8 +52,7 @@ const AddClass = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  
-  console.log('Hejeh '+success);
+  const classes = useStyles();
   const [classesObject, setClasses] = useState({
     className: {
       value: "",
@@ -52,10 +79,16 @@ const AddClass = () => {
     referee: "",
     savedResult: false,
     feet: "right",
+    divisions: "",
   });
 
   const l = useLocation();
   const id = l.id;
+  const competition = l.competitionDivisions;
+
+  if (!competition || !id) {
+    history.push("/admin");
+  }
 
   const index = classesObject.type !== "Forging" ? 1 : 0;
   const points = compClasses[index].headerTitles.filter((item) => {
@@ -126,8 +159,9 @@ const AddClass = () => {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
+    newClass.className = `${newClass.divisions} ${newClass.className}`;
 
-    var user = auth.currentUser;
+    const user = auth.currentUser;
     dispatch(actions.loading(true));
     /*
     const uploadTask = storage
@@ -175,22 +209,10 @@ const AddClass = () => {
       );
     }
     */
-    return user.getIdToken().then(async (token) => {
-      fetch(
-        `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newClass),
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
+    user.getIdToken().then(async (token) => {
+      createClass(token, newClass, id)
         .then((res) => {
+          console.log(res);
           if (res.message === "Succsess") {
             dispatch(actions.fetchCompetitions());
             dispatch(actions.loading(false));
@@ -211,7 +233,6 @@ const AddClass = () => {
             });
             setIsOpen(false);
             setSuccess(true);
-
           } else {
             setError(res.message);
             dispatch(actions.loading(false));
@@ -254,14 +275,9 @@ const AddClass = () => {
           });
           setIsOpen(false);
         });
+      setIsOpen(false);
     });
   };
-
-  useEffect(() => {
-    if (!id) {
-      history.push("/admin");
-    }
-  }, [compClasses]);
 
   useEffect(() => {
     switch (classesObject.type) {
@@ -364,7 +380,7 @@ const AddClass = () => {
         <div style={{ margin: "auto", width: "80%" }}>
           {success && (
             <Alert onClose={() => setSuccess(false)}>
-              Your input to update is not valid, please check your input
+              Your class was created successfully!
             </Alert>
           )}
           {error.length > 3 && (
@@ -373,12 +389,38 @@ const AddClass = () => {
             </Alert>
           )}
           <SubHeader>Create new class</SubHeader>
-          <CustomSelect
-            handler={handleClasses}
-            label="Type"
-            id="type"
-            classTypes={compClasses}
-          />
+          <FormControl className={classes.formControl}>
+            <InputLabel>Pick type</InputLabel>
+            <Select
+              value={classesObject.type}
+              onChange={(event) => handleClasses("type", event.target)}
+              className={classes.select}
+            >
+              {compClasses.map((item) => {
+                return (
+                  <MenuItem key={item.type} value={item.type}>
+                    {item.title}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel>Pick Division</InputLabel>
+            <Select
+              value={classesObject.divisions}
+              onChange={(event) => handleClasses("divisions", event.target)}
+              className={classes.select}
+            >
+              {competition.map((item) => {
+                return (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
           {getClass(classesObject.type)}
           <Devider margin={30} />
 

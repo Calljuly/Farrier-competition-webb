@@ -8,6 +8,10 @@ const useStyle = makeStyles({
     padding: 20,
     margin: 0,
     fontFamily: "Constantia",
+    fontSize: 30,
+    ["@media (max-width:956px)"]: {
+      fontSize: 20,
+    },
   },
 });
 const PageHeader = ({ children }) => {

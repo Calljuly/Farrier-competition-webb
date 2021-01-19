@@ -55,7 +55,13 @@ const useStyle = makeStyles({
   inputContainer: {
     display: "flex",
     flexDirection: "column",
-    width: "90%",
+    width: "100%",
+  },
+  input: {
+    width: "100%",
+    height: 50,
+    fontSize: 20,
+    margin: 10,
   },
 });
 
@@ -178,7 +184,7 @@ const EditProfile = () => {
     setIsOpen(false);
   };
   return (
-    <div>
+    <>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <PageHeader>Are you sure ?</PageHeader>
         <P> Are you sure you want to update your user data ? </P>
@@ -222,7 +228,7 @@ const EditProfile = () => {
           />
         </ButtonContainer>
       </div>
-    </div>
+    </>
   );
 };
 

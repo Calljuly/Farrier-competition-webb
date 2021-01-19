@@ -16,6 +16,7 @@ import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
+import { editClass } from "../../ApiFunctions/Api";
 
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();
@@ -102,22 +103,9 @@ const EditClass = ({ classes }) => {
     if (valid) {
       dispatch(actions.loading(true));
 
-      var user = auth.currentUser;
+      const user = auth.currentUser;
       return user.getIdToken().then(async (token) => {
-        fetch(
-          `https://us-central1-farrier-project.cloudfunctions.net/app/classes/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ className: classes.className, classes: o }),
-          }
-        )
-          .then((response) => {
-            return response.json();
-          })
+        editClass(token, id, classes.className, o)
           .then((res) => {
             console.log(res.message);
             if (res.message === "Succsess") {

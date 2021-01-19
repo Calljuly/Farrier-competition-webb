@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CustomButton from "../components/CustomButton";
-import EditClass from "../components/Forms/editClass";
+import EditClass from "../components/DataCreators/editClass";
 import Devider from "../components/UI/Devider";
 import { useLocation, useHistory } from "react-router-dom";
-import EditCompetition from "../components/Forms/editCompetition";
+import EditCompetition from "../components/DataCreators/editCompetition";
 import PageHeader from "../components/UI/PageHeader";
 import ButtonContainer from "../components/UI/ButtonContainer";
 
