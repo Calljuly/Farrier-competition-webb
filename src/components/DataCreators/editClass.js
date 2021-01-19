@@ -31,7 +31,6 @@ const EditClass = ({ classes }) => {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  let valid = true;
   const l = useLocation();
   const id = l.id;
 
@@ -72,7 +71,7 @@ const EditClass = ({ classes }) => {
   };
 
   const submitNewClass = async () => {
-    const points = classesObject.pointsToMultiply.reduce(function (a, b) {
+    const points = classesObject.pointsToMultiply.reduce((a, b) => {
       return a + b;
     }, 0);
     let newClass = {};
@@ -86,68 +85,18 @@ const EditClass = ({ classes }) => {
         pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
       };
     }
+    
 
-    const o = {};
-    Object.keys(newClass).forEach((item, index) => {
-      if (
-        Object.values(newClass)[index] !== "" ||
-        !Object.values(newClass)[index] === []
-      ) {
-        const value = Object.values(newClass)[index];
+    dispatch(actions.loading(true));
 
-        o[item] = value;
-      }
-    });
-    valid = formValidation();
-
-    if (valid) {
-      dispatch(actions.loading(true));
-
-      const user = auth.currentUser;
-      return user.getIdToken().then(async (token) => {
-        editClass(token, id, classes.className, o)
-          .then((res) => {
-            console.log(res.message);
-            if (res.message === "Succsess") {
-              setSuccess(true);
-              dispatch(actions.fetchCompetitions());
-              dispatch(actions.loading(false));
-              setClasses({
-                className: "",
-                pointsToMultiply: [],
-                shoeOne: "",
-                shoeTwo: "",
-                time: "",
-                type: "",
-                unPublishedResult: [],
-                sponsors: "",
-                sponsorLoggo: "",
-                referee: "",
-              });
-              setIsOpen(false);
-            } else {
-              setError(res.message);
-              dispatch(actions.loading(false));
-
-              setClasses({
-                className: "",
-                pointsToMultiply: [],
-                shoeOne: "",
-                shoeTwo: "",
-                time: "",
-                type: "",
-                unPublishedResult: [],
-                sponsors: "",
-                sponsorLoggo: "",
-                referee: "",
-              });
-              setIsOpen(false);
-            }
-          })
-          .then(() => {})
-          .catch((error) => {
-            console.error("Error:", error);
-            setError(error.message);
+    const user = auth.currentUser;
+    user.getIdToken().then(async (token) => {
+      editClass(token, id, classes.className, newClass)
+        .then((res) => {
+          console.log(res.message);
+          if (res.message === "Succsess") {
+            setSuccess(true);
+            dispatch(actions.fetchCompetitions());
             dispatch(actions.loading(false));
             setClasses({
               className: "",
@@ -162,17 +111,59 @@ const EditClass = ({ classes }) => {
               referee: "",
             });
             setIsOpen(false);
+          } else {
+            setError(res.message);
+            dispatch(actions.loading(false));
+
+            setClasses({
+              className: "",
+              pointsToMultiply: [],
+              shoeOne: "",
+              shoeTwo: "",
+              time: "",
+              type: "",
+              unPublishedResult: [],
+              sponsors: "",
+              sponsorLoggo: "",
+              referee: "",
+            });
+            setIsOpen(false);
+          }
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error:", error);
+          setError(error.message);
+          dispatch(actions.loading(false));
+          setClasses({
+            className: "",
+            pointsToMultiply: [],
+            shoeOne: "",
+            shoeTwo: "",
+            time: "",
+            type: "",
+            unPublishedResult: [],
+            sponsors: "",
+            sponsorLoggo: "",
+            referee: "",
           });
-      });
-    }
+          setIsOpen(false);
+        });
+    });
   };
-  const formValidation = () => {
-    const a = Object.keys(classesObject);
+
+  const formValidation = (classData) => {
+    const a = Object.keys(classData);
     let valid = true;
     a.forEach((item) => {
       const b = classesObject[item];
-      if (item !== "sponsorLoggo") {
-        if (b === "" || b.length === 0) {
+      if (
+        item !== "sponsorLoggo" ||
+        item !== "shoeOneImg" ||
+        item !== "shoeTwoImg"
+      ) {
+        if (b === "") {
+          console.log(item);
           valid = false;
         }
       }

@@ -23,13 +23,6 @@ const ComboClass = ({ handleClasses, points, pointsHandler, feet }) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <TextInput
-        required
-        id="className"
-        label="ClassName"
-        placeholder="ClassName"
-        onChange={(event) => handleClasses("className", event.target)}
-      />
       <CustomSelect
         handler={handleClasses}
         label="Shoe to foot"

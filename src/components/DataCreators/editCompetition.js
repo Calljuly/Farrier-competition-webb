@@ -52,6 +52,20 @@ const textInputs = [
     multiline: false,
   },
   {
+    id: 11,
+    label: "Semi final spaces",
+    value: "semi",
+    type: "number",
+    multiline: false,
+  },
+  {
+    id: 12,
+    label: "Final spaces",
+    value: "final",
+    type: "number",
+    multiline: false,
+  },
+  {
     id: 6,
     label: "",
     value: "dateFrom",
@@ -79,6 +93,13 @@ const textInputs = [
     type: "text",
     multiline: true,
   },
+  {
+    id: 10,
+    label: "Other information",
+    value: "information",
+    type: "text",
+    multiline: true,
+  },
 ];
 const initialState = {
   name: {
@@ -101,6 +122,14 @@ const initialState = {
     value: "",
     valid: true,
   },
+  semi: {
+    value: "",
+    valid: true,
+  },
+  final: {
+    value: "",
+    valid: true,
+  },
   admins: [],
   dateFrom: {
     value: "",
@@ -119,6 +148,11 @@ const initialState = {
     value: "",
     valid: true,
   },
+  information: {
+    value: "",
+    valid: true,
+  },
+  divisions: [],
 };
 
 const reducer = (state, action) => {
@@ -163,6 +197,22 @@ const reducer = (state, action) => {
           [action.key]: action.value,
         },
       };
+    case "semi":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "final":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
     case "dateFrom":
       return {
         ...state,
@@ -195,12 +245,29 @@ const reducer = (state, action) => {
           [action.key]: action.value,
         },
       };
-
+    case "information":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "divisions":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
     default:
       return;
   }
 };
+
 const EditCompetition = () => {
+  
   const [show, setShow] = useState(false);
   const l = useLocation();
   const id = l.id;
@@ -226,6 +293,8 @@ const EditCompetition = () => {
         const comp = {
           country: state.country.value,
           anvils: state.anvils.value,
+          semi: state.semi.value,
+          final: state.final.value,
           name: state.name.value,
           referee: state.referee.value,
           dateTo: state.dateTo.value,
@@ -233,6 +302,7 @@ const EditCompetition = () => {
           location: state.location.value,
           hotels: state.hotels.value,
           parking: state.parking.value,
+          information: state.information.value,
         };
 
         editCompetition(token, id, comp)
@@ -322,12 +392,12 @@ const EditCompetition = () => {
           </Alert>
         )}
         {success && (
-          <Alert onClick={() => setSuccess(false)}>
+          <Alert onClose={() => setSuccess(false)}>
             You updated succsessfully!
           </Alert>
         )}
         {error.length > 3 && (
-          <Alert severity="error" onClick={() => setError("")}>
+          <Alert severity="error" onClose={() => setError("")}>
             {error}
           </Alert>
         )}

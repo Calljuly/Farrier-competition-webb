@@ -125,7 +125,7 @@ const CompetitionListItemAdmin = ({
   openForEntries,
   startCompetition,
   entries,
-  divisions
+  divisions,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -356,7 +356,7 @@ const CompetitionListItemAdmin = ({
                           pathname: "/admin/addClass",
                           state: compClasses,
                           id: id,
-                          competitionDivisions: divisions
+                          competitionDivisions: divisions,
                         })
                       }
                     />
@@ -382,15 +382,6 @@ const CompetitionListItemAdmin = ({
                   title="Publish all results"
                   onClick={() => setModal(true)}
                 />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <CustomButton title="Print proposition" onClick={() => {}} />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <CustomButton title="Print scoresheet" onClick={() => {}} />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <CustomButton title="Print startlist" onClick={() => {}} />
               </Grid>
             </Grid>
             {todayDate < competitionEndDate && result.length > 0 && (

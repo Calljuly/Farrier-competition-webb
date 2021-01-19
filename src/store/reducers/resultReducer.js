@@ -8,7 +8,7 @@ import {
 const initialState = {
   result: [],
   saved: false,
-  sortName: false,
+  sort: ''
 };
 
 const ResultReducer = (state = initialState, actions) => {
@@ -31,7 +31,7 @@ const ResultReducer = (state = initialState, actions) => {
     case CHANGE_FILTER:
       return {
         ...state,
-        sortName: actions.value,
+        sort: actions.value,
       };
     default:
       return state;

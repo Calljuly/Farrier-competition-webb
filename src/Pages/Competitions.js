@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
-import { Grid } from "@material-ui/core";
-import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
 import { Route, Switch } from "react-router-dom";
 import Devider from "../components/UI/Devider";
@@ -27,21 +25,23 @@ const useStyle = makeStyles({
 });
 const Competitions = () => {
   const [value, setValue] = useState(0);
-  const filter = useSelector((state) => state.result.sortName);
+  const filter = useSelector((state) => state.result.sort);
 
   const competitions = useSelector((state) => {
     const a = state.competitions.competitions;
-    if (filter) {
+    if (filter === "sortName") {
       return a.sort((a, b) =>
         a.competition.name > b.competition.name ? 1 : -1
+      );
+    } else if (filter === "sortDate") {
+      return a.sort((a, b) =>
+        a.competition.dateFrom > b.competition.dateFrom ? 1 : -1
       );
     } else {
       return a;
     }
   });
 
-  console.log(competitions);
-  
   const classes = useStyle();
   const handleChange = (event, newValue) => {
     event.preventDefault();

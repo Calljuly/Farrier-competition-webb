@@ -1,6 +1,4 @@
 import React from "react";
-import { shoes } from "../../dummyData";
-import CustomSelect from "../Select";
 import TextInput from "../TextInput";
 import SubHeader from "../UI/SubHeader";
 import Radio from "@material-ui/core/Radio";
@@ -19,17 +17,19 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
         placeholder="ClassName"
         onChange={(event) => handleClasses("className", event.target)}
       />
-      <CustomSelect
-        handler={handleClasses}
-        label="First shoe"
+      <TextInput
+        required
         id="shoeOne"
-        classTypes={shoes}
+        label="Shoe One"
+        placeholder="Shoe One"
+        onChange={(event) => handleClasses("shoeOne", event.target)}
       />
-      <CustomSelect
-        handler={handleClasses}
-        label="Second shoe"
+      <TextInput
+        required
         id="shoeTwo"
-        classTypes={shoes}
+        label="Shoe Two"
+        placeholder="Shoe Two"
+        onChange={(event) => handleClasses("shoeTwo", event.target)}
       />
       <TextInput
         required

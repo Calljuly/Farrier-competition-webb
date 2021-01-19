@@ -29,7 +29,7 @@ const textInputs = [
   },
   {
     id: 2,
-    label: "Referee",
+    label: "Judge",
     value: "referee",
     type: "text",
     multiline: false,
@@ -52,20 +52,6 @@ const textInputs = [
     id: 5,
     label: "Anvils avalible",
     value: "anvils",
-    type: "number",
-    multiline: false,
-  },
-  {
-    id: 11,
-    label: "Semi final spaces",
-    value: "semi",
-    type: "number",
-    multiline: false,
-  },
-  {
-    id: 12,
-    label: "Final spaces",
-    value: "final",
     type: "number",
     multiline: false,
   },
@@ -105,7 +91,22 @@ const textInputs = [
     multiline: true,
   },
 ];
-
+const divisionData = [
+  {
+    id: 11,
+    label: "Semi final spaces",
+    value: "semi",
+    type: "number",
+    multiline: false,
+  },
+  {
+    id: 12,
+    label: "Final spaces",
+    value: "final",
+    type: "number",
+    multiline: false,
+  },
+];
 const initialState = {
   name: {
     value: "",
@@ -291,7 +292,7 @@ const AddCompetition = () => {
 
   let valid = true;
 
-  const createCompetition = (userName) => {
+  const addCompetition = (userName) => {
     const divs = Object.keys(divisions).filter((item, index) => {
       if (Object.values(divisions)[index]) {
         return item;
@@ -398,7 +399,7 @@ const AddCompetition = () => {
           <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => createCompetition(user.name)}
+            onClick={() => addCompetition(user.name)}
           />
         </div>
       </ChoiseModal>
@@ -479,7 +480,31 @@ const AddCompetition = () => {
           />
         </FormGroup>
       </FormControl>
-
+      
+      {divisionData.map((item) => (
+        <TextInput
+          required
+          key={item.id}
+          label={item.label}
+          type={item.type}
+          placeholder={item.label}
+          onChange={(event) =>
+            dispatchReducer({
+              type: item.value,
+              value: event.target.value,
+              key: "value",
+            })
+          }
+          onBlur={() =>
+            validateText(state[item.value].value, item.value, item.type)
+          }
+          error={!state[item.value].valid}
+          helperText={
+            !state[item.value].valid &&
+            "You have to enter a valid input, atleast 3 characters"
+          }
+        />
+      ))}
       <Devider margin={30} />
       <ButtonContainer>
         <CustomButton
