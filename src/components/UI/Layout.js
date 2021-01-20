@@ -20,7 +20,7 @@ const useStyle = makeStyles({
     padding: "30px 0px 30px 0px",
     ["@media (max-width: 1000px)"]: {
       width: "100%",
-      padding: 0,
+      
     },
   },
 });

@@ -13,6 +13,7 @@ import ButtonContainer from "../UI/ButtonContainer";
 let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const EditEmailAndPassword = () => {
+  
   const [authState, setAuthState] = useState({
     email: {
       value: "",
@@ -69,6 +70,7 @@ const EditEmailAndPassword = () => {
     handleInputChange("email", "");
     handleInputChange("password", "");
   };
+
   const handleInputChange = (id, text) => {
     const updatedState = {
       ...authState,
@@ -79,8 +81,16 @@ const EditEmailAndPassword = () => {
     };
     setAuthState(updatedState);
   };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "90%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "90%",
+        margin: "auto",
+      }}
+    >
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
         <PageHeader>Are you sure ?</PageHeader>
         <P> Are you sure you want update your email address ? </P>

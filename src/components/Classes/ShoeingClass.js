@@ -41,7 +41,7 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
       <TextInput
         required
         id="referee"
-        label="Referee"
+        label="Judge"
         placeholder="Referee"
         onChange={(event) => handleClasses("referee", event.target)}
       />

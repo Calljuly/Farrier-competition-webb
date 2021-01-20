@@ -25,7 +25,7 @@ const useStyle = makeStyles({
 });
 const Competitions = () => {
   const [value, setValue] = useState(0);
-  const filter = useSelector((state) => state.result.sort);
+  const filter = useSelector((state) => state.filter.sort);
 
   const competitions = useSelector((state) => {
     const a = state.competitions.competitions;
@@ -58,6 +58,57 @@ const Competitions = () => {
       label: "Past",
     },
   ];
+  const competitionsActive = competitions.map((item, index) => {
+    const competitionEndDate = new Date(item.competition.dateTo);
+
+    if (competitionEndDate > todayDate) {
+      return (
+        <CompetitionsListItem
+          key={item.competition.id}
+          index={index}
+          id={item.competition.id}
+          name={item.competition.name}
+          referee={item.competition.referee}
+          country={item.competition.country}
+          anvils={item.competition.anvils}
+          current={item.competition.currentEntries}
+          divisions={item.divisions}
+          disabled={item.competition.anvils === item.competition.currentEntries}
+          entries={item.competition.entries}
+          dateFrom={item.competition.dateFrom}
+          dateTo={item.competition.dateTo}
+          result={item.competition.result}
+          openForEntries={item.competition.openForEntries}
+          startCompetition={item.competition.startCompetition}
+        />
+      );
+    }
+  });
+  const competitionsDone = competitions.filter((item, index) => {
+    const competitionToDate = new Date(item.competition.dateTo);
+
+    if (competitionToDate < todayDate) {
+      return (
+        <CompetitionsListItem
+          key={item.competition.id}
+          index={index}
+          id={item.competition.id}
+          name={item.competition.name}
+          referee={item.competition.referee}
+          country={item.competition.country}
+          anvils={item.competition.anvils}
+          current={item.competition.currentEntries}
+          compClasses={item.classes}
+          disabled={item.competition.anvils === item.competition.currentEntries}
+          dateFrom={item.competition.dateFrom}
+          dateTo={item.competition.dateTo}
+          result={item.competition.result}
+          entries={item.competition.entries}
+          openForEntries={item.competition.openForEntries}
+        />
+      );
+    }
+  });
 
   return (
     <div style={{ marginTop: 0, width: "100%" }}>
@@ -79,72 +130,17 @@ const Competitions = () => {
 
           <TabPanel value={value} index={0}>
             <PageHeader>Active competitions</PageHeader>
-            {competitions.length === 0 && (
+            {competitionsActive.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}
-            {competitions.map((item, index) => {
-              const competitionEndDate = new Date(item.competition.dateTo);
-
-              if (competitionEndDate > todayDate) {
-                return (
-                  <CompetitionsListItem
-                    key={item.competition.id}
-                    index={index}
-                    id={item.competition.id}
-                    name={item.competition.name}
-                    referee={item.competition.referee}
-                    country={item.competition.country}
-                    anvils={item.competition.anvils}
-                    current={item.competition.currentEntries}
-                    compClasses={item.classes}
-                    disabled={
-                      item.competition.anvils ===
-                      item.competition.currentEntries
-                    }
-                    entries={item.competition.entries}
-                    dateFrom={item.competition.dateFrom}
-                    dateTo={item.competition.dateTo}
-                    result={item.competition.result}
-                    openForEntries={item.competition.openForEntries}
-                    startCompetition={item.competition.startCompetition}
-                  />
-                );
-              }
-            })}
+            {competitionsActive}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <PageHeader>Past competitions</PageHeader>
-            {competitions.length === 0 && (
+            {competitionsDone.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}
-            {competitions.map((item, index) => {
-              const competitionToDate = new Date(item.competition.dateTo);
-
-              if (competitionToDate < todayDate) {
-                return (
-                  <CompetitionsListItem
-                    key={item.competition.id}
-                    index={index}
-                    id={item.competition.id}
-                    name={item.competition.name}
-                    referee={item.competition.referee}
-                    country={item.competition.country}
-                    anvils={item.competition.anvils}
-                    current={item.competition.currentEntries}
-                    compClasses={item.classes}
-                    disabled={
-                      item.competition.anvils ===
-                      item.competition.currentEntries
-                    }
-                    dateFrom={item.competition.dateFrom}
-                    dateTo={item.competition.dateTo}
-                    result={item.competition.result}
-                    entries={item.competition.entries}
-                    openForEntries={item.competition.openForEntries}
-                  />
-                );
-              }
-            })}
+            {competitionsDone}
           </TabPanel>
         </Route>
         <Route path="/competitions/startList">

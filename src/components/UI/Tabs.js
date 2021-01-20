@@ -16,6 +16,7 @@ const useStyle = makeStyles({
     padding: 5,
     ["@media (max-width:1253px)"]: {
       width: 300,
+      margin: 10,
     },
   },
   active: {
@@ -31,6 +32,7 @@ const useStyle = makeStyles({
     padding: 5,
     ["@media (max-width:1253px)"]: {
       width: 300,
+      margin: 10,
     },
   },
 });

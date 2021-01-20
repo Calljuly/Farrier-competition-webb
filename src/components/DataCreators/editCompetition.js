@@ -25,7 +25,7 @@ const textInputs = [
   },
   {
     id: 2,
-    label: "Referee",
+    label: "Judge",
     value: "referee",
     type: "text",
     multiline: false,

@@ -31,9 +31,14 @@ const Edit = () => {
         }}
       >
         <EditCompetition />
-        {compClasses.map((item) => {
-          return <EditClass key={item.className} classes={item} />;
-        })}
+        {compClasses.length > 0 &&
+          compClasses.map((divs, index) => {
+            return Object.values(divs).map((data) => {
+              return data.map((item) => {
+                return <EditClass key={item.className} classes={item} />;
+              });
+            });
+          })}
         <Devider margin={30} />
 
         <ButtonContainer>

@@ -4,13 +4,13 @@ import {
   CREATE_COMPETITON,
   DELETE_COMPETITION,
   COMPETITION_LOADING,
-  SUCSESS,
+  ADD_POINT,
 } from "../actions/competitionAction";
 
 const initialState = {
   competitions: [],
   isLoading: false,
-  sucsess: false,
+  result: [],
 };
 
 const CompReducer = (state = initialState, actions) => {
@@ -56,10 +56,10 @@ const CompReducer = (state = initialState, actions) => {
         ...state,
         isLoading: actions.loading,
       };
-    case SUCSESS:
+    case ADD_POINT:
       return {
         ...state,
-        sucsess: actions.sucsess,
+        result: actions.updatedState,
       };
     default:
       return state;

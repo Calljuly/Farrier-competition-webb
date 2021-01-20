@@ -159,7 +159,6 @@ const AddClass = () => {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
     };
-    newClass.className = `${newClass.divisions} ${newClass.className}`;
 
     const user = auth.currentUser;
     dispatch(actions.loading(true));

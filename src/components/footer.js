@@ -12,7 +12,7 @@ const useStyle = makeStyles({
     width: "100%",
     height: 300,
     backgroundColor: Colors.black,
-    ["@media (max-width:956px)"]: {
+    ["@media (max-width:1400px)"]: {
       height: "auto",
       display: "flex",
       flexDirection: "column",
@@ -73,6 +73,8 @@ const useStyle = makeStyles({
     padding: 10,
     ["@media (max-width:956px)"]: {
       width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
     },
   },
 });
@@ -83,8 +85,8 @@ const Footer = () => {
   return (
     <div className={classes.container}>
       <Grid container>
-        <Grid item md={4} xs={12} className={classes.gridItem}></Grid>
-        <Grid item md={4} xs={12} className={classes.gridItem}>
+        <Grid item lg={4} xs={12} className={classes.gridItem}></Grid>
+        <Grid item lg={4} xs={12} className={classes.gridItem}>
           <div className={classes.itemContainer}>
             <MailOutlinedIcon className={classes.icon} />
 

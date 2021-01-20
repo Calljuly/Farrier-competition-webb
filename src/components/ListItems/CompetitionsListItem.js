@@ -92,7 +92,7 @@ const CompetitionsListItem = ({
   id,
   name,
   country,
-  compClasses,
+  divisions,
   referee,
   current,
   anvils,
@@ -130,12 +130,11 @@ const CompetitionsListItem = ({
     const a = entries.filter((item) => {
       return user.name === item.competitor;
     });
-    console.log(a);
     if (a.length > 0) {
       setError(true);
       return;
     }
-    dispatch(actions.enterCompetition(user, compClasses, competition, id));
+    dispatch(actions.enterCompetition(user, "compClasses", competition, id));
     setSuccess(true);
   };
 
@@ -222,7 +221,7 @@ const CompetitionsListItem = ({
           <div className={classes.infoContainer}>
             <div style={{ marginLeft: 10 }}>
               <P>Country : {country}</P>
-              <P>Referee: {referee}</P>
+              <P>Judge: {referee}</P>
 
               <P>Anvils avaliabel : {anvils}</P>
               <P>Current Entries : {current}</P>
@@ -232,39 +231,44 @@ const CompetitionsListItem = ({
           </div>
           <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
-            {compClasses.length === 0 && (
+            {divisions.length === 0 && (
               <Alert style={{ width: "100%" }} severity="error">
                 <P>No classes to show yet</P>
               </Alert>
             )}
-            {compClasses.length > 0 &&
-              compClasses.map((item) => {
-                return (
-                  <div className={classes.classes} key={item.className}>
-                    <h2>{item.className}</h2>
-                    <Grid
-                      container
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        alignItems: "start",
-                        margin: 0,
-                      }}
-                    >
-                      <Grid item xs={12} sm={3}>
-                        <P>Type: {item.type}</P>
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <P>Time : {item.time}</P>
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <SubHeader>Shoes</SubHeader>
-                        <P>{item.shoeOne}</P>
-                        <P>{item.shoeTwo}</P>
-                      </Grid>
-                    </Grid>
-                  </div>
-                );
+            {divisions.length > 0 &&
+              divisions.map((divs, index) => {
+                return Object.values(divs).map((data) => {
+                  console.log(data);
+                  return data.map((item) => {
+                    return (
+                      <div className={classes.classes} key={item.className}>
+                        <h2>{item.className}</h2>
+                        <Grid
+                          container
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            alignItems: "start",
+                            margin: 0,
+                          }}
+                        >
+                          <Grid item xs={12} sm={3}>
+                            <P>Type: {item.type}</P>
+                          </Grid>
+                          <Grid item xs={12} sm={3}>
+                            <P>Time : {item.time}</P>
+                          </Grid>
+                          <Grid item xs={12} sm={3}>
+                            <SubHeader>Shoes</SubHeader>
+                            <P>{item.shoeOne}</P>
+                            <P>{item.shoeTwo}</P>
+                          </Grid>
+                        </Grid>
+                      </div>
+                    );
+                  });
+                });
               })}
           </div>
           <Grid container style={{ padding: 10 }}>
@@ -289,7 +293,7 @@ const CompetitionsListItem = ({
                       onClick={() =>
                         history.push({
                           pathname: "/competitions/enterCompetition",
-                          compClasses: compClasses,
+                          compClasses: "compClasses",
                         })
                       }
                       title={
@@ -321,7 +325,7 @@ const CompetitionsListItem = ({
                     pathname: "/competitions/result",
                     result: result,
                     name: name,
-                    classes: compClasses,
+                    classes: "compClasses",
                   })
                 }
               />

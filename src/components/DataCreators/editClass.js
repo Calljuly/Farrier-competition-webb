@@ -27,8 +27,6 @@ const EditClass = ({ classes }) => {
   const [numberThree, setNumberThree] = useState(1);
   const [numberFour, setNumberFour] = useState(1);
   const [classesObject, setClasses] = useState(classes);
-  const [formValid, setFormValid] = useState(true);
-
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const l = useLocation();
@@ -86,12 +84,11 @@ const EditClass = ({ classes }) => {
       };
     }
     
-
     dispatch(actions.loading(true));
 
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
-      editClass(token, id, classes.className, newClass)
+      editClass(token, id, newClass.className, newClass)
         .then((res) => {
           console.log(res.message);
           if (res.message === "Succsess") {
@@ -152,27 +149,7 @@ const EditClass = ({ classes }) => {
     });
   };
 
-  const formValidation = (classData) => {
-    const a = Object.keys(classData);
-    let valid = true;
-    a.forEach((item) => {
-      const b = classesObject[item];
-      if (
-        item !== "sponsorLoggo" ||
-        item !== "shoeOneImg" ||
-        item !== "shoeTwoImg"
-      ) {
-        if (b === "") {
-          console.log(item);
-          valid = false;
-        }
-      }
-    });
-
-    setFormValid(valid);
-    return valid;
-  };
-
+ 
   const getClass = (type) => {
     switch (type) {
       case "Forging":
@@ -240,18 +217,13 @@ const EditClass = ({ classes }) => {
         <SubHeader>Edit {classes.className}</SubHeader>
         {show ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </div>
-      {!formValid && (
-        <Alert severity="error">
-          Your input to update is not valid, please check your input
-        </Alert>
-      )}
       {success && (
-        <Alert onClick={() => setSuccess(false)}>
+        <Alert onClose={() => setSuccess(false)}>
           You updated succsessfully!
         </Alert>
       )}
       {error.length > 3 && (
-        <Alert severity="error" onClick={() => setError("")}>
+        <Alert severity="error" onClose={() => setError("")}>
           {error}
         </Alert>
       )}

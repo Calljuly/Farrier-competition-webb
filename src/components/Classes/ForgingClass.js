@@ -1,6 +1,4 @@
 import React from "react";
-import { shoes } from "../../dummyData";
-import CustomSelect from "../Select";
 import TextInput from "../TextInput";
 import SubHeader from "../UI/SubHeader";
 
@@ -51,7 +49,7 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
       <TextInput
         required
         id="referee"
-        label="Referee"
+        label="Judge"
         placeholder="Referee"
         onChange={(event) => handleClasses("referee", event.target)}
       />

@@ -101,7 +101,7 @@ const User = () => {
         });
     });
   };
-  
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -123,7 +123,7 @@ const User = () => {
           <SubHeader>{user.country}</SubHeader>
           <SubHeader>{user.bio}</SubHeader>
         </TabPanel>
-        <TabPanel value={value} index={1} >
+        <TabPanel value={value} index={1}>
           <PageHeader>Results</PageHeader>
           {user.result.length > 0 &&
             user.result.map((item) => {
@@ -137,11 +137,11 @@ const User = () => {
               );
             })}
         </TabPanel>
-        <TabPanel value={value} index={2} >
+        <TabPanel value={value} index={2}>
           <PageHeader>Update profile</PageHeader>
           <EditProfile />
         </TabPanel>
-        <TabPanel value={value} index={3} >
+        <TabPanel value={value} index={3}>
           <EditEmailAndPassword />
         </TabPanel>
       </div>

@@ -26,7 +26,7 @@ const Home = () => {
       <Grid container>
         <Grid
           item
-          md={4}
+          lg={4}
           xs={12}
           style={{
             display: "flex",
@@ -38,7 +38,7 @@ const Home = () => {
         </Grid>
         <Grid
           item
-          md={4}
+          lg={4}
           xs={12}
           style={{
             display: "flex",
@@ -55,7 +55,7 @@ const Home = () => {
         </Grid>
         <Grid
           item
-          md={4}
+          lg={4}
           xs={12}
           style={{
             display: "flex",

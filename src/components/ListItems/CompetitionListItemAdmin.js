@@ -114,7 +114,7 @@ const CompetitionListItemAdmin = ({
   id,
   name,
   country,
-  compClasses,
+  divisions,
   referee,
   current,
   anvils,
@@ -125,7 +125,6 @@ const CompetitionListItemAdmin = ({
   openForEntries,
   startCompetition,
   entries,
-  divisions,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -174,7 +173,7 @@ const CompetitionListItemAdmin = ({
       startCompetition: event.target.checked,
       openForEntries: false,
     });
-    compClasses.forEach(async (item) => {
+    'compClasses'.forEach(async (item) => {
       await firestore
         .collection("competitions")
         .doc(id)
@@ -210,7 +209,7 @@ const CompetitionListItemAdmin = ({
           <CustomButton title="Cancel" onClick={() => setModal(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => dispatch(actions.saveAllResult(id, compClasses))}
+            onClick={() => dispatch(actions.saveAllResult(id, 'compClasses'))}
           />
         </div>
       </ChoiseModal>
@@ -233,7 +232,7 @@ const CompetitionListItemAdmin = ({
           <div className={classes.infoContainer}>
             <div style={{ marginLeft: 10 }}>
               <P>Country : {country}</P>
-              <P>Referee: {referee}</P>
+              <P>Judge: {referee}</P>
 
               <P>Anvils avaliabel : {anvils}</P>
               <P>Current Entries : {current}</P>
@@ -243,66 +242,70 @@ const CompetitionListItemAdmin = ({
           </div>
           <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
-            {compClasses &&
-              compClasses.map((item) => {
-                return (
-                  <div className={classes.classes} key={item.className}>
-                    <h2>{item.className}</h2>
-                    <Grid
-                      container
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        alignItems: "start",
-                        margin: 0,
-                      }}
-                    >
-                      <Grid item xs={12} sm={3}>
-                        <P>Type: {item.type}</P>
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <P>Time : {item.time}</P>
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <SubHeader>Shoes</SubHeader>
-                        <P>{item.shoeOne}</P>
-                        <P>{item.shoeTwo}</P>
-                      </Grid>
-                      {startCompetition && (
+            {divisions.length > 0 &&
+              divisions.map((divs, index) => {
+                return Object.values(divs).map((data) => {
+                  return data.map((item) => {
+                    return (
+                      <div className={classes.classes} key={item.className}>
+                        <h2>{item.className}</h2>
                         <Grid
-                          item
-                          xs={12}
-                          sm={3}
+                          container
                           style={{
                             display: "flex",
-                            justifyContent: "flex-end",
-                            alignItems: "center",
+                            justifyContent: "flex-start",
+                            alignItems: "start",
+                            margin: 0,
                           }}
                         >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                            onClick={() =>
-                              history.push({
-                                pathname: `/admin/pickScore/${id}`,
-                                state: item,
-                                id: id,
-                              })
-                            }
-                          >
-                            <P>Fill in scores</P>
-                            <ArrowForwardIosIcon
-                              className={classes.classIcon}
-                            />
-                          </div>
+                          <Grid item xs={12} sm={3}>
+                            <P>Type: {item.type}</P>
+                          </Grid>
+                          <Grid item xs={12} sm={3}>
+                            <P>Time : {item.time}</P>
+                          </Grid>
+                          <Grid item xs={12} sm={3}>
+                            <SubHeader>Shoes</SubHeader>
+                            <P>{item.shoeOne}</P>
+                            <P>{item.shoeTwo}</P>
+                          </Grid>
+                          {startCompetition && (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={3}
+                              style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                alignItems: "center",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                                onClick={() =>
+                                  history.push({
+                                    pathname: `/admin/pickScore/${id}`,
+                                    state: item,
+                                    id: id,
+                                  })
+                                }
+                              >
+                                <P>Fill in scores</P>
+                                <ArrowForwardIosIcon
+                                  className={classes.classIcon}
+                                />
+                              </div>
+                            </Grid>
+                          )}
                         </Grid>
-                      )}
-                    </Grid>
-                  </div>
-                );
+                      </div>
+                    );
+                  });
+                });
               })}
           </div>
           <div style={{ padding: 15 }}>
@@ -333,7 +336,7 @@ const CompetitionListItemAdmin = ({
                     }}
                     checked={started}
                     onChange={
-                      startCompetition || compClasses.length === 0
+                      startCompetition || divisions.length === 0
                         ? () => {}
                         : startCompetitionHandler
                     }
@@ -354,7 +357,7 @@ const CompetitionListItemAdmin = ({
                       onClick={() =>
                         history.push({
                           pathname: "/admin/addClass",
-                          state: compClasses,
+                          state: 'compClasses',
                           id: id,
                           competitionDivisions: divisions,
                         })
@@ -368,7 +371,7 @@ const CompetitionListItemAdmin = ({
                     onClick={() =>
                       history.push({
                         pathname: "/admin/editCompetition",
-                        state: compClasses,
+                        state: divisions,
                         id: id,
                       })
                     }

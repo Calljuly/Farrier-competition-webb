@@ -110,7 +110,7 @@ const Admin = () => {
                       country={item.competition.country}
                       anvils={item.competition.anvils}
                       current={item.competition.currentEntries}
-                      compClasses={item.classes}
+                      divisions={item.divisions}
                       disabled={
                         item.competition.anvils ===
                         item.competition.currentEntries
@@ -121,7 +121,6 @@ const Admin = () => {
                       result={item.competition.result}
                       openForEntries={item.competition.openForEntries}
                       startCompetition={item.competition.startCompetition}
-                      divisions={item.competition.divisions}
                     />
                   );
                 })

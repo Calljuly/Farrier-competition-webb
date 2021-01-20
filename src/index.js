@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import CompReducer from "./store/reducers/competitionReducer";
-import ResultReducer from "./store/reducers/resultReducer";
+import FilterReducer from "./store/reducers/filterReducer";
 
 import thunk from "redux-thunk";
 import { authReducer } from "./store/reducers/auth";
@@ -15,7 +15,7 @@ import { authReducer } from "./store/reducers/auth";
 const reducer = combineReducers({
   competitions: CompReducer,
   auth: authReducer,
-  result: ResultReducer,
+  filter: FilterReducer,
 });
 
 const store = createStore(reducer, applyMiddleware(thunk));

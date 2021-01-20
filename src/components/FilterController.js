@@ -4,7 +4,7 @@ import P from "./UI/Paragraph";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Colors } from "../colors";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../store/actions/resultAction";
+import * as actions from "../store/actions/filterAction";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -64,7 +64,7 @@ const useStyle = makeStyles({
 
 const FilterController = () => {
   const classes = useStyle();
-  const filter = useSelector((state) => state.result.sort);
+  const filter = useSelector((state) => state.filter.sort);
 
   const dispatch = useDispatch();
 

@@ -109,15 +109,20 @@ export const fetchCompetitions = () => {
 
         let array = [];
         comps.forEach(async (item, index) => {
-          const data = await firestore
-            .collection("competitions")
-            .doc(item.id)
-            .collection("classes")
-            .get();
-          const classes = data.docs.map((doc) => {
-            return doc.data();
+          const allDivisions = [];
+          item.divisions.forEach(async (divs) => {
+            const data = await firestore
+              .collection("competitions")
+              .doc(item.id)
+              .collection(divs)
+              .get();
+
+            const classes = data.docs.map((doc, index) => {
+              return doc.data();
+            });
+            allDivisions.push({[classes[index].divisions]: classes });
           });
-          array.push({ competition: comps[index], classes: classes });
+          array.push({ competition: comps[index], divisions: allDivisions });
         });
         dispatch({
           type: FETCH_COMPETITIONS,
@@ -248,7 +253,6 @@ export const loading = (value) => {
   };
 };
 
-
 export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
   return (dispatch) => {
     const competitor = state.unPublishedResult;
@@ -267,7 +271,6 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
                 ...a,
                 total: reCalculateTotal(a, state.pointsToMultiply),
               };
-              console.log(b);
 
               comp.shoeOne = b;
             } else if (type === "shoeTwo") {
@@ -284,21 +287,18 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
           }
           return comp;
         });
-        console.log(aa);
-
         return { starts: aa };
       } else {
         return item;
       }
     });
 
-    console.log(c);
 
     state.unPublishedResult = c;
     firestore
       .collection("competitions")
       .doc(compIndex)
-      .collection("classes")
+      .collection(state.divisions)
       .doc(state.className)
       .update({
         unPublishedResult: state.unPublishedResult,
