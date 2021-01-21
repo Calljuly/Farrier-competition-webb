@@ -121,6 +121,7 @@ const Admin = () => {
                       result={item.competition.result}
                       openForEntries={item.competition.openForEntries}
                       startCompetition={item.competition.startCompetition}
+                      divisionList={item.competition.divisions}
                     />
                   );
                 })

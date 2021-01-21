@@ -125,6 +125,7 @@ const CompetitionListItemAdmin = ({
   openForEntries,
   startCompetition,
   entries,
+  divisionList,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -146,43 +147,49 @@ const CompetitionListItemAdmin = ({
   };
 
   const startCompetitionHandler = async (event) => {
-    const a = randomnizeEntries(entries);
-    const heat = entries.length / (entries.length / anvils);
-    let array = [];
-    let numberOfHeat = 1;
-    do {
-      const amountOfStarts = a.splice(0, heat);
-      array.push({
-        heat: numberOfHeat,
-        starts: amountOfStarts.map((item) => {
-          return {
-            competitor: item.competitor,
-            id: item.id,
-            country: item.country,
-            shoeOne: { one: "", two: "", three: "", four: "", total: "" },
-            shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
-          };
-        }),
-      });
-      numberOfHeat++;
-    } while (a.length !== 0);
+    divisions.forEach(async (item, index) => {
 
-    setStarted(event.target.checked);
-
-    await firestore.collection("competitions").doc(id).update({
-      startCompetition: event.target.checked,
-      openForEntries: false,
-    });
-    'compClasses'.forEach(async (item) => {
-      await firestore
-        .collection("competitions")
-        .doc(id)
-        .collection("classes")
-        .doc(item.className)
-        .update({
-          unPublishedResult: array,
+      const a = randomnizeEntries(entries[Object.keys(item)]);
+      const heat =
+        entries[Object.keys(item)].length /
+        (entries[Object.keys(item)].length / anvils);
+      let array = [];
+      let numberOfHeat = 1;
+      do {
+        const amountOfStarts = a.splice(0, heat);
+        array.push({
+          heat: numberOfHeat,
+          starts: amountOfStarts.map((item) => {
+            return {
+              competitor: item.competitor,
+              id: item.id,
+              country: item.country,
+              shoeOne: { one: "", two: "", three: "", four: "", total: "" },
+              shoeTwo: { one: "", two: "", three: "", four: "", total: "" },
+            };
+          }),
         });
+        numberOfHeat++;
+      } while (a.length !== 0);
+
+      setStarted(event.target.checked);
+
+      await firestore.collection("competitions").doc(id).update({
+        startCompetition: event.target.checked,
+        openForEntries: false,
+      });
+      item[Object.keys(item)].forEach(async (item) => {
+        await firestore
+          .collection("competitions")
+          .doc(id)
+          .collection("classes")
+          .doc(item.className)
+          .update({
+            unPublishedResult: array,
+          });
+      });
     });
+
     dispatch(actions.fetchCompetitions());
   };
 
@@ -209,7 +216,7 @@ const CompetitionListItemAdmin = ({
           <CustomButton title="Cancel" onClick={() => setModal(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => dispatch(actions.saveAllResult(id, 'compClasses'))}
+            onClick={() => dispatch(actions.saveAllResult(id, "compClasses"))}
           />
         </div>
       </ChoiseModal>
@@ -357,9 +364,9 @@ const CompetitionListItemAdmin = ({
                       onClick={() =>
                         history.push({
                           pathname: "/admin/addClass",
-                          state: 'compClasses',
+                          state: divisions,
                           id: id,
-                          competitionDivisions: divisions,
+                          competitionDivisions: divisionList,
                         })
                       }
                     />

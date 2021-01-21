@@ -80,6 +80,7 @@ const Competitions = () => {
           result={item.competition.result}
           openForEntries={item.competition.openForEntries}
           startCompetition={item.competition.startCompetition}
+          divisionList={item.competition.divisions}
         />
       );
     }
@@ -98,13 +99,14 @@ const Competitions = () => {
           country={item.competition.country}
           anvils={item.competition.anvils}
           current={item.competition.currentEntries}
-          compClasses={item.classes}
+          divisions={item.divisions}
           disabled={item.competition.anvils === item.competition.currentEntries}
           dateFrom={item.competition.dateFrom}
           dateTo={item.competition.dateTo}
           result={item.competition.result}
           entries={item.competition.entries}
           openForEntries={item.competition.openForEntries}
+          divisionList={item.competition.divisions}
         />
       );
     }

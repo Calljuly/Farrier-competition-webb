@@ -103,6 +103,7 @@ const CompetitionsListItem = ({
   result,
   openForEntries,
   startCompetition,
+  divisionList,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -117,13 +118,13 @@ const CompetitionsListItem = ({
   const todayDate = new Date();
 
   const [showProposition, setShowProposition] = useState(false);
-
   const competition = {
     id: id,
     country: country,
     name: name,
     anvils: anvils,
     entries: entries,
+    currentEntries: current,
   };
 
   const enterCompetition = () => {
@@ -239,7 +240,6 @@ const CompetitionsListItem = ({
             {divisions.length > 0 &&
               divisions.map((divs, index) => {
                 return Object.values(divs).map((data) => {
-                  console.log(data);
                   return data.map((item) => {
                     return (
                       <div className={classes.classes} key={item.className}>
@@ -276,7 +276,7 @@ const CompetitionsListItem = ({
               openForEntries &&
               !startCompetition &&
               competitionStartDate > todayDate &&
-              !entries.includes(user.name) && (
+              !Object.values(entries).includes(user.name) && (
                 <>
                   <Grid item md={4} xs={12}>
                     <CustomButton
@@ -293,7 +293,10 @@ const CompetitionsListItem = ({
                       onClick={() =>
                         history.push({
                           pathname: "/competitions/enterCompetition",
-                          compClasses: "compClasses",
+                          divisionList: divisionList,
+                          competition: competition,
+                          id: id,
+                          divisions: divisions,
                         })
                       }
                       title={
@@ -325,7 +328,7 @@ const CompetitionsListItem = ({
                     pathname: "/competitions/result",
                     result: result,
                     name: name,
-                    classes: "compClasses",
+                    divisions: divisions,
                   })
                 }
               />

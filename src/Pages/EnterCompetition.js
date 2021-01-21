@@ -44,7 +44,10 @@ const useStyles = makeStyles({
 const EnterCompetition = () => {
   const classes = useStyles();
   const l = useLocation();
-  const compClasses = l.compClasses;
+  const divisionList = l.divisionList;
+  const competition = l.competition;
+  const id = l.id;
+  const divisions = l.divisions;
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -52,30 +55,29 @@ const EnterCompetition = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
-  if (!compClasses) {
+  if (!divisionList) {
     history.push("/competitions");
   }
 
   const [newstate, setnewState] = useState(
-    compClasses.map((item) => {
+    divisionList.map((item) => {
       return {
-        name: item.className,
+        name: item,
         checked: false,
       };
     })
   );
 
   const enterCompetition = () => {
-   /* const a = entries.filter((item) => {
-      return user.name === item.competitor;
+    const choise = newstate.filter((item) => {
+      if (item.checked) {
+        return item.name;
+      }
     });
-    console.log(a);
-    if (a.length > 0) {
-      setError(true);
-      return;
-    }
-    dispatch(actions.enterCompetition(user, compClasses, competition, id));
-    setSuccess(true);*/
+
+    dispatch(actions.enterCompetition(user, classes, competition, id, choise));
+    setSuccess(true);
+    setModal(false);
   };
 
   const handleChange = (event, index) => {
@@ -83,7 +85,6 @@ const EnterCompetition = () => {
       const newState = [...newstate];
 
       newState[index].checked = event.target.checked;
-      console.log(newState);
       return newState;
     });
   };

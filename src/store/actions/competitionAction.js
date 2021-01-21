@@ -10,13 +10,20 @@ export const SUCSESS = "SUCSESS";
 export const ADD_POINT = "ADD_POINT";
 
 //Ska få route i api, logik för att anmäla sig till olika divisioner ska in innan funktion
-export const enterCompetition = (competitor, classes, competition, id) => {
+export const enterCompetition = (
+  competitor,
+  classes,
+  competition,
+  id,
+  division
+) => {
   const updatedState = competition;
   return (dispatch) => {
     dispatch({
       type: COMPETITION_LOADING,
       loading: true,
     });
+    /*
     if (
       updatedState.entries.find((user) => user === competitor) ||
       updatedState.currentEntries === updatedState.anvils
@@ -26,17 +33,31 @@ export const enterCompetition = (competitor, classes, competition, id) => {
         loading: false,
       });
       return;
-    }
+    }*/
 
     updatedState.currentEntries += 1;
     updatedState.maxEntries -= 1;
-    updatedState.entries.push({
-      competitor: competitor.name,
-      country: competitor.country,
-      id: 0,
+
+    division.map((item) => {
+      if (updatedState.entries[item.name]) {
+        updatedState.entries[item.name].push({
+          competitor: competitor.name,
+          country: competitor.country,
+          id: updatedState.currentEntries,
+        });
+      } else {
+        const array = [];
+        array.push({
+          competitor: competitor.name,
+          country: competitor.country,
+          id: updatedState.currentEntries,
+        });
+
+        updatedState.entries[item] = array;
+      }
     });
 
-    const updatedClass = {};
+    console.log(updatedState);
 
     firestore
       .collection("competitions")
@@ -47,23 +68,6 @@ export const enterCompetition = (competitor, classes, competition, id) => {
         entries: updatedState.entries,
       })
       .then(() => {
-        classes.forEach((item, index) => {
-          firestore
-            .collection("competitions")
-            .doc(id)
-            .collection("classes")
-            .doc(item.className)
-            .update({
-              unPublishedResult: updatedClass[index].unPublishedResult,
-            })
-            .catch((err) => {
-              console.log(err);
-              dispatch({
-                type: COMPETITION_LOADING,
-                isLoading: false,
-              });
-            });
-        });
         dispatch(fetchCompetitions());
       })
       .then(() => {
@@ -120,7 +124,7 @@ export const fetchCompetitions = () => {
             const classes = data.docs.map((doc, index) => {
               return doc.data();
             });
-            allDivisions.push({[classes[index].divisions]: classes });
+            allDivisions.push({ [classes[index].divisions]: classes });
           });
           array.push({ competition: comps[index], divisions: allDivisions });
         });
@@ -292,7 +296,6 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
         return item;
       }
     });
-
 
     state.unPublishedResult = c;
     firestore

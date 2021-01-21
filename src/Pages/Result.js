@@ -57,7 +57,7 @@ const Result = () => {
   const l = useLocation();
   const result = l.result;
   const competitionName = l.name;
-  const sponsor = l.classes;
+  const sponsor = l.divisions;
   const history = useHistory();
 
   const componentRef = useRef();
@@ -89,7 +89,7 @@ const Result = () => {
         <SubHeader>{competitionName}</SubHeader>
         <SubHeader>Sponsors of all classes this competition</SubHeader>
 
-        <div className={classes.sponsorContainer}>
+        {false &&<div className={classes.sponsorContainer}>
           {sponsor.map((item) => (
             <SponsorCard
               sponsorName={item.sponsors}
@@ -97,7 +97,7 @@ const Result = () => {
               className={item.className}
             />
           ))}
-        </div>
+        </div>}
         <ComponentToPrint ref={componentRef}>
           {result &&
             result.map((item, index) => {

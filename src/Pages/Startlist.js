@@ -74,46 +74,58 @@ const StartList = () => {
         <ComponentToPrint ref={componentRef}>
           <SubHeader>{competitionName}</SubHeader>
 
-          {entries && entries.length > 0 ? (
-            <TableContainer component={Paper}>
-              <Table
-                className={classes.table}
-                size="small"
-                aria-label="a dense table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                      <p>Id</p>
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                      <p>Competitor</p>
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: "bottom", padding: 0 }}>
-                      <p>Country</p>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {entries &&
-                    entries.map((item, index) => {
-                      const color = index % 2 === 0;
-                      return (
-                        <TableRow
-                          key={item.id}
-                          style={{
-                            backgroundColor: color ? "#DCDCDC" : "white",
-                          }}
-                        >
-                          <TableCell align="left">{item.competitor}</TableCell>
-                          <TableCell align="left">{item.id}</TableCell>
-                          <TableCell align="left">{item.country}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+          {entries && Object.keys(entries).length > 0 ? (
+            Object.keys(entries).map((divs, index) => (
+              <TableContainer component={Paper}>
+                <SubHeader>{divs}</SubHeader>
+
+                <Table
+                  className={classes.table}
+                  size="small"
+                  aria-label="a dense table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        style={{ verticalAlign: "bottom", padding: 0 }}
+                      >
+                        <p>Id</p>
+                      </TableCell>
+                      <TableCell
+                        style={{ verticalAlign: "bottom", padding: 0 }}
+                      >
+                        <p>Competitor</p>
+                      </TableCell>
+                      <TableCell
+                        style={{ verticalAlign: "bottom", padding: 0 }}
+                      >
+                        <p>Country</p>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {entries &&
+                      entries[divs].map((item, index) => {
+                        const color = index % 2 === 0;
+                        return (
+                          <TableRow
+                            key={item.id}
+                            style={{
+                              backgroundColor: color ? "#DCDCDC" : "white",
+                            }}
+                          >
+                            <TableCell align="left">
+                              {item.competitor}
+                            </TableCell>
+                            <TableCell align="left">{item.id}</TableCell>
+                            <TableCell align="left">{item.country}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ))
           ) : (
             <Alert severity="error">No startlist avalibale</Alert>
           )}

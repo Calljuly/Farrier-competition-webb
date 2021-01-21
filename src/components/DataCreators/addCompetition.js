@@ -306,8 +306,8 @@ const AddCompetition = () => {
       admin.push(userName);
       const comp = {
         currentEntries: 0,
-        result: [],
-        entries: [],
+        result: {},
+        entries: {},
         country: state.country.value,
         anvils: state.anvils.value,
         semi: state.semi.value,
@@ -480,7 +480,7 @@ const AddCompetition = () => {
           />
         </FormGroup>
       </FormControl>
-      
+
       {divisionData.map((item) => (
         <TextInput
           required
