@@ -41,7 +41,6 @@ const Scores = () => {
   };
 
   const handleModalContent = (heat, cell, title, compIndex, user, type) => {
-
     setModalData({
       heat: heat,
       cellId: cell,
@@ -92,7 +91,11 @@ const Scores = () => {
           compIndex={compIndex}
           shoe={shoe}
           heatId={heatId}
-          type={shoe === 'shoeOne' ? compClasses.shoeOneType: compClasses.shoeTwoType}
+          type={
+            shoe === "shoeOne"
+              ? compClasses.shoeOneType
+              : compClasses.shoeTwoType
+          }
         />
         <Devider margin={60} />
 

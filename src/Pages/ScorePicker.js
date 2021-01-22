@@ -21,12 +21,13 @@ const ScorePicker = () => {
   if (!compClasses) {
     history.push("/admin");
   }
+console.log(compClasses)
 
   const saveClassResult = async () => {
     await firestore
       .collection("competitions")
       .doc(id)
-      .collection("classes")
+      .collection(compClasses.divisions)
       .doc(compClasses.className)
       .update({
         savedResult: true,

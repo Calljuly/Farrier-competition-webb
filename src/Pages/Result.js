@@ -16,6 +16,7 @@ import SponsorCard from "../components/SponsorCard";
 import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
 import ButtonContainer from "../components/UI/ButtonContainer";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles({
   table: {
@@ -86,18 +87,26 @@ const Result = () => {
       <div className="divOrange" />
       <div className="divBlack" />
       <div style={{ margin: 40 }}>
-        <SubHeader>{competitionName}</SubHeader>
-        <SubHeader>Sponsors of all classes this competition</SubHeader>
+        <PageHeader>{competitionName}</PageHeader>
 
-        {false &&<div className={classes.sponsorContainer}>
-          {sponsor.map((item) => (
-            <SponsorCard
-              sponsorName={item.sponsors}
-              sponsorUrl={item.sponsorLoggo}
-              className={item.className}
-            />
-          ))}
-        </div>}
+        {false && (
+          <>
+            <SubHeader>Sponsors of all classes this competition</SubHeader>
+
+            <div className={classes.sponsorContainer}>
+              {sponsor.map((item) => (
+                <SponsorCard
+                  sponsorName={item.sponsors}
+                  sponsorUrl={item.sponsorLoggo}
+                  className={item.className}
+                />
+              ))}
+            </div>
+          </>
+        )}
+        {Object.keys(result).length === 0 && (
+          <Alert severity="error">No result to show yet</Alert>
+        )}
         <ComponentToPrint ref={componentRef}>
           {result &&
             result.map((item, index) => {

@@ -59,30 +59,48 @@ export const enterCompetition = (
 
     console.log(updatedState);
 
-    firestore
+    /*firestore
       .collection("competitions")
       .doc(id)
       .update({
         currentEntries: updatedState.currentEntries,
         anvils: updatedState.anvils,
         entries: updatedState.entries,
-      })
-      .then(() => {
-        dispatch(fetchCompetitions());
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          isLoading: false,
+      })*/
+    const user = auth.currentUser;
+    return user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/enter`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            currentEntries: updatedState.currentEntries,
+            anvils: updatedState.anvils,
+            entries: updatedState.entries,
+          }),
+        }
+      )
+        .then(() => {
+          dispatch(fetchCompetitions());
+        })
+        .then(() => {
+          dispatch({
+            type: COMPETITION_LOADING,
+            isLoading: false,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch({
+            type: COMPETITION_LOADING,
+            isLoading: false,
+          });
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({
-          type: COMPETITION_LOADING,
-          isLoading: false,
-        });
-      });
+    });
   };
 };
 //Fungerar
@@ -169,7 +187,7 @@ export const saveAllResult = (competitionId, classes) => {
     });
 
     const user = auth.currentUser;
-    return user.getIdToken().then(async (token) => {
+    user.getIdToken().then(async (token) => {
       fetch(
         `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
         {
@@ -298,6 +316,27 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
     });
 
     state.unPublishedResult = c;
+    /*
+    const user = auth.currentUser;
+    user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+
+          },
+          body: JSON.stringify({
+            compIndex: compIndex,
+            divisions: state.division,
+            unPublishedResult: state.unPublishedResult,
+          }),
+        }
+      );
+    });*/
+    
     firestore
       .collection("competitions")
       .doc(compIndex)

@@ -147,18 +147,19 @@ const CompetitionListItemAdmin = ({
   };
 
   const startCompetitionHandler = async (event) => {
-    divisions.forEach(async (item, index) => {
+    let array = [];
 
+    divisions.forEach(async (item, index) => {
       const a = randomnizeEntries(entries[Object.keys(item)]);
       const heat =
         entries[Object.keys(item)].length /
         (entries[Object.keys(item)].length / anvils);
-      let array = [];
       let numberOfHeat = 1;
       do {
         const amountOfStarts = a.splice(0, heat);
         array.push({
           heat: numberOfHeat,
+          division: Object.keys(item)[0],
           starts: amountOfStarts.map((item) => {
             return {
               competitor: item.competitor,
@@ -174,19 +175,28 @@ const CompetitionListItemAdmin = ({
 
       setStarted(event.target.checked);
 
+      divisions.map((e, index) => {
+        Object.values(e).map((r) => {
+          r.map((u) => {
+            const a = array.filter((item) => {
+              return item.division === u.divisions;
+            });
+            a.forEach(async (m) => {
+              await firestore
+                .collection("competitions")
+                .doc(id)
+                .collection(u.divisions)
+                .doc(u.className)
+                .update({
+                  unPublishedResult: a,
+                });
+            });
+          });
+        });
+      });
       await firestore.collection("competitions").doc(id).update({
         startCompetition: event.target.checked,
         openForEntries: false,
-      });
-      item[Object.keys(item)].forEach(async (item) => {
-        await firestore
-          .collection("competitions")
-          .doc(id)
-          .collection("classes")
-          .doc(item.className)
-          .update({
-            unPublishedResult: array,
-          });
       });
     });
 
