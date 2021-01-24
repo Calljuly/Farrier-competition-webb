@@ -81,13 +81,13 @@ const Competitions = () => {
           openForEntries={item.competition.openForEntries}
           startCompetition={item.competition.startCompetition}
           divisionList={item.competition.divisions}
+          competition={item.competition}
         />
       );
     }
   });
   const competitionsDone = competitions.filter((item, index) => {
     const competitionToDate = new Date(item.competition.dateTo);
-
     if (competitionToDate < todayDate) {
       return (
         <CompetitionsListItem
@@ -107,6 +107,7 @@ const Competitions = () => {
           entries={item.competition.entries}
           openForEntries={item.competition.openForEntries}
           divisionList={item.competition.divisions}
+          competition={item.competition}
         />
       );
     }

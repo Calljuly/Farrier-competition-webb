@@ -77,7 +77,7 @@ const EnterCompetition = () => {
 
     dispatch(actions.enterCompetition(user, classes, competition, id, choise));
     setSuccess(true);
-    setModal(false);
+    setModal(false)
   };
 
   const handleChange = (event, index) => {

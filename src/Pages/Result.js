@@ -61,15 +61,25 @@ const Result = () => {
   const sponsor = l.divisions;
   const history = useHistory();
 
+  if (!result || !sponsor) {
+    history.push("/competitions");
+  }
+
+  const savedClasses = [];
+  sponsor.forEach((item) => {
+    return Object.values(item).forEach((i) => {
+      return i.forEach((e) => {
+        if (e.savedResult) {
+          savedClasses.push(e);
+        }
+      });
+    });
+  });
+
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
-  if (!result || !sponsor) {
-    history.push("/competitions");
-    return null;
-  }
 
   return (
     <>
@@ -105,7 +115,9 @@ const Result = () => {
           </>
         )}
         {Object.keys(result).length === 0 && (
-          <Alert severity="error">No result to show yet</Alert>
+          <Alert severity="error">
+            This competition has no finnished results yet
+          </Alert>
         )}
         <ComponentToPrint ref={componentRef}>
           {result &&
@@ -200,6 +212,113 @@ const Result = () => {
                             </TableRow>
                           );
                         }
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              );
+            })}
+        </ComponentToPrint>
+        <PageHeader>Published result for classes</PageHeader>
+        <ComponentToPrint ref={componentRef}>
+          {savedClasses.length > 0 &&
+            savedClasses.map((item, index) => {
+              return (
+                <TableContainer
+                  key={item.competitor}
+                  component={Paper}
+                  style={{ width: "100%", marginTop: "20px" }}
+                >
+                  <SubHeader>{item.className}</SubHeader>
+                  <SubHeader>{item.divisions}</SubHeader>
+                  <Table
+                    className={classes.table}
+                    size="small"
+                    aria-label="a dense table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        {compClasses[1].headerTitles.map((comp, index) => {
+                          if (comp !== "Total Points") {
+                            return (
+                              <TableCell
+                                key={comp}
+                                style={{
+                                  verticalAlign: "bottom",
+                                  padding: 0,
+                                  fontSize: 16,
+                                }}
+                                classes={{ root: { fontSize: 16 } }}
+                              >
+                                <p>{comp}</p>
+                              </TableCell>
+                            );
+                          }
+                        })}
+                        {compClasses[0].headerTitles.map((comp, index) => {
+                          if (comp !== "Competitor") {
+                            return (
+                              <TableCell
+                                key={comp}
+                                style={{ verticalAlign: "bottom", padding: 0 }}
+                              >
+                                <p>{comp}</p>
+                              </TableCell>
+                            );
+                          }
+                        })}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {item.unPublishedResult.map((a, index) => {
+                        return Object.values(a).map((r) => {
+                          return r.map((res, index) => {
+                            const color = index % 2 === 0;
+                            if (res.shoeOne && res.shoeTwo) {
+                              return (
+                                <TableRow
+                                  key={item.id}
+                                  style={{
+                                    backgroundColor: color
+                                      ? "#DCDCDC"
+                                      : "white",
+                                  }}
+                                >
+                                  <TableCell align="left">
+                                    {res.competitor}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.one}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.two}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.three}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.four}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.one}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.two}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.three}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.four}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.total + res.shoeTwo.total}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            }
+                          });
+                        });
                       })}
                     </TableBody>
                   </Table>

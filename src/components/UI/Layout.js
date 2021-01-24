@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../Navbar";
 import Footer from "../footer";
 import { makeStyles } from "@material-ui/styles";
+import { Colors } from "../../colors";
 
 const useStyle = makeStyles({
   layout: {
@@ -18,9 +19,9 @@ const useStyle = makeStyles({
     margin: "auto",
     backgroundColor: "#FFFFFF",
     padding: "30px 0px 30px 0px",
+    boxShadow: `3px 3px 3px #b0b3b8`,
     ["@media (max-width: 1000px)"]: {
       width: "100%",
-      
     },
   },
 });

@@ -56,7 +56,6 @@ const ScoreSheet = ({
     history.push("/admin");
   }
 
-  console.log()
   return (
     <div>
       <SubHeader>{className}</SubHeader>

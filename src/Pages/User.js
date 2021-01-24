@@ -80,18 +80,21 @@ const User = () => {
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
       fetch(
-        `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin`,
+        `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin/hoastimmy@gmail.com`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: "hoastimmy@gmail.com",
+          body: JSON.stringify({ email: 'hoastimmy@gmail.com' })
         }
       )
         .then((res) => {
-          return res;
+          //console.log(res.json())
+          //res.header.setValue('Access-Control-Allow-Origin', '*')
+          //res.set('Access-Control-Allow-Origin', '*');
+          return res.json();
         })
         .then((data) => {
           console.log(data);
@@ -116,6 +119,7 @@ const User = () => {
       <div className="divBlack" />
 
       <div className={classes.root}>
+      <button onClick={createAdmin}>Klick</button>
         <Avatar className={classes.avatar} src={userImage} alt={user.name} />
 
         <TabPanel value={value} index={0} style={{ width: "90%" }}>

@@ -15,7 +15,8 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ChoiseModal from "../ChoiseModal";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { firestore } from "../firebase";
+import { startCompetitions, openCompetition } from "../../ApiFunctions/Api";
+import { auth } from "../firebase";
 
 const useStyle = makeStyles({
   container: {
@@ -139,9 +140,18 @@ const CompetitionListItemAdmin = ({
   const [started, setStarted] = useState(startCompetition);
 
   const openCompetitionForEntries = async (event) => {
+    event.persist();
     setOpen(event.target.checked);
-    await firestore.collection("competitions").doc(id).update({
-      openForEntries: event.target.checked,
+    const user = auth.currentUser;
+    user.getIdToken().then(async (token) => {
+
+      await openCompetition(token, id, event.target.checked)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
     dispatch(actions.fetchCompetitions());
   };
@@ -149,7 +159,7 @@ const CompetitionListItemAdmin = ({
   const startCompetitionHandler = async (event) => {
     let array = [];
 
-    divisions.forEach(async (item, index) => {
+    divisions.forEach(async (item) => {
       const a = randomnizeEntries(entries[Object.keys(item)]);
       const heat =
         entries[Object.keys(item)].length /
@@ -175,28 +185,27 @@ const CompetitionListItemAdmin = ({
 
       setStarted(event.target.checked);
 
-      divisions.map((e, index) => {
+      divisions.map((e) => {
         Object.values(e).map((r) => {
-          r.map((u) => {
+          return r.map((u) => {
             const a = array.filter((item) => {
               return item.division === u.divisions;
             });
-            a.forEach(async (m) => {
-              await firestore
-                .collection("competitions")
-                .doc(id)
-                .collection(u.divisions)
-                .doc(u.className)
-                .update({
-                  unPublishedResult: a,
-                });
+
+            const user = auth.currentUser;
+            user.getIdToken().then(async (token) => {
+              a.forEach(async (m) => {
+                await startCompetitions(token, id, u, a)
+                  .then((res) => {
+                    console.log(res.json());
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              });
             });
           });
         });
-      });
-      await firestore.collection("competitions").doc(id).update({
-        startCompetition: event.target.checked,
-        openForEntries: false,
       });
     });
 

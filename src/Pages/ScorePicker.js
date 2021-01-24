@@ -5,9 +5,10 @@ import CustomButton from "../components/CustomButton";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import ButtonContainer from "../components/UI/ButtonContainer";
-import { firestore } from "../components/firebase";
 import { useDispatch } from "react-redux";
 import { fetchCompetitions } from "../store/actions/competitionAction";
+import { saveClassResult } from "../ApiFunctions/Api";
+import { auth } from "../components/firebase";
 const useStyles = makeStyles({});
 
 const ScorePicker = () => {
@@ -21,17 +22,17 @@ const ScorePicker = () => {
   if (!compClasses) {
     history.push("/admin");
   }
-console.log(compClasses)
 
-  const saveClassResult = async () => {
-    await firestore
-      .collection("competitions")
-      .doc(id)
-      .collection(compClasses.divisions)
-      .doc(compClasses.className)
-      .update({
-        savedResult: true,
-      });
+  const saveClassResults = async () => {
+    const user = auth.currentUser;
+    user.getIdTokenResult(async (token) => {
+      await saveClassResult(
+        token,
+        id,
+        compClasses.divisions,
+        compClasses.className
+      );
+    });
     history.push("/admin");
     dispatch(fetchCompetitions());
   };
@@ -100,7 +101,7 @@ console.log(compClasses)
         })}
         <ButtonContainer>
           {!compClasses.savedResult && (
-            <CustomButton onClick={saveClassResult} title="Publish result" />
+            <CustomButton onClick={saveClassResults} title="Publish result" />
           )}
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </ButtonContainer>

@@ -6,7 +6,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import StarIcon from "@material-ui/icons/Star";
 import PhoneIcon from "@material-ui/icons/Phone";
 import Sponsors from "../components/Sponsors";
-
+import img from "../assets/Images/newpic.jpg";
+import { Colors } from "../colors";
 const useStyle = makeStyles({
   container: {},
 });
@@ -16,12 +17,20 @@ const Home = () => {
   return (
     <div className={classes.container}>
       <h1 style={{ fontSize: 50, textAlign: "center", margin: 0 }}>
-        Name of side
+        Forging Scores
       </h1>
       <h1 style={{ fontSize: 30, textAlign: "center" }}>
-        Welcome to "Name of Side".
+        Welcome to Forging Scores.
       </h1>
-      <Sponsors data={null} />
+      <img
+        src={img}
+        style={{
+          width: "100%",
+          marginTop: 20,
+          boxShadow: `0px 1px 1px ${Colors.black}`,
+        }}
+      />
+      {/*<Sponsors data={null} />*/}
 
       <Grid container>
         <Grid

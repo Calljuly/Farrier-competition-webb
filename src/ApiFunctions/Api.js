@@ -60,3 +60,58 @@ export const editCompetition = async (token, id, comp) => {
 
   return response.json();
 };
+
+export const startCompetitions = async (token, id, comp, result) => {
+  const response = await fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/startCompetition/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        divisions: comp.divisions,
+        className: comp.className,
+        result: result,
+      }),
+    }
+  );
+
+  return response.json();
+};
+export const openCompetition = async (token, id, checked) => {
+  const response = await fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/openCompetition/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        value: checked,
+      }),
+    }
+  );
+
+  return response.json();
+};
+export const saveClassResult = async (token, id, divisions, className) => {
+  const response = await fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/saveClassResult/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        divisions: divisions,
+        className: className
+      }),
+    }
+  );
+
+  return response.json();
+};
