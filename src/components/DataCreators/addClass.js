@@ -162,7 +162,7 @@ const AddClass = () => {
 
     const user = auth.currentUser;
     dispatch(actions.loading(true));
-  
+
     const uploadTask = storage
       .ref()
       .child(`sponsors/${classesObject.sponsorLoggo.name}`)
@@ -182,10 +182,21 @@ const AddClass = () => {
         .ref()
         .child(`shoes/${newClass.shoeOneImg.name}`)
         .put(newClass.shoeOneImg);
+
       await uploadTaskOne.on(
         "state_changed",
         (snapShot) => {
-          newClass.shoeOneImg = newClass.shoeOneImg.name;
+          let i = '';
+          storage
+            .ref()
+            .child(`shoes/${newClass.shoeOneImg.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              console.log(url);
+              i = url;
+              this.newClass.shoeOneImg = 'Robin';
+            });
+            newClass.shoeOneImg = i;
         },
         (err) => {
           console.log(err);
@@ -207,7 +218,7 @@ const AddClass = () => {
         }
       );
     }
-    
+
     user.getIdToken().then(async (token) => {
       createClass(token, newClass, id)
         .then((res) => {

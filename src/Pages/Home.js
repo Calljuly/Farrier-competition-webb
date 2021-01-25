@@ -8,9 +8,11 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import Sponsors from "../components/Sponsors";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
+
 const useStyle = makeStyles({
   container: {},
 });
+
 const Home = () => {
   const classes = useStyle();
 
