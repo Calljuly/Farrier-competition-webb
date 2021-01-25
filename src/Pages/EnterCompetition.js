@@ -124,6 +124,20 @@ const EnterCompetition = () => {
           marginBottom: 30,
         }}
       >
+      {success && (
+        <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
+          You entered the competition!
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          style={{ width: "100%" }}
+          severity="error"
+          onClick={() => setError(false)}
+        >
+          <P>You could not enter the competition</P>
+        </Alert>
+      )}
         <SubHeader>
           Choose which classes or divisions you want to enter
         </SubHeader>

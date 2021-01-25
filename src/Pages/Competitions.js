@@ -128,11 +128,10 @@ const Competitions = () => {
           <div className="divOrange" />
           <div className="divBlack" />
           <Devider margin={30} />
-
-          <FilterController />
-
           <TabPanel value={value} index={0}>
             <PageHeader>Active competitions</PageHeader>
+            <FilterController />
+
             {competitionsActive.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}
@@ -140,6 +139,8 @@ const Competitions = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <PageHeader>Past competitions</PageHeader>
+            <FilterController />
+
             {competitionsDone.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}

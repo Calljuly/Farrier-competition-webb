@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
+import { useSelector } from "react-redux";
 import PageHeader from "../UI/PageHeader";
 import SubHeader from "../UI/SubHeader";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import P from "../UI/Paragraph";
 import CustomButton from "../CustomButton";
-import { Colors } from "../../colors";
 import { useHistory } from "react-router-dom";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
@@ -106,10 +104,7 @@ const CompetitionsListItem = ({
   divisionList,
 }) => {
   const classes = useStyle();
-  const dispatch = useDispatch();
   const history = useHistory();
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
 
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
@@ -127,34 +122,8 @@ const CompetitionsListItem = ({
     currentEntries: current,
   };
 
-  const enterCompetition = () => {
-    const a = entries.filter((item) => {
-      return user.name === item.competitor;
-    });
-    if (a.length > 0) {
-      setError(true);
-      return;
-    }
-    dispatch(actions.enterCompetition(user, "compClasses", competition, id));
-    setSuccess(true);
-  };
-
   return (
     <div className={classes.container}>
-      {success && (
-        <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
-          You entered the competition!
-        </Alert>
-      )}
-      {error && (
-        <Alert
-          style={{ width: "100%" }}
-          severity="error"
-          onClick={() => setError(false)}
-        >
-          <P>You could not enter the competition</P>
-        </Alert>
-      )}
       <div
         onClick={() => setShowProposition((prev) => !prev)}
         className={classes.header}
@@ -291,9 +260,7 @@ const CompetitionsListItem = ({
                         })
                       }
                       title={
-                        disabled
-                          ? "Competition is full"
-                          : "Enter competition"
+                        disabled ? "Competition is full" : "Enter competition"
                       }
                     />
                   </Grid>

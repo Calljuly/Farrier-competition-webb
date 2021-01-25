@@ -35,31 +35,12 @@ const useStyle = makeStyles({
       padding: 0,
     },
   },
-
-  switch_track: {
-    backgroundColor: Colors.black,
-    color: Colors.black,
-  },
-  switch_base: {
-    color: Colors.black,
-    "&.Mui-disabled": {
-      color: "#e886a9",
-    },
-    "&.Mui-checked": {
-      color: Colors.orange,
-    },
-    "&.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: Colors.black,
+  radio: {
+    "&$checked": {
+      color: "blue",
     },
   },
-  switch_primary: {
-    "&.Mui-checked": {
-      color: "#4CAF50",
-    },
-    "&.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: Colors.orange,
-    },
-  },
+  checked: { color: "green" },
 });
 
 const FilterController = () => {
@@ -79,7 +60,6 @@ const FilterController = () => {
           <FormGroup style={{ display: "flex", flexDirection: "row" }}>
             <RadioGroup
               row
-              aria-label="gender"
               name="feet"
               value={filter}
               onChange={(event) =>
