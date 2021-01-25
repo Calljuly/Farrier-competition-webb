@@ -8,10 +8,16 @@ const useStyle = makeStyles({
     color: Colors.black,
     fontFamily: "Constantia",
     margin: 5,
+    ["@media (max-width:956px)"]: {
+      fontSize: 15,
+    },
   },
   orange: {
     fontSize: "20px",
     color: Colors.orange,
+    ["@media (max-width:956px)"]: {
+      fontSize: 15,
+    },
   },
 });
 const P = ({ children, orange }) => {

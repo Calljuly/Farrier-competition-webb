@@ -10,7 +10,10 @@ const useStyle = makeStyles({
     padding: 10,
     margin: "10px 0px 10px 10px",
     ["@media (max-width:956px)"]: {
-      width: "100%",
+      width: "97%",
+      alignSelf:'center',
+      margin: "10px 0px 10px 0px",
+
     },
   },
 });

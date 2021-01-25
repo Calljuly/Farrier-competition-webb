@@ -53,7 +53,7 @@ const StartList = () => {
   });
 
   if (!entries) {
-    history.push("/admin");
+    history.push("/competition");
   }
 
   return (
@@ -72,7 +72,7 @@ const StartList = () => {
         }}
       >
         <ComponentToPrint ref={componentRef}>
-          <SubHeader>{competitionName}</SubHeader>
+          <PageHeader>{competitionName}</PageHeader>
 
           {entries && Object.keys(entries).length > 0 ? (
             Object.keys(entries).map((divs, index) => (

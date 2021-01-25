@@ -11,6 +11,10 @@ const useStyle = makeStyles({
     width: 301,
     border: "1px solid #DCDCDC",
     margin: 20,
+    ["@media (max-width:956px)"]: {
+      width: "95%",
+      margin: 10,
+    },
   },
 });
 
@@ -28,7 +32,7 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
         setSponsor(url);
       });
   }
-  
+
   return (
     <div className={classes.card}>
       <SubHeader>Sponsor of {className}</SubHeader>

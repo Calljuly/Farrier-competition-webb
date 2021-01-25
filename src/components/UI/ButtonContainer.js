@@ -6,6 +6,9 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     width: "100%",
+    ["@media (max-width:956px)"]: {
+      flexDirection: "column",
+    },
   },
 });
 const ButtonContainer = ({ children }) => {

@@ -39,7 +39,6 @@ export const enterCompetition = (
     updatedState.maxEntries -= 1;
 
     division.map((item) => {
-      
       if (updatedState.entries[item.name]) {
         updatedState.entries[item.name].push({
           competitor: competitor.name,
@@ -328,7 +327,7 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-                admin: false,
+                admin: idTokenResult.claims.admin,
               },
               body: JSON.stringify({
                 divisions: state.divisions,

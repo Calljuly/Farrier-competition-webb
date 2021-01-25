@@ -51,6 +51,12 @@ const useStyles = makeStyles({
       alignItems: "center",
     },
   },
+  contentContainer: {
+    margin: 40,
+    ["@media (max-width: 1000px)"]: {
+      margin: 0,
+    },
+  },
 });
 
 const Result = () => {
@@ -98,7 +104,7 @@ const Result = () => {
       </div>
       <div className="divOrange" />
       <div className="divBlack" />
-      <div style={{ margin: 40 }}>
+      <div className={classes.contentContainer}>
         <PageHeader>{competitionName}</PageHeader>
 
         {sponsor && (
