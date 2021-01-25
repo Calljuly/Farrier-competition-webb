@@ -115,3 +115,25 @@ export const saveClassResult = async (token, id, divisions, className) => {
 
   return response.json();
 };
+export const createAdmin = (token, email) => {
+    fetch(
+      `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin/hoastimmy@gmail.com`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email: email })
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};

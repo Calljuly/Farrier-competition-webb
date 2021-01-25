@@ -2,17 +2,17 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 
 const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      {...other}
       style={{ padding: 0 }}
+      {...props}
     >
       {value === index && (
-        <Box p={3} style={{width: '100%', padding: 0 }}>
+        <Box p={3} style={{ padding: 0 }} {...props}>
           {children}
         </Box>
       )}

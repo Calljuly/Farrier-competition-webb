@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import P from "../components/UI/Paragraph";
@@ -35,12 +35,122 @@ const useStyle = makeStyles({
     },
   },
   input: {
-    width: "96%", margin: 20
-  }
+    width: "96%",
+    margin: 20,
+  },
 });
+
+const initialState = {
+  firstName: {
+    value: "",
+    valid: true,
+  },
+  lastName: {
+    value: "",
+    valid: true,
+  },
+  email: {
+    value: "",
+    valid: true,
+  },
+  phone: {
+    value: "",
+    valid: true,
+  },
+  message: {
+    value: "",
+    valid: true,
+  },
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "firstName":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "lastName":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "email":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "phone":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    case "message":
+      return {
+        ...state,
+        [action.type]: {
+          ...state[action.type],
+          [action.key]: action.value,
+        },
+      };
+    default:
+      return;
+  }
+};
 
 const Contact = () => {
   const classes = useStyle();
+  const [state, dispatchReducer] = useReducer(reducer, initialState);
+  const [formValid, setFormValid] = useState(false);
+  let valid;
+
+  const validateText = (text, key, type) => {
+    valid = true;
+    if (type === "number") {
+      if (text.trim() === "") {
+        valid = false;
+      }
+      if (text.length === 0) {
+        valid = false;
+      }
+    } else {
+      if (text.trim() === "") {
+        valid = false;
+      }
+      if (text.length < 3) {
+        valid = false;
+      }
+    }
+    dispatchReducer({ type: key, value: valid, key: "valid" });
+  };
+  const formValidation = () => {
+    const a = Object.keys(state);
+    let valid = true;
+    a.forEach((item) => {
+      const b = state[item];
+      if (b.valid === false || b.value === "") {
+        valid = false;
+      }
+    });
+
+    return valid;
+  };
+  useEffect(() => {
+    setFormValid(formValidation());
+  }, [state]);
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -71,6 +181,21 @@ const Contact = () => {
                 label="First name"
                 placeholder="First name"
                 name="firstName"
+                value={state.firstName.value}
+                onChange={(event) =>
+                  dispatchReducer({
+                    type: "firstName",
+                    value: event.target.value,
+                    key: "value",
+                  })
+                }
+                onBlur={(event) =>
+                  validateText(
+                    state["firstName"].value,
+                    event.target.name,
+                    event.target.type
+                  )
+                }
               />
               <TextInput
                 type="text"
@@ -78,6 +203,21 @@ const Contact = () => {
                 label="Last name"
                 placeholder="Last name"
                 name="lastName"
+                value={state.lastName.value}
+                onChange={(event) =>
+                  dispatchReducer({
+                    type: "lastName",
+                    value: event.target.value,
+                    key: "value",
+                  })
+                }
+                onBlur={(event) =>
+                  validateText(
+                    state["lastName"].value,
+                    event.target.name,
+                    event.target.type
+                  )
+                }
               />
               <TextInput
                 type="text"
@@ -85,13 +225,43 @@ const Contact = () => {
                 label="Email"
                 placeholder="Email"
                 name="email"
+                value={state.email.value}
+                onChange={(event) =>
+                  dispatchReducer({
+                    type: "email",
+                    value: event.target.value,
+                    key: "value",
+                  })
+                }
+                onBlur={(event) =>
+                  validateText(
+                    state["email"].value,
+                    event.target.name,
+                    event.target.type
+                  )
+                }
               />
               <TextInput
-              className={classes.input}
+                className={classes.input}
                 label="Phone"
                 placeholder="Phone"
                 type="number"
                 name="phone"
+                value={state.phone.value}
+                onChange={(event) =>
+                  dispatchReducer({
+                    type: "phone",
+                    value: event.target.value,
+                    key: "value",
+                  })
+                }
+                onBlur={(event) =>
+                  validateText(
+                    state["phone"].value,
+                    event.target.name,
+                    event.target.type
+                  )
+                }
               />
               <TextInput
                 type="text"
@@ -100,9 +270,29 @@ const Contact = () => {
                 multiline
                 rows={4}
                 name="message"
+                value={state.message.value}
+                onChange={(event) =>
+                  dispatchReducer({
+                    type: "message",
+                    value: event.target.value,
+                    key: "value",
+                  })
+                }
+                onBlur={(event) =>
+                  validateText(
+                    state["message"].value,
+                    event.target.name,
+                    event.target.type
+                  )
+                }
               />
               <ButtonContainer>
-                <Button name="button" type="submit" className={classes.button}>
+                <Button
+                  disabled={!formValid}
+                  name="button"
+                  type="submit"
+                  className={classes.button}
+                >
                   Send Message
                 </Button>
               </ButtonContainer>

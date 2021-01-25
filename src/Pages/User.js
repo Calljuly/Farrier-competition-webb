@@ -76,35 +76,6 @@ const User = () => {
     },
   ];
 
-  const createAdmin = () => {
-    const user = auth.currentUser;
-    user.getIdToken().then(async (token) => {
-      fetch(
-        `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin/hoastimmy@gmail.com`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ email: 'hoastimmy@gmail.com' })
-        }
-      )
-        .then((res) => {
-          //console.log(res.json())
-          //res.header.setValue('Access-Control-Allow-Origin', '*')
-          //res.set('Access-Control-Allow-Origin', '*');
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
-  };
-
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -119,7 +90,6 @@ const User = () => {
       <div className="divBlack" />
 
       <div className={classes.root}>
-      <button onClick={createAdmin}>Klick</button>
         <Avatar className={classes.avatar} src={userImage} alt={user.name} />
 
         <TabPanel value={value} index={0} style={{ width: "90%" }}>
@@ -141,11 +111,12 @@ const User = () => {
               );
             })}
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        <TabPanel value={value} index={2} style={{ width: "97%" }}>
           <PageHeader>Update profile</PageHeader>
           <EditProfile />
         </TabPanel>
-        <TabPanel value={value} index={3}>
+        <TabPanel value={value} index={3} style={{ width: "97%" }}>
+          <PageHeader>Change password</PageHeader>
           <EditEmailAndPassword />
         </TabPanel>
       </div>
