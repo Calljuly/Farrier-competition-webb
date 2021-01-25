@@ -387,7 +387,7 @@ const EditCompetition = () => {
         </div>
 
         {!formValid && (
-          <Alert severity="error">
+          <Alert severity="error" onClose={()=> setFormValid(false)}>
             You dont have a valid form to submit, please check you inputs
           </Alert>
         )}

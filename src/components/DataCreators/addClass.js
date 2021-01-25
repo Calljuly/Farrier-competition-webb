@@ -162,7 +162,7 @@ const AddClass = () => {
 
     const user = auth.currentUser;
     dispatch(actions.loading(true));
-    /*
+  
     const uploadTask = storage
       .ref()
       .child(`sponsors/${classesObject.sponsorLoggo.name}`)
@@ -207,7 +207,7 @@ const AddClass = () => {
         }
       );
     }
-    */
+    
     user.getIdToken().then(async (token) => {
       createClass(token, newClass, id)
         .then((res) => {

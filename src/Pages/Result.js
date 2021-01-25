@@ -66,15 +66,17 @@ const Result = () => {
   }
 
   const savedClasses = [];
-  sponsor.forEach((item) => {
-    return Object.values(item).forEach((i) => {
-      return i.forEach((e) => {
-        if (e.savedResult) {
-          savedClasses.push(e);
-        }
+  if (sponsor) {
+    sponsor.forEach((item) => {
+      return Object.values(item).forEach((i) => {
+        return i.forEach((e) => {
+          if (e.savedResult) {
+            savedClasses.push(e);
+          }
+        });
       });
     });
-  });
+  }
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
@@ -99,18 +101,26 @@ const Result = () => {
       <div style={{ margin: 40 }}>
         <PageHeader>{competitionName}</PageHeader>
 
-        {false && (
+        {sponsor && (
           <>
             <SubHeader>Sponsors of all classes this competition</SubHeader>
 
             <div className={classes.sponsorContainer}>
-              {sponsor.map((item) => (
-                <SponsorCard
-                  sponsorName={item.sponsors}
-                  sponsorUrl={item.sponsorLoggo}
-                  className={item.className}
-                />
-              ))}
+              {sponsor.length > 0 &&
+                sponsor.map((item) => {
+                  return Object.values(item).map((i) => {
+                    return i.map((u, index) => {
+                      return (
+                        <SponsorCard
+                          key={index}
+                          sponsorName={u.sponsors}
+                          sponsorUrl={u.sponsorLoggo}
+                          className={u.className}
+                        />
+                      );
+                    });
+                  });
+                })}
             </div>
           </>
         )}
@@ -120,11 +130,11 @@ const Result = () => {
           </Alert>
         )}
         <ComponentToPrint ref={componentRef}>
-          {result &&
+          {result.length > 0 &&
             result.map((item, index) => {
               return (
                 <TableContainer
-                  key={item.competitor}
+                  key={index}
                   component={Paper}
                   style={{ margin: "50px" }}
                 >
@@ -225,7 +235,7 @@ const Result = () => {
             savedClasses.map((item, index) => {
               return (
                 <TableContainer
-                  key={item.competitor}
+                  key={index}
                   component={Paper}
                   style={{ width: "100%", marginTop: "20px" }}
                 >
@@ -248,7 +258,6 @@ const Result = () => {
                                   padding: 0,
                                   fontSize: 16,
                                 }}
-                                classes={{ root: { fontSize: 16 } }}
                               >
                                 <p>{comp}</p>
                               </TableCell>
@@ -270,54 +279,51 @@ const Result = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {item.unPublishedResult.map((a, index) => {
-                        return Object.values(a).map((r) => {
-                          return r.map((res, index) => {
-                            const color = index % 2 === 0;
-                            if (res.shoeOne && res.shoeTwo) {
-                              return (
-                                <TableRow
-                                  key={item.id}
-                                  style={{
-                                    backgroundColor: color
-                                      ? "#DCDCDC"
-                                      : "white",
-                                  }}
-                                >
-                                  <TableCell align="left">
-                                    {res.competitor}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeOne.one}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeOne.two}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeOne.three}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeOne.four}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeTwo.one}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeTwo.two}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeTwo.three}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeTwo.four}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {res.shoeOne.total + res.shoeTwo.total}
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            }
-                          });
+                      {item.unPublishedResult.map((a) => {
+                        return a.starts.map((res, index) => {
+                          const color = index % 2 === 0;
+
+                          if (res.shoeOne && res.shoeTwo) {
+                            return (
+                              <TableRow
+                                key={index}
+                                style={{
+                                  backgroundColor: color ? "#DCDCDC" : "white",
+                                }}
+                              >
+                                <TableCell align="left">
+                                  {res.competitor}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.one}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.two}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.three}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.four}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.one}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.two}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.three}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.four}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.total + res.shoeTwo.total}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
                         });
                       })}
                     </TableBody>

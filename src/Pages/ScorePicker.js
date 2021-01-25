@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { fetchCompetitions } from "../store/actions/competitionAction";
 import { saveClassResult } from "../ApiFunctions/Api";
 import { auth } from "../components/firebase";
+import Devider from "../components/UI/Devider";
+
 const useStyles = makeStyles({});
 
 const ScorePicker = () => {
@@ -57,7 +59,7 @@ const ScorePicker = () => {
 
         {compClasses.unPublishedResult.map((item, index) => {
           return (
-            <>
+            <div key={item.heat}>
               <PageHeader>Heat {item.heat}</PageHeader>
               <ol
                 style={{
@@ -96,9 +98,12 @@ const ScorePicker = () => {
                   Shoe Two
                 </li>
               </ol>
-            </>
+            </div>
           );
         })}
+        <Devider margin={50} />
+        <P>Whhen you press publish result anyone will be able to see them.</P>
+        <P>You wont be able to edit these results after saving them</P>
         <ButtonContainer>
           {!compClasses.savedResult && (
             <CustomButton onClick={saveClassResults} title="Publish result" />

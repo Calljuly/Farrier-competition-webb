@@ -21,7 +21,7 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
   if (sponsorUrl) {
     storage
       .ref()
-      .child(`images/${sponsorUrl}`)
+      .child(`sponsors/${sponsorUrl}`)
       .getDownloadURL()
       .then((url) => {
         console.log(url);

@@ -79,7 +79,7 @@ const ScoreSheet = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {result.length > 0 &&
+            {result && result.length > 0 &&
               result.map((item, index) => {
                 const color = index % 2 === 0;
                 return (

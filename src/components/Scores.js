@@ -98,12 +98,6 @@ const Scores = () => {
           }
         />
         <Devider margin={60} />
-
-        <P>
-          If you press save the results will be saved but wont be shown to the
-          pulic.
-        </P>
-        <P>You wont be able to edit these results after saving them</P>
         <ButtonContainer>
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </ButtonContainer>

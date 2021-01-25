@@ -281,15 +281,6 @@ const CompetitionsListItem = ({
                   <Grid item md={4} xs={12}>
                     <CustomButton
                       disabled={disabled}
-                      onClick={enterCompetition}
-                      title={
-                        disabled ? "Competition is full" : "Enter competition"
-                      }
-                    />
-                  </Grid>
-                  <Grid item md={4} xs={12}>
-                    <CustomButton
-                      disabled={disabled}
                       onClick={() =>
                         history.push({
                           pathname: "/competitions/enterCompetition",
@@ -302,7 +293,7 @@ const CompetitionsListItem = ({
                       title={
                         disabled
                           ? "Competition is full"
-                          : "Enter competition New page"
+                          : "Enter competition"
                       }
                     />
                   </Grid>

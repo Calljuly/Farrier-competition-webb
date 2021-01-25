@@ -39,6 +39,7 @@ export const enterCompetition = (
     updatedState.maxEntries -= 1;
 
     division.map((item) => {
+      
       if (updatedState.entries[item.name]) {
         updatedState.entries[item.name].push({
           competitor: competitor.name,
@@ -53,10 +54,9 @@ export const enterCompetition = (
           id: updatedState.currentEntries,
         });
 
-        updatedState.entries[item] = array;
+        updatedState.entries[item.name] = array;
       }
     });
-
     const user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
       fetch(
@@ -135,7 +135,7 @@ export const fetchCompetitions = () => {
             const classes = data.docs.map((doc, index) => {
               return doc.data();
             });
-            allDivisions.push({ [classes[index].divisions]: classes });
+            allDivisions.push({ [divs]: classes });
           });
           array.push({ competition: comps[index], divisions: allDivisions });
         });
@@ -313,41 +313,45 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
     });
 
     state.unPublishedResult = c;
-    console.log(state.unPublishedResult);
     const user = auth.currentUser;
-    user
-      .getIdToken()
-      .then(async (token) => {
-        fetch(
-          `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint/${compIndex}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              compIndex: compIndex,
-              divisions: state.divisions,
-              className: state.className,
-              class: state,
-            }),
-          }
-        )
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            console.log(data);
-            dispatch({ type: ADD_POINT, updatedState: state });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    user.getIdTokenResult().then((idTokenResult) => {
+      console.log(idTokenResult.claims.admin);
+
+      user
+        .getIdToken()
+        .then(async (token) => {
+          fetch(
+            `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint/${compIndex}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                admin: false,
+              },
+              body: JSON.stringify({
+                divisions: state.divisions,
+                className: state.className,
+                class: state,
+              }),
+            }
+          )
+            .then((res) => {
+              return res.json();
+            })
+            .then((data) => {
+              console.log(data);
+              dispatch({ type: ADD_POINT, updatedState: state });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
     /*
     firestore
       .collection("competitions")

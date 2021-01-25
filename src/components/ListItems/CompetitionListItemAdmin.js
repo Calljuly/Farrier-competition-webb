@@ -144,7 +144,6 @@ const CompetitionListItemAdmin = ({
     setOpen(event.target.checked);
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
-
       await openCompetition(token, id, event.target.checked)
         .then((res) => {
           console.log(res);
@@ -269,7 +268,7 @@ const CompetitionListItemAdmin = ({
           <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
             {divisions.length > 0 &&
-              divisions.map((divs, index) => {
+              divisions.map((divs) => {
                 return Object.values(divs).map((data) => {
                   return data.map((item) => {
                     return (
@@ -346,7 +345,9 @@ const CompetitionListItemAdmin = ({
                       colorPrimary: classes.switch_primary,
                     }}
                     checked={open}
-                    onChange={openCompetitionForEntries}
+                    onChange={
+                      startCompetition ? () => {} : openCompetitionForEntries
+                    }
                     name="Open competition"
                   />
                 }

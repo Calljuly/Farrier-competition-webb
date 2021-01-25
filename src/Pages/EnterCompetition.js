@@ -59,14 +59,16 @@ const EnterCompetition = () => {
     history.push("/competitions");
   }
 
-  const [newstate, setnewState] = useState(
-    divisionList.map((item) => {
-      return {
-        name: item,
-        checked: false,
-      };
-    })
-  );
+  const [newstate, setnewState] = useState(() => {
+    if (divisionList) {
+      divisionList.map((item) => {
+        return {
+          name: item,
+          checked: false,
+        };
+      });
+    }
+  });
 
   const enterCompetition = () => {
     const choise = newstate.filter((item) => {
@@ -77,7 +79,7 @@ const EnterCompetition = () => {
 
     dispatch(actions.enterCompetition(user, classes, competition, id, choise));
     setSuccess(true);
-    setModal(false)
+    setModal(false);
   };
 
   const handleChange = (event, index) => {

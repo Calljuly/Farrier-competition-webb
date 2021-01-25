@@ -24,21 +24,6 @@ const App = () => {
       if (user) {
         //Kollar om användaren är admin
         user.getIdTokenResult().then((idTokenResult) => {
-          /*const check = true;
-          auth
-            .verifyIdToken(idTokenResult, check)
-            .then((payload) => {
-              // Token is valid.
-            })
-            .catch((error) => {
-              if (error.code == "auth/id-token-revoked") {
-                dispatch(action.logOut())
-              } else {
-                // Token is invalid.
-              }
-            });*/
-console.log(idTokenResult)
-
           fetch(
             `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
             {
