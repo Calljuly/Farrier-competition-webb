@@ -101,181 +101,16 @@ const textInputs = [
     multiline: true,
   },
 ];
-const initialState = {
-  name: {
-    value: "",
-    valid: true,
-  },
-  referee: {
-    value: "",
-    valid: true,
-  },
-  country: {
-    value: "",
-    valid: true,
-  },
-  location: {
-    value: "",
-    valid: true,
-  },
-  anvils: {
-    value: "",
-    valid: true,
-  },
-  semi: {
-    value: "",
-    valid: true,
-  },
-  final: {
-    value: "",
-    valid: true,
-  },
-  admins: [],
-  dateFrom: {
-    value: "",
-    valid: true,
-  },
-  dateTo: {
-    value: "",
-    valid: true,
-  },
-
-  hotels: {
-    value: "",
-    valid: true,
-  },
-  parking: {
-    value: "",
-    valid: true,
-  },
-  information: {
-    value: "",
-    valid: true,
-  },
-  divisions: [],
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "name":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "location":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "referee":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "country":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "anvils":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "semi":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "final":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "dateFrom":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "dateTo":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "hotels":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "parking":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "information":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    case "divisions":
-      return {
-        ...state,
-        [action.type]: {
-          ...state[action.type],
-          [action.key]: action.value,
-        },
-      };
-    default:
-      return;
-  }
-};
 
 const EditCompetition = () => {
-  
   const [show, setShow] = useState(false);
   const l = useLocation();
   const id = l.id;
-  const [state, dispatchReducer] = useReducer(reducer, initialState);
+  const competition = l.competition;
+  const [state, setState] = useState(competition);
   const dispatch = useDispatch();
   const [formValid, setFormValid] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  let valid = true;
   const history = useHistory();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -285,74 +120,42 @@ const EditCompetition = () => {
   }
 
   const updateCompetition = () => {
-    const valid = formValidation();
-    if (valid) {
-      dispatch(actions.loading(true));
-      const user = auth.currentUser;
-      return user.getIdToken().then(async (token) => {
-        const comp = {
-          country: state.country.value,
-          anvils: state.anvils.value,
-          semi: state.semi.value,
-          final: state.final.value,
-          name: state.name.value,
-          referee: state.referee.value,
-          dateTo: state.dateTo.value,
-          dateFrom: state.dateFrom.value,
-          location: state.location.value,
-          hotels: state.hotels.value,
-          parking: state.parking.value,
-          information: state.information.value,
-        };
-
-        editCompetition(token, id, comp)
-          .then((res) => {
-            if (res.message === "Succsess") {
-              setSuccess(true);
-              dispatch(actions.fetchCompetitions());
-              dispatch(actions.loading(false));
-              setIsOpen(false);
-            } else {
-              setError(res.message);
-              dispatch(actions.loading(false));
-              setIsOpen(false);
-            }
-          })
-          .then(() => {})
-          .catch((error) => {
-            console.error("Error:", error);
-            setError(error.message);
+    dispatch(actions.loading(true));
+    const user = auth.currentUser;
+    return user.getIdToken().then(async (token) => {
+      editCompetition(token, id, state)
+        .then((res) => {
+          if (res.message === "Succsess") {
+            setSuccess(true);
+            dispatch(actions.fetchCompetitions());
             dispatch(actions.loading(false));
-
             setIsOpen(false);
-          });
-      });
-    }
-    setIsOpen(false);
-  };
+          } else {
+            setError(res.message);
+            dispatch(actions.loading(false));
+            setIsOpen(false);
+          }
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error:", error);
+          setError(error.message);
+          dispatch(actions.loading(false));
 
-  const validateText = (text, key) => {
-    valid = true;
-    if (text.trim() === "") {
-      valid = false;
-    }
-    if (text.length < 3) {
-      valid = false;
-    }
-    dispatchReducer({ type: key, value: valid, key: "valid" });
-  };
-
-  const formValidation = () => {
-    const a = Object.keys(state);
-    let valid = true;
-    a.forEach((item) => {
-      const b = state[item];
-      if (b.valid === false || b.value === "") {
-        valid = false;
-      }
+          setIsOpen(false);
+        });
     });
-    setFormValid(valid);
-    return valid;
+  };
+
+  const handleCompetition = (event, key) => {
+    event.persist();
+    setState((prev) => {
+      const newValue = {
+        ...prev,
+        [key]: event.target.value,
+      };
+      return newValue;
+    });
   };
 
   return (
@@ -387,7 +190,7 @@ const EditCompetition = () => {
         </div>
 
         {!formValid && (
-          <Alert severity="error" onClose={()=> setFormValid(false)}>
+          <Alert severity="error" onClose={() => setFormValid(false)}>
             You dont have a valid form to submit, please check you inputs
           </Alert>
         )}
@@ -403,26 +206,15 @@ const EditCompetition = () => {
         )}
         {show && (
           <>
-            {textInputs.map((item) => (
+            {textInputs.map((item, index) => (
               <TextInput
                 required
+                value={state[item.lable]}
                 key={item.id}
                 label={item.label}
                 type={item.type}
                 placeholder={item.label}
-                onChange={(event) =>
-                  dispatchReducer({
-                    type: item.value,
-                    value: event.target.value,
-                    key: "value",
-                  })
-                }
-                onBlur={() => validateText(state[item.value].value, item.value)}
-                error={!state[item.value].valid}
-                helperText={
-                  !state[item.value].valid &&
-                  "You have to enter a valid input, atleast 3 characters"
-                }
+                onChange={(event) => handleCompetition(event, item.value)}
               />
             ))}
             <ButtonContainer>

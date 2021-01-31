@@ -23,6 +23,7 @@ const useStyle = makeStyles({
     },
   },
 });
+
 const Competitions = () => {
   const [value, setValue] = useState(0);
   const filter = useSelector((state) => state.filter.sort);

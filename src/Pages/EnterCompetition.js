@@ -47,7 +47,6 @@ const EnterCompetition = () => {
   const divisionList = l.divisionList;
   const competition = l.competition;
   const id = l.id;
-  const divisions = l.divisions;
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -58,17 +57,16 @@ const EnterCompetition = () => {
   if (!divisionList) {
     history.push("/competitions");
   }
-
-  const [newstate, setnewState] = useState(() => {
-    if (divisionList) {
-      divisionList.map((item) => {
+  const state = divisionList
+    ? divisionList.map((item) => {
         return {
           name: item,
           checked: false,
         };
-      });
-    }
-  });
+      })
+    : null;
+
+  const [newstate, setnewState] = useState(state);
 
   const enterCompetition = () => {
     const choise = newstate.filter((item) => {
@@ -77,7 +75,7 @@ const EnterCompetition = () => {
       }
     });
 
-    dispatch(actions.enterCompetition(user, classes, competition, id, choise));
+    dispatch(actions.enterCompetition(user, competition, id, choise));
     setSuccess(true);
     setModal(false);
   };
@@ -91,7 +89,7 @@ const EnterCompetition = () => {
     });
   };
 
-  return (
+  return divisionList ? (
     <>
       <ChoiseModal isOpen={modal} handleClose={() => setModal(false)}>
         <PageHeader>Are you sure ?</PageHeader>
@@ -124,20 +122,20 @@ const EnterCompetition = () => {
           marginBottom: 30,
         }}
       >
-      {success && (
-        <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
-          You entered the competition!
-        </Alert>
-      )}
-      {error && (
-        <Alert
-          style={{ width: "100%" }}
-          severity="error"
-          onClick={() => setError(false)}
-        >
-          <P>You could not enter the competition</P>
-        </Alert>
-      )}
+        {success && (
+          <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
+            You entered the competition!
+          </Alert>
+        )}
+        {error && (
+          <Alert
+            style={{ width: "100%" }}
+            severity="error"
+            onClick={() => setError(false)}
+          >
+            <P>You could not enter the competition</P>
+          </Alert>
+        )}
         <SubHeader>
           Choose which classes or divisions you want to enter
         </SubHeader>
@@ -178,7 +176,7 @@ const EnterCompetition = () => {
         </ButtonContainer>
       </div>
     </>
-  );
+  ) : null;
 };
 
 export default EnterCompetition;

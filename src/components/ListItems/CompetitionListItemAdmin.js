@@ -127,6 +127,7 @@ const CompetitionListItemAdmin = ({
   startCompetition,
   entries,
   divisionList,
+  competition
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -400,6 +401,7 @@ const CompetitionListItemAdmin = ({
                         pathname: "/admin/editCompetition",
                         state: divisions,
                         id: id,
+                        competition: competition
                       })
                     }
                   />
@@ -407,12 +409,12 @@ const CompetitionListItemAdmin = ({
               </>
             )}
             <Grid container>
-              <Grid item md={4} xs={12}>
+              {startCompetition && <Grid item md={4} xs={12}>
                 <CustomButton
                   title="Publish all results"
                   onClick={() => setModal(true)}
                 />
-              </Grid>
+              </Grid>}
             </Grid>
             {todayDate < competitionEndDate && result.length > 0 && (
               <CustomButton

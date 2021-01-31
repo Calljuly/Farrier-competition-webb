@@ -189,6 +189,7 @@ const Login = () => {
     setFormValid(valid);
     return valid;
   };
+
   const createUser = async () => {
     const valid = formValidation();
 
@@ -196,8 +197,9 @@ const Login = () => {
       if (authState.profileImage.name) {
         const uploadTask = storage
           .ref()
-          .child(`images/${authState.profileImage.name}`)
+          .child(`profiles/${authState.profileImage.name}`)
           .put(authState.profileImage);
+          
         await uploadTask.on(
           "state_changed",
           (snapShot) => {

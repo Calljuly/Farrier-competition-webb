@@ -9,8 +9,7 @@ import EditProfile from "../components/DataCreators/edirProfil";
 import EditEmailAndPassword from "../components/DataCreators/editEmailAndPassword";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-import { auth } from "../components/firebase";
-
+import { Alert } from "@material-ui/lab";
 const useStyle = makeStyles({
   avatar: {
     margin: 40,
@@ -94,11 +93,17 @@ const User = () => {
 
         <TabPanel value={value} index={0} style={{ width: "90%" }}>
           <PageHeader>{user.name}</PageHeader>
-          <SubHeader>{user.country}</SubHeader>
-          <SubHeader>{user.bio}</SubHeader>
+          <SubHeader>Age : {user.age}</SubHeader>
+          <SubHeader>Address : {user.address}</SubHeader>
+          <SubHeader>Phone : {user.phone}</SubHeader>
+          <SubHeader>Country : {user.country}</SubHeader>
+          <SubHeader>Information : {user.bio}</SubHeader>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PageHeader>Results</PageHeader>
+          {user.result.length === 0 && (
+            <Alert severity="error">You dont have any result from competitions yet</Alert>
+          )}
           {user.result.length > 0 &&
             user.result.map((item) => {
               return (

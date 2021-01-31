@@ -111,6 +111,8 @@ const CompetitionsListItem = ({
   const competitionStartDate = new Date(dateFrom);
   const competitionEndDate = new Date(dateTo);
   const todayDate = new Date();
+  const [shoeOne, setShoeOne] = useState("");
+  const [shoeTwo, setShoeTwo] = useState("");
 
   const [showProposition, setShowProposition] = useState(false);
   const competition = {
@@ -210,6 +212,7 @@ const CompetitionsListItem = ({
               divisions.map((divs, index) => {
                 return Object.values(divs).map((data) => {
                   return data.map((item) => {
+                   
                     return (
                       <div className={classes.classes} key={item.className}>
                         <h2>{item.className}</h2>
@@ -231,7 +234,9 @@ const CompetitionsListItem = ({
                           <Grid item xs={12} sm={3}>
                             <SubHeader>Shoes</SubHeader>
                             <P>{item.shoeOne}</P>
+                            <img src={shoeOne} alt="shoe one" />
                             <P>{item.shoeTwo}</P>
+                            <img src={shoeTwo} alt="shoe two"/>
                           </Grid>
                         </Grid>
                       </div>

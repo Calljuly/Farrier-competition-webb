@@ -21,13 +21,11 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         onChange={(event) => handleClasses("shoeOne", event.target)}
       />
       <TextInput
-        required
         id="shoeOneImg"
         type="file"
         onChange={(event) => handleClasses("shoeOneImg", event)}
       />
       <TextInput
-        required
         id="shoeTwo"
         label="Shoe Two"
         placeholder="Shoe Two"
@@ -54,6 +52,8 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         onChange={(event) => handleClasses("referee", event.target)}
       />
       <SubHeader>Add points for first shoe</SubHeader>
+      <p>If not filled out values will get default values (1.5, 1 ,1.5 , 1)</p>
+
       {points.map((item, index) => {
         return (
           <TextInput
@@ -68,14 +68,12 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
 
       <SubHeader>Add sponsor</SubHeader>
       <TextInput
-        required
         id="sponsor"
         label="Sponsor"
         placeholder="Sponsor"
         onChange={(event) => handleClasses("sponsors", event.target)}
       />
       <TextInput
-        required
         id="sponsorLoggo"
         type="file"
         label="Sponsor Loggo"

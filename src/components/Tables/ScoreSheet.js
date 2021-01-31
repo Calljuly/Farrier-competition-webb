@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { compClasses } from "../../dummyData";
-import SubHeader from "../UI/SubHeader";
 import Devider from "../UI/Devider";
 import { useHistory } from "react-router-dom";
 
@@ -58,10 +57,12 @@ const ScoreSheet = ({
 
   return (
     <div>
-      <SubHeader>{className}</SubHeader>
-      <Devider margin={50} />
+      <h1>{className}</h1>
+      <Devider margin={30} />
 
-      <SubHeader>Shoe one</SubHeader>
+      <h2>Shoe one</h2>
+      <Devider margin={15} />
+
       <TableContainer component={Paper}>
         <Table
           className={classes.table}

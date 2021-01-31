@@ -78,10 +78,10 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
         </RadioGroup>
       </FormControl>
       <SubHeader>Add points for first shoe</SubHeader>
+      <p>If not filled out values will get default values (2.5)</p>
       {points.map((item, index) => {
         return (
           <TextInput
-            required
             key={index}
             label={item}
             placeholder={item}
@@ -91,14 +91,12 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
       })}
       <SubHeader>Add sponsor</SubHeader>
       <TextInput
-        required
         id="sponsor"
         label="Sponsor"
         placeholder="Sponsor"
         onChange={(event) => handleClasses("sponsors", event.target)}
       />
       <TextInput
-        required
         id="sponsorLoggo"
         type="file"
         label="Sponsor Loggo"

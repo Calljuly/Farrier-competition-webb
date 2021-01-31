@@ -3,7 +3,6 @@ import TextInput from "../TextInput";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import CustomButton from "../CustomButton";
-import { useSelector } from "react-redux";
 import SubHeader from "../UI/SubHeader";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
@@ -26,6 +25,7 @@ const textInputs = [
     value: "name",
     type: "text",
     multiline: false,
+    required: true,
   },
   {
     id: 2,
@@ -33,6 +33,7 @@ const textInputs = [
     value: "referee",
     type: "text",
     multiline: false,
+    required: true,
   },
   {
     id: 3,
@@ -40,6 +41,7 @@ const textInputs = [
     value: "country",
     type: "text",
     multiline: false,
+    required: true,
   },
   {
     id: 4,
@@ -47,6 +49,7 @@ const textInputs = [
     value: "location",
     type: "text",
     multiline: false,
+    required: true,
   },
   {
     id: 5,
@@ -54,6 +57,7 @@ const textInputs = [
     value: "anvils",
     type: "number",
     multiline: false,
+    required: true,
   },
   {
     id: 6,
@@ -61,6 +65,7 @@ const textInputs = [
     value: "dateFrom",
     type: "date",
     multiline: false,
+    required: true,
   },
   {
     id: 7,
@@ -68,6 +73,7 @@ const textInputs = [
     value: "dateTo",
     type: "date",
     multiline: false,
+    required: true,
   },
   {
     id: 8,
@@ -75,6 +81,7 @@ const textInputs = [
     value: "hotels",
     type: "text",
     multiline: true,
+    required: false,
   },
   {
     id: 9,
@@ -82,6 +89,7 @@ const textInputs = [
     value: "parking",
     type: "text",
     multiline: true,
+    required: false,
   },
   {
     id: 10,
@@ -89,6 +97,7 @@ const textInputs = [
     value: "information",
     type: "text",
     multiline: true,
+    required: false,
   },
 ];
 const divisionData = [
@@ -98,6 +107,7 @@ const divisionData = [
     value: "semi",
     type: "number",
     multiline: false,
+    required: false,
   },
   {
     id: 12,
@@ -105,6 +115,7 @@ const divisionData = [
     value: "final",
     type: "number",
     multiline: false,
+    required: false,
   },
 ];
 const initialState = {
@@ -158,7 +169,7 @@ const initialState = {
     value: "",
     valid: true,
   },
-  divisions: [],
+  divisions: ["regular"],
 };
 
 const reducer = (state, action) => {
@@ -273,7 +284,7 @@ const reducer = (state, action) => {
 };
 
 const AddCompetition = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = auth.currentUser;
   const [state, dispatchReducer] = useReducer(reducer, initialState);
   const dispatch = useDispatch();
   const [formValid, setFormValid] = useState(true);
@@ -285,14 +296,13 @@ const AddCompetition = () => {
     div2: false,
     div3: false,
   });
-
   const changeDivisions = (event) => {
     setDivisions({ ...divisions, [event.target.name]: event.target.checked });
   };
 
   let valid = true;
 
-  const addCompetition = (userName) => {
+  const addCompetition = (userId) => {
     const divs = Object.keys(divisions).filter((item, index) => {
       if (Object.values(divisions)[index]) {
         return item;
@@ -303,7 +313,7 @@ const AddCompetition = () => {
     if (valid) {
       dispatch(actions.loading(true));
       const admin = [];
-      admin.push(userName);
+      admin.push(userId);
       const comp = {
         currentEntries: 0,
         result: {},
@@ -346,6 +356,7 @@ const AddCompetition = () => {
 
             return error;
           });
+        setIsOpen(false);
       });
     }
   };
@@ -399,7 +410,7 @@ const AddCompetition = () => {
           <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => addCompetition(user.name)}
+            onClick={() => addCompetition(user.uid)}
           />
         </div>
       </ChoiseModal>
@@ -421,7 +432,7 @@ const AddCompetition = () => {
       )}
       {textInputs.map((item) => (
         <TextInput
-          required
+          required={item.required}
           key={item.id}
           label={item.label}
           type={item.type}
@@ -483,7 +494,7 @@ const AddCompetition = () => {
 
       {divisionData.map((item) => (
         <TextInput
-          required
+          required={item.required}
           key={item.id}
           label={item.label}
           type={item.type}

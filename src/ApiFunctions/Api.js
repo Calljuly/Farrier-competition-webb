@@ -108,7 +108,7 @@ export const saveClassResult = async (token, id, divisions, className) => {
       },
       body: JSON.stringify({
         divisions: divisions,
-        className: className
+        className: className,
       }),
     }
   );
@@ -116,24 +116,62 @@ export const saveClassResult = async (token, id, divisions, className) => {
   return response.json();
 };
 export const createAdmin = (token, email) => {
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin/hoastimmy@gmail.com`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ email: email })
-      }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/createAdmin/hoastimmy@gmail.com`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email: email }),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const enterCompetitions = async (token, updatedState, id) => {
+  const response = await fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/enter/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        currentEntries: updatedState.currentEntries,
+        anvils: updatedState.anvils,
+        entries: updatedState.entries,
+      }),
+    }
+  );
+  return response.json();
+};
+
+export const addNewPoint = async (compIndex, token, state) => {
+  const response = fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint/${compIndex}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        divisions: state.divisions,
+        className: state.className,
+        class: state,
+      }),
+    }
+  );
+  return response.json();
 };

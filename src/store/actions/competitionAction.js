@@ -1,5 +1,5 @@
 import { firestore, auth } from "../../components/firebase";
-
+import { enterCompetitions, addNewPoint } from "../../ApiFunctions/Api";
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
@@ -10,30 +10,13 @@ export const SUCSESS = "SUCSESS";
 export const ADD_POINT = "ADD_POINT";
 
 //Fungerar
-export const enterCompetition = (
-  competitor,
-  classes,
-  competition,
-  id,
-  division
-) => {
+export const enterCompetition = (competitor, competition, id, division) => {
   const updatedState = competition;
   return (dispatch) => {
     dispatch({
       type: COMPETITION_LOADING,
       loading: true,
     });
-    /*
-    if (
-      updatedState.entries.find((user) => user === competitor) ||
-      updatedState.currentEntries === updatedState.anvils
-    ) {
-      dispatch({
-        type: COMPETITION_LOADING,
-        loading: false,
-      });
-      return;
-    }*/
 
     updatedState.currentEntries += 1;
     updatedState.maxEntries -= 1;
@@ -58,24 +41,7 @@ export const enterCompetition = (
     });
     const user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
-      fetch(
-        `https://us-central1-farrier-project.cloudfunctions.net/app/enter/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            currentEntries: updatedState.currentEntries,
-            anvils: updatedState.anvils,
-            entries: updatedState.entries,
-          }),
-        }
-      )
-        .then((res) => {
-          console.log(res.json());
-        })
+      enterCompetitions(token.updatedState, id)
         .then(() => {
           dispatch(fetchCompetitions());
         })
@@ -211,53 +177,6 @@ export const saveAllResult = (competitionId, classes) => {
   };
 };
 
-export const saveClassResult = (competitionId, classes) => {
-  return (dispatch) => {
-    dispatch({
-      type: COMPETITION_LOADING,
-      loading: true,
-    });
-    const a = classes.map((item) => {
-      return {
-        className: item.className,
-        result: item.unPublishedResult,
-      };
-    });
-    const updateClasses = classes.map((item) => {
-      return {
-        ...item,
-        savedResult: true,
-      };
-    });
-
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/saveResult/${competitionId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ classes: updateClasses, competition: a }),
-      }
-    )
-      .then(() => {
-        dispatch(fetchCompetitions());
-      })
-      .then(() => {
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({
-          type: COMPETITION_LOADING,
-          loading: false,
-        });
-      });
-  };
-};
 export const loading = (value) => {
   return (dispatch) => {
     dispatch({
@@ -271,7 +190,7 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
   return (dispatch) => {
     const competitor = state.unPublishedResult;
 
-    const c = competitor.map((item, index) => {
+    const c = competitor.map((item) => {
       if (item.heat === heat) {
         const aa = item.starts.map((comp) => {
           let a;
@@ -314,58 +233,24 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
     state.unPublishedResult = c;
     const user = auth.currentUser;
 
-    user.getIdTokenResult().then((idTokenResult) => {
-      console.log(idTokenResult.claims.admin);
-
-      user
-        .getIdToken()
-        .then(async (token) => {
-          fetch(
-            `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint/${compIndex}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                admin: idTokenResult.claims.admin,
-              },
-              body: JSON.stringify({
-                divisions: state.divisions,
-                className: state.className,
-                class: state,
-              }),
-            }
-          )
-            .then((res) => {
-              return res.json();
-            })
-            .then((data) => {
-              console.log(data);
+    user
+      .getIdToken()
+      .then(async (token) => {
+        addNewPoint(compIndex, token, state)
+          .then((data) => {
+            if (data.message !== "Success") {
+              console.log(data.message);
+            } else {
               dispatch({ type: ADD_POINT, updatedState: state });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-    /*
-    firestore
-      .collection("competitions")
-      .doc(compIndex)
-      .collection(state.divisions)
-      .doc(state.className)
-      .update({
-        unPublishedResult: state.unPublishedResult,
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .then(() => {
-        dispatch({ type: ADD_POINT, updatedState: state });
-      })
-      .catch((err) => {
-        console.log(err);
-      });*/
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 

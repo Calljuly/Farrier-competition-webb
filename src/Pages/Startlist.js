@@ -53,7 +53,7 @@ const StartList = () => {
   });
 
   if (!entries) {
-    history.push("/competition");
+    history.push("/competitions");
   }
 
   return (

@@ -116,7 +116,6 @@ const AddClass = () => {
       key === "shoeTwoImg" ||
       key === "sponsorLoggo"
     ) {
-      console.log(value.target.files[0]);
       setClasses((prev) => {
         const newValue = {
           ...prev,
@@ -177,6 +176,7 @@ const AddClass = () => {
         dispatch(actions.loading(false));
       }
     );
+    
     if (newClass.type === "Forging") {
       const uploadTaskOne = storage
         .ref()
@@ -186,7 +186,7 @@ const AddClass = () => {
       await uploadTaskOne.on(
         "state_changed",
         (snapShot) => {
-          let i = '';
+          let i = "";
           storage
             .ref()
             .child(`shoes/${newClass.shoeOneImg.name}`)
@@ -194,9 +194,9 @@ const AddClass = () => {
             .then((url) => {
               console.log(url);
               i = url;
-              this.newClass.shoeOneImg = 'Robin';
+              this.newClass.shoeOneImg = "Robin";
             });
-            newClass.shoeOneImg = i;
+          newClass.shoeOneImg = i;
         },
         (err) => {
           console.log(err);
@@ -406,13 +406,14 @@ const AddClass = () => {
               onChange={(event) => handleClasses("type", event.target)}
               className={classes.select}
             >
-              {compClasses.map((item) => {
-                return (
-                  <MenuItem key={item.type} value={item.type}>
-                    {item.title}
-                  </MenuItem>
-                );
-              })}
+              {compClasses &&
+                compClasses.map((item) => {
+                  return (
+                    <MenuItem key={item.type} value={item.type}>
+                      {item.title}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -422,13 +423,14 @@ const AddClass = () => {
               onChange={(event) => handleClasses("divisions", event.target)}
               className={classes.select}
             >
-              {competition.map((item) => {
-                return (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                );
-              })}
+              {competition &&
+                competition.map((item) => {
+                  return (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
           {getClass(classesObject.type)}

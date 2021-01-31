@@ -72,6 +72,7 @@ const Result = () => {
   }
 
   const savedClasses = [];
+
   if (sponsor) {
     sponsor.forEach((item) => {
       return Object.values(item).forEach((i) => {
@@ -84,12 +85,15 @@ const Result = () => {
     });
   }
 
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
+  const resultRef = useRef();
+  const handleResultPrint = useReactToPrint({
+    content: () => resultRef.current,
   });
-
-  return (
+  const classResultRef = useRef();
+  const handleClassPrint = useReactToPrint({
+    content: () => classResultRef.current,
+  });
+  return sponsor ? (
     <>
       <div
         style={{
@@ -107,35 +111,31 @@ const Result = () => {
       <div className={classes.contentContainer}>
         <PageHeader>{competitionName}</PageHeader>
 
-        {sponsor && (
-          <>
-            <SubHeader>Sponsors of all classes this competition</SubHeader>
+        <div className={classes.sponsorContainer}>
+          {sponsor &&
+            sponsor.map((item) => {
+              return Object.values(item).map((i) => {
+                return i.map((u, index) => {
+                  return (
+                    <SponsorCard
+                      key={index}
+                      sponsorName={u.sponsors}
+                      sponsorUrl={u.sponsorLoggo}
+                      className={u.className}
+                    />
+                  );
+                });
+              });
+            })}
+        </div>
+        <PageHeader>Result for the competition</PageHeader>
 
-            <div className={classes.sponsorContainer}>
-              {sponsor.length > 0 &&
-                sponsor.map((item) => {
-                  return Object.values(item).map((i) => {
-                    return i.map((u, index) => {
-                      return (
-                        <SponsorCard
-                          key={index}
-                          sponsorName={u.sponsors}
-                          sponsorUrl={u.sponsorLoggo}
-                          className={u.className}
-                        />
-                      );
-                    });
-                  });
-                })}
-            </div>
-          </>
-        )}
         {Object.keys(result).length === 0 && (
           <Alert severity="error">
             This competition has no finnished results yet
           </Alert>
         )}
-        <ComponentToPrint ref={componentRef}>
+        <ComponentToPrint ref={resultRef}>
           {result.length > 0 &&
             result.map((item, index) => {
               return (
@@ -145,7 +145,7 @@ const Result = () => {
                   style={{ margin: "50px" }}
                 >
                   <SubHeader>{item.className}</SubHeader>
-                  <Table
+                  <TableContainer
                     className={classes.table}
                     size="small"
                     aria-label="a dense table"
@@ -174,7 +174,10 @@ const Result = () => {
                             return (
                               <TableCell
                                 key={comp}
-                                style={{ verticalAlign: "bottom", padding: 0 }}
+                                style={{
+                                  verticalAlign: "bottom",
+                                  padding: 0,
+                                }}
                               >
                                 <p>{comp}</p>
                               </TableCell>
@@ -230,13 +233,16 @@ const Result = () => {
                         }
                       })}
                     </TableBody>
-                  </Table>
+                  </TableContainer>
                 </TableContainer>
               );
             })}
         </ComponentToPrint>
         <PageHeader>Published result for classes</PageHeader>
-        <ComponentToPrint ref={componentRef}>
+        <ComponentToPrint ref={classResultRef}>
+          {savedClasses.length === 0 && (
+            <Alert severity="error">No divisions has saved results</Alert>
+          )}
           {savedClasses.length > 0 &&
             savedClasses.map((item, index) => {
               return (
@@ -275,7 +281,10 @@ const Result = () => {
                             return (
                               <TableCell
                                 key={comp}
-                                style={{ verticalAlign: "bottom", padding: 0 }}
+                                style={{
+                                  verticalAlign: "bottom",
+                                  padding: 0,
+                                }}
                               >
                                 <p>{comp}</p>
                               </TableCell>
@@ -339,12 +348,13 @@ const Result = () => {
             })}
         </ComponentToPrint>
         <ButtonContainer>
-          <CustomButton onClick={handlePrint} title="Print result" />
+          <CustomButton onClick={handleResultPrint} title="Print result" />
+          <CustomButton onClick={handleClassPrint} title="Print class result" />
           <CustomButton onClick={() => history.goBack()} title="Go Back" />
         </ButtonContainer>
       </div>
     </>
-  );
+  ) : null;
 };
 
 export default Result;

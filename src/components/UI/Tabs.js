@@ -14,7 +14,7 @@ const useStyle = makeStyles({
     fontSize: 10,
     margin: 5,
     padding: 5,
-    ["@media (max-width:1253px)"]: {
+    ["@media (max-width:900px)"]: {
       width: 300,
       margin: 10,
     },
@@ -30,7 +30,7 @@ const useStyle = makeStyles({
     fontSize: 10,
     borderRadius: 3,
     padding: 5,
-    ["@media (max-width:1253px)"]: {
+    ["@media (max-width:900px)"]: {
       width: 300,
       margin: 10,
     },

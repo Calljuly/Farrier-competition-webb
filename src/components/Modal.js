@@ -59,7 +59,7 @@ const CustomModal = ({ isOpen, handleClose, modalData, title }) => {
     <Modal open={isOpen} onClose={handleClose}>
       <div style={modalStyle} className={classes.paper}>
         <PageHeader>Enter points for : </PageHeader>
-        <SubHeader>Competitor : {modalData.id}</SubHeader>
+        <SubHeader>Competitor : {modalData.user}</SubHeader>
         <div>
           <SubHeader>{modalData.title}</SubHeader>
         </div>
