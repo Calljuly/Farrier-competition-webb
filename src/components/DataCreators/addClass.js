@@ -54,10 +54,7 @@ const AddClass = () => {
   const [error, setError] = useState("");
   const classes = useStyles();
   const [classesObject, setClasses] = useState({
-    className: {
-      value: "",
-      valid: true,
-    },
+    className: "",
     pointsToMultiply: [],
     shoeOne: "",
     shoeOneType: "",
@@ -65,16 +62,10 @@ const AddClass = () => {
     shoeTwo: "",
     shoeTwoType: "",
     shoeTwoImg: "",
-    time: {
-      value: "",
-      valid: true,
-    },
+    time: "",
     type: "",
     unPublishedResult: [],
-    sponsors: {
-      value: "",
-      valid: true,
-    },
+    sponsors: "",
     sponsorLoggo: "",
     referee: "",
     savedResult: false,
@@ -154,6 +145,11 @@ const AddClass = () => {
   };
 
   const submitNewClass = async () => {
+    if (classesObject.divisions === "") {
+      setError("You need to add your class to a division or set it as regular");
+      setIsOpen(false);
+      return;
+    }
     let newClass = {
       ...classesObject,
       pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
@@ -361,13 +357,7 @@ const AddClass = () => {
           />
         );
       case "EagleEye":
-        return (
-          <EagleEye
-            pointsHandler={pointsHandler}
-            points={points}
-            handleClasses={handleClasses}
-          />
-        );
+        break;
       case "SpeedForging":
         break;
       case "Team":
@@ -399,7 +389,7 @@ const AddClass = () => {
             </Alert>
           )}
           {error.length > 3 && (
-            <Alert severity="error" onClick={() => setError("")}>
+            <Alert severity="error" onClose={() => setError("")}>
               {error}
             </Alert>
           )}

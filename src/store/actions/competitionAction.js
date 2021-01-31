@@ -41,7 +41,7 @@ export const enterCompetition = (competitor, competition, id, division) => {
     });
     const user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
-      enterCompetitions(token.updatedState, id)
+      enterCompetitions(token,updatedState, id)
         .then(() => {
           dispatch(fetchCompetitions());
         })
