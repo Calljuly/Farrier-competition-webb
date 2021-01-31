@@ -1,5 +1,9 @@
 import { firestore, auth } from "../../components/firebase";
-import { enterCompetitions, addNewPoint } from "../../ApiFunctions/Api";
+import {
+  enterCompetitions,
+  addNewPoint,
+  fetchAllCompetitions,
+} from "../../ApiFunctions/Api";
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
@@ -9,7 +13,6 @@ export const COMPETITION_LOADING = "COMPETITION_LOADING";
 export const SUCSESS = "SUCSESS";
 export const ADD_POINT = "ADD_POINT";
 
-//Fungerar
 export const enterCompetition = (competitor, competition, id, division) => {
   const updatedState = competition;
   return (dispatch) => {
@@ -41,7 +44,7 @@ export const enterCompetition = (competitor, competition, id, division) => {
     });
     const user = auth.currentUser;
     return user.getIdToken().then(async (token) => {
-      enterCompetitions(token,updatedState, id)
+      enterCompetitions(token, updatedState, id)
         .then(() => {
           dispatch(fetchCompetitions());
         })
@@ -61,7 +64,7 @@ export const enterCompetition = (competitor, competition, id, division) => {
     });
   };
 };
-//Fungerar
+
 export const fetchCompetitions = () => {
   return (dispatch) => {
     dispatch({
@@ -69,20 +72,8 @@ export const fetchCompetitions = () => {
       loading: true,
     });
 
-    fetch(
-      "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((data) => {
-        return data.json();
-      })
+    fetchAllCompetitions()
       .then((competition) => {
-        //Competition håller på mer data, mappar för att inte behöva bygga om appen nu
         const comps = competition.competitions.map((item) => {
           return item.competition;
         });
@@ -238,11 +229,9 @@ export const addPoint = (value, id, cellId, compIndex, state, type, heat) => {
       .then(async (token) => {
         addNewPoint(compIndex, token, state)
           .then((data) => {
-            if (data.message !== "Success") {
-              console.log(data.message);
-            } else {
-              dispatch({ type: ADD_POINT, updatedState: state });
-            }
+            console.log(data.message);
+            dispatch({ type: ADD_POINT, updatedState: state, id: compIndex });
+            //dispatch(fetchCompetitions());
           })
           .catch((err) => {
             console.log(err);

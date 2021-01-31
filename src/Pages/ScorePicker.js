@@ -24,7 +24,7 @@ const ScorePicker = () => {
   if (!compClasses) {
     history.push("/admin");
   }
-
+  
   const saveClassResults = async () => {
     const user = auth.currentUser;
     user.getIdTokenResult(async (token) => {

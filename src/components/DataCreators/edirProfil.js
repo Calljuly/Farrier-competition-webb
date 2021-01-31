@@ -73,86 +73,21 @@ const EditProfile = () => {
   const classes = useStyle();
   const [isOpen, setIsOpen] = useState(false);
   const userState = useSelector((state) => state.auth.user);
-  const [authState, setAuthState] = useState({
-    name: {
-      value: "",
-      valid: true,
-    },
-    phone: {
-      value: "",
-      valid: true,
-    },
-    address: {
-      value: "",
-      valid: true,
-    },
-    country: {
-      value: "",
-      valid: true,
-    },
-    age: {
-      value: "",
-      valid: true,
-    },
-    bio: {
-      value: "",
-      valid: true,
-    },
-    profileImage: {
-      value: "",
-      valid: true,
-    },
-  });
+  const [authState, setAuthState] = useState(userState);
 
   const handleInputChange = (id, text) => {
     const updatedState = {
       ...authState,
-      [id]: {
-        ...authState[id],
-        value: text,
-      },
+      [id]: text.target.value,
     };
     setAuthState(updatedState);
   };
-  const handleInputValidation = (id, value) => {
-    let updatedState;
 
-    updatedState = {
-      ...authState,
-      [id]: {
-        ...authState[id],
-        valid: value,
-      },
-    };
-
-    setAuthState(updatedState);
-  };
-
-  const handleValidation = (item) => {
-    if (item.type === "number") {
-      validateAge(authState[item.key].value, handleInputValidation, item.key);
-    } else {
-      validateText(authState[item.key].value, handleInputValidation, item.key);
-    }
-  };
   const updateUser = () => {
-    let user = {};
-    let newUser = userState;
-
-    Object.keys(authState).forEach((item, index) => {
-      const data = Object.values(authState)[index];
-      if (data.valid && data.value !== "") {
-        user[item] = data.value;
-      }
-    });
-    Object.keys(user).forEach((item, index) => {
-      const data = Object.values(authState)[index];
-
-      newUser[item] = data.value;
-    });
+   
     auth.onAuthStateChanged((user) => {
       if (user) {
-        actions.updateUser(user.uid, newUser);
+        actions.updateUser(user.uid, authState);
       }
     });
     setAuthState({
@@ -187,7 +122,7 @@ const EditProfile = () => {
     });
     setIsOpen(false);
   };
-  
+
   return (
     <div style={{ width: "100%" }}>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
@@ -202,22 +137,14 @@ const EditProfile = () => {
         {textFieldsRegister.map((item) => (
           <TextInput
             key={item.id}
-            value={authState[item.key].value}
-            onChange={(text) => handleInputChange(item.key, text.target.value)}
+            onChange={(text) => handleInputChange(item.key, text)}
             className={classes.input}
             label={item.label}
             type={item.type}
-            onBlur={() => handleValidation(item)}
-            error={!authState[item.key].valid}
-            helperText={
-              !authState[item.key].valid &&
-              "You have to enter a valid password, aleast 6 characters"
-            }
           />
         ))}
         <TextInput
-          value={authState["bio"].value}
-          onChange={(text) => handleInputChange("bio", text.target.value)}
+          onChange={(text) => handleInputChange("bio", text)}
           className={classes.input}
           label="Write something about yourself"
           type="text"

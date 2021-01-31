@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import CustomButton from "../CustomButton";
@@ -17,6 +16,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { startCompetitions, openCompetition } from "../../ApiFunctions/Api";
 import { auth } from "../firebase";
+import ButtonContainer from "../UI/ButtonContainer";
+import ShoePic from "../../assets/Images/shoe1.jpg";
 
 const useStyle = makeStyles({
   container: {
@@ -60,6 +61,7 @@ const useStyle = makeStyles({
   classes: {
     width: "100%",
     padding: 10,
+    margin: 0,
     "&:hover": {
       backgroundColor: "#DCDCDC",
     },
@@ -109,6 +111,30 @@ const useStyle = makeStyles({
       backgroundColor: Colors.orange,
     },
   },
+  shoePic: {
+    width: 200,
+    height: 200,
+    ["@media (max-width: 1000px)"]: {
+      width: "100%",
+      height: "100%",
+    },
+  },
+  shoeContainer: {
+    display: "flex",
+    ["@media (max-width: 1000px)"]: {
+      flexDirection: "column",
+      margin: "10px 0px 20px 0px",
+    },
+  },
+  classInfo: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "start",
+    margin: 0,
+    ["@media (max-width: 1000px)"]: {
+      flexDirection: "column",
+    },
+  },
 });
 
 const CompetitionListItemAdmin = ({
@@ -127,7 +153,7 @@ const CompetitionListItemAdmin = ({
   startCompetition,
   entries,
   divisionList,
-  competition
+  competition,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -147,7 +173,7 @@ const CompetitionListItemAdmin = ({
     user.getIdToken().then(async (token) => {
       await openCompetition(token, id, event.target.checked)
         .then((res) => {
-          console.log(res);
+          dispatch(actions.fetchCompetitions());
         })
         .catch((err) => {
           console.log(err);
@@ -197,7 +223,7 @@ const CompetitionListItemAdmin = ({
               a.forEach(async (m) => {
                 await startCompetitions(token, id, u, a)
                   .then((res) => {
-                    console.log(res.json());
+                    dispatch(actions.fetchCompetitions());
                   })
                   .catch((err) => {
                     console.log(err);
@@ -266,7 +292,6 @@ const CompetitionListItemAdmin = ({
               <P>End Date : {dateTo}</P>
             </div>
           </div>
-          <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
             {divisions.length > 0 &&
               divisions.map((divs) => {
@@ -274,69 +299,71 @@ const CompetitionListItemAdmin = ({
                   return data.map((item) => {
                     return (
                       <div className={classes.classes} key={item.className}>
-                        <h2>{item.className}</h2>
-                        <Grid
-                          container
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "start",
-                            margin: 0,
-                          }}
-                        >
-                          <Grid item xs={12} sm={3}>
+                        <div className={classes.classInfo}>
+                          <div>
+                            <h1>{item.className}</h1>
+
                             <P>Type: {item.type}</P>
-                          </Grid>
-                          <Grid item xs={12} sm={3}>
                             <P>Time : {item.time}</P>
-                          </Grid>
-                          <Grid item xs={12} sm={3}>
-                            <SubHeader>Shoes</SubHeader>
-                            <P>{item.shoeOne}</P>
-                            <P>{item.shoeTwo}</P>
-                          </Grid>
-                          {startCompetition && (
-                            <Grid
-                              item
-                              xs={12}
-                              sm={3}
-                              style={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                alignItems: "center",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                }}
-                                onClick={() =>
-                                  history.push({
-                                    pathname: `/admin/pickScore/${id}`,
-                                    state: item,
-                                    id: id,
-                                  })
-                                }
-                              >
-                                <P>Fill in scores</P>
-                                <ArrowForwardIosIcon
-                                  className={classes.classIcon}
+                            <P>Division : {item.divisions}</P>
+                            <P>Judge : {item.referee} </P>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              marginTop: 10,
+                            }}
+                          >
+                            <h2>Shoes</h2>
+                            <div className={classes.shoeContainer}>
+                              <div style={{ marginRight: 10 }}>
+                                <P>{item.shoeOne}</P>
+                                <img
+                                  className={classes.shoePic}
+                                  src={ShoePic}
+                                  alt="shoe pic"
                                 />
                               </div>
-                            </Grid>
-                          )}
-                        </Grid>
+                              <div style={{ marginRight: 10 }}>
+                                <P>{item.shoeTwo}</P>
+                                <img
+                                  className={classes.shoePic}
+                                  src={ShoePic}
+                                  alt="shoe pic"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                            onClick={() =>
+                              history.push({
+                                pathname: `/admin/pickScore/${id}`,
+                                state: item,
+                                id: id,
+                              })
+                            }
+                          >
+                            <P>Fill in scores</P>
+                            <ArrowForwardIosIcon
+                              className={classes.classIcon}
+                            />
+                          </div>
+                        </div>
                       </div>
                     );
                   });
                 });
               })}
           </div>
-          <div style={{ padding: 15 }}>
+          <div style={{ width: "100%", padding: 20 }}>
             <h2>Handle your competition</h2>
-            <div style={{ display: "flex", marginTop: 10 }}>
+            <div style={{ margin: 15 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -374,12 +401,10 @@ const CompetitionListItemAdmin = ({
                 label="Start competition"
               />
             </div>
-          </div>
-          <Grid container>
-            {todayDate < competitionStartDate && (
-              <>
-                {!startCompetition && (
-                  <Grid item md={4} xs={12}>
+            <ButtonContainer>
+              {todayDate < competitionStartDate && (
+                <>
+                  {!startCompetition && (
                     <CustomButton
                       title="Create Class"
                       onClick={() =>
@@ -391,9 +416,7 @@ const CompetitionListItemAdmin = ({
                         })
                       }
                     />
-                  </Grid>
-                )}
-                <Grid item md={4} xs={12}>
+                  )}
                   <CustomButton
                     title="Edit competition"
                     onClick={() =>
@@ -401,34 +424,32 @@ const CompetitionListItemAdmin = ({
                         pathname: "/admin/editCompetition",
                         state: divisions,
                         id: id,
-                        competition: competition
+                        competition: competition,
                       })
                     }
                   />
-                </Grid>
-              </>
-            )}
-            <Grid container>
-              {startCompetition && <Grid item md={4} xs={12}>
+                </>
+              )}
+              {startCompetition && (
                 <CustomButton
                   title="Publish all results"
                   onClick={() => setModal(true)}
                 />
-              </Grid>}
-            </Grid>
-            {todayDate < competitionEndDate && result.length > 0 && (
-              <CustomButton
-                title="Result"
-                onClick={() =>
-                  history.push({
-                    pathname: "/competitions/result",
-                    result: result,
-                    name: name,
-                  })
-                }
-              />
-            )}
-          </Grid>
+              )}
+              {todayDate < competitionEndDate && result.length > 0 && (
+                <CustomButton
+                  title="Result"
+                  onClick={() =>
+                    history.push({
+                      pathname: "/competitions/result",
+                      result: result,
+                      name: name,
+                    })
+                  }
+                />
+              )}
+            </ButtonContainer>
+          </div>
         </>
       )}
     </div>

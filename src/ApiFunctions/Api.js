@@ -139,7 +139,6 @@ export const createAdmin = (token, email) => {
 };
 
 export const enterCompetitions = async (token, updatedState, id) => {
-  console.log(updatedState);
   const response = await fetch(
     `https://us-central1-farrier-project.cloudfunctions.net/app/enter/${id}`,
     {
@@ -159,7 +158,7 @@ export const enterCompetitions = async (token, updatedState, id) => {
 };
 
 export const addNewPoint = async (compIndex, token, state) => {
-  const response = fetch(
+  const response = await fetch(
     `https://us-central1-farrier-project.cloudfunctions.net/app/addPoint/${compIndex}`,
     {
       method: "PUT",
@@ -172,6 +171,18 @@ export const addNewPoint = async (compIndex, token, state) => {
         className: state.className,
         class: state,
       }),
+    }
+  );
+  return response.json();
+};
+export const fetchAllCompetitions = async () => {
+  const response = await fetch(
+    "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
   return response.json();

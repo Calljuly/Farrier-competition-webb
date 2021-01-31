@@ -111,9 +111,9 @@ export const signIn = (email, pass) => {
       });
   };
 };
-export const updateUser = (id, user) => {
-  const currentUser = auth.currentUser();
-  currentUser.getIdTokenResult(async (token) => {
+export const updateUser = (id, userData) => {
+  const user = auth.currentUser;
+  return user.getIdToken().then(async (token) => {
     fetch(
       `https://us-central1-farrier-project.cloudfunctions.net/app/user/${id}`,
       {
@@ -121,7 +121,7 @@ export const updateUser = (id, user) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user: user }),
+        body: JSON.stringify({ user: userData }),
         Authorization: `Bearer ${token}`,
       }
     )

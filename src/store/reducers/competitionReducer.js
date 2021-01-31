@@ -47,6 +47,7 @@ const CompReducer = (state = initialState, actions) => {
           return item;
         }
       });
+
       return {
         ...state,
         competitions: a,
@@ -57,9 +58,25 @@ const CompReducer = (state = initialState, actions) => {
         isLoading: actions.loading,
       };
     case ADD_POINT:
+      updatedState.map((item) => {
+        if (item.competition.id === actions.id) {
+          item.divisions.map((i) => {
+            if (Object.keys(i)[0] === actions.updatedState.divisions) {
+              Object.values(i).map((u) => {
+                u.map((y) => {
+                  if (y.className === actions.updatedState.className) {
+                    y = actions.updatedState;
+                  }
+                });
+              });
+            }
+          });
+        }
+      });
+      
       return {
         ...state,
-        result: actions.updatedState,
+        competitions: updatedState,
       };
     default:
       return state;

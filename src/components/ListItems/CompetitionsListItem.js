@@ -12,6 +12,8 @@ import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
 import { Grid } from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import ButtonContainer from "../UI/ButtonContainer";
+import ShoePic from "../../assets/Images/shoe1.jpg";
 
 const useStyle = makeStyles({
   container: {
@@ -84,6 +86,31 @@ const useStyle = makeStyles({
   icon: {
     marginRight: 20,
     fontSize: 30,
+  },
+
+  shoePic: {
+    width: 200,
+    height: 200,
+    ["@media (max-width: 1000px)"]: {
+      width: "100%",
+      height: "100%",
+    },
+  },
+  shoeContainer: {
+    display: "flex",
+    ["@media (max-width: 1000px)"]: {
+      flexDirection: "column",
+      margin: "10px 0px 20px 0px",
+    },
+  },
+  classInfo: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "start",
+    margin: 0,
+    ["@media (max-width: 1000px)"]: {
+      flexDirection: "column",
+    },
   },
 });
 const CompetitionsListItem = ({
@@ -201,7 +228,6 @@ const CompetitionsListItem = ({
               <P>End Date : {dateTo}</P>
             </div>
           </div>
-          <PageHeader>Classes : </PageHeader>
           <div className={classes.classesContainer}>
             {divisions.length === 0 && (
               <Alert style={{ width: "100%" }} severity="error">
@@ -212,47 +238,59 @@ const CompetitionsListItem = ({
               divisions.map((divs, index) => {
                 return Object.values(divs).map((data) => {
                   return data.map((item) => {
-                   
                     return (
                       <div className={classes.classes} key={item.className}>
-                        <h2>{item.className}</h2>
-                        <Grid
-                          container
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "start",
-                            margin: 0,
-                          }}
-                        >
-                          <Grid item xs={12} sm={3}>
+                        <div className={classes.classInfo}>
+                          <div>
+                            <h1>{item.className}</h1>
+
                             <P>Type: {item.type}</P>
-                          </Grid>
-                          <Grid item xs={12} sm={3}>
                             <P>Time : {item.time}</P>
-                          </Grid>
-                          <Grid item xs={12} sm={3}>
-                            <SubHeader>Shoes</SubHeader>
-                            <P>{item.shoeOne}</P>
-                            <img src={shoeOne} alt="shoe one" />
-                            <P>{item.shoeTwo}</P>
-                            <img src={shoeTwo} alt="shoe two"/>
-                          </Grid>
-                        </Grid>
+                            <P>Division : {item.divisions}</P>
+                            <P>Judge : {item.referee} </P>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              marginTop: 10,
+                            }}
+                          >
+                            <h2>Shoes</h2>
+                            <div className={classes.shoeContainer}>
+                              <div style={{ marginRight: 10 }}>
+                                <P>{item.shoeOne}</P>
+                                <img
+                                  className={classes.shoePic}
+                                  src={ShoePic}
+                                  alt="shoe pic"
+                                />
+                              </div>
+                              <div style={{ marginRight: 10 }}>
+                                <P>{item.shoeTwo}</P>
+                                <img
+                                  className={classes.shoePic}
+                                  src={ShoePic}
+                                  alt="shoe pic"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     );
                   });
                 });
               })}
           </div>
-          <Grid container style={{ padding: 10 }}>
-            {isAuth &&
-              openForEntries &&
-              !startCompetition &&
-              competitionStartDate > todayDate &&
-              !Object.values(entries).includes(user.name) && (
-                <>
-                  <Grid item md={4} xs={12}>
+          <div style={{ padding: 20, width: "100%" }}>
+            <ButtonContainer>
+              {isAuth &&
+                openForEntries &&
+                !startCompetition &&
+                competitionStartDate > todayDate &&
+                !Object.values(entries).includes(user.name) && (
+                  <>
                     <CustomButton
                       disabled={disabled}
                       onClick={() =>
@@ -268,10 +306,8 @@ const CompetitionsListItem = ({
                         disabled ? "Competition is full" : "Enter competition"
                       }
                     />
-                  </Grid>
-                </>
-              )}
-            <Grid item md={4} xs={12}>
+                  </>
+                )}
               <CustomButton
                 title="Show starts"
                 onClick={() =>
@@ -282,8 +318,6 @@ const CompetitionsListItem = ({
                   })
                 }
               />
-            </Grid>
-            <Grid item md={4} xs={12}>
               <CustomButton
                 title="Result"
                 onClick={() =>
@@ -295,8 +329,8 @@ const CompetitionsListItem = ({
                   })
                 }
               />
-            </Grid>
-          </Grid>
+            </ButtonContainer>
+          </div>
         </>
       )}
     </div>
