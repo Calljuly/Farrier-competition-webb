@@ -161,23 +161,24 @@ const AddClass = () => {
 
     const user = auth.currentUser;
     dispatch(actions.loading(true));
-
-    const uploadTask = storage
-      .ref()
-      .child(`sponsors/${classesObject.sponsorLoggo.name}`)
-      .put(classesObject.sponsorLoggo);
-    await uploadTask.on(
-      "state_changed",
-      (snapShot) => {
-        newClass.sponsorLoggo = newClass.sponsorLoggo.name;
-      },
-      (err) => {
-        console.log(err);
-        dispatch(actions.loading(false));
-      }
-    );
-    
+    /*
     if (newClass.type === "Forging") {
+      const uploadTask = storage
+        .ref()
+        .child(`sponsors/${classesObject.sponsorLoggo.name}`)
+        .put(classesObject.sponsorLoggo);
+      await uploadTask.on(
+        "state_changed",
+        (snapShot) => {
+          newClass.sponsorLoggo = newClass.sponsorLoggo.name;
+        },
+        (err) => {
+          console.log(err);
+          dispatch(actions.loading(false));
+          setIsOpen(false);
+        }
+      );
+
       const uploadTaskOne = storage
         .ref()
         .child(`shoes/${newClass.shoeOneImg.name}`)
@@ -200,6 +201,8 @@ const AddClass = () => {
         },
         (err) => {
           console.log(err);
+          setIsOpen(false);
+
           dispatch(actions.loading(false));
         }
       );
@@ -214,11 +217,13 @@ const AddClass = () => {
         },
         (err) => {
           console.log(err);
+          setIsOpen(false);
+
           dispatch(actions.loading(false));
         }
       );
     }
-
+*/
     user.getIdToken().then(async (token) => {
       createClass(token, newClass, id)
         .then((res) => {
