@@ -187,3 +187,21 @@ export const fetchAllCompetitions = async () => {
   );
   return response.json();
 };
+
+export const resgisterNewUser = async (newUser) => {
+  const response = await fetch(
+    `https://us-central1-farrier-project.cloudfunctions.net/app/user/create`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    }
+  );
+  return response.json();
+};
+
+export const signUserOut = () => {};
+
+export const updateUser = () => {};

@@ -122,22 +122,27 @@ const initialState = {
   name: {
     value: "",
     valid: true,
+    required: true,
   },
   referee: {
     value: "",
     valid: true,
+    required: true,
   },
   country: {
     value: "",
     valid: true,
+    required: true,
   },
   location: {
     value: "",
     valid: true,
+    required: true,
   },
   anvils: {
     value: "",
     valid: true,
+    required: true,
   },
   semi: {
     value: "",
@@ -151,10 +156,12 @@ const initialState = {
   dateFrom: {
     value: "",
     valid: true,
+    required: true,
   },
   dateTo: {
     value: "",
     valid: true,
+    required: true,
   },
 
   hotels: {
@@ -296,6 +303,7 @@ const AddCompetition = () => {
     div2: false,
     div3: false,
   });
+
   const changeDivisions = (event) => {
     setDivisions({ ...divisions, [event.target.name]: event.target.checked });
   };
@@ -359,23 +367,26 @@ const AddCompetition = () => {
         setIsOpen(false);
       });
     }
+    setIsOpen(false);
   };
 
-  const validateText = (text, key, type) => {
+  const validateText = (text, key, type, required) => {
     valid = true;
-    if (type === "number") {
-      if (text.trim() === "") {
-        valid = false;
-      }
-      if (text.length === 0) {
-        valid = false;
-      }
-    } else {
-      if (text.trim() === "") {
-        valid = false;
-      }
-      if (text.length < 3) {
-        valid = false;
+    if (required) {
+      if (type === "number") {
+        if (text.trim() === "") {
+          valid = false;
+        }
+        if (text.length === 0) {
+          valid = false;
+        }
+      } else {
+        if (text.trim() === "") {
+          valid = false;
+        }
+        if (text.length < 3) {
+          valid = false;
+        }
       }
     }
     dispatchReducer({ type: key, value: valid, key: "valid" });
@@ -386,8 +397,10 @@ const AddCompetition = () => {
     let valid = true;
     a.forEach((item) => {
       const b = state[item];
-      if (b.valid === false || b.value === "") {
-        valid = false;
+      if (b.required) {
+        if (b.valid === false || b.value === "") {
+          valid = false;
+        }
       }
     });
     setFormValid(valid);
@@ -445,7 +458,12 @@ const AddCompetition = () => {
             })
           }
           onBlur={() =>
-            validateText(state[item.value].value, item.value, item.type)
+            validateText(
+              state[item.value].value,
+              item.value,
+              item.type,
+              item.required
+            )
           }
           error={!state[item.value].valid}
           helperText={
@@ -507,7 +525,12 @@ const AddCompetition = () => {
             })
           }
           onBlur={() =>
-            validateText(state[item.value].value, item.value, item.type)
+            validateText(
+              state[item.value].value,
+              item.value,
+              item.type,
+              item.required
+            )
           }
           error={!state[item.value].valid}
           helperText={

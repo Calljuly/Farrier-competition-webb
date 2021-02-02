@@ -129,6 +129,7 @@ export const updateUser = (id, userData) => {
         return response.json();
       })
       .then((users) => {
+        console.log(users)
         return users.user;
       })
       .catch((error) => {

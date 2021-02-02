@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/styles";
 import CustomButton from "../CustomButton";
 import P from "../UI/Paragraph";
 import PageHeader from "../UI/PageHeader";
-import { validateText, validateAge } from "../../helpers/validation";
 import TextInput from "../TextInput";
 import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
@@ -11,6 +10,7 @@ import { auth } from "../firebase";
 import * as actions from "../../store/actions/auth";
 import { useSelector } from "react-redux";
 import ButtonContainer from "../UI/ButtonContainer";
+import { storage } from "../firebase";
 
 const textFieldsRegister = [
   {
@@ -76,49 +76,63 @@ const EditProfile = () => {
   const [authState, setAuthState] = useState(userState);
 
   const handleInputChange = (id, text) => {
-    const updatedState = {
-      ...authState,
-      [id]: text.target.value,
-    };
-    setAuthState(updatedState);
+    if (id === "profileImage") {
+      const updatedState = {
+        ...authState,
+        [id]: text.target.files[0],
+      };
+      setAuthState(updatedState);
+    } else {
+      const updatedState = {
+        ...authState,
+        [id]: text.target.value,
+      };
+      setAuthState(updatedState);
+    }
   };
 
-  const updateUser = () => {
-   
+  const updateUser = async () => {
+    let newUserData = authState;
+    if (authState.profileImage) {
+      console.log(authState);
+      const uploadTask = storage
+        .ref()
+        .child(`profiles/${authState.profileImage.name}`)
+        .put(authState.profileImage);
+
+      await uploadTask.on(
+        "state_changed",
+        (snapShot) => {
+          newUserData = {
+            ...authState,
+            profileImage: authState.profileImage.name,
+          };
+
+          /*
+          storage
+            .ref()
+            .child(`profiles/${authState.profileImage.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              const u = url;
+              handleInputChange("profileImage", u);
+            })
+            .catch((err) => {
+              console.log(err);
+              setIsOpen(false);
+            });*/
+        },
+        (err) => {
+          console.log(err);
+          setIsOpen(false);
+        }
+      );
+    }
+    console.log(newUserData);
     auth.onAuthStateChanged((user) => {
       if (user) {
-        actions.updateUser(user.uid, authState);
+        actions.updateUser(user.uid, newUserData);
       }
-    });
-    setAuthState({
-      name: {
-        value: "",
-        valid: true,
-      },
-      phone: {
-        value: "",
-        valid: true,
-      },
-      address: {
-        value: "",
-        valid: true,
-      },
-      country: {
-        value: "",
-        valid: true,
-      },
-      age: {
-        value: "",
-        valid: true,
-      },
-      bio: {
-        value: "",
-        valid: true,
-      },
-      profileImage: {
-        value: "",
-        valid: true,
-      },
     });
     setIsOpen(false);
   };

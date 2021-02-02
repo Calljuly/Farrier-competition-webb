@@ -10,31 +10,31 @@ import { Colors } from "../colors";
 const linksAdmin = [
   {
     id: 0,
-    label: "Home",
+    label: "HOME",
     path: "/",
     exact: true,
   },
   {
     id: 1,
-    label: "Profile",
+    label: "PROFILE",
     path: "/myProfile",
     exact: false,
   },
   {
     id: 2,
-    label: "Competitions",
+    label: "COMPETITIONS",
     path: "/competitions",
     exact: false,
   },
   {
     id: 3,
-    label: "Admin",
+    label: "ADMIN",
     path: "/admin",
     exact: false,
   },
   {
     id: 4,
-    label: "Contact",
+    label: "CONTACT",
     path: "/contact",
     exact: false,
   },
@@ -42,19 +42,19 @@ const linksAdmin = [
 const linksUnAuth = [
   {
     id: 0,
-    label: "Home",
+    label: "HOME",
     path: "/",
     exact: true,
   },
   {
     id: 2,
-    label: "Competitions",
+    label: "COMPETITIONS",
     path: "/competitions",
     exact: false,
   },
   {
     id: 4,
-    label: "Contact",
+    label: "CONTACT",
     path: "/contact",
     exact: false,
   },
@@ -62,25 +62,25 @@ const linksUnAuth = [
 const linksAuth = [
   {
     id: 0,
-    label: "Home",
+    label: "HOME",
     path: "/",
     exact: true,
   },
   {
     id: 1,
-    label: "Profile",
+    label: "PROFILE",
     path: "/myProfile",
     exact: false,
   },
   {
     id: 2,
-    label: "Competitions",
+    label: "COMPETITIONS",
     path: "/competitions",
     exact: false,
   },
   {
     id: 4,
-    label: "Contact",
+    label: "CONTACT",
     path: "/contact",
     exact: false,
   },
@@ -113,7 +113,7 @@ const useStyle = makeStyles({
     },
   },
   link: {
-    width: 140,
+    width: 160,
     height: 40,
     margin: 20,
     textDecoration: "none",
@@ -231,7 +231,7 @@ const Navbar = () => {
           className={classes.link}
           to={isAuth ? "/" : "/signIn"}
         >
-          {isAuth ? "Sign out" : "Sign in"}
+          {isAuth ? "SIGN OUT" : "SIGN IN"}
         </NavLink>
       </div>
     </div>

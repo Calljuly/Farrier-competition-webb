@@ -28,7 +28,6 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
       .child(`sponsors/${sponsorUrl}`)
       .getDownloadURL()
       .then((url) => {
-        console.log(url);
         setSponsor(url);
       });
   }

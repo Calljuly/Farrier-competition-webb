@@ -87,7 +87,8 @@ const Competitions = () => {
       );
     }
   });
-  const competitionsDone = competitions.filter((item, index) => {
+
+  const competitionsDone = competitions.map((item, index) => {
     const competitionToDate = new Date(item.competition.dateTo);
     if (competitionToDate < todayDate) {
       return (
@@ -102,11 +103,12 @@ const Competitions = () => {
           current={item.competition.currentEntries}
           divisions={item.divisions}
           disabled={item.competition.anvils === item.competition.currentEntries}
+          entries={item.competition.entries}
           dateFrom={item.competition.dateFrom}
           dateTo={item.competition.dateTo}
           result={item.competition.result}
-          entries={item.competition.entries}
           openForEntries={item.competition.openForEntries}
+          startCompetition={item.competition.startCompetition}
           divisionList={item.competition.divisions}
           competition={item.competition}
         />

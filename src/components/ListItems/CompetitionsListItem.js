@@ -132,7 +132,6 @@ const CompetitionsListItem = ({
 }) => {
   const classes = useStyle();
   const history = useHistory();
-
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
   const competitionStartDate = new Date(dateFrom);

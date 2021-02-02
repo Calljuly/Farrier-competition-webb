@@ -9,6 +9,7 @@ import TextInput from "../components/TextInput";
 import { Button } from "@material-ui/core";
 import SubHeader from "../components/UI/SubHeader";
 import ButtonContainer from "../components/UI/ButtonContainer";
+import Picture from "../assets/Images/newpic.jpg";
 
 const useStyle = makeStyles({
   email: {
@@ -167,7 +168,7 @@ const Contact = () => {
       >
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <SubHeader>Fill out the form to contact me</SubHeader>
+            <h2>Fill out the form to contact me</h2>
             <form
               className={classes.formContainer}
               name="contact"
@@ -299,15 +300,22 @@ const Contact = () => {
             </form>
           </Grid>
           <Grid item xs={12} md={6}>
+            <img
+              src={Picture}
+              alt="Timmy Hoas"
+              style={{ width: "100%", marginBottom: 20 }}
+            />
+            <h2>Julia Call and Timmy Hoas</h2>
+
             <P>
-              If you want to get in touch with the creator please contact me by
-              the email or phone number beside.
+              If you want to get in touch with the creators please contact us by
+              the email or phone number below.
             </P>
             <P>
-              My name is Julia Call and I'm the creator of the site. The site
-              has been made to make it easier for competitive farriers to enter
-              their competitions, create them, follow results and keep live
-              scores if wished.
+              Our names are Julia Call and Timmy Hoas and we are the creators of
+              the site. The site has been made to make it easier for competitive
+              farriers to enter their competitions, create them, follow results
+              and keep live scores if wished.
               <br />
               <br />
             </P>

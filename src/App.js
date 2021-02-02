@@ -22,7 +22,6 @@ const App = () => {
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        //Kollar om användaren är admin
         user.getIdTokenResult().then((idTokenResult) => {
           fetch(
             `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
@@ -44,7 +43,7 @@ const App = () => {
               if (a.img !== "") {
                 storage
                   .ref()
-                  .child(`images/${a.img}.jpg`)
+                  .child(`profiles/${a.img}`)
                   .getDownloadURL()
                   .then((url) => {
                     localStorage.setItem("auth", user.uid);

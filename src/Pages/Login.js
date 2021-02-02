@@ -15,8 +15,9 @@ import TextInput from "../components/TextInput";
 import Devider from "../components/UI/Devider";
 import ChoiseModal from "../components/ChoiseModal";
 import { useHistory } from "react-router-dom";
-import { storage, auth } from "../components/firebase";
-
+import { auth } from "../components/firebase";
+import { resgisterNewUser } from "../ApiFunctions/Api";
+import { Alert } from "@material-ui/lab";
 const textFieldsRegister = [
   {
     id: 1,
@@ -84,6 +85,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
   const isAuth = useSelector((state) => state.auth.isAuth);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [formValid, setFormValid] = useState(true);
@@ -194,23 +197,6 @@ const Login = () => {
     const valid = formValidation();
 
     if (valid) {
-      if (authState.profileImage.name) {
-        const uploadTask = storage
-          .ref()
-          .child(`profiles/${authState.profileImage.name}`)
-          .put(authState.profileImage);
-          
-        await uploadTask.on(
-          "state_changed",
-          (snapShot) => {
-            authState.profileImage = authState.profileImage.name;
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-      }
-
       auth
         .createUserWithEmailAndPassword(
           authState.email.value,
@@ -221,38 +207,30 @@ const Login = () => {
             bio: authState.bio.value,
             result: [],
             name: authState.name.value,
-            profileImage: authState.profileImage.value.name,
+            profileImage: "",
             address: authState.address.value,
             phone: authState.phone.value,
             country: authState.country.value,
             age: authState.age.value,
             uid: cred.user.uid,
           };
-          fetch(
-            `https://us-central1-farrier-project.cloudfunctions.net/app/user/create`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(newUser),
-            }
-          )
-            .then((response) => {
-              return response.json();
-            })
-            .then((users) => {
-              return users;
+          resgisterNewUser(newUser)
+            .then((data) => {
+              console.log(data.message);
+              if (data.message === "Success") {
+                setSuccess(true);
+              } else {
+                setError(data.message);
+              }
             })
             .catch((error) => {
               console.log(error);
+              setError(error.message);
             });
-        })
-        .then(() => {
-          alert("User sucsessfully created");
         })
         .catch((err) => {
           console.log(err);
+          setError("Error occured when trying to create user");
         });
     }
 
@@ -280,7 +258,19 @@ const Login = () => {
           <PageHeader>Log in</PageHeader>
         )}
         {!formValid && (
-          <P> You dont have a valid form to submit, please check you inputs</P>
+          <Alert severity="error">
+            You dont have a valid form to submit, please check you inputs
+          </Alert>
+        )}
+        {success && (
+          <Alert onClose={() => setSuccess(false)}>
+            New user has been created
+          </Alert>
+        )}
+        {error.length > 0 && (
+          <Alert severity="error" onClose={() => setError("")}>
+            error
+          </Alert>
         )}
         <TextInput
           value={authState["email"].value}
@@ -358,17 +348,6 @@ const Login = () => {
                 }
               />
             ))}
-            <TextInput
-              onChange={(text) => handleInputChange("profileImage", text)}
-              className={classes.input}
-              label={"Profil bild"}
-              type="file"
-              error={!authState["profileImage"].valid}
-              helperText={
-                !authState["profileImage"].valid &&
-                "You have to enter a valid password, aleast 6 characters"
-              }
-            />
             <TextInput
               value={authState["bio"].value}
               onChange={(text) => handleInputChange("bio", text)}

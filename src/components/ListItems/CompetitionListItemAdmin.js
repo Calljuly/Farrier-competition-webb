@@ -335,25 +335,27 @@ const CompetitionListItemAdmin = ({
                               </div>
                             </div>
                           </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                            onClick={() =>
-                              history.push({
-                                pathname: `/admin/pickScore/${id}`,
-                                state: item,
-                                id: id,
-                              })
-                            }
-                          >
-                            <P>Fill in scores</P>
-                            <ArrowForwardIosIcon
-                              className={classes.classIcon}
-                            />
-                          </div>
+                          {startCompetition && (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                              onClick={() =>
+                                history.push({
+                                  pathname: `/admin/pickScore/${id}`,
+                                  state: item,
+                                  id: id,
+                                })
+                              }
+                            >
+                              <P>Fill in scores</P>
+                              <ArrowForwardIosIcon
+                                className={classes.classIcon}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     );

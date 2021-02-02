@@ -16,7 +16,13 @@ const useStyle = makeStyles({
 });
 const SubHeader = ({ children }) => {
   const classes = useStyle();
-  return <h3 className={classes.header}>{children}</h3>;
+  return (
+    <h3
+      className={classes.header}
+    >
+      {children}
+    </h3>
+  );
 };
 
 export default SubHeader;

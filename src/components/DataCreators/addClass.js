@@ -145,8 +145,12 @@ const AddClass = () => {
   };
 
   const submitNewClass = async () => {
-    if (classesObject.divisions === "") {
-      setError("You need to add your class to a division or set it as regular");
+    if (
+      classesObject.divisions === "" ||
+      classesObject.className === "" ||
+      classesObject.type === ""
+    ) {
+      setError("You need to add your class to a division or regular, name  and type");
       setIsOpen(false);
       return;
     }
@@ -368,6 +372,7 @@ const AddClass = () => {
         return;
     }
   };
+
   return (
     <>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
