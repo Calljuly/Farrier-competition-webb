@@ -17,20 +17,13 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { createCompetition } from "../../ApiFunctions/Api";
-
+import { Colors } from "../../colors";
+import { Grid } from "@material-ui/core";
 const textInputs = [
   {
     id: 0,
     label: "Name",
     value: "name",
-    type: "text",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 2,
-    label: "Judge",
-    value: "referee",
     type: "text",
     multiline: false,
     required: true,
@@ -125,7 +118,7 @@ const initialState = {
     required: true,
   },
   referee: {
-    value: "",
+    value: [],
     valid: true,
     required: true,
   },
@@ -346,19 +339,20 @@ const AddCompetition = () => {
       user.getIdToken().then(async (token) => {
         createCompetition(token, comp)
           .then((res) => {
+            console.log(res);
             if (res.message === "Succsess") {
               setSuccess(true);
               setIsOpen(false);
               dispatch(actions.fetchCompetitions());
               dispatch(actions.loading(false));
             } else {
-              setError(res.message);
+              setError(res.error);
               setIsOpen(false);
               dispatch(actions.loading(false));
             }
           })
           .catch((error) => {
-            setError(error.message);
+            setError(error);
             setIsOpen(false);
             dispatch(actions.loading(false));
 
@@ -407,6 +401,24 @@ const AddCompetition = () => {
     return valid;
   };
 
+  const addReferee = (event) => {
+    event.persist();
+    const value = event.target.value;
+    if (value.length < 4) {
+      setError("You have to add en Judge with more than 3 characters");
+      return;
+    }
+    const currentState = [...state["referee"].value];
+    currentState.push(event.target.value);
+
+    dispatchReducer({ type: "referee", value: currentState, key: "value" });
+  };
+  const deleteReferee = (name) => {
+    let currentState = [...state["referee"].value];
+    currentState = currentState.filter((item) => item !== name);
+
+    dispatchReducer({ type: "referee", value: currentState, key: "value" });
+  };
   return (
     <div
       style={{
@@ -439,7 +451,7 @@ const AddCompetition = () => {
         </Alert>
       )}
       {error.length > 4 && (
-        <Alert security="error" onClose={() => setError("")}>
+        <Alert severity="error" onClose={() => setError("")}>
           {error}
         </Alert>
       )}
@@ -473,9 +485,10 @@ const AddCompetition = () => {
         />
       ))}
       <FormControl component="fieldset" style={{ marginTop: 20 }}>
-        <FormLabel component="legend">
+        <SubHeader>
           Choose which divisions to include in you competition
-        </FormLabel>
+        </SubHeader>
+
         <FormGroup style={{ display: "flex", flexDirection: "row" }}>
           <FormControlLabel
             control={
@@ -509,7 +522,6 @@ const AddCompetition = () => {
           />
         </FormGroup>
       </FormControl>
-
       {divisionData.map((item) => (
         <TextInput
           required={item.required}
@@ -539,6 +551,45 @@ const AddCompetition = () => {
           }
         />
       ))}
+      <SubHeader>Add Judges</SubHeader>
+      <P>
+        You can add more than one. A new judge will be added every time you
+        leave the textfield
+      </P>
+      <TextInput
+        required
+        label="Judge"
+        type="text"
+        placeholder="Judge"
+        onBlur={(event) => addReferee(event)}
+        error={!state["referee"].valid}
+        helperText={
+          !state["referee"].valid &&
+          "You have to enter a valid input, atleast 3 characters"
+        }
+      />
+      <Grid container>
+        {state["referee"].value.map((item) => {
+          return (
+            <Grid item>
+              <Alert
+                style={{
+                  backgroundColor: Colors.orange,
+                  fontColor: Colors.black,
+                  maxWidth: 200,
+                  margin: "20px 20px 0px 0px",
+                }}
+                severity="info"
+                key={item}
+                onClose={() => deleteReferee(item)}
+                icon={false}
+              >
+                {item}
+              </Alert>
+            </Grid>
+          );
+        })}
+      </Grid>
       <Devider margin={30} />
       <ButtonContainer>
         <CustomButton

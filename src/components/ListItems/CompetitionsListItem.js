@@ -10,7 +10,6 @@ import CustomButton from "../CustomButton";
 import { useHistory } from "react-router-dom";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
-import { Grid } from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import ButtonContainer from "../UI/ButtonContainer";
 import ShoePic from "../../assets/Images/shoe1.jpg";
@@ -129,6 +128,9 @@ const CompetitionsListItem = ({
   openForEntries,
   startCompetition,
   divisionList,
+  hotels,
+  parking,
+  information,
 }) => {
   const classes = useStyle();
   const history = useHistory();
@@ -137,8 +139,6 @@ const CompetitionsListItem = ({
   const competitionStartDate = new Date(dateFrom);
   const competitionEndDate = new Date(dateTo);
   const todayDate = new Date();
-  const [shoeOne, setShoeOne] = useState("");
-  const [shoeTwo, setShoeTwo] = useState("");
 
   const [showProposition, setShowProposition] = useState(false);
   const competition = {
@@ -217,14 +217,17 @@ const CompetitionsListItem = ({
       {showProposition && (
         <>
           <div className={classes.infoContainer}>
-            <div style={{ marginLeft: 10 }}>
+            <div style={{ marginLeft: 20 }}>
               <P>Country : {country}</P>
               <P>Judge: {referee}</P>
 
-              <P>Anvils avaliabel : {anvils}</P>
+              <P>Anvils avaliable : {anvils}</P>
               <P>Current Entries : {current}</P>
+              <P>Hotels nearby : {hotels}</P>
+              <P>Parking : {parking}</P>
               <P>Start Date: {dateFrom}</P>
               <P>End Date : {dateTo}</P>
+              <P>Other information: {information}</P>
             </div>
           </div>
           <div className={classes.classesContainer}>

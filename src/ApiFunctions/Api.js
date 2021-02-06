@@ -13,6 +13,7 @@ export const createClass = async (token, newClass, id) => {
 
   return response.json();
 };
+
 export const createCompetition = async (token, comp) => {
   const response = await fetch(
     "https://us-central1-farrier-project.cloudfunctions.net/app/competitions",

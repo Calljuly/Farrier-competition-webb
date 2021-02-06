@@ -32,11 +32,11 @@ const Competitions = () => {
     const a = state.competitions.competitions;
     if (filter === "sortName") {
       return a.sort((a, b) =>
-        a.competition.name > b.competition.name ? 1 : -1
+        a.competition.name.toLowerCase() > b.competition.name.toLowerCase() ? 1 : -1
       );
     } else if (filter === "sortDate") {
       return a.sort((a, b) =>
-        a.competition.dateFrom > b.competition.dateFrom ? 1 : -1
+        a.competition.name > b.competition.name ? 1 : -1
       );
     } else {
       return a;
@@ -82,6 +82,9 @@ const Competitions = () => {
           openForEntries={item.competition.openForEntries}
           startCompetition={item.competition.startCompetition}
           divisionList={item.competition.divisions}
+          hotels={item.competition.hotels}
+          parking={item.competition.parking}
+          information={item.competition.information}
           competition={item.competition}
         />
       );
@@ -110,6 +113,9 @@ const Competitions = () => {
           openForEntries={item.competition.openForEntries}
           startCompetition={item.competition.startCompetition}
           divisionList={item.competition.divisions}
+          hotels={item.competition.hotels}
+          parking={item.competition.parking}
+          information={item.competition.information}
           competition={item.competition}
         />
       );

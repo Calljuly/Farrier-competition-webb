@@ -5,7 +5,7 @@ import CustomButton from "../components/CustomButton";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import ButtonContainer from "../components/UI/ButtonContainer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCompetitions } from "../store/actions/competitionAction";
 import { saveClassResult } from "../ApiFunctions/Api";
 import { auth } from "../components/firebase";
@@ -17,6 +17,7 @@ const ScorePicker = () => {
   const history = useHistory();
   const l = useLocation();
   const compClasses = l.state;
+  const judges = l.judges;
   const { id } = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -24,7 +25,6 @@ const ScorePicker = () => {
   if (!compClasses) {
     history.push("/admin");
   }
-  
   const saveClassResults = async () => {
     const user = auth.currentUser;
     user.getIdTokenResult(async (token) => {
@@ -78,6 +78,7 @@ const ScorePicker = () => {
                       heat: item.starts,
                       heatId: item.heat,
                       shoe: "shoeOne",
+                      judges: judges,
                     })
                   }
                 >
@@ -92,6 +93,7 @@ const ScorePicker = () => {
                       heat: item.starts,
                       heatId: item.heat,
                       shoe: "shoeTwo",
+                      judges: judges,
                     })
                   }
                 >

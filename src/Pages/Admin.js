@@ -183,6 +183,9 @@ const Admin = () => {
                       openForEntries={item.competition.openForEntries}
                       startCompetition={item.competition.startCompetition}
                       divisionList={item.competition.divisions}
+                      hotels={item.competition.hotels}
+                      parking={item.competition.parking}
+                      information={item.competition.information}
                       competition={item.competition}
                     />
                   );

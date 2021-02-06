@@ -3,13 +3,17 @@ import ScoreSheet from "./Tables/ScoreSheet";
 import { useDispatch } from "react-redux";
 import CustomModal from "../components/Modal";
 import * as actions from "../store/actions/competitionAction";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Redirect } from "react-router-dom";
 import P from "./UI/Paragraph";
 import CustomButton from "./CustomButton";
 import Devider from "./UI/Devider";
 import PageHeader from "./UI/PageHeader";
 import { Alert } from "@material-ui/lab";
 import ButtonContainer from "./UI/ButtonContainer";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -22,6 +26,9 @@ const Scores = () => {
   const heat = l.heat;
   const heatId = l.heatId;
   const shoe = l.shoe;
+  const judges = l.judges;
+
+  const [judge, setJudge] = useState();
 
   const closeModalHandler = (data) => {
     if (+data) {
@@ -52,11 +59,15 @@ const Scores = () => {
     setModal(true);
   };
 
-  if (!compClasses || !heat) {
+  if (!compClasses || !heat || !judges) {
     history.push("/admin");
   }
 
-  return (
+  const handleClasses = (key, value) => {
+    setJudge(value);
+  };
+
+  return !compClasses || !heat || !judges ? (
     <>
       <div
         style={{
@@ -82,6 +93,28 @@ const Scores = () => {
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
         )}
+        <ButtonContainer>
+          <FormControl component="fieldset">
+            <P>Pick Judge for this class</P>
+            <RadioGroup
+              row
+              name="Judges"
+              value={judge}
+              onChange={(event) => handleClasses("judge", event.target)}
+            >
+              {judges.map((item) => {
+                return (
+                  <FormControlLabel
+                    key={item}
+                    value={item}
+                    control={<Radio />}
+                    label={item}
+                  />
+                );
+              })}
+            </RadioGroup>
+          </FormControl>
+        </ButtonContainer>
         <ScoreSheet
           className={compClasses.className}
           handleModalContent={handleModalContent}
@@ -103,6 +136,8 @@ const Scores = () => {
         </ButtonContainer>
       </div>
     </>
+  ) : (
+    <Redirect to="/admin" />
   );
 };
 

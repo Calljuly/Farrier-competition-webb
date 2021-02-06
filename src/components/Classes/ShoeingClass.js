@@ -50,7 +50,6 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
         <SubHeader>Pick feet</SubHeader>
         <RadioGroup
           row
-          aria-label="gender"
           name="feet"
           value={feet}
           onChange={(event) => handleClasses("feet", event.target)}

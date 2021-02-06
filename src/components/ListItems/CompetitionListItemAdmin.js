@@ -154,6 +154,10 @@ const CompetitionListItemAdmin = ({
   entries,
   divisionList,
   competition,
+
+  hotels,
+  parking,
+  information,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -282,14 +286,17 @@ const CompetitionListItemAdmin = ({
       {showProposition && (
         <>
           <div className={classes.infoContainer}>
-            <div style={{ marginLeft: 10 }}>
+            <div style={{ marginLeft: 20 }}>
               <P>Country : {country}</P>
               <P>Judge: {referee}</P>
 
-              <P>Anvils avaliabel : {anvils}</P>
+              <P>Anvils avaliable : {anvils}</P>
               <P>Current Entries : {current}</P>
+              <P>Hotels nearby : {hotels}</P>
+              <P>Parking : {parking}</P>
               <P>Start Date: {dateFrom}</P>
               <P>End Date : {dateTo}</P>
+              <P>Other information: {information}</P>
             </div>
           </div>
           <div className={classes.classesContainer}>
@@ -347,6 +354,7 @@ const CompetitionListItemAdmin = ({
                                   pathname: `/admin/pickScore/${id}`,
                                   state: item,
                                   id: id,
+                                  judges: referee,
                                 })
                               }
                             >

@@ -150,7 +150,9 @@ const AddClass = () => {
       classesObject.className === "" ||
       classesObject.type === ""
     ) {
-      setError("You need to add your class to a division or regular, name  and type");
+      setError(
+        "You need to add your class to a division or regular, name  and type"
+      );
       setIsOpen(false);
       return;
     }
@@ -161,8 +163,8 @@ const AddClass = () => {
 
     const user = auth.currentUser;
     dispatch(actions.loading(true));
-    /*
-    if (newClass.type === "Forging") {
+
+    if (classesObject.sponsorLoggo && classesObject.sponsorLoggo !== "") {
       const uploadTask = storage
         .ref()
         .child(`sponsors/${classesObject.sponsorLoggo.name}`)
@@ -178,52 +180,42 @@ const AddClass = () => {
           setIsOpen(false);
         }
       );
-
-      const uploadTaskOne = storage
+    }
+    if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
+      const uploadTask = storage
         .ref()
-        .child(`shoes/${newClass.shoeOneImg.name}`)
-        .put(newClass.shoeOneImg);
-
-      await uploadTaskOne.on(
+        .child(`sponsors/${classesObject.shoeOneImg.name}`)
+        .put(classesObject.shoeOneImg);
+      await uploadTask.on(
         "state_changed",
         (snapShot) => {
-          let i = "";
-          storage
-            .ref()
-            .child(`shoes/${newClass.shoeOneImg.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              console.log(url);
-              i = url;
-              this.newClass.shoeOneImg = "Robin";
-            });
-          newClass.shoeOneImg = i;
+          newClass.shoeOneImg = newClass.shoeOneImg.name;
         },
         (err) => {
           console.log(err);
-          setIsOpen(false);
-
           dispatch(actions.loading(false));
+          setIsOpen(false);
         }
       );
-      const uploadTaskTwo = storage
+    }
+    if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
+      const uploadTask = storage
         .ref()
-        .child(`shoes/${newClass.shoeTwoImg.name}`)
+        .child(`sponsors/${classesObject.shoeTwoImg.name}`)
         .put(classesObject.shoeTwoImg);
-      await uploadTaskTwo.on(
+      await uploadTask.on(
         "state_changed",
         (snapShot) => {
           newClass.shoeTwoImg = newClass.shoeTwoImg.name;
         },
         (err) => {
           console.log(err);
-          setIsOpen(false);
-
           dispatch(actions.loading(false));
+          setIsOpen(false);
         }
       );
     }
-*/
+
     user.getIdToken().then(async (token) => {
       createClass(token, newClass, id)
         .then((res) => {
