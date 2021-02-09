@@ -11,9 +11,8 @@ const useStyle = makeStyles({
     margin: "10px 0px 10px 10px",
     ["@media (max-width:956px)"]: {
       width: "97%",
-      alignSelf:'center',
+      alignSelf: "center",
       margin: "10px 0px 10px 0px",
-
     },
   },
 });

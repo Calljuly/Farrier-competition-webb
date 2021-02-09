@@ -10,6 +10,7 @@ import EditEmailAndPassword from "../components/DataCreators/editEmailAndPasswor
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
 import { Alert } from "@material-ui/lab";
+
 const useStyle = makeStyles({
   avatar: {
     margin: 40,

@@ -123,7 +123,7 @@ const EnterCompetition = () => {
         }}
       >
         {success && (
-          <Alert style={{ width: "100%" }} onClick={() => setSuccess(false)}>
+          <Alert style={{ width: "100%" }} onClose={() => setSuccess(false)}>
             You entered the competition!
           </Alert>
         )}

@@ -154,10 +154,10 @@ const CompetitionListItemAdmin = ({
   entries,
   divisionList,
   competition,
-
   hotels,
   parking,
   information,
+  handleScorePicker,
 }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -169,7 +169,7 @@ const CompetitionListItemAdmin = ({
   const [modal, setModal] = useState(false);
   const [open, setOpen] = useState(openForEntries);
   const [started, setStarted] = useState(startCompetition);
-
+  console.log(id);
   const openCompetitionForEntries = async (event) => {
     event.persist();
     setOpen(event.target.checked);
@@ -265,7 +265,7 @@ const CompetitionListItemAdmin = ({
           <CustomButton title="Cancel" onClick={() => setModal(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => dispatch(actions.saveAllResult(id, "compClasses"))}
+            onClick={() => dispatch(actions.saveAllResult(id, divisions))}
           />
         </div>
       </ChoiseModal>
@@ -350,11 +350,10 @@ const CompetitionListItemAdmin = ({
                                 alignItems: "center",
                               }}
                               onClick={() =>
-                                history.push({
-                                  pathname: `/admin/pickScore/${id}`,
+                                handleScorePicker({
                                   state: item,
-                                  id: id,
                                   judges: referee,
+                                  id: id,
                                 })
                               }
                             >

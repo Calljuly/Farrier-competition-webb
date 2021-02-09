@@ -8,9 +8,10 @@ import Devider from "../UI/Devider";
 import ChoiseModal from "../ChoiseModal";
 import { auth } from "../firebase";
 import * as actions from "../../store/actions/auth";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ButtonContainer from "../UI/ButtonContainer";
 import { storage } from "../firebase";
+import { Alert } from "@material-ui/lab";
 
 const textFieldsRegister = [
   {
@@ -47,7 +48,7 @@ const textFieldsRegister = [
     id: 6,
     label: "",
     type: "file",
-    key: "profileImage",
+    key: "img",
   },
 ];
 
@@ -74,9 +75,13 @@ const EditProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const userState = useSelector((state) => state.auth.user);
   const [authState, setAuthState] = useState(userState);
+  const dispatch = useDispatch();
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (id, text) => {
-    if (id === "profileImage") {
+    if (id === "img") {
       const updatedState = {
         ...authState,
         [id]: text.target.files[0],
@@ -93,19 +98,18 @@ const EditProfile = () => {
 
   const updateUser = async () => {
     let newUserData = authState;
-    if (authState.profileImage) {
-      console.log(authState);
+    if (authState.img) {
       const uploadTask = storage
         .ref()
-        .child(`profiles/${authState.profileImage.name}`)
-        .put(authState.profileImage);
+        .child(`profiles/${authState.img.name}`)
+        .put(authState.img);
 
       await uploadTask.on(
         "state_changed",
         (snapShot) => {
           newUserData = {
             ...authState,
-            profileImage: authState.profileImage.name,
+            img: authState.img.name,
           };
 
           /*
@@ -128,13 +132,40 @@ const EditProfile = () => {
         }
       );
     }
-    console.log(newUserData);
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        actions.updateUser(user.uid, newUserData);
-      }
+
+    const user = auth.currentUser;
+    return user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user: newUserData }),
+          Authorization: `Bearer ${token}`,
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.message === "Success") {
+            setSuccess(true);
+            dispatch(actions.newUserData(newUserData));
+          }
+          else{
+            setError(res.message);
+          }
+          setIsOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error.message);
+          setIsOpen(false);
+        });
     });
-    setIsOpen(false);
   };
 
   return (
@@ -148,6 +179,16 @@ const EditProfile = () => {
         </div>
       </ChoiseModal>
       <div className={classes.inputContainer}>
+        {success && (
+          <Alert onClose={() => setSuccess(false)}>
+            Your account was updated successfully!
+          </Alert>
+        )}
+        {error.length > 3 && (
+          <Alert severity="error" onClose={() => setError("")}>
+            {error}
+          </Alert>
+        )}
         {textFieldsRegister.map((item) => (
           <TextInput
             key={item.id}

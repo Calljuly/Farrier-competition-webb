@@ -14,6 +14,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
+import { firestore } from "./firebase";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -28,7 +29,9 @@ const Scores = () => {
   const shoe = l.shoe;
   const judges = l.judges;
 
-  const [judge, setJudge] = useState();
+  const [judge, setJudge] = useState(
+    compClasses.referee.length > 0 ? compClasses.referee : ""
+  );
 
   const closeModalHandler = (data) => {
     if (+data) {
@@ -63,11 +66,22 @@ const Scores = () => {
     history.push("/admin");
   }
 
-  const handleClasses = (key, value) => {
+  const handleClasses = (event) => {
+    const value = event.target.value;
+
     setJudge(value);
+
+    firestore
+      .collection("competitions")
+      .doc(compIndex)
+      .collection(compClasses.divisions)
+      .doc(compClasses.className)
+      .update({
+        referee: value,
+      });
   };
 
-  return !compClasses || !heat || !judges ? (
+  return judges ? (
     <>
       <div
         style={{
@@ -100,7 +114,7 @@ const Scores = () => {
               row
               name="Judges"
               value={judge}
-              onChange={(event) => handleClasses("judge", event.target)}
+              onChange={(event) => handleClasses(event)}
             >
               {judges.map((item) => {
                 return (
@@ -136,9 +150,7 @@ const Scores = () => {
         </ButtonContainer>
       </div>
     </>
-  ) : (
-    <Redirect to="/admin" />
-  );
+  ) : null;
 };
 
 export default Scores;

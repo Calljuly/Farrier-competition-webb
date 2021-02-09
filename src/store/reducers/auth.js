@@ -1,4 +1,4 @@
-import { IS_AUTH, IS_LOADING, ERROR } from "../actions/auth";
+import { IS_AUTH, IS_LOADING, ERROR, NEW_USER_DATA } from "../actions/auth";
 
 const initialState = {
   isAuth: false,
@@ -29,6 +29,12 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.error,
+      };
+    case NEW_USER_DATA:
+      return {
+        ...state,
+        user: action.user,
+        userImage: action.user.img,
       };
     default:
       return state;

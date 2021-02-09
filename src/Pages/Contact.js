@@ -38,6 +38,18 @@ const useStyle = makeStyles({
     width: "96%",
     margin: 20,
   },
+  disabled: {
+    backgroundColor: "white",
+    color: "#DCDCDC",
+    width: 200,
+    padding: 10,
+    margin: "10px 0px 10px 10px",
+    ["@media (max-width:956px)"]: {
+      width: "97%",
+      alignSelf: "center",
+      margin: "10px 0px 10px 0px",
+    },
+  },
 });
 
 const initialState = {
@@ -291,7 +303,7 @@ const Contact = () => {
                   disabled={!formValid}
                   name="button"
                   type="submit"
-                  className={classes.button}
+                  className={!formValid ? classes.disabled : classes.button}
                 >
                   Send Message
                 </Button>

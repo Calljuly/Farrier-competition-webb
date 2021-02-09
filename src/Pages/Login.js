@@ -129,10 +129,6 @@ const Login = () => {
       value: "",
       valid: true,
     },
-    profileImage: {
-      value: "",
-      valid: true,
-    },
   });
 
   const handleInputChange = (id, text) => {
@@ -157,6 +153,7 @@ const Login = () => {
 
     setAuthState(updatedState);
   };
+  
   const handleInputValidation = (id, value) => {
     let updatedState;
 

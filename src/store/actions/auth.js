@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
+export const NEW_USER_DATA = "NEW_USER_DATA";
 
 export const signUp = (user) => {
   return (dispatch) => {
@@ -111,33 +112,6 @@ export const signIn = (email, pass) => {
       });
   };
 };
-export const updateUser = (id, userData) => {
-  const user = auth.currentUser;
-  return user.getIdToken().then(async (token) => {
-    fetch(
-      `https://us-central1-farrier-project.cloudfunctions.net/app/user/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user: userData }),
-        Authorization: `Bearer ${token}`,
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((users) => {
-        console.log(users)
-        return users.user;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-};
-
 export const logOut = () => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}, false));
@@ -176,6 +150,12 @@ export const isAuth = (isAuthenticated, loading, user, url, admin) => {
     user: user,
     userImage: url,
     admin: admin,
+  };
+};
+export const newUserData = (user) => {
+  return {
+    type: NEW_USER_DATA,
+    user: user,
   };
 };
 

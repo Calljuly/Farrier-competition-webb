@@ -66,7 +66,7 @@ const Result = () => {
   const competitionName = l.name;
   const sponsor = l.divisions;
   const history = useHistory();
-
+  console.log(result);
   if (!result || !sponsor) {
     history.push("/competitions");
   }
@@ -137,107 +137,106 @@ const Result = () => {
         )}
         <ComponentToPrint ref={resultRef}>
           {result.length > 0 &&
-            result.map((item, index) => {
-              return (
-                <TableContainer
-                  key={index}
-                  component={Paper}
-                  style={{ margin: "50px" }}
-                >
-                  <SubHeader>{item.className}</SubHeader>
-                  <TableContainer
-                    className={classes.table}
-                    size="small"
-                    aria-label="a dense table"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        {compClasses[1].headerTitles.map((comp, index) => {
-                          if (comp !== "Total Points") {
-                            return (
-                              <TableCell
-                                key={comp}
-                                style={{
-                                  verticalAlign: "bottom",
-                                  padding: 0,
-                                  fontSize: 16,
-                                }}
-                                classes={{ root: { fontSize: 16 } }}
-                              >
-                                <p>{comp}</p>
-                              </TableCell>
-                            );
-                          }
-                        })}
-                        {compClasses[0].headerTitles.map((comp, index) => {
-                          if (comp !== "Competitor") {
-                            return (
-                              <TableCell
-                                key={comp}
-                                style={{
-                                  verticalAlign: "bottom",
-                                  padding: 0,
-                                }}
-                              >
-                                <p>{comp}</p>
-                              </TableCell>
-                            );
-                          }
-                        })}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {item.result.map((res, index) => {
-                        const color = index % 2 === 0;
+            result.map((i, index) => {
+              return i.class.map((item) => {
+                return (
+                  <TableContainer component={Paper}>
+                    <SubHeader>{item.className}</SubHeader>
+                    <Table
+                      className={classes.table}
+                      aria-label="a dense table"
+                      style={{ width: 1200 }}
+                    >
+                      <TableHead >
+                        <TableRow>
+                          {compClasses[1].headerTitles.map((comp, index) => {
+                            if (comp !== "Total Points") {
+                              return (
+                                <TableCell
+                                  key={comp}
+                                  style={{
+                                    verticalAlign: "bottom",
+                                    padding: 0,
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  <p>{comp}</p>
+                                </TableCell>
+                              );
+                            }
+                          })}
+                          {compClasses[0].headerTitles.map((comp, index) => {
+                            if (comp !== "Competitor") {
+                              return (
+                                <TableCell
+                                  key={comp}
+                                  style={{
+                                    verticalAlign: "bottom",
+                                    padding: 0,
+                                  }}
+                                >
+                                  <p>{comp}</p>
+                                </TableCell>
+                              );
+                            }
+                          })}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody style={{ width: "100%" }}>
+                        {item.result.map((res, index) => {
+                          const color = index % 2 === 0;
 
-                        if (res.shoeOne && res.shoeTwo) {
-                          return (
-                            <TableRow
-                              key={item.id}
-                              style={{
-                                backgroundColor: color ? "#DCDCDC" : "white",
-                              }}
-                            >
-                              <TableCell align="left">
-                                {res.competitor}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeOne.one}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeOne.two}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeOne.three}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeOne.four}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeTwo.one}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeTwo.two}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeTwo.three}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeTwo.four}
-                              </TableCell>
-                              <TableCell align="left">
-                                {res.shoeOne.total + res.shoeTwo.total}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        }
-                      })}
-                    </TableBody>
+                          if (res.shoeOne && res.shoeTwo) {
+                            return (
+                              <TableRow
+                                key={item.id}
+                                style={{
+                                  backgroundColor: color ? "#DCDCDC" : "white",
+                                  width: "100%",
+                                }}
+                              >
+                                <TableCell align="left">
+                                  {res.competitor}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.one}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.two}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.three}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.four}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.one}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.two}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.three}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeTwo.four}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {res.shoeOne.total + res.shoeTwo.total}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          }
+                        })}
+                      </TableBody>
+                    </Table>
                   </TableContainer>
-                </TableContainer>
-              );
+                );
+              });
             })}
         </ComponentToPrint>
+
         <PageHeader>Published result for classes</PageHeader>
         <ComponentToPrint ref={classResultRef}>
           {savedClasses.length === 0 && (

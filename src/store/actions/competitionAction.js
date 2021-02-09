@@ -123,18 +123,52 @@ export const saveAllResult = (competitionId, classes) => {
       loading: true,
     });
     let resultArray = [];
-    const result = classes.map((item, index) => {
-      resultArray = [];
-      item.unPublishedResult.forEach((items) => {
-        const a = [...resultArray];
-        resultArray = a.concat(items.starts);
+
+    const result = classes.map((item) => {
+      let newClassResult = [];
+      Object.values(item).forEach((i) => {
+        newClassResult = i.map((o) => {
+          resultArray = [];
+
+          o.unPublishedResult.forEach((p) => {
+            const a = [...resultArray];
+            resultArray = a.concat(p.starts);
+          });
+
+          return {
+            division: Object.keys(item)[0],
+            className: o.className,
+            result: resultArray,
+          };
+        });
       });
+
       return {
-        className: item.className,
-        result: resultArray,
+        division: Object.keys(item)[0],
+        class: newClassResult,
       };
     });
+    console.log(result);
 
+    classes.map((item) => {
+      return Object.values(item).map((i) => {
+        i.forEach((o) => {
+          firestore
+            .collection("competitions")
+            .doc(competitionId)
+            .collection(o.divisions)
+            .doc(o.className)
+            .update({ savedResult: true });
+        });
+      });
+    });
+
+    firestore
+      .collection("competitions")
+      .doc(competitionId)
+      .update({ result: result });
+
+    /*
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
       fetch(
@@ -148,7 +182,8 @@ export const saveAllResult = (competitionId, classes) => {
           body: JSON.stringify({ competition: result, classes: classes }),
         }
       )
-        .then(() => {
+        .then((data) => {
+          console.log(data.json());
           dispatch(fetchCompetitions());
         })
         .then(() => {
@@ -164,7 +199,7 @@ export const saveAllResult = (competitionId, classes) => {
             loading: false,
           });
         });
-    });
+    });*/
   };
 };
 

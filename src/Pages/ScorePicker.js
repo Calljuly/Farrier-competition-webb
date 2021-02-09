@@ -13,12 +13,10 @@ import Devider from "../components/UI/Devider";
 
 const useStyles = makeStyles({});
 
-const ScorePicker = () => {
+const ScorePicker = ({ judges, state, id}) => {
   const history = useHistory();
-  const l = useLocation();
-  const compClasses = l.state;
-  const judges = l.judges;
-  const { id } = useParams();
+  const compClasses = state;
+console.log(id)
   const dispatch = useDispatch();
   const classes = useStyles();
 

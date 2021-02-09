@@ -92,9 +92,13 @@ const useStyle = makeStyles({
   },
   container: {
     width: "100%",
-    backgroundColor: "#101820FF",
     display: "flex",
+    justifyContent: "center",
+    backgroundColor: "#101820FF",
     flexDirection: "row",
+    ["@media (max-width:1253px)"]: {
+      justifyContent: "flex-start",
+    },
   },
   logo: {
     width: "15%",
@@ -142,13 +146,14 @@ const useStyle = makeStyles({
 
   contentContainer: {
     display: "flex",
+    width: "80%",
     alignItems: "center",
     ["@media (max-width:1253px)"]: {
       display: "none",
     },
   },
   menuIcon: {
-    fontSize: 80,
+    fontSize: 40,
     color: Colors.orange,
   },
   menuIconContainer: {

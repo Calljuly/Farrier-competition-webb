@@ -201,10 +201,10 @@ const CompetitionsListItem = ({
                 color: "red",
                 fontWeight: "bold",
                 marginRight: 20,
-                fontSize: 30,
+                fontSize: 20,
               }}
             >
-              <HighlightOffIcon alt="Competition has ended" />
+              Finnished
             </p>
           )}
           {showProposition ? (
