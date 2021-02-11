@@ -1,5 +1,4 @@
-import { auth, firestore, storage } from "../../components/firebase";
-import Cookies from "js-cookie";
+import { auth } from "../../components/firebase";
 
 export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";
@@ -16,6 +15,8 @@ export const signUp = (user) => {
     auth
       .createUserWithEmailAndPassword(user.email.value, user.password.value)
       .then((cred) => {
+        dispatch(logOut());
+
         const newUser = {
           bio: user.bio.value,
           result: [],
@@ -26,6 +27,7 @@ export const signUp = (user) => {
           country: user.country.value,
           age: user.age.value,
         };
+
         fetch(
           `https://us-central1-farrier-project.cloudfunctions.net/app/user/create`,
           {
@@ -69,54 +71,18 @@ export const signIn = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}, false));
 
-    auth
-      .signInWithEmailAndPassword(email, pass)
-      .then(async (cred) => {
-        await cred.user.getIdTokenResult(async (token) => {
-          fetch(
-            `https://us-central1-farrier-project.cloudfunctions.net/app/user/${cred.user.uid}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-            .then((response) => {
-              return response.json();
-            })
-            .then((users) => {
-              const a = users.user.find((u) => u.id === cred.user.uid);
-              return a.users;
-            })
-            .then((user) => {
-              storage
-                .ref()
-                .child(`images/${user.img}.jpg`)
-                .getDownloadURL()
-                .then((url) => {
-                  Cookies.set("user", "value", { expires: 7 });
-                  localStorage.setItem("auth", user.uid);
-                  dispatch(isAuth(true, false, user, url, false));
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-              dispatch(isAuth(false, false, {}, "", false));
-            });
-        });
-      })
-      .catch((err) => {
-        dispatch(isError(true));
-        dispatch(isAuth(false, false, {}, "", false));
-      });
+    auth.signInWithEmailAndPassword(email, pass).catch((err) => {
+      dispatch(isError('Your email or password is wrong, please try again!'));
+      dispatch(isAuth(false, false, {}, "", false));
+    });
   };
 };
+
 export const logOut = () => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}, false));
     auth.signOut().then((cred) => {
-      Cookies.remove("user");
+      localStorage.removeItem("auth");
       dispatch(isAuth(false, false, {}, "", false));
     });
   };

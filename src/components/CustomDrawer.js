@@ -45,7 +45,7 @@ const CustomDrawer = ({ drawerState, toggleDrawer, navLinks, auth }) => {
               className={classes.tabs}
               to="/admin"
             >
-              <ListItemText primary={<h1>Admin</h1>} />
+              <ListItemText primary={<h1>ADMIN</h1>} />
             </NavLink>
           </ListItem>
         )}
@@ -60,7 +60,7 @@ const CustomDrawer = ({ drawerState, toggleDrawer, navLinks, auth }) => {
             to={auth ? "/" : "/signIn"}
           >
             <ListItemText
-              primary={auth ? <h1>Sign out</h1> : <h1>Sign in</h1>}
+              primary={auth ? <h1>SIGN OUT</h1> : <h1>SIGN IN</h1>}
             />
           </NavLink>
         </ListItem>

@@ -79,7 +79,6 @@ const App = () => {
               dispatch(action.isError(true));
               dispatch(action.isAuth(false, false, {}, "", false));
             });
-
         });
       } else {
         dispatch(action.isAuth(false, false, {}, "", false));

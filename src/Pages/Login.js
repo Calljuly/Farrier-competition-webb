@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { auth } from "../components/firebase";
 import { resgisterNewUser } from "../ApiFunctions/Api";
 import { Alert } from "@material-ui/lab";
+
 const textFieldsRegister = [
   {
     id: 1,
@@ -153,7 +154,7 @@ const Login = () => {
 
     setAuthState(updatedState);
   };
-  
+
   const handleInputValidation = (id, value) => {
     let updatedState;
 
@@ -237,7 +238,7 @@ const Login = () => {
   if (isAuth) {
     history.push("/");
   }
-
+  console.log(isError);
   return (
     <div>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
@@ -264,9 +265,9 @@ const Login = () => {
             New user has been created
           </Alert>
         )}
-        {error.length > 0 && (
+        {isError.length > 0 && (
           <Alert severity="error" onClose={() => setError("")}>
-            error
+            {isError}
           </Alert>
         )}
         <TextInput
@@ -356,16 +357,7 @@ const Login = () => {
             />
           </>
         )}
-
-        {false && (
-          <P>
-            Your input was not valid. Did you enter a real email adress or a
-            password according to security rules ?
-          </P>
-        )}
-        {isError && (
-          <P className={classes.failedLogin}>Inloggningen misslyckades</P>
-        )}
+        
         <Devider margin={50} />
         <CustomButton
           title={register ? "Register user" : "Login"}
