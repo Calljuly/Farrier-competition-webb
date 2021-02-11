@@ -28,6 +28,7 @@ const ScoreSheet = ({
   shoe,
   heatId,
   type,
+  title
 }) => {
   const classes = useStyles();
   const rows = [
@@ -60,7 +61,7 @@ const ScoreSheet = ({
       <h1>{className}</h1>
       <Devider margin={30} />
 
-      <h2>Shoe one</h2>
+      <h2>{title}</h2>
       <Devider margin={15} />
 
       <TableContainer component={Paper}>

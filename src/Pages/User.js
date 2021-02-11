@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import ResultListItem from "../components/ListItems/ResultListItem";
 import { useSelector } from "react-redux";
 import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
@@ -107,14 +106,7 @@ const User = () => {
           )}
           {user.result.length > 0 &&
             user.result.map((item) => {
-              return (
-                <ResultListItem
-                  key={item.competition}
-                  competition={item.competition}
-                  points={item.points}
-                  placing={item.placing}
-                />
-              );
+              return item
             })}
         </TabPanel>
         <TabPanel value={value} index={2} style={{ width: "97%" }}>

@@ -1,24 +1,21 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { useLocation, useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import ButtonContainer from "../components/UI/ButtonContainer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchCompetitions } from "../store/actions/competitionAction";
 import { saveClassResult } from "../ApiFunctions/Api";
 import { auth } from "../components/firebase";
 import Devider from "../components/UI/Devider";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-const useStyles = makeStyles({});
-
-const ScorePicker = ({ judges, state, id}) => {
+const ScorePicker = ({ judges, state, id }) => {
   const history = useHistory();
   const compClasses = state;
-console.log(id)
+
   const dispatch = useDispatch();
-  const classes = useStyles();
 
   if (!compClasses) {
     history.push("/admin");
@@ -39,19 +36,7 @@ console.log(id)
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginRight: 30,
-        }}
-      >
-        <PageHeader>Pick scoresheet</PageHeader>
-        <CustomButton onClick={() => history.goBack()} title="Go Back" />
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPagesHeader title="Pick shoe" />
       <div style={{ margin: 40 }}>
         <P>Pick the shoe or heat you would like to fill the scores for below</P>
 

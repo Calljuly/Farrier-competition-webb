@@ -7,7 +7,6 @@ import Scores from "../components/Scores";
 import Edit from "./Edit";
 import P from "../components/UI/Paragraph";
 import PageHeader from "../components/UI/PageHeader";
-import Devider from "../components/UI/Devider";
 import AddClass from "../components/DataCreators/addClass";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
@@ -17,6 +16,7 @@ import ScorePicker from "./ScorePicker";
 import { Grid } from "@material-ui/core";
 import Pic from "../assets/Images/hov1.jpg";
 import { auth } from "../components/firebase";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyle = makeStyles({
   headerContainer: {
@@ -31,7 +31,7 @@ const useStyle = makeStyles({
 
 const Admin = () => {
   const [value, setValue] = useState(0);
-  const [scorePickerData, setscorePickerData] = useState(0);
+  const [scorePickerData, setscorePickerData] = useState({});
 
   const user = auth.currentUser;
   const classes = useStyle();
@@ -78,6 +78,41 @@ const Admin = () => {
       label: "My Competitions",
     },
   ];
+  const myCompetitions =
+    adminCompetitions.length !== 0 ? (
+      adminCompetitions.map((item, index) => {
+        return (
+          <CompetitionListItemAdmin
+            key={item.competition.id}
+            index={index}
+            id={item.competition.id}
+            name={item.competition.name}
+            referee={item.competition.referee}
+            country={item.competition.country}
+            anvils={item.competition.anvils}
+            current={item.competition.currentEntries}
+            divisions={item.divisions}
+            disabled={
+              item.competition.anvils === item.competition.currentEntries
+            }
+            entries={item.competition.entries}
+            dateFrom={item.competition.dateFrom}
+            dateTo={item.competition.dateTo}
+            result={item.competition.result}
+            openForEntries={item.competition.openForEntries}
+            startCompetition={item.competition.startCompetition}
+            divisionList={item.competition.divisions}
+            hotels={item.competition.hotels}
+            parking={item.competition.parking}
+            information={item.competition.information}
+            competition={item.competition}
+            handleScorePicker={handleScorePicker}
+          />
+        );
+      })
+    ) : (
+      <P>No competitions to show</P>
+    );
 
   return (
     <>
@@ -91,17 +126,13 @@ const Admin = () => {
             />
           ) : (
             <div>
-              <div className={classes.headerContainer}>
-                <PageHeader>Admin</PageHeader>
+              <TopPagesHeader title="Admin">
                 <CustomTab
                   buttons={buttons}
                   value={value}
                   handleChange={handleChange}
                 />
-              </div>
-              <div className="divOrange" />
-              <div className="divBlack" />
-              <Devider margin={30} />
+              </TopPagesHeader>
               <TabPanel value={value} index={0}>
                 <div style={{ padding: 20 }}>
                   <h1>Authurized as admin</h1>
@@ -183,41 +214,7 @@ const Admin = () => {
               </TabPanel>
               <TabPanel value={value} index={2}>
                 <PageHeader>My competitions</PageHeader>
-                {adminCompetitions.length !== 0 ? (
-                  adminCompetitions.map((item, index) => {
-                    return (
-                      <CompetitionListItemAdmin
-                        key={item.competition.id}
-                        index={index}
-                        id={item.competition.id}
-                        name={item.competition.name}
-                        referee={item.competition.referee}
-                        country={item.competition.country}
-                        anvils={item.competition.anvils}
-                        current={item.competition.currentEntries}
-                        divisions={item.divisions}
-                        disabled={
-                          item.competition.anvils ===
-                          item.competition.currentEntries
-                        }
-                        entries={item.competition.entries}
-                        dateFrom={item.competition.dateFrom}
-                        dateTo={item.competition.dateTo}
-                        result={item.competition.result}
-                        openForEntries={item.competition.openForEntries}
-                        startCompetition={item.competition.startCompetition}
-                        divisionList={item.competition.divisions}
-                        hotels={item.competition.hotels}
-                        parking={item.competition.parking}
-                        information={item.competition.information}
-                        competition={item.competition}
-                        handleScorePicker={handleScorePicker}
-                      />
-                    );
-                  })
-                ) : (
-                  <P>No competitions to show</P>
-                )}
+                {myCompetitions}
               </TabPanel>
             </div>
           )}
@@ -234,10 +231,6 @@ const Admin = () => {
         <Route path="/admin/result" exact>
           <Result />
         </Route>
-        {/*
-        <Route path="/admin/pickScore/:id" exact>
-          <ScorePicker />
-        </Route>*/}
       </Switch>
     </>
   );

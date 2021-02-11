@@ -7,7 +7,6 @@ import SubHeader from "../UI/SubHeader";
 import ForgingClass from "../Classes/ForgingClass";
 import ShoeingClass from "../Classes/ShoeingClass";
 import ComboClass from "../Classes/ComboClass";
-import EagleEye from "../Classes/EagleEye";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";

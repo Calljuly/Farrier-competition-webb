@@ -169,7 +169,7 @@ const CompetitionListItemAdmin = ({
   const [modal, setModal] = useState(false);
   const [open, setOpen] = useState(openForEntries);
   const [started, setStarted] = useState(startCompetition);
-  console.log(id);
+
   const openCompetitionForEntries = async (event) => {
     event.persist();
     setOpen(event.target.checked);
@@ -313,7 +313,6 @@ const CompetitionListItemAdmin = ({
                             <P>Type: {item.type}</P>
                             <P>Time : {item.time}</P>
                             <P>Division : {item.divisions}</P>
-                            <P>Judge : {item.referee} </P>
                           </div>
                           <div
                             style={{

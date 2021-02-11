@@ -9,6 +9,7 @@ import TextInput from "../components/TextInput";
 import { Button } from "@material-ui/core";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import Picture from "../assets/Images/newpic.jpg";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyle = makeStyles({
   email: {
@@ -165,12 +166,7 @@ const Contact = () => {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <PageHeader>Contact</PageHeader>
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
-      <Devider margin={30} />
+      <TopPagesHeader title="Contact" />
       <div
         style={{
           display: "flex",

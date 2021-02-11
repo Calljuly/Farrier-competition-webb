@@ -17,6 +17,7 @@ import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import { Alert } from "@material-ui/lab";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyles = makeStyles({
   table: {
@@ -95,19 +96,7 @@ const Result = () => {
   });
   return sponsor ? (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginRight: 30,
-        }}
-      >
-        <PageHeader>Result</PageHeader>
-        <CustomButton onClick={() => history.goBack()} title="Go Back" />
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
+     <TopPagesHeader title="Result" />
       <div className={classes.contentContainer}>
         <PageHeader>{competitionName}</PageHeader>
 

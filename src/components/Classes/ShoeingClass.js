@@ -38,13 +38,6 @@ const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
         placeholder="time"
         onChange={(event) => handleClasses("time", event.target)}
       />
-      <TextInput
-        required
-        id="referee"
-        label="Judge"
-        placeholder="Referee"
-        onChange={(event) => handleClasses("referee", event.target)}
-      />
       <Devider margin={20} />
       <FormControl component="fieldset">
         <SubHeader>Pick feet</SubHeader>

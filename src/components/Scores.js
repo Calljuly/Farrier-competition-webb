@@ -3,11 +3,10 @@ import ScoreSheet from "./Tables/ScoreSheet";
 import { useDispatch } from "react-redux";
 import CustomModal from "../components/Modal";
 import * as actions from "../store/actions/competitionAction";
-import { useLocation, useHistory, Redirect } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import P from "./UI/Paragraph";
 import CustomButton from "./CustomButton";
 import Devider from "./UI/Devider";
-import PageHeader from "./UI/PageHeader";
 import { Alert } from "@material-ui/lab";
 import ButtonContainer from "./UI/ButtonContainer";
 import Radio from "@material-ui/core/Radio";
@@ -15,6 +14,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { firestore } from "./firebase";
+import TopPagesHeader from "./UI/TopPagesHeader";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);
@@ -83,19 +83,7 @@ const Scores = () => {
 
   return judges ? (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginRight: 30,
-        }}
-      >
-        <PageHeader>Scores</PageHeader>
-        <CustomButton onClick={() => history.goBack()} title="Go Back" />
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPagesHeader title="ScoreSheet" />
       <div style={{ margin: 30 }}>
         <CustomModal
           isOpen={modalopen}
@@ -143,6 +131,7 @@ const Scores = () => {
               ? compClasses.shoeOneType
               : compClasses.shoeTwoType
           }
+          title={ shoe === "shoeOne" ? "Shoe One": "Shoe Two"}
         />
         <Devider margin={60} />
         <ButtonContainer>

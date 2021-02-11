@@ -15,6 +15,7 @@ import { Alert } from "@material-ui/lab";
 import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
 import ButtonContainer from "../components/UI/ButtonContainer";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyles = makeStyles({
   table: {
@@ -58,9 +59,7 @@ const StartList = () => {
 
   return (
     <>
-      <PageHeader>Startlist</PageHeader>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPagesHeader title="StartList" />
       <div
         style={{
           display: "flex",
@@ -89,12 +88,12 @@ const StartList = () => {
                       <TableCell
                         style={{ verticalAlign: "bottom", padding: 0 }}
                       >
-                        <p>Id</p>
+                        <p>Competitor</p>
                       </TableCell>
                       <TableCell
                         style={{ verticalAlign: "bottom", padding: 0 }}
                       >
-                        <p>Competitor</p>
+                        <p>Id</p>
                       </TableCell>
                       <TableCell
                         style={{ verticalAlign: "bottom", padding: 0 }}

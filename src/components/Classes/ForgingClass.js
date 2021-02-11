@@ -44,13 +44,6 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         placeholder="time"
         onChange={(event) => handleClasses("time", event.target)}
       />
-      <TextInput
-        required
-        id="referee"
-        label="Judge"
-        placeholder="Referee"
-        onChange={(event) => handleClasses("referee", event.target)}
-      />
       <SubHeader>Add points for first shoe</SubHeader>
       <p>If not filled out values will get default values (1.5, 1 ,1.5 , 1)</p>
 

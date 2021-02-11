@@ -16,6 +16,7 @@ import ChoiseModal from "../components/ChoiseModal";
 import P from "../components/UI/Paragraph";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/competitionAction";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyles = makeStyles({
   table: {
@@ -99,19 +100,7 @@ const EnterCompetition = () => {
           <CustomButton title="Im sure" onClick={enterCompetition} />
         </div>
       </ChoiseModal>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginRight: 30,
-        }}
-      >
-        <PageHeader>Enter Competition</PageHeader>
-        <CustomButton onClick={() => history.goBack()} title="Go Back" />
-      </div>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPagesHeader title="Enter Competition" />
       <div
         style={{
           display: "flex",

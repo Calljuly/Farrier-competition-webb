@@ -8,9 +8,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import P from "../UI/Paragraph";
 import CustomButton from "../CustomButton";
 import { useHistory } from "react-router-dom";
-import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import ButtonContainer from "../UI/ButtonContainer";
 import ShoePic from "../../assets/Images/shoe1.jpg";
 
@@ -219,8 +217,7 @@ const CompetitionsListItem = ({
           <div className={classes.infoContainer}>
             <div style={{ marginLeft: 20 }}>
               <P>Country : {country}</P>
-              <P>Judge: {referee}</P>
-
+              <P>Judges: {referee}</P>
               <P>Anvils avaliable : {anvils}</P>
               <P>Current Entries : {current}</P>
               <P>Hotels nearby : {hotels}</P>

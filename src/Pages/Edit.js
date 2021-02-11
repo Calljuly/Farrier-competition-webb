@@ -4,8 +4,8 @@ import EditClass from "../components/DataCreators/editClass";
 import Devider from "../components/UI/Devider";
 import { useLocation, useHistory } from "react-router-dom";
 import EditCompetition from "../components/DataCreators/editCompetition";
-import PageHeader from "../components/UI/PageHeader";
 import ButtonContainer from "../components/UI/ButtonContainer";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const Edit = () => {
   const l = useLocation();
@@ -19,9 +19,8 @@ const Edit = () => {
 
   return (
     <>
-      <PageHeader>Edit competition</PageHeader>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPagesHeader title="Edit Competition" />
+
       <div
         style={{
           margin: "auto",

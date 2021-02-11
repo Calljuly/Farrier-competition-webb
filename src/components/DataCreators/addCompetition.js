@@ -11,7 +11,6 @@ import { Alert } from "@material-ui/lab";
 import Devider from "../UI/Devider";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
-import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -19,6 +18,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { createCompetition } from "../../ApiFunctions/Api";
 import { Colors } from "../../colors";
 import { Grid } from "@material-ui/core";
+
 const textInputs = [
   {
     id: 0,
@@ -413,12 +413,14 @@ const AddCompetition = () => {
 
     dispatchReducer({ type: "referee", value: currentState, key: "value" });
   };
+
   const deleteReferee = (name) => {
     let currentState = [...state["referee"].value];
     currentState = currentState.filter((item) => item !== name);
 
     dispatchReducer({ type: "referee", value: currentState, key: "value" });
   };
+
   return (
     <div
       style={{
@@ -562,11 +564,6 @@ const AddCompetition = () => {
         type="text"
         placeholder="Judge"
         onBlur={(event) => addReferee(event)}
-        error={!state["referee"].valid}
-        helperText={
-          !state["referee"].valid &&
-          "You have to enter a valid input, atleast 3 characters"
-        }
       />
       <Grid container>
         {state["referee"].value.map((item) => {

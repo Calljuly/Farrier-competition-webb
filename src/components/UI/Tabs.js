@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-
+import { Grid } from "@material-ui/core";
 import { Colors } from "../../colors";
 
 const useStyle = makeStyles({
@@ -31,7 +31,6 @@ const useStyle = makeStyles({
     borderRadius: 3,
     padding: 5,
     ["@media (max-width:900px)"]: {
-      width: 300,
       margin: 10,
     },
   },
@@ -50,6 +49,7 @@ const CustomTab = ({ buttons, value, handleChange }) => {
       value={value}
       onChange={handleChange}
       orientation={width < 1000 ? "vertical" : "horizontal"}
+      style={{dispaly: 'flex', flexWrap: 'wrap'}}
     >
       {buttons.map((item) => {
         return (

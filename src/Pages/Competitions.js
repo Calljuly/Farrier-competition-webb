@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/styles";
 import EnterCompetition from "../Pages/EnterCompetition";
 import { Alert } from "@material-ui/lab";
 import FilterController from "../components/FilterController";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyle = makeStyles({
   headerContainer: {
@@ -32,7 +33,9 @@ const Competitions = () => {
     const a = state.competitions.competitions;
     if (filter === "sortName") {
       return a.sort((a, b) =>
-        a.competition.name.toLowerCase() > b.competition.name.toLowerCase() ? 1 : -1
+        a.competition.name.toLowerCase() > b.competition.name.toLowerCase()
+          ? 1
+          : -1
       );
     } else if (filter === "sortDate") {
       return a.sort((a, b) =>
@@ -126,17 +129,14 @@ const Competitions = () => {
     <div style={{ marginTop: 0, width: "100%" }}>
       <Switch>
         <Route exact path="/competitions">
-          <div className={classes.headerContainer}>
-            <PageHeader>Competitions</PageHeader>
+          <TopPagesHeader title="Competitions">
             <CustomTab
               buttons={buttons}
               value={value}
               handleChange={handleChange}
             />
-          </div>
-          <div className="divOrange" />
-          <div className="divBlack" />
-          <Devider margin={30} />
+          </TopPagesHeader>
+
           <TabPanel value={value} index={0}>
             <PageHeader>Active competitions</PageHeader>
             <FilterController />

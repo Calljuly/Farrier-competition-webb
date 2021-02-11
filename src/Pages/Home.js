@@ -9,15 +9,11 @@ import Sponsors from "../components/Sponsors";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
 
-const useStyle = makeStyles({
-  container: {},
-});
 
 const Home = () => {
-  const classes = useStyle();
 
   return (
-    <div className={classes.container}>
+    <div>
       <h1 style={{ fontSize: 50, textAlign: "center", margin: 0 }}>
         Forging Scores
       </h1>
@@ -31,6 +27,7 @@ const Home = () => {
           marginTop: 20,
           boxShadow: `0px 1px 1px ${Colors.black}`,
         }}
+        alt="Home image of Timmy Hoas"
       />
       {/*<Sponsors data={null} />*/}
 
