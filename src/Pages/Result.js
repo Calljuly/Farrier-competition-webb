@@ -18,6 +18,7 @@ import { useReactToPrint } from "react-to-print";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import { Alert } from "@material-ui/lab";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import Devider from "../components/UI/Devider";
 
 const useStyles = makeStyles({
   table: {
@@ -67,7 +68,7 @@ const Result = () => {
   const competitionName = l.name;
   const sponsor = l.divisions;
   const history = useHistory();
-  console.log(result);
+
   if (!result || !sponsor) {
     history.push("/competitions");
   }
@@ -94,12 +95,12 @@ const Result = () => {
   const handleClassPrint = useReactToPrint({
     content: () => classResultRef.current,
   });
+
   return sponsor ? (
     <>
-     <TopPagesHeader title="Result" />
+      <TopPagesHeader title="Result" />
       <div className={classes.contentContainer}>
         <PageHeader>{competitionName}</PageHeader>
-
         <div className={classes.sponsorContainer}>
           {sponsor &&
             sponsor.map((item) => {
@@ -129,98 +130,103 @@ const Result = () => {
             result.map((i, index) => {
               return i.class.map((item) => {
                 return (
-                  <TableContainer component={Paper}>
-                    <SubHeader>{item.className}</SubHeader>
-                    <Table
-                      className={classes.table}
-                      aria-label="a dense table"
-                      style={{ width: 1200 }}
-                    >
-                      <TableHead >
-                        <TableRow>
-                          {compClasses[1].headerTitles.map((comp, index) => {
-                            if (comp !== "Total Points") {
-                              return (
-                                <TableCell
-                                  key={comp}
-                                  style={{
-                                    verticalAlign: "bottom",
-                                    padding: 0,
-                                    fontSize: 16,
-                                  }}
-                                >
-                                  <p>{comp}</p>
-                                </TableCell>
-                              );
-                            }
-                          })}
-                          {compClasses[0].headerTitles.map((comp, index) => {
-                            if (comp !== "Competitor") {
-                              return (
-                                <TableCell
-                                  key={comp}
-                                  style={{
-                                    verticalAlign: "bottom",
-                                    padding: 0,
-                                  }}
-                                >
-                                  <p>{comp}</p>
-                                </TableCell>
-                              );
-                            }
-                          })}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody style={{ width: "100%" }}>
-                        {item.result.map((res, index) => {
-                          const color = index % 2 === 0;
+                  <>
+                    <TableContainer component={Paper}>
+                      <SubHeader>{item.className}</SubHeader>
+                      <Table
+                        className={classes.table}
+                        aria-label="a dense table"
+                      >
+                        <TableHead>
+                          <TableRow>
+                            {compClasses[1].headerTitles.map((comp, index) => {
+                              if (comp !== "Total Points") {
+                                return (
+                                  <TableCell
+                                    key={comp}
+                                    style={{
+                                      verticalAlign: "bottom",
+                                      padding: 0,
+                                      fontSize: 16,
+                                    }}
+                                  >
+                                    <p>{comp}</p>
+                                  </TableCell>
+                                );
+                              }
+                            })}
+                            {compClasses[0].headerTitles.map((comp, index) => {
+                              if (comp !== "Competitor") {
+                                return (
+                                  <TableCell
+                                    key={comp}
+                                    style={{
+                                      verticalAlign: "bottom",
+                                      padding: 0,
+                                    }}
+                                  >
+                                    <p>{comp}</p>
+                                  </TableCell>
+                                );
+                              }
+                            })}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {item.result.map((res, index) => {
+                            const color = index % 2 === 0;
 
-                          if (res.shoeOne && res.shoeTwo) {
-                            return (
-                              <TableRow
-                                key={item.id}
-                                style={{
-                                  backgroundColor: color ? "#DCDCDC" : "white",
-                                  width: "100%",
-                                }}
-                              >
-                                <TableCell align="left">
-                                  {res.competitor}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeOne.one}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeOne.two}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeOne.three}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeOne.four}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeTwo.one}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeTwo.two}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeTwo.three}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeTwo.four}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {res.shoeOne.total + res.shoeTwo.total}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          }
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                            if (res.shoeOne && res.shoeTwo) {
+                              return (
+                                <TableRow
+                                  key={item.id}
+                                  style={{
+                                    backgroundColor: color
+                                      ? "#DCDCDC"
+                                      : "white",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <TableCell align="left">
+                                    {res.competitor}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.one}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.two}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.three}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.four}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.one}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.two}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.three}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeTwo.four}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {res.shoeOne.total + res.shoeTwo.total}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            }
+                          })}
+                        </TableBody>
+                        <Devider margin={10} />
+                      </Table>
+                    </TableContainer>
+                    <Devider margin={50} />
+                  </>
                 );
               });
             })}

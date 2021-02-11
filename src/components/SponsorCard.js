@@ -38,10 +38,21 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
       <div className="divOrange" />
       <div className="divBlack" />
       <P>{sponsorName}</P>
-      {sponsorUrl && (
-        <img src={sponsor} style={{ width: "300px" }} alt={sponsorName} />
-      )}
-      {!sponsorUrl && <P>No image avalible</P>}
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "end",
+          flexDirection: "column",
+        }}
+      >
+        {sponsorUrl && (
+          <img src={sponsor} style={{ width: "300px" }} alt={sponsorName} />
+        )}
+        {!sponsorUrl && <P>No image avalible</P>}
+      </div>
     </div>
   );
 };
