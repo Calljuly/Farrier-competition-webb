@@ -7,23 +7,25 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import Sponsors from "../components/Sponsors";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
+import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo.jpg";
 
 const Home = () => {
   return (
     <div>
-      <h1
+      <div
         style={{
-          fontSize: 50,
-          textAlign: "center",
-          margin: 0,
-          fontFamily: "Kohinoor Telugu",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Forging Scores
-      </h1>
-      <h1 style={{ fontSize: 30, textAlign: "center" }}>
-        Welcome to Forging Scores.
-      </h1>
+        <img
+          src={ForgingScoreLoggo}
+          alt="Forging Scores"
+          style={{ width: "40%", margin: 20, alignSelf: "center" }}
+        />
+      </div>
+    
       <img
         src={img}
         style={{
