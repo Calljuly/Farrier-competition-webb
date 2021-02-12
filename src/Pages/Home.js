@@ -38,21 +38,10 @@ const Home = () => {
       {/*<Sponsors data={null} />*/}
 
       <Grid container>
+       
         <Grid
           item
-          lg={4}
-          xs={12}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <HomeButton path="/" Icon={HomeIcon} title="Home" />
-        </Grid>
-        <Grid
-          item
-          lg={4}
+          lg={6}
           xs={12}
           style={{
             display: "flex",
@@ -69,7 +58,7 @@ const Home = () => {
         </Grid>
         <Grid
           item
-          lg={4}
+          lg={6}
           xs={12}
           style={{
             display: "flex",
