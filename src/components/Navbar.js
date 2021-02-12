@@ -119,7 +119,7 @@ const useStyle = makeStyles({
     },
   },
   link: {
-    width: 160,
+    width: 170,
     height: 40,
     margin: 20,
     textDecoration: "none",
@@ -128,6 +128,8 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    padding: 10,
+
     "&:hover": {
       color: "#101820FF",
       backgroundColor: "#F2AA4CFF",
@@ -136,6 +138,7 @@ const useStyle = makeStyles({
   },
   activeLink: {
     margin: 20,
+    padding: 10,
     textDecoration: "none",
     color: "#101820FF",
     backgroundColor: "#F2AA4CFF",

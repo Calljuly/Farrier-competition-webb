@@ -70,6 +70,7 @@ const useStyle = makeStyles({
     display: "flex",
     flexDirection: "column",
     padding: 10,
+    width: "100%",
     ["@media (max-width:956px)"]: {
       width: "100%",
       justifyContent: "center",
@@ -85,11 +86,21 @@ const Footer = () => {
     <div className={classes.container}>
       <Grid container>
         <Grid item lg={4} xs={12} className={classes.gridItem}>
-          <img
-            src={ForgingScoreLoggo}
-            alt="Loggo"
-            style={{ width: "80%", margin: 20 }}
-          />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={ForgingScoreLoggo}
+              alt="Loggo"
+              style={{ width: "80%", margin: 20 }}
+            />
+          </div>
         </Grid>
         <Grid item lg={4} xs={12} className={classes.gridItem}>
           <div

@@ -22,6 +22,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Colors } from "../../colors";
 import { createClass } from "../../ApiFunctions/Api";
+import TopPageHeader from "../UI/TopPagesHeader";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -374,9 +375,8 @@ const AddClass = () => {
           <CustomButton title="Im sure" onClick={() => submitNewClass()} />
         </div>
       </ChoiseModal>
-      <PageHeader>Add new class</PageHeader>
-      <div className="divOrange" />
-      <div className="divBlack" />
+      <TopPageHeader title="Add new class" />
+
       <div style={{ margin: 30 }}>
         <div style={{ margin: "auto", width: "80%" }}>
           {success && (
