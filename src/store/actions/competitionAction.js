@@ -148,7 +148,6 @@ export const saveAllResult = (competitionId, classes) => {
         class: newClassResult,
       };
     });
-    console.log(result);
 
     classes.map((item) => {
       return Object.values(item).map((i) => {
@@ -167,6 +166,8 @@ export const saveAllResult = (competitionId, classes) => {
       .collection("competitions")
       .doc(competitionId)
       .update({ result: result });
+
+    dispatch(fetchCompetitions());
 
     /*
     const user = auth.currentUser;

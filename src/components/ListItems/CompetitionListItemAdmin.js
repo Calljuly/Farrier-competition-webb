@@ -265,7 +265,10 @@ const CompetitionListItemAdmin = ({
           <CustomButton title="Cancel" onClick={() => setModal(false)} />
           <CustomButton
             title="Im sure"
-            onClick={() => dispatch(actions.saveAllResult(id, divisions))}
+            onClick={() => {
+              setModal(false);
+              dispatch(actions.saveAllResult(id, divisions));
+            }}
           />
         </div>
       </ChoiseModal>
