@@ -330,7 +330,11 @@ const CompetitionListItemAdmin = ({
                                 <P>{item.shoeOne}</P>
                                 <img
                                   className={classes.shoePic}
-                                  src={ShoePic}
+                                  src={
+                                    item.shoeOneImg === ""
+                                      ? ShoePic
+                                      : item.shoeOneImg
+                                  }
                                   alt="shoe pic"
                                 />
                               </div>
@@ -338,7 +342,11 @@ const CompetitionListItemAdmin = ({
                                 <P>{item.shoeTwo}</P>
                                 <img
                                   className={classes.shoePic}
-                                  src={ShoePic}
+                                  src={
+                                    item.shoeTwoImg === ""
+                                      ? ShoePic
+                                      : item.shoeTwoImg
+                                  }
                                   alt="shoe pic"
                                 />
                               </div>

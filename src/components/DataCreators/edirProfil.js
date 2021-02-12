@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import ButtonContainer from "../UI/ButtonContainer";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
+import TopPagesHeader from "../UI/TopPagesHeader";
+import EditEmailAndPassword from "./editEmailAndPassword";
 
 const textFieldsRegister = [
   {
@@ -98,7 +100,8 @@ const EditProfile = () => {
 
   const updateUser = async () => {
     let newUserData = authState;
-    if (authState.img) {
+
+    if (authState.img && typeof authState.img !== "string") {
       const uploadTask = storage
         .ref()
         .child(`profiles/${authState.img.name}`)
@@ -111,20 +114,6 @@ const EditProfile = () => {
             ...authState,
             img: authState.img.name,
           };
-
-          /*
-          storage
-            .ref()
-            .child(`profiles/${authState.profileImage.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              const u = url;
-              handleInputChange("profileImage", u);
-            })
-            .catch((err) => {
-              console.log(err);
-              setIsOpen(false);
-            });*/
         },
         (err) => {
           console.log(err);
@@ -132,30 +121,27 @@ const EditProfile = () => {
         }
       );
     }
-
     const user = auth.currentUser;
-    return user.getIdToken().then(async (token) => {
+    user.getIdToken().then(async (token) => {
       fetch(
         `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ user: newUserData }),
-          Authorization: `Bearer ${token}`,
         }
       )
         .then((response) => {
           return response.json();
         })
         .then((res) => {
-          console.log(res);
           if (res.message === "Success") {
             setSuccess(true);
             dispatch(actions.newUserData(newUserData));
-          }
-          else{
+          } else {
             setError(res.message);
           }
           setIsOpen(false);
@@ -169,53 +155,59 @@ const EditProfile = () => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
-        <PageHeader>Are you sure ?</PageHeader>
-        <P> Are you sure you want to update your user data ? </P>
-        <div style={{ display: "flex" }}>
-          <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
-          <CustomButton title="Im sure" onClick={updateUser} />
-        </div>
-      </ChoiseModal>
-      <div className={classes.inputContainer}>
-        {success && (
-          <Alert onClose={() => setSuccess(false)}>
-            Your account was updated successfully!
-          </Alert>
-        )}
-        {error.length > 3 && (
-          <Alert severity="error" onClose={() => setError("")}>
-            {error}
-          </Alert>
-        )}
-        {textFieldsRegister.map((item) => (
-          <TextInput
-            key={item.id}
-            onChange={(text) => handleInputChange(item.key, text)}
-            className={classes.input}
-            label={item.label}
-            type={item.type}
-          />
-        ))}
-        <TextInput
-          onChange={(text) => handleInputChange("bio", text)}
-          className={classes.input}
-          label="Write something about yourself"
-          type="text"
-          multiline
-          rows={4}
-        />
-        <Devider margin={30} />
+    <>
+      <TopPagesHeader title="Edit Profile" />
 
-        <ButtonContainer>
-          <CustomButton
-            title="Update profile"
-            onClick={() => setIsOpen((prev) => !prev)}
+      <div style={{ width: "80%", margin: "auto" }}>
+        <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+          <PageHeader>Are you sure ?</PageHeader>
+          <P> Are you sure you want to update your user data ? </P>
+          <div style={{ display: "flex" }}>
+            <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
+            <CustomButton title="Im sure" onClick={updateUser} />
+          </div>
+        </ChoiseModal>
+        <PageHeader>Edit profile Information</PageHeader>
+        <div className={classes.inputContainer}>
+          {success && (
+            <Alert onClose={() => setSuccess(false)}>
+              Your account was updated successfully!
+            </Alert>
+          )}
+          {error.length > 3 && (
+            <Alert severity="error" onClose={() => setError("")}>
+              {error}
+            </Alert>
+          )}
+          {textFieldsRegister.map((item) => (
+            <TextInput
+              key={item.id}
+              onChange={(text) => handleInputChange(item.key, text)}
+              className={classes.input}
+              label={item.label}
+              type={item.type}
+            />
+          ))}
+          <TextInput
+            onChange={(text) => handleInputChange("bio", text)}
+            className={classes.input}
+            label="Write something about yourself"
+            type="text"
+            multiline
+            rows={4}
           />
-        </ButtonContainer>
+          <Devider margin={30} />
+
+          <ButtonContainer>
+            <CustomButton
+              title="Update profile"
+              onClick={() => setIsOpen((prev) => !prev)}
+            />
+          </ButtonContainer>
+        </div>
+        <EditEmailAndPassword />
       </div>
-    </div>
+    </>
   );
 };
 

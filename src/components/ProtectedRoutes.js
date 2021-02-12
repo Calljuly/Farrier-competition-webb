@@ -8,12 +8,16 @@ import Contact from "../Pages/Contact";
 import Login from "../Pages/Login";
 import Admin from "../Pages/Admin";
 import ErrorPage from "./UI/ErrorPage";
+import EditProfile from "./DataCreators/edirProfil";
+import About from "../Pages/About";
 
 export const getUnProtectedRoutes = () => {
   return (
     <Layout>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/about" component={About} />
+
         <Route path="/competitions" component={Competitions} />
         <Route path="/contact" component={Contact} />
         <Route path="/signIn" component={Login} />
@@ -30,7 +34,10 @@ export const getProtectedUserRoutes = (isAuthenticated) => {
       <Layout>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/myProfile" component={User} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/myProfile" component={User} />
+          <Route path="/myProfile/editProfile" component={EditProfile} />
+          <Route path="/myProfile/result" component={User} />
           <Route path="/competitions" component={Competitions} />
           <Route path="/contact" component={Contact} />
           <Route>
@@ -46,7 +53,10 @@ export const getProtectedAdminRoutes = () => {
     <Layout>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/myProfile" component={User} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/myProfile" component={User} />
+        <Route path="/myProfile/editProfile" component={EditProfile} />
+        <Route path="/myProfile/result" component={User} />
         <Route path="/competitions" component={Competitions} />
         <Route path="/admin" component={Admin} />
         <Route path="/contact" component={Contact} />

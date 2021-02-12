@@ -7,6 +7,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import CustomDrawer from "./CustomDrawer";
 import { Colors } from "../colors";
 import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo-White.jpg";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const linksAdmin = [
   {
@@ -68,9 +73,21 @@ const linksAuth = [
     exact: true,
   },
   {
+    id: 6,
+    label: "ABOUT",
+    path: "/about",
+    exact: true,
+  },
+  {
     id: 1,
     label: "PROFILE",
     path: "/myProfile",
+    exact: false,
+  },
+  {
+    id: 5,
+    label: "EDIT PROFILE",
+    path: "/myProfile/editProfile",
     exact: false,
   },
   {
@@ -98,7 +115,7 @@ const useStyle = makeStyles({
     justifyContent: "center",
     backgroundColor: "#101820FF",
     flexDirection: "row",
-    ["@media (max-width:1253px)"]: {
+    ["@media (max-width:1300px)"]: {
       justifyContent: "flex-start",
     },
   },
@@ -153,7 +170,8 @@ const useStyle = makeStyles({
     display: "flex",
     width: "80%",
     alignItems: "center",
-    ["@media (max-width:1253px)"]: {
+    justifyContent: "space-evenly",
+    ["@media (max-width:1300px)"]: {
       display: "none",
     },
   },
@@ -163,7 +181,7 @@ const useStyle = makeStyles({
   },
   menuIconContainer: {
     display: "none",
-    ["@media (max-width:1253px)"]: {
+    ["@media (max-width:1300px)"]: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -184,7 +202,15 @@ const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const admin = useSelector((state) => state.auth.admin);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div className={classes.container}>
       <CustomDrawer
@@ -197,57 +223,110 @@ const Navbar = () => {
         <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />
       </div>
       <div className={classes.contentContainer}>
-        <img
-          src={ForgingScoreLoggo}
-          alt="Loggo"
-          style={{ width: "20%", margin: 20 }}
-        />
-        {admin
-          ? linksAdmin.map((item) => (
-              <NavLink
-                key={item.id}
-                className={classes.link}
-                activeClassName={classes.activeLink}
-                to={item.path}
-                exact={item.exact}
-              >
-                <p>{item.label}</p>
-              </NavLink>
-            ))
-          : isAuth
-          ? linksAuth.map((item) => (
-              <NavLink
-                key={item.id}
-                className={classes.link}
-                activeClassName={classes.activeLink}
-                to={item.path}
-                exact={item.exact}
-              >
-                <p>{item.label}</p>
-              </NavLink>
-            ))
-          : linksUnAuth.map((item) => (
-              <NavLink
-                key={item.id}
-                className={classes.link}
-                activeClassName={classes.activeLink}
-                to={item.path}
-                exact={item.exact}
-              >
-                <p>{item.label}</p>
-              </NavLink>
-            ))}
         <NavLink
-          onClick={
-            isAuth
-              ? () => dispatch(actions.logOut())
-              : () => history.push("/signIn")
-          }
           className={classes.link}
-          to={isAuth ? "/" : "/signIn"}
+          activeClassName={classes.activeLink}
+          to="/competitions"
         >
-          {isAuth ? "SIGN OUT" : "SIGN IN"}
+          <p>COMPETITIONS</p>
         </NavLink>
+        <NavLink
+          className={classes.link}
+          activeClassName={classes.activeLink}
+          to="/ABOUT"
+        >
+          <p>ABOUT</p>
+        </NavLink>
+        <NavLink excat to="/" style={{ width: "20%", margin: 20 }}>
+          <img src={ForgingScoreLoggo} alt="Loggo" style={{ width: "100%" }} />
+        </NavLink>
+        <NavLink
+          className={classes.link}
+          activeClassName={classes.activeLink}
+          to="/contact"
+        >
+          <p>CONTACT</p>
+        </NavLink>
+        {isAuth ? (
+          <>
+            <NavLink
+              className={classes.link}
+              activeClassName={classes.activeLink}
+              to="/myProfile"
+            >
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                style={{ color: "inherit", backgroundColor: "inherit" }}
+                onMouseOver={handleClick}
+              >
+                <div style={{ display: "flex", alignItems: "center", fontSize: 16 }}>
+                  <p>PROFILE </p>
+                  <AccountCircleOutlinedIcon style={{ marginLeft: 10 }} />
+                </div>
+              </Button>
+            </NavLink>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              style={{ marginTop: 50, width: 230 }}
+            >
+              <MenuItem style={{ width: 190 }}>
+                <NavLink
+                  exact
+                  to="/myProfile"
+                  onClick={handleClose}
+                  style={{ color: "black", textDecoration: "none" }}
+                >
+                  My Profile
+                </NavLink>
+              </MenuItem>
+              <MenuItem>
+                <NavLink
+                  to="/myProfile/editProfile"
+                  onClick={handleClose}
+                  style={{ color: "black", textDecoration: "none" }}
+                >
+                  Edit Profile
+                </NavLink>
+              </MenuItem>
+              {admin && (
+                <MenuItem>
+                  <NavLink
+                    to="/admin"
+                    onClick={handleClose}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    Admin
+                  </NavLink>
+                </MenuItem>
+              )}
+              <MenuItem>
+                <NavLink
+                  to="/"
+                  onClick={() => dispatch(actions.logOut())}
+                  style={{ color: "black", textDecoration: "none" }}
+                >
+                  Logout
+                </NavLink>
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <NavLink
+            onClick={() => history.push("/signIn")}
+            className={classes.link}
+            to="/signIn"
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <p>SIGN IN </p>
+              <AccountCircleOutlinedIcon style={{ marginLeft: 10 }} />
+            </div>
+          </NavLink>
+        )}
       </div>
     </div>
   );

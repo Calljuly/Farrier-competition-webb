@@ -98,6 +98,8 @@ const EditEmailAndPassword = () => {
           <CustomButton title="Im sure" onClick={() => updateEmail()} />
         </div>
       </ChoiseModal>
+      <PageHeader>Change Password</PageHeader>
+
       <P>Do you want change your password ? </P>
       <P>
         Press the button below and you will will recive an email to your picked

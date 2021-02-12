@@ -46,6 +46,77 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+async function doTheThing(user, classesObject, newClass, id) {
+  user.getIdToken().then(async (token) => {
+    createClass(token, newClass, id)
+      .then((res) => {
+        console.log(res);
+        /*if (res.message === "Succsess") {
+          dispatch(actions.fetchCompetitions());
+          dispatch(actions.loading(false));
+          setClasses({
+            pointsToMultiply: [],
+            shoeOne: "",
+            shoeOneImg: "",
+            shoeTwo: "",
+            shoeTwoImg: "",
+            time: "",
+            type: "",
+            result: [],
+            unPublishedResult: [],
+            sponsors: "",
+            sponsorLoggo: "",
+            referee: "",
+            feet: "right",
+          });
+          setIsOpen(false);
+          setSuccess(true);
+        } else {
+          setError(res.message);
+          dispatch(actions.loading(false));
+          setClasses({
+            pointsToMultiply: [],
+            shoeOne: "",
+            shoeOneImg: "",
+            shoeTwo: "",
+            shoeTwoImg: "",
+            time: "",
+            type: "",
+            result: [],
+            unPublishedResult: [],
+            sponsors: "",
+            sponsorLoggo: "",
+            referee: "",
+            feet: "right",
+          });
+          setIsOpen(false);
+        }*/
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        /*setError(error.message);
+        dispatch(actions.loading(false));
+        setClasses({
+          pointsToMultiply: [],
+          shoeOne: "",
+          shoeOneImg: "",
+          shoeTwo: "",
+          shoeTwoImg: "",
+          time: "",
+          type: "",
+          result: [],
+          unPublishedResult: [],
+          sponsors: "",
+          sponsorLoggo: "",
+          referee: "",
+          feet: "right",
+        });*/
+        //  setIsOpen(false);
+      });
+    //setIsOpen(false);
+  });
+}
+
 const AddClass = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -125,6 +196,126 @@ const AddClass = () => {
     }
   };
 
+  const submitNewClass = async () => {
+    if (
+      classesObject.divisions === "" ||
+      classesObject.className === "" ||
+      classesObject.type === ""
+    ) {
+      setError(
+        "You need to add your class to a division or regular, name  and type"
+      );
+      //setIsOpen(false);
+      return;
+    }
+    let newClass = {
+      ...classesObject,
+      pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
+    };
+
+    const user = auth.currentUser;
+    dispatch(actions.loading(true));
+
+    function uploadComplete(uploadTask) {
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        console.log("File available at", downloadURL);
+        doTheThing(user, classesObject, newClass, id);
+      });
+    }
+
+    if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
+      const uploadTask = storage
+        .ref()
+        .child(`shoes/${classesObject.shoeOneImg.name}`)
+        .put(classesObject.shoeOneImg);
+        await uploadTask.on("state_changed",
+        (snapShot) => {
+          storage
+            .ref()
+            .child(`shoes/${classesObject.shoeOneImg.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              newClass.shoeOneImg = url;
+            })
+            .catch((err) => {
+              console.log( err);
+            });
+        },
+        (err) => {
+          console.log(err);
+          console.log("Upload", err);
+
+          //dispatch(actions.loading(false));
+          //setIsOpen(false);
+        },
+        () => uploadComplete(uploadTask)
+      );
+    }
+
+    if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
+      const uploadTask = storage
+        .ref()
+        .child(`sponsors/${classesObject.shoeTwoImg.name}`)
+        .put(classesObject.shoeTwoImg);
+        await uploadTask.on("state_changed",
+        (snapShot) => {
+          storage
+            .ref()
+            .child(`sponsors/${classesObject.shoeTwoImg.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              newClass.shoeTwoImg = url;
+            })
+            .catch((err) => {
+              console.log( err);
+            });
+        },
+        (err) => {
+          console.log(err);
+          console.log("Upload", err);
+
+          //dispatch(actions.loading(false));
+          //setIsOpen(false);
+        },
+        () => uploadComplete(uploadTask)
+      );
+    }
+
+    if (classesObject.sponsorLoggo && classesObject.sponsorLoggo !== "") {
+      const uploadTask = storage
+        .ref()
+        .child(`sponsors/${classesObject.sponsorLoggo.name}`)
+        .put(classesObject.sponsorLoggo);
+
+      await uploadTask.on(
+        "state_changed",
+        (snapShot) => {
+          storage
+            .ref()
+            .child(`sponsors/${classesObject.sponsorLoggo.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              console.log(typeof url);
+              console.log(url);
+              newClass.sponsorLoggo = url;
+            })
+            .catch((err) => {
+              console.log("Hämta url", err);
+            });
+          //newClass.sponsorLoggo = newClass.sponsorLoggo.name;
+        },
+        (err) => {
+          console.log(err);
+          console.log("Upload", err);
+
+          //dispatch(actions.loading(false));
+          //setIsOpen(false);
+        },
+        () => uploadComplete(uploadTask)
+      );
+    }
+  };
+
   const pointsHandler = (key, event) => {
     switch (key) {
       case 0:
@@ -142,148 +333,6 @@ const AddClass = () => {
       default:
         return;
     }
-  };
-
-  const submitNewClass = async () => {
-    if (
-      classesObject.divisions === "" ||
-      classesObject.className === "" ||
-      classesObject.type === ""
-    ) {
-      setError(
-        "You need to add your class to a division or regular, name  and type"
-      );
-      setIsOpen(false);
-      return;
-    }
-    let newClass = {
-      ...classesObject,
-      pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
-    };
-
-    const user = auth.currentUser;
-    dispatch(actions.loading(true));
-
-    if (classesObject.sponsorLoggo && classesObject.sponsorLoggo !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`sponsors/${classesObject.sponsorLoggo.name}`)
-        .put(classesObject.sponsorLoggo);
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          newClass.sponsorLoggo = newClass.sponsorLoggo.name;
-        },
-        (err) => {
-          console.log(err);
-          dispatch(actions.loading(false));
-          setIsOpen(false);
-        }
-      );
-    }
-    if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`sponsors/${classesObject.shoeOneImg.name}`)
-        .put(classesObject.shoeOneImg);
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          newClass.shoeOneImg = newClass.shoeOneImg.name;
-        },
-        (err) => {
-          console.log(err);
-          dispatch(actions.loading(false));
-          setIsOpen(false);
-        }
-      );
-    }
-    if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`sponsors/${classesObject.shoeTwoImg.name}`)
-        .put(classesObject.shoeTwoImg);
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          newClass.shoeTwoImg = newClass.shoeTwoImg.name;
-        },
-        (err) => {
-          console.log(err);
-          dispatch(actions.loading(false));
-          setIsOpen(false);
-        }
-      );
-    }
-
-    user.getIdToken().then(async (token) => {
-      createClass(token, newClass, id)
-        .then((res) => {
-          console.log(res);
-          if (res.message === "Succsess") {
-            dispatch(actions.fetchCompetitions());
-            dispatch(actions.loading(false));
-            setClasses({
-              pointsToMultiply: [],
-              shoeOne: "",
-              shoeOneImg: "",
-              shoeTwo: "",
-              shoeTwoImg: "",
-              time: "",
-              type: "",
-              result: [],
-              unPublishedResult: [],
-              sponsors: "",
-              sponsorLoggo: "",
-              referee: "",
-              feet: "right",
-            });
-            setIsOpen(false);
-            setSuccess(true);
-          } else {
-            setError(res.message);
-            dispatch(actions.loading(false));
-            setClasses({
-              pointsToMultiply: [],
-              shoeOne: "",
-              shoeOneImg: "",
-              shoeTwo: "",
-              shoeTwoImg: "",
-              time: "",
-              type: "",
-              result: [],
-              unPublishedResult: [],
-              sponsors: "",
-              sponsorLoggo: "",
-              referee: "",
-              feet: "right",
-            });
-            setIsOpen(false);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          setError(error.message);
-          dispatch(actions.loading(false));
-          setClasses({
-            pointsToMultiply: [],
-            shoeOne: "",
-            shoeOneImg: "",
-            shoeTwo: "",
-            shoeTwoImg: "",
-            time: "",
-            type: "",
-            result: [],
-            unPublishedResult: [],
-            sponsors: "",
-            sponsorLoggo: "",
-            referee: "",
-            feet: "right",
-          });
-          setIsOpen(false);
-        });
-      setIsOpen(false);
-    });
   };
 
   useEffect(() => {
