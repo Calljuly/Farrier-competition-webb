@@ -1,6 +1,5 @@
 import React from "react";
 import HomeButton from "../components/HomeButton";
-import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import StarIcon from "@material-ui/icons/Star";
@@ -9,12 +8,17 @@ import Sponsors from "../components/Sponsors";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
 
-
 const Home = () => {
-
   return (
     <div>
-      <h1 style={{ fontSize: 50, textAlign: "center", margin: 0 }}>
+      <h1
+        style={{
+          fontSize: 50,
+          textAlign: "center",
+          margin: 0,
+          fontFamily: "Kohinoor Telugu",
+        }}
+      >
         Forging Scores
       </h1>
       <h1 style={{ fontSize: 30, textAlign: "center" }}>

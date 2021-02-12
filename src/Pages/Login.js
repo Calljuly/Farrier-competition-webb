@@ -238,7 +238,6 @@ const Login = () => {
   if (isAuth) {
     history.push("/");
   }
-  console.log(isError);
   return (
     <div>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>

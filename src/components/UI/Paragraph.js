@@ -6,7 +6,7 @@ const useStyle = makeStyles({
   p: {
     fontSize: "20px",
     color: Colors.black,
-    fontFamily: "Constantia",
+    fontFamily: "Kohinoor Telugu",
     margin: 5,
     ["@media (max-width:956px)"]: {
       fontSize: 15,

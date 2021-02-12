@@ -36,8 +36,7 @@ const App = () => {
               return response.json();
             })
             .then((users) => {
-              const a = users.user.find((u) => u.id === user.uid);
-              return a.users;
+              return users.user.users;
             })
             .then((a) => {
               if (a.img !== "") {
@@ -78,6 +77,7 @@ const App = () => {
               console.log(error);
               dispatch(action.isError(true));
               dispatch(action.isAuth(false, false, {}, "", false));
+              
             });
         });
       } else {
