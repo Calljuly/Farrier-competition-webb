@@ -341,6 +341,8 @@ const Result = () => {
               );
             })}
         </ComponentToPrint>
+        <Devider margin={20} />
+
         <ButtonContainer>
           <CustomButton onClick={handleResultPrint} title="Print result" />
           <CustomButton onClick={handleClassPrint} title="Print class result" />

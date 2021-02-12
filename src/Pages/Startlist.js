@@ -16,6 +16,7 @@ import ComponentToPrint from "../components/PdfGenerator";
 import { useReactToPrint } from "react-to-print";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import Devider from "../components/UI/Devider";
 
 const useStyles = makeStyles({
   table: {
@@ -129,7 +130,7 @@ const StartList = () => {
             <Alert severity="error">No startlist avalibale</Alert>
           )}
         </ComponentToPrint>
-
+        <Devider margin={20} />
         <ButtonContainer>
           <CustomButton title="Print startlist" onClick={handlePrint} />
           <CustomButton title="Go back" onClick={() => history.goBack()} />
