@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from "@material-ui/icons/Menu";
 import CustomDrawer from "./CustomDrawer";
 import { Colors } from "../colors";
+import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo-White.jpg";
 
 const linksAdmin = [
   {
@@ -85,6 +86,7 @@ const linksAuth = [
     exact: false,
   },
 ];
+
 const useStyle = makeStyles({
   avatar: {
     width: 100,
@@ -192,6 +194,11 @@ const Navbar = () => {
         <MenuIcon onClick={toggleDrawer} className={classes.menuIcon} />
       </div>
       <div className={classes.contentContainer}>
+        <img
+          src={ForgingScoreLoggo}
+          alt="Loggo"
+          style={{ width: "20%", margin: 20 }}
+        />
         {admin
           ? linksAdmin.map((item) => (
               <NavLink

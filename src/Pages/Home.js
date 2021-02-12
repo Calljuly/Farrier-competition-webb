@@ -1,7 +1,6 @@
 import React from "react";
 import HomeButton from "../components/HomeButton";
 import { Grid } from "@material-ui/core";
-import HomeIcon from "@material-ui/icons/Home";
 import StarIcon from "@material-ui/icons/Star";
 import PhoneIcon from "@material-ui/icons/Phone";
 import Sponsors from "../components/Sponsors";
@@ -33,8 +32,9 @@ const Home = () => {
           marginTop: 20,
           boxShadow: `0px 1px 1px ${Colors.black}`,
         }}
-        alt="Home image of Timmy Hoas"
+        alt="Home of Timmy Hoas"
       />
+
       {/*<Sponsors data={null} />*/}
 
       <Grid container>
@@ -53,7 +53,6 @@ const Home = () => {
             path="/competitions"
             Icon={StarIcon}
             title="Our competitions"
-            description="If you want see what competitions that are avalible to enter or just serach through results from past competitions"
           />
         </Grid>
         <Grid
@@ -70,7 +69,6 @@ const Home = () => {
             path="/contact"
             Icon={PhoneIcon}
             title="Do you want to contact us?"
-            description="Have you enjoyed the side ? Or have you found something do dont like ? Please contact me and let me know what your experience with the side!"
           />
         </Grid>
       </Grid>

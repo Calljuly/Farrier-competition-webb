@@ -29,7 +29,8 @@ const useStyle = makeStyles({
     },
   },
 });
-const HomeButton = ({ Icon, title, description, path }) => {
+
+const HomeButton = ({ Icon, title, path }) => {
   const classes = useStyle();
 
   return (
@@ -37,7 +38,6 @@ const HomeButton = ({ Icon, title, description, path }) => {
       <div className={classes.container}>
         <Icon fontSize="large" />
         <h1>{title}</h1>
-        <p>{description}</p>
       </div>
     </Link>
   );

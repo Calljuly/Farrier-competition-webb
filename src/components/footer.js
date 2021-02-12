@@ -6,6 +6,7 @@ import LocalPhoneOutlinedIcon from "@material-ui/icons/LocalPhoneOutlined";
 import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
 import { useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo-White.jpg";
 
 const useStyle = makeStyles({
   container: {
@@ -33,8 +34,6 @@ const useStyle = makeStyles({
     fontSize: 20,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
     ["@media (max-width:956px)"]: {
       width: "100%",
     },
@@ -85,37 +84,67 @@ const Footer = () => {
   return (
     <div className={classes.container}>
       <Grid container>
-        <Grid item lg={4} xs={12} className={classes.gridItem}></Grid>
         <Grid item lg={4} xs={12} className={classes.gridItem}>
-          <div className={classes.itemContainer}>
-            <MailOutlinedIcon className={classes.icon} />
+          <img
+            src={ForgingScoreLoggo}
+            alt="Loggo"
+            style={{ width: "80%", margin: 20 }}
+          />
+        </Grid>
+        <Grid item lg={4} xs={12} className={classes.gridItem}>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div className={classes.itemContainer}>
+                <MailOutlinedIcon className={classes.icon} />
 
-            <a className={classes.email} href="mailto: calljuly@gmail.com">
-              Calljuly@gmail.com
-            </a>
-          </div>
-          <div className={classes.itemContainer}>
-            <LocalPhoneOutlinedIcon className={classes.icon} />
+                <a className={classes.email} href="mailto: calljuly@gmail.com">
+                  Calljuly@gmail.com
+                </a>
+              </div>
+              <div className={classes.itemContainer}>
+                <LocalPhoneOutlinedIcon className={classes.icon} />
 
-            <a className={classes.email} href="tel:0705222633">
-              +46705222633
-            </a>
+                <a className={classes.email} href="tel:0705222633">
+                  +46705222633
+                </a>
+              </div>
+            </div>
           </div>
         </Grid>
         <Grid item lg={4} xs={12} className={classes.gridItem}>
-          <div className={classes.buttonContainer}>
-            <Button
-              className={classes.button}
-              onClick={() => history.push("/contact")}
-            >
-              Contact
-            </Button>
-            <Button
-              className={classes.button}
-              onClick={() => history.push("/competitions")}
-            >
-              Competitions
-            </Button>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div className={classes.buttonContainer}>
+                <Button
+                  className={classes.button}
+                  onClick={() => history.push("/contact")}
+                >
+                  Contact
+                </Button>
+                <Button
+                  className={classes.button}
+                  onClick={() => history.push("/competitions")}
+                >
+                  Competitions
+                </Button>
+              </div>
+            </div>
           </div>
         </Grid>
       </Grid>
