@@ -13,18 +13,17 @@ html {
   margin: 0;
   padding: 0;
   height: "100vh";
-  background-color: #DCDCDC;
+  background-color: white;
 }
 ol{
   list-style-type: "none";
   font-weight: "thin";
   font-size: 40px;
-  font-family: "Constantia";
+  font-family: "Kohinoor Telugu";
 
 }
 li{
-  font-family: "Constantia";
-
+  font-family: "Kohinoor Telugu";
 }
 h2, h1,h3, p {
   font-family: 'Kohinoor Telugu';

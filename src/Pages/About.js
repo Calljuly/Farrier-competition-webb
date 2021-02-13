@@ -7,7 +7,7 @@ const useStyle = makeStyles({
   card: {
     backgroundColor: "rgba(255,255,255, 0.8)",
     width: 600,
-    height: '80%',
+    height: "80%",
     position: "absolute",
     top: 50,
     left: 70,
@@ -60,9 +60,11 @@ const About = () => {
             This site has been created to simplify your life as a competitive
             farrier or organiser. A simple way for you to register and enter a
             competition, register scores and keep up to date with live scores
-            and the latest news. Our names are Julia Call and Timmy Hoas and we
-            are the creators of the site. If you wish to get in contact with us,
-            please go to our contact page.
+            and the latest news. <br />
+            <br />
+            Our names are Julia Call and Timmy Hoas and we are the creators of
+            the site. If you wish to get in contact with us, please go to our
+            contact page.
           </p>
         </div>
       </div>

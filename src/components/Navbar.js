@@ -168,7 +168,7 @@ const useStyle = makeStyles({
 
   contentContainer: {
     display: "flex",
-    width: "80%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "space-evenly",
     ["@media (max-width:1300px)"]: {

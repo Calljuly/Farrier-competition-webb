@@ -3,27 +3,15 @@ import { useSelector } from "react-redux";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import PageHeader from "../components/UI/PageHeader";
 import { Route, Switch } from "react-router-dom";
-import Devider from "../components/UI/Devider";
 import StartList from "./Startlist";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-import { makeStyles } from "@material-ui/styles";
 import EnterCompetition from "../Pages/EnterCompetition";
 import { Alert } from "@material-ui/lab";
 import FilterController from "../components/FilterController";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-const useStyle = makeStyles({
-  headerContainer: {
-    display: "flex",
-    alignItems: "center",
-    ["@media (max-width:1000px)"]: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  },
-});
 
 const Competitions = () => {
   const [value, setValue] = useState(0);
@@ -46,7 +34,6 @@ const Competitions = () => {
     }
   });
 
-  const classes = useStyle();
   const handleChange = (event, newValue) => {
     event.preventDefault();
     setValue(newValue);
@@ -62,6 +49,7 @@ const Competitions = () => {
       label: "Past",
     },
   ];
+
   const competitionsActive = competitions.map((item, index) => {
     const competitionEndDate = new Date(item.competition.dateTo);
 
