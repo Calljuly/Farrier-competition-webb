@@ -317,8 +317,8 @@ const AddCompetition = () => {
       admin.push(userId);
       const comp = {
         currentEntries: 0,
-        result: {},
-        entries: {},
+        result: [],
+        entries: [],
         country: state.country.value,
         anvils: state.anvils.value,
         semi: state.semi.value,
@@ -447,7 +447,7 @@ const AddCompetition = () => {
         </Alert>
       )}
       {success && (
-        <Alert onClose={() => setSuccess(true)}>
+        <Alert onClose={() => setSuccess(false)}>
           You created your competition sucsessfully!
         </Alert>
       )}

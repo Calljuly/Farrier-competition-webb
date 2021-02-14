@@ -64,23 +64,11 @@ const useStyles = makeStyles({
 const Result = () => {
   const classes = useStyles();
   const l = useLocation();
-  const incomingResult = l.result
-    ? Object.keys(l.result).length !== 0
-      ? l.result
-      : []
-    : [];
+  const incomingResult = l.result ? l.result : [];
   const competitionName = l.name ? l.name : "No name avalilable";
   const sponsor = l.divisions ? l.divisions : [];
   const history = useHistory();
   const result = [];
-  console.log(incomingResult);
-  if (
-    incomingResult.length === 0 ||
-    sponsor.length === 0 ||
-    Object.keys(incomingResult).length === 0
-  ) {
-    history.push("/competitions");
-  }
 
   const savedClasses = [];
 
@@ -142,7 +130,7 @@ const Result = () => {
         </div>
         <PageHeader>Result for the competition</PageHeader>
 
-        {Object.keys(result).length === 0 && (
+        {result.length === 0 && (
           <Alert severity="error">
             This competition has no finnished results yet
           </Alert>
