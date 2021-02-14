@@ -175,16 +175,17 @@ const CompetitionListItemAdmin = ({
     setOpen(event.target.checked);
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
-      await openCompetition(token, id, event.target.checked)
+      openCompetition(token, id, event.target.checked)
         .then((res) => {
+          console.log(res);
           dispatch(actions.fetchCompetitions());
+          setShowProposition(false);
+
         })
         .catch((err) => {
           console.log(err);
         });
     });
-    setShowProposition(false);
-    dispatch(actions.fetchCompetitions());
   };
 
   const startCompetitionHandler = async (event) => {

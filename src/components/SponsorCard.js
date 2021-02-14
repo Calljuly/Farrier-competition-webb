@@ -20,17 +20,6 @@ const useStyle = makeStyles({
 
 const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
   const classes = useStyle();
-  const [sponsor, setSponsor] = useState("");
-
-  if (sponsorUrl) {
-    storage
-      .ref()
-      .child(`sponsors/${sponsorUrl}`)
-      .getDownloadURL()
-      .then((url) => {
-        setSponsor(url);
-      });
-  }
 
   return (
     <div className={classes.card}>
@@ -49,7 +38,7 @@ const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
         }}
       >
         {sponsorUrl && (
-          <img src={sponsor} style={{ width: "300px" }} alt={sponsorName} />
+          <img src={sponsorUrl} style={{ width: "300px" }} alt={sponsorName} />
         )}
         {!sponsorUrl && <P>No image avalible</P>}
       </div>

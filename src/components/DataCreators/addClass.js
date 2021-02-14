@@ -153,6 +153,7 @@ const AddClass = () => {
           .collection(classesObject.divisions)
           .doc(classesObject.className)
           .update({ [key]: downloadURL });
+        dispatch(actions.fetchCompetitions());
       });
     }
     user.getIdToken().then(async (token) => {
@@ -211,7 +212,6 @@ const AddClass = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-      dispatch(actions.fetchCompetitions());
     });
 
     dispatch(actions.loading(false));

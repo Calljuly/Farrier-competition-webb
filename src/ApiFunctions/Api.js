@@ -82,6 +82,7 @@ export const startCompetitions = async (token, id, comp, result) => {
   return response.json();
 };
 export const openCompetition = async (token, id, checked) => {
+  console.log(checked)
   const response = await fetch(
     `https://us-central1-farrier-project.cloudfunctions.net/app/openCompetition/${id}`,
     {

@@ -66,7 +66,7 @@ const Result = () => {
   const l = useLocation();
   const incomingResult = l.result
     ? Object.keys(l.result).length !== 0
-      ? l.namel.result
+      ? l.result
       : []
     : [];
   const competitionName = l.name ? l.name : "No name avalilable";

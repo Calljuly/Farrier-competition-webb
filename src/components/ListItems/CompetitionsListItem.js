@@ -261,11 +261,7 @@ const CompetitionsListItem = ({
                                 <P>{item.shoeOne}</P>
                                 <img
                                   className={classes.shoePic}
-                                  src={
-                                    item.shoeOneImg === ""
-                                      ? ShoePic
-                                      : item.shoeOneImg
-                                  }
+                                  src={item.shoeOneImg}
                                   alt="shoe pic"
                                 />
                               </div>
@@ -273,11 +269,7 @@ const CompetitionsListItem = ({
                                 <P>{item.shoeTwo}</P>
                                 <img
                                   className={classes.shoePic}
-                                  src={
-                                    item.shoeTwoImg === ""
-                                      ? ShoePic
-                                      : item.shoeTwoImg
-                                  }
+                                  src={item.shoeTwoImg}
                                   alt="shoe pic"
                                 />
                               </div>
@@ -295,8 +287,7 @@ const CompetitionsListItem = ({
               {isAuth &&
                 openForEntries &&
                 !startCompetition &&
-                competitionStartDate > todayDate &&
-                !Object.values(entries).includes(user.name) && (
+                competitionStartDate > todayDate && (
                   <>
                     <CustomButton
                       disabled={disabled}
@@ -309,9 +300,7 @@ const CompetitionsListItem = ({
                           divisions: divisions,
                         })
                       }
-                      title={
-                        disabled ? "Competition is full" : "Enter competition"
-                      }
+                      title="Enter competition"
                     />
                   </>
                 )}
