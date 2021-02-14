@@ -12,7 +12,6 @@ import { Alert } from "@material-ui/lab";
 import FilterController from "../components/FilterController";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-
 const Competitions = () => {
   const [value, setValue] = useState(0);
   const filter = useSelector((state) => state.filter.sort);
@@ -50,66 +49,18 @@ const Competitions = () => {
     },
   ];
 
-  const competitionsActive = competitions.map((item, index) => {
+  const competitionsActive = competitions.filter((item, index) => {
     const competitionEndDate = new Date(item.competition.dateTo);
 
     if (competitionEndDate > todayDate) {
-      return (
-        <CompetitionsListItem
-          key={item.competition.id}
-          index={index}
-          id={item.competition.id}
-          name={item.competition.name}
-          referee={item.competition.referee}
-          country={item.competition.country}
-          anvils={item.competition.anvils}
-          current={item.competition.currentEntries}
-          divisions={item.divisions}
-          disabled={item.competition.anvils === item.competition.currentEntries}
-          entries={item.competition.entries}
-          dateFrom={item.competition.dateFrom}
-          dateTo={item.competition.dateTo}
-          result={item.competition.result}
-          openForEntries={item.competition.openForEntries}
-          startCompetition={item.competition.startCompetition}
-          divisionList={item.competition.divisions}
-          hotels={item.competition.hotels}
-          parking={item.competition.parking}
-          information={item.competition.information}
-          competition={item.competition}
-        />
-      );
+      return item;
     }
   });
 
-  const competitionsDone = competitions.map((item, index) => {
+  const competitionsDone = competitions.filter((item, index) => {
     const competitionToDate = new Date(item.competition.dateTo);
     if (competitionToDate < todayDate) {
-      return (
-        <CompetitionsListItem
-          key={item.competition.id}
-          index={index}
-          id={item.competition.id}
-          name={item.competition.name}
-          referee={item.competition.referee}
-          country={item.competition.country}
-          anvils={item.competition.anvils}
-          current={item.competition.currentEntries}
-          divisions={item.divisions}
-          disabled={item.competition.anvils === item.competition.currentEntries}
-          entries={item.competition.entries}
-          dateFrom={item.competition.dateFrom}
-          dateTo={item.competition.dateTo}
-          result={item.competition.result}
-          openForEntries={item.competition.openForEntries}
-          startCompetition={item.competition.startCompetition}
-          divisionList={item.competition.divisions}
-          hotels={item.competition.hotels}
-          parking={item.competition.parking}
-          information={item.competition.information}
-          competition={item.competition}
-        />
-      );
+      return item;
     }
   });
 
@@ -132,7 +83,35 @@ const Competitions = () => {
             {competitionsActive.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}
-            {competitionsActive}
+            {competitionsActive.map((item, index) => {
+              return (
+                <CompetitionsListItem
+                  key={item.competition.id}
+                  index={index}
+                  id={item.competition.id}
+                  name={item.competition.name}
+                  referee={item.competition.referee}
+                  country={item.competition.country}
+                  anvils={item.competition.anvils}
+                  current={item.competition.currentEntries}
+                  divisions={item.divisions}
+                  disabled={
+                    item.competition.anvils === item.competition.currentEntries
+                  }
+                  entries={item.competition.entries}
+                  dateFrom={item.competition.dateFrom}
+                  dateTo={item.competition.dateTo}
+                  result={item.competition.result}
+                  openForEntries={item.competition.openForEntries}
+                  startCompetition={item.competition.startCompetition}
+                  divisionList={item.competition.divisions}
+                  hotels={item.competition.hotels}
+                  parking={item.competition.parking}
+                  information={item.competition.information}
+                  competition={item.competition}
+                />
+              );
+            })}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <PageHeader>Past competitions</PageHeader>
@@ -141,7 +120,35 @@ const Competitions = () => {
             {competitionsDone.length === 0 && (
               <Alert severity="error">No competitions avalible</Alert>
             )}
-            {competitionsDone}
+            {competitionsDone.map((item, index) => {
+              return (
+                <CompetitionsListItem
+                  key={item.competition.id}
+                  index={index}
+                  id={item.competition.id}
+                  name={item.competition.name}
+                  referee={item.competition.referee}
+                  country={item.competition.country}
+                  anvils={item.competition.anvils}
+                  current={item.competition.currentEntries}
+                  divisions={item.divisions}
+                  disabled={
+                    item.competition.anvils === item.competition.currentEntries
+                  }
+                  entries={item.competition.entries}
+                  dateFrom={item.competition.dateFrom}
+                  dateTo={item.competition.dateTo}
+                  result={item.competition.result}
+                  openForEntries={item.competition.openForEntries}
+                  startCompetition={item.competition.startCompetition}
+                  divisionList={item.competition.divisions}
+                  hotels={item.competition.hotels}
+                  parking={item.competition.parking}
+                  information={item.competition.information}
+                  competition={item.competition}
+                />
+              );
+            })}
           </TabPanel>
         </Route>
         <Route path="/competitions/startList">
