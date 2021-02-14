@@ -115,7 +115,7 @@ const useStyle = makeStyles({
     justifyContent: "center",
     backgroundColor: "#101820FF",
     flexDirection: "row",
-    ["@media (max-width:1300px)"]: {
+    ["@media (max-width:1200px)"]: {
       justifyContent: "flex-start",
     },
   },
@@ -171,7 +171,7 @@ const useStyle = makeStyles({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-evenly",
-    ["@media (max-width:1300px)"]: {
+    ["@media (max-width:1200px)"]: {
       display: "none",
     },
   },
@@ -181,7 +181,7 @@ const useStyle = makeStyles({
   },
   menuIconContainer: {
     display: "none",
-    ["@media (max-width:1300px)"]: {
+    ["@media (max-width:1200px)"]: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

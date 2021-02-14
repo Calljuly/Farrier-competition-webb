@@ -163,12 +163,14 @@ const AddClass = () => {
             if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
               filesToUpload.push({
                 key: "shoeOneImg",
+                map: "shoes",
                 file: classesObject.shoeOneImg,
               });
             }
             if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
               filesToUpload.push({
                 key: "shoeTwoImg",
+                map: "shoes",
                 file: classesObject.shoeTwoImg,
               });
             }
@@ -178,6 +180,7 @@ const AddClass = () => {
             ) {
               filesToUpload.push({
                 key: "sponsorLoggo",
+                map: "sponsors",
                 file: classesObject.sponsorLoggo,
               });
             }
@@ -185,7 +188,7 @@ const AddClass = () => {
               filesToUpload.forEach(async (item) => {
                 const uploadTask = storage
                   .ref()
-                  .child(`shoes/${item.file.name}`)
+                  .child(`${item.map}/${item.file.name}`)
                   .put(item.file);
 
                 await uploadTask.on(
@@ -201,7 +204,6 @@ const AddClass = () => {
               });
             }
             setSuccess(true);
-            dispatch(actions.fetchCompetitions());
           } else {
             setError(res.message);
           }
@@ -209,6 +211,7 @@ const AddClass = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
+      dispatch(actions.fetchCompetitions());
     });
 
     dispatch(actions.loading(false));

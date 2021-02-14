@@ -127,6 +127,7 @@ const EditClass = ({ classes }) => {
             ) {
               filesToUpload.push({
                 key: "shoeOneImg",
+                map: "shoes",
                 file: classesObject.shoeOneImg,
               });
             }
@@ -137,6 +138,7 @@ const EditClass = ({ classes }) => {
             ) {
               filesToUpload.push({
                 key: "shoeTwoImg",
+                map: "shoes",
                 file: classesObject.shoeTwoImg,
               });
             }
@@ -147,6 +149,7 @@ const EditClass = ({ classes }) => {
             ) {
               filesToUpload.push({
                 key: "sponsorLoggo",
+                map: "sponsors",
                 file: classesObject.sponsorLoggo,
               });
             }
@@ -154,7 +157,7 @@ const EditClass = ({ classes }) => {
               filesToUpload.forEach(async (item) => {
                 const uploadTask = storage
                   .ref()
-                  .child(`shoes/${item.file.name}`)
+                  .child(`${item.map}/${item.file.name}`)
                   .put(item.file);
 
                 await uploadTask.on(

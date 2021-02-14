@@ -64,13 +64,21 @@ const useStyles = makeStyles({
 const Result = () => {
   const classes = useStyles();
   const l = useLocation();
-  const incomingResult = l.result ? l.result : [];
+  const incomingResult = l.result
+    ? Object.keys(l.result).length !== 0
+      ? l.namel.result
+      : []
+    : [];
   const competitionName = l.name ? l.name : "No name avalilable";
   const sponsor = l.divisions ? l.divisions : [];
   const history = useHistory();
   const result = [];
-
-  if (!incomingResult || !sponsor) {
+  console.log(incomingResult);
+  if (
+    incomingResult.length === 0 ||
+    sponsor.length === 0 ||
+    Object.keys(incomingResult).length === 0
+  ) {
     history.push("/competitions");
   }
 
