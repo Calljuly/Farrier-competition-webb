@@ -13,7 +13,7 @@ import P from "../UI/Paragraph";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import Devider from "../UI/Devider";
-import { storage, auth } from "../../components/firebase";
+import { storage, auth, firestore } from "../../components/firebase";
 import { Alert } from "@material-ui/lab";
 import ButtonContainer from "../UI/ButtonContainer";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -45,18 +45,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-async function doTheThing(user, classesObject, newClass, id) {
-  user.getIdToken().then(async (token) => {
-    createClass(token, newClass, id)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  });
-}
 
 const AddClass = () => {
   const dispatch = useDispatch();
@@ -157,90 +145,72 @@ const AddClass = () => {
     const user = auth.currentUser;
     dispatch(actions.loading(true));
 
-    function uploadComplete(uploadTask) {
+    function uploadComplete(uploadTask, key) {
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        doTheThing(user, classesObject, newClass, id);
+        firestore
+          .collection("competitions")
+          .doc(id)
+          .collection(classesObject.divisions)
+          .doc(classesObject.className)
+          .update({ [key]: downloadURL });
       });
     }
+    user.getIdToken().then(async (token) => {
+      createClass(token, newClass, id)
+        .then((res) => {
+          if (res.message === "Succsess") {
+            const filesToUpload = [];
+            if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
+              filesToUpload.push({
+                key: "shoeOneImg",
+                file: classesObject.shoeOneImg,
+              });
+            }
+            if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
+              filesToUpload.push({
+                key: "shoeTwoImg",
+                file: classesObject.shoeTwoImg,
+              });
+            }
+            if (
+              classesObject.sponsorLoggo &&
+              classesObject.sponsorLoggo !== ""
+            ) {
+              filesToUpload.push({
+                key: "sponsorLoggo",
+                file: classesObject.sponsorLoggo,
+              });
+            }
+            if (filesToUpload.length > 0) {
+              filesToUpload.forEach(async (item) => {
+                const uploadTask = storage
+                  .ref()
+                  .child(`shoes/${item.file.name}`)
+                  .put(item.file);
 
-    if (classesObject.shoeOneImg && classesObject.shoeOneImg !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`shoes/${classesObject.shoeOneImg.name}`)
-        .put(classesObject.shoeOneImg);
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          storage
-            .ref()
-            .child(`shoes/${classesObject.shoeOneImg.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              newClass.shoeOneImg = url;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => uploadComplete(uploadTask)
-      );
-    }
+                await uploadTask.on(
+                  "state_changed",
+                  (snap) => {
+                    console.log(snap);
+                  },
+                  (err) => {
+                    console.log(err);
+                  },
+                  () => uploadComplete(uploadTask, item.key)
+                );
+              });
+            }
+            setSuccess(true);
+            dispatch(actions.fetchCompetitions());
+          } else {
+            setError(res.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
 
-    if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`shoes/${classesObject.shoeTwoImg.name}`)
-        .put(classesObject.shoeTwoImg);
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          storage
-            .ref()
-            .child(`shoes/${classesObject.shoeTwoImg.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              newClass.shoeTwoImg = url;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => uploadComplete(uploadTask)
-      );
-    }
-
-    if (classesObject.sponsorLoggo && classesObject.sponsorLoggo !== "") {
-      const uploadTask = storage
-        .ref()
-        .child(`sponsors/${classesObject.sponsorLoggo.name}`)
-        .put(classesObject.sponsorLoggo);
-
-      await uploadTask.on(
-        "state_changed",
-        (snapShot) => {
-          storage
-            .ref()
-            .child(`sponsors/${classesObject.sponsorLoggo.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              newClass.sponsorLoggo = url;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => uploadComplete(uploadTask)
-      );
-    }
     dispatch(actions.loading(false));
     setIsOpen(false);
   };

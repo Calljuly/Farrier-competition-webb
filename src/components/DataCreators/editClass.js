@@ -10,28 +10,33 @@ import EagleEye from "../Classes/EagleEye";
 import ChoiseModal from "../ChoiseModal";
 import PageHeader from "../UI/PageHeader";
 import P from "../UI/Paragraph";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
 import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { auth } from "../firebase";
+import { auth, storage, firestore } from "../firebase";
 import { editClass } from "../../ApiFunctions/Api";
 
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [numberOne, setNumberOne] = useState(1);
   const [numberTwo, setNumberTwo] = useState(1);
   const [numberThree, setNumberThree] = useState(1);
   const [numberFour, setNumberFour] = useState(1);
-  const [classesObject, setClasses] = useState(classes);
+  const [classesObject, setClasses] = useState(classes ? classes : []);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const l = useLocation();
   const id = l.id;
 
+  if (!classes) {
+    history.push("/admin");
+  }
   const index = classesObject.type === "Forging" ? 1 : 0;
   const points = compClasses[index].headerTitles.filter((item) => {
     if (item !== "Competitor" && item !== "Total Points") {
@@ -40,13 +45,27 @@ const EditClass = ({ classes }) => {
   });
 
   const handleClasses = (key, value) => {
-    setClasses((prev) => {
-      const newValue = {
-        ...prev,
-        [key]: value.value,
-      };
-      return newValue;
-    });
+    if (
+      key === "shoeOneImg" ||
+      key === "shoeTwoImg" ||
+      key === "sponsorLoggo"
+    ) {
+      setClasses((prev) => {
+        const newValue = {
+          ...prev,
+          [key]: value.target.files[0],
+        };
+        return newValue;
+      });
+    } else {
+      setClasses((prev) => {
+        const newValue = {
+          ...prev,
+          [key]: value.value,
+        };
+        return newValue;
+      });
+    }
   };
 
   const pointsHandler = (key, event) => {
@@ -83,15 +102,71 @@ const EditClass = ({ classes }) => {
         pointsToMultiply: [numberOne, numberTwo, numberThree, numberFour],
       };
     }
-    
-    dispatch(actions.loading(true));
 
+    dispatch(actions.loading(true));
+    function uploadComplete(uploadTask, key) {
+      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        firestore
+          .collection("competitions")
+          .doc(id)
+          .collection(classesObject.divisions)
+          .doc(classesObject.className)
+          .update({ [key]: downloadURL });
+      });
+    }
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
       editClass(token, id, newClass.className, newClass)
         .then((res) => {
-          console.log(res.message);
           if (res.message === "Succsess") {
+            const filesToUpload = [];
+            if (
+              classesObject.shoeOneImg &&
+              classesObject.shoeOneImg !== "" &&
+              typeof classesObject.shoeOneImg !== "string"
+            ) {
+              filesToUpload.push({
+                key: "shoeOneImg",
+                file: classesObject.shoeOneImg,
+              });
+            }
+            if (
+              classesObject.shoeTwoImg &&
+              classesObject.shoeTwoImg !== "" &&
+              typeof classesObject.shoeTwoImg !== "string"
+            ) {
+              filesToUpload.push({
+                key: "shoeTwoImg",
+                file: classesObject.shoeTwoImg,
+              });
+            }
+            if (
+              classesObject.sponsorLoggo &&
+              classesObject.sponsorLoggo !== "" &&
+              typeof classesObject.shoeTwoImg !== "string"
+            ) {
+              filesToUpload.push({
+                key: "sponsorLoggo",
+                file: classesObject.sponsorLoggo,
+              });
+            }
+            if (filesToUpload.length > 0) {
+              filesToUpload.forEach(async (item) => {
+                const uploadTask = storage
+                  .ref()
+                  .child(`shoes/${item.file.name}`)
+                  .put(item.file);
+
+                await uploadTask.on(
+                  "state_changed",
+                  (snap) => {},
+                  (err) => {
+                    console.log(err);
+                  },
+                  () => uploadComplete(uploadTask, item.key)
+                );
+              });
+            }
             setSuccess(true);
             dispatch(actions.fetchCompetitions());
             dispatch(actions.loading(false));
@@ -107,27 +182,13 @@ const EditClass = ({ classes }) => {
               sponsorLoggo: "",
               referee: "",
             });
-            setIsOpen(false);
           } else {
             setError(res.message);
             dispatch(actions.loading(false));
-
-            setClasses({
-              className: "",
-              pointsToMultiply: [],
-              shoeOne: "",
-              shoeTwo: "",
-              time: "",
-              type: "",
-              unPublishedResult: [],
-              sponsors: "",
-              sponsorLoggo: "",
-              referee: "",
-            });
-            setIsOpen(false);
           }
+          setIsOpen(false);
+          dispatch(actions.loading(false));
         })
-        .then(() => {})
         .catch((error) => {
           console.error("Error:", error);
           setError(error.message);
@@ -149,7 +210,6 @@ const EditClass = ({ classes }) => {
     });
   };
 
- 
   const getClass = (type) => {
     switch (type) {
       case "Forging":
