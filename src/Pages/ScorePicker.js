@@ -11,15 +11,12 @@ import { auth } from "../components/firebase";
 import Devider from "../components/UI/Devider";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-const ScorePicker = ({ judges, state, id }) => {
+const ScorePicker = ({ judges, state, id, goBackAdmin }) => {
   const history = useHistory();
   const compClasses = state;
 
   const dispatch = useDispatch();
 
-  if (!compClasses) {
-    history.push("/admin");
-  }
   const saveClassResults = async () => {
     const user = auth.currentUser;
     user.getIdTokenResult(async (token) => {
@@ -93,7 +90,7 @@ const ScorePicker = ({ judges, state, id }) => {
           {!compClasses.savedResult && (
             <CustomButton onClick={saveClassResults} title="Publish result" />
           )}
-          <CustomButton onClick={() => history.goBack()} title="Go Back" />
+          <CustomButton onClick={() => goBackAdmin()} title="Admin" />
         </ButtonContainer>
       </div>
     </>

@@ -11,30 +11,18 @@ import AddClass from "../components/DataCreators/addClass";
 import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-import { makeStyles } from "@material-ui/styles";
 import ScorePicker from "./ScorePicker";
 import { Grid } from "@material-ui/core";
 import Pic from "../assets/Images/hov1.jpg";
 import { auth } from "../components/firebase";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-const useStyle = makeStyles({
-  headerContainer: {
-    display: "flex",
-    alignItems: "center",
-    ["@media (max-width:1000px)"]: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  },
-});
 
 const Admin = () => {
   const [value, setValue] = useState(0);
   const [scorePickerData, setscorePickerData] = useState({});
 
   const user = auth.currentUser;
-  const classes = useStyle();
 
   const compClasses = useSelector((state) => {
     return state.competitions.competitions;
@@ -123,6 +111,7 @@ const Admin = () => {
               state={scorePickerData.state}
               judges={scorePickerData.judges}
               id={scorePickerData.id}
+              goBackAdmin={() => setValue(2)}
             />
           ) : (
             <div>

@@ -22,12 +22,12 @@ const Scores = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const l = useLocation();
-  const compClasses = l.state;
+  const compClasses = l.state ? l.state : [];
   const compIndex = l.id;
-  const heat = l.heat;
+  const heat = l.heat ? l.heat : [];
   const heatId = l.heatId;
-  const shoe = l.shoe;
-  const judges = l.judges;
+  const shoe = l.shoe ? l.shoe : "";
+  const judges = l.judges ? l.judges : [];
 
   const [judge, setJudge] = useState(
     compClasses.referee.length > 0 ? compClasses.referee : ""
@@ -62,7 +62,7 @@ const Scores = () => {
     setModal(true);
   };
 
-  if (!compClasses || !heat || !judges) {
+  if (compClasses.length === 0 || heat.length === 0 || judges.length === 0) {
     history.push("/admin");
   }
 
@@ -131,7 +131,7 @@ const Scores = () => {
               ? compClasses.shoeOneType
               : compClasses.shoeTwoType
           }
-          title={ shoe === "shoeOne" ? "Shoe One": "Shoe Two"}
+          title={shoe === "shoeOne" ? "Shoe One" : "Shoe Two"}
         />
         <Devider margin={60} />
         <ButtonContainer>

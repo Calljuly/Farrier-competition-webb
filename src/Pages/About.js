@@ -23,7 +23,7 @@ const useStyle = makeStyles({
 const About = () => {
   const classes = useStyle();
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", margin: 0 }}>
       <img
         src={img}
         style={{

@@ -1,4 +1,11 @@
-import { IS_AUTH, IS_LOADING, ERROR, NEW_USER_DATA } from "../actions/auth";
+import {
+  IS_AUTH,
+  IS_LOADING,
+  ERROR,
+  NEW_USER_DATA,
+  NEW_USER_IMAGE,
+  CHANGE_SIGNIN_STATE,
+} from "../actions/auth";
 
 const initialState = {
   isAuth: false,
@@ -7,6 +14,7 @@ const initialState = {
   user: {},
   userImage: "",
   admin: false,
+  signInState: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -35,6 +43,16 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         user: action.user,
         userImage: action.user.img,
+      };
+    case NEW_USER_IMAGE:
+      return {
+        ...state,
+        userImage: action.picture,
+      };
+    case CHANGE_SIGNIN_STATE:
+      return {
+        ...state,
+        signInState: action.state,
       };
     default:
       return state;

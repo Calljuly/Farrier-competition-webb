@@ -7,18 +7,20 @@ import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
 import Loading from "./components/IsLoading";
+import Login from "./Pages/Login";
 
 const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const isLoadingAuth = useSelector((state) => state.auth.isLoading);
+  const signInState = useSelector((state) => state.auth.signInState);
 
   const isLoadingCompetition = useSelector(
     (state) => state.competitions.isLoading
   );
 
   const admin = useSelector((state) => state.auth.admin);
-
+  
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -77,7 +79,6 @@ const App = () => {
               console.log(error);
               dispatch(action.isError(true));
               dispatch(action.isAuth(false, false, {}, "", false));
-              
             });
         });
       } else {
@@ -97,6 +98,7 @@ const App = () => {
   }
   return (
     <>
+      {signInState && <Login />}
       {isLoadingAuth && isLoadingCompetition && <Loading />}
       <CookieConsent />
       {routes}

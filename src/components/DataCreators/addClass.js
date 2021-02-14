@@ -51,69 +51,10 @@ async function doTheThing(user, classesObject, newClass, id) {
     createClass(token, newClass, id)
       .then((res) => {
         console.log(res);
-        /*if (res.message === "Succsess") {
-          dispatch(actions.fetchCompetitions());
-          dispatch(actions.loading(false));
-          setClasses({
-            pointsToMultiply: [],
-            shoeOne: "",
-            shoeOneImg: "",
-            shoeTwo: "",
-            shoeTwoImg: "",
-            time: "",
-            type: "",
-            result: [],
-            unPublishedResult: [],
-            sponsors: "",
-            sponsorLoggo: "",
-            referee: "",
-            feet: "right",
-          });
-          setIsOpen(false);
-          setSuccess(true);
-        } else {
-          setError(res.message);
-          dispatch(actions.loading(false));
-          setClasses({
-            pointsToMultiply: [],
-            shoeOne: "",
-            shoeOneImg: "",
-            shoeTwo: "",
-            shoeTwoImg: "",
-            time: "",
-            type: "",
-            result: [],
-            unPublishedResult: [],
-            sponsors: "",
-            sponsorLoggo: "",
-            referee: "",
-            feet: "right",
-          });
-          setIsOpen(false);
-        }*/
       })
       .catch((error) => {
         console.error("Error:", error);
-        /*setError(error.message);
-        dispatch(actions.loading(false));
-        setClasses({
-          pointsToMultiply: [],
-          shoeOne: "",
-          shoeOneImg: "",
-          shoeTwo: "",
-          shoeTwoImg: "",
-          time: "",
-          type: "",
-          result: [],
-          unPublishedResult: [],
-          sponsors: "",
-          sponsorLoggo: "",
-          referee: "",
-          feet: "right",
-        });*/
-        //  setIsOpen(false);
       });
-    //setIsOpen(false);
   });
 }
 
@@ -205,7 +146,7 @@ const AddClass = () => {
       setError(
         "You need to add your class to a division or regular, name  and type"
       );
-      //setIsOpen(false);
+      setIsOpen(false);
       return;
     }
     let newClass = {
@@ -218,7 +159,6 @@ const AddClass = () => {
 
     function uploadComplete(uploadTask) {
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        console.log("File available at", downloadURL);
         doTheThing(user, classesObject, newClass, id);
       });
     }
@@ -228,7 +168,8 @@ const AddClass = () => {
         .ref()
         .child(`shoes/${classesObject.shoeOneImg.name}`)
         .put(classesObject.shoeOneImg);
-        await uploadTask.on("state_changed",
+      await uploadTask.on(
+        "state_changed",
         (snapShot) => {
           storage
             .ref()
@@ -238,15 +179,11 @@ const AddClass = () => {
               newClass.shoeOneImg = url;
             })
             .catch((err) => {
-              console.log( err);
+              console.log(err);
             });
         },
         (err) => {
           console.log(err);
-          console.log("Upload", err);
-
-          //dispatch(actions.loading(false));
-          //setIsOpen(false);
         },
         () => uploadComplete(uploadTask)
       );
@@ -255,27 +192,24 @@ const AddClass = () => {
     if (classesObject.shoeTwoImg && classesObject.shoeTwoImg !== "") {
       const uploadTask = storage
         .ref()
-        .child(`sponsors/${classesObject.shoeTwoImg.name}`)
+        .child(`shoes/${classesObject.shoeTwoImg.name}`)
         .put(classesObject.shoeTwoImg);
-        await uploadTask.on("state_changed",
+      await uploadTask.on(
+        "state_changed",
         (snapShot) => {
           storage
             .ref()
-            .child(`sponsors/${classesObject.shoeTwoImg.name}`)
+            .child(`shoes/${classesObject.shoeTwoImg.name}`)
             .getDownloadURL()
             .then((url) => {
               newClass.shoeTwoImg = url;
             })
             .catch((err) => {
-              console.log( err);
+              console.log(err);
             });
         },
         (err) => {
           console.log(err);
-          console.log("Upload", err);
-
-          //dispatch(actions.loading(false));
-          //setIsOpen(false);
         },
         () => uploadComplete(uploadTask)
       );
@@ -295,25 +229,20 @@ const AddClass = () => {
             .child(`sponsors/${classesObject.sponsorLoggo.name}`)
             .getDownloadURL()
             .then((url) => {
-              console.log(typeof url);
-              console.log(url);
               newClass.sponsorLoggo = url;
             })
             .catch((err) => {
-              console.log("Hämta url", err);
+              console.log(err);
             });
-          //newClass.sponsorLoggo = newClass.sponsorLoggo.name;
         },
         (err) => {
           console.log(err);
-          console.log("Upload", err);
-
-          //dispatch(actions.loading(false));
-          //setIsOpen(false);
         },
         () => uploadComplete(uploadTask)
       );
     }
+    dispatch(actions.loading(false));
+    setIsOpen(false);
   };
 
   const pointsHandler = (key, event) => {
@@ -341,8 +270,8 @@ const AddClass = () => {
         setClasses((prev) => {
           const newValue = {
             ...prev,
-            ["shoeOneType"]: "Shoeing",
-            ["shoeTwoType"]: "Shoeing",
+            shoeOneType: "Shoeing",
+            shoeTwoType: "Shoeing",
           };
           return newValue;
         });
@@ -351,18 +280,8 @@ const AddClass = () => {
         setClasses((prev) => {
           const newValue = {
             ...prev,
-            ["shoeOneType"]: "Forging",
-            ["shoeTwoType"]: "Forging",
-          };
-          return newValue;
-        });
-        return;
-      case "Combo":
-        setClasses((prev) => {
-          const newValue = {
-            ...prev,
-            ["shoeOneType"]: "Shoeing",
-            ["shoeTwoType"]: "Forging",
+            shoeOneType: "Forging",
+            shoeTwoType: "Forging",
           };
           return newValue;
         });

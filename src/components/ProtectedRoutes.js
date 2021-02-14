@@ -28,7 +28,9 @@ export const getUnProtectedRoutes = () => {
     </Layout>
   );
 };
-export const getProtectedUserRoutes = (isAuthenticated) => {
+export const getProtectedUserRoutes = (
+  isAuthenticated
+) => {
   if (isAuthenticated) {
     return (
       <Layout>
@@ -40,6 +42,8 @@ export const getProtectedUserRoutes = (isAuthenticated) => {
           <Route path="/myProfile/result" component={User} />
           <Route path="/competitions" component={Competitions} />
           <Route path="/contact" component={Contact} />
+          <Route path="/signIn" component={Login} />
+
           <Route>
             <ErrorPage />
           </Route>
@@ -69,7 +73,10 @@ export const getProtectedAdminRoutes = () => {
   );
 };
 
-export const getRoutes = (isAuthenticated, Admin) => {
+export const getRoutes = (
+  isAuthenticated,
+  Admin
+) => {
   if (!isAuthenticated) {
     return getUnProtectedRoutes(isAuthenticated);
   }

@@ -183,6 +183,7 @@ const CompetitionListItemAdmin = ({
           console.log(err);
         });
     });
+    setShowProposition(false);
     dispatch(actions.fetchCompetitions());
   };
 
@@ -190,6 +191,9 @@ const CompetitionListItemAdmin = ({
     let array = [];
 
     divisions.forEach(async (item) => {
+      console.log(item);
+      if (item) {
+      }
       const a = randomnizeEntries(entries[Object.keys(item)]);
       const heat =
         entries[Object.keys(item)].length /
@@ -238,7 +242,7 @@ const CompetitionListItemAdmin = ({
         });
       });
     });
-
+    setShowProposition(false);
     dispatch(actions.fetchCompetitions());
   };
 

@@ -339,7 +339,6 @@ const AddCompetition = () => {
       user.getIdToken().then(async (token) => {
         createCompetition(token, comp)
           .then((res) => {
-            console.log(res);
             if (res.message === "Succsess") {
               setSuccess(true);
               setIsOpen(false);
@@ -448,7 +447,7 @@ const AddCompetition = () => {
         </Alert>
       )}
       {success && (
-        <Alert onClose={() => setSuccess(false)}>
+        <Alert onClose={() => setSuccess(true)}>
           You created your competition sucsessfully!
         </Alert>
       )}
@@ -524,35 +523,7 @@ const AddCompetition = () => {
           />
         </FormGroup>
       </FormControl>
-      {divisionData.map((item) => (
-        <TextInput
-          required={item.required}
-          key={item.id}
-          label={item.label}
-          type={item.type}
-          placeholder={item.label}
-          onChange={(event) =>
-            dispatchReducer({
-              type: item.value,
-              value: event.target.value,
-              key: "value",
-            })
-          }
-          onBlur={() =>
-            validateText(
-              state[item.value].value,
-              item.value,
-              item.type,
-              item.required
-            )
-          }
-          error={!state[item.value].valid}
-          helperText={
-            !state[item.value].valid &&
-            "You have to enter a valid input, atleast 3 characters"
-          }
-        />
-      ))}
+
       <SubHeader>Add Judges</SubHeader>
       <P>
         You can add more than one. A new judge will be added every time you

@@ -32,6 +32,7 @@ const useStyle = makeStyles({
     ["@media (max-width:1300px)"]: {
       margin: 20,
       fontSize: 20,
+      textAlign: "center",
     },
   },
   welcomeText: {
@@ -46,13 +47,20 @@ const useStyle = makeStyles({
 });
 
 const Home = () => {
-  const competitions = useSelector((state, index) => {
+
+  const competitions = useSelector((state) => {
     const a = state.competitions.competitions;
 
-    return a.sort((a, b) => (a.competition.name > b.competition.name ? 1 : -1));
+    return a.sort((a, b) =>
+      a.competition.dateFrom > b.competition.dateFrom ? 1 : -1
+    );
   });
-  const comps = competitions.filter((item, index) => {
-    if (index < 5) {
+
+  const comps = competitions.filter((item) => {
+    const startDate = new Date(item.competition.dateFrom);
+    const today = new Date();
+
+    if (startDate > today) {
       return item;
     }
   });
@@ -60,10 +68,12 @@ const Home = () => {
   const kalenderItems = comps.map((item) => {
     return (
       <CompetitionItemHome
+        key={item.competition.id}
         name={item.competition.name}
         location={item.competition.location}
         dateFrom={item.competition.dateFrom}
-        status={true}
+        openForEntries={item.competition.openForEntries}
+        dateEnd={item.competition.dateTo}
       />
     );
   });
@@ -71,13 +81,6 @@ const Home = () => {
 
   return (
     <div style={{ backgroundColor: "white" }}>
-      <img
-        src={img}
-        style={{
-          width: "100%",
-        }}
-        alt="Home of Timmy Hoas"
-      />
       <div
         style={{
           backgroundColor: Colors.black,
@@ -85,13 +88,20 @@ const Home = () => {
           overflow: "hidden",
         }}
       >
+        <img
+          src={img}
+          style={{
+            width: "100%",
+          }}
+          alt="Home of Timmy Hoas"
+        />
         <div className={classes.header}>
           <div style={{ margin: 40 }}>
             <p className={classes.welcomeText}>Welcome to</p>
             <p className={classes.headerText}>Forging scores</p>
           </div>
           <p className={classes.headerTextSec}>
-            Here to simplyfy life as a<br /> competetive farrier or organizer
+            Here to simplify life as a<br /> competetive farrier or organizer
           </p>
         </div>
         <div
@@ -111,7 +121,7 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          <div style={{ width: "70%", marginTop: 40 }}>
+          <div style={{ width: "80%", marginTop: 40 }}>
             <div>
               <p style={{ fontSize: 40 }}>Upcoming events</p>
             </div>

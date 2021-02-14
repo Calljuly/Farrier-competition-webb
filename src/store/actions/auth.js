@@ -4,6 +4,8 @@ export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";
 export const ERROR = "ERROR";
 export const NEW_USER_DATA = "NEW_USER_DATA";
+export const NEW_USER_IMAGE = "NEW_USER_IMAGE";
+export const CHANGE_SIGNIN_STATE = "CHANGE_SIGNIN_STATE";
 
 export const signUp = (user) => {
   return (dispatch) => {
@@ -71,10 +73,17 @@ export const signIn = (email, pass) => {
   return (dispatch) => {
     dispatch(isAuth(false, true, {}, false));
 
-    auth.signInWithEmailAndPassword(email, pass).catch((err) => {
-      dispatch(isError('Your email or password is wrong, please try again!'));
-      dispatch(isAuth(false, false, {}, "", false));
-    });
+    auth
+      .signInWithEmailAndPassword(email, pass)
+      .then((cred) => {
+        localStorage.setItem("auth", cred.user.uid);
+        dispatch(changeSignInState(false));
+      })
+      .catch((err) => {
+        dispatch(isError("Your email or password is wrong, please try again!"));
+        dispatch(isAuth(false, false, {}, "", false));
+        dispatch(changeSignInState(false));
+      });
   };
 };
 
@@ -84,6 +93,7 @@ export const logOut = () => {
     auth.signOut().then((cred) => {
       localStorage.removeItem("auth");
       dispatch(isAuth(false, false, {}, "", false));
+      dispatch(changeSignInState(false));
     });
   };
 };
@@ -124,6 +134,12 @@ export const newUserData = (user) => {
     user: user,
   };
 };
+export const newUserImage = (picture) => {
+  return {
+    type: NEW_USER_IMAGE,
+    picture: picture,
+  };
+};
 
 export const isLoadning = (loading) => {
   return {
@@ -135,5 +151,11 @@ export const isError = (error) => {
   return {
     type: ERROR,
     error: error,
+  };
+};
+export const changeSignInState = (state) => {
+  return {
+    type: CHANGE_SIGNIN_STATE,
+    state: state,
   };
 };

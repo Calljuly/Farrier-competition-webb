@@ -9,6 +9,7 @@ import ChoiseModal from "../ChoiseModal";
 import { auth } from "../firebase";
 import * as actions from "../../store/actions/auth";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ButtonContainer from "../UI/ButtonContainer";
 import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
@@ -78,6 +79,7 @@ const EditProfile = () => {
   const userState = useSelector((state) => state.auth.user);
   const [authState, setAuthState] = useState(userState);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -118,9 +120,22 @@ const EditProfile = () => {
         (err) => {
           console.log(err);
           setIsOpen(false);
+        },
+        () => {
+          storage
+            .ref()
+            .child(`profiles/${authState.img.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              dispatch(actions.newUserImage(url));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       );
     }
+
     const user = auth.currentUser;
     user.getIdToken().then(async (token) => {
       fetch(
@@ -150,6 +165,35 @@ const EditProfile = () => {
           console.log(error);
           setError(error.message);
           setIsOpen(false);
+        });
+    });
+  };
+
+  const deleteUser = () => {
+    const user = auth.currentUser;
+    user.getIdToken().then(async (token) => {
+      fetch(
+        `https://us-central1-farrier-project.cloudfunctions.net/app/user/${user.uid}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((res) => {
+          if (res.message === "Success") {
+            history.push("/");
+          } else {
+            setError(res.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
         });
     });
   };
@@ -206,6 +250,12 @@ const EditProfile = () => {
           </ButtonContainer>
         </div>
         <EditEmailAndPassword />
+        <Devider margin={30} />
+        <PageHeader>Delete user</PageHeader>
+        <P>Do you want to delete your user ? </P>
+        <ButtonContainer>
+          <CustomButton title="Delete profile" onClick={() => deleteUser()} />
+        </ButtonContainer>
       </div>
     </>
   );

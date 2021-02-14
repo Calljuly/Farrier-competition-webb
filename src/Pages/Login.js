@@ -18,7 +18,8 @@ import { useHistory } from "react-router-dom";
 import { auth } from "../components/firebase";
 import { resgisterNewUser } from "../ApiFunctions/Api";
 import { Alert } from "@material-ui/lab";
-
+import TopPagesHeader from "../components/UI/TopPagesHeader";
+import { Colors } from "../colors";
 const textFieldsRegister = [
   {
     id: 1,
@@ -86,8 +87,10 @@ const Login = () => {
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
   const isAuth = useSelector((state) => state.auth.isAuth);
+  const signInState = useSelector((state) => state.auth.signInState);
+
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(isError);
 
   const [isOpen, setIsOpen] = useState(false);
   const [formValid, setFormValid] = useState(true);
@@ -131,7 +134,10 @@ const Login = () => {
       valid: true,
     },
   });
-
+  
+  if (isAuth) {
+    history.push("/");
+  }
   const handleInputChange = (id, text) => {
     let updatedState;
     if (id === "profileImage") {
@@ -235,148 +241,208 @@ const Login = () => {
     setIsOpen(false);
   };
 
-  if (isAuth) {
-    history.push("/");
-  }
+  const signIn = () => {
+    dispatch(actions.signIn(authState.email.value, authState.password.value));
+  };
   return (
-    <div>
-      <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
-        <PageHeader>Are you sure ?</PageHeader>
-        <P> Are you sure you want to create this user ? </P>
-        <div style={{ display: "flex" }}>
-          <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
-          <CustomButton title="Im sure" onClick={createUser} />
-        </div>
-      </ChoiseModal>
-      <div className={classes.inputContainer}>
+    <div
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        top: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ width: "50%", backgroundColor: "white" }}>
         {register ? (
-          <PageHeader>Register user</PageHeader>
+          <TopPagesHeader title="Register user" />
         ) : (
-          <PageHeader>Log in</PageHeader>
+          <TopPagesHeader title="Sign in" />
         )}
-        {!formValid && (
-          <Alert severity="error">
-            You dont have a valid form to submit, please check you inputs
-          </Alert>
-        )}
-        {success && (
-          <Alert onClose={() => setSuccess(false)}>
-            New user has been created
-          </Alert>
-        )}
-        {isError.length > 0 && (
-          <Alert severity="error" onClose={() => setError("")}>
-            {isError}
-          </Alert>
-        )}
-        <TextInput
-          value={authState["email"].value}
-          onChange={(event) => handleInputChange("email", event)}
-          className={classes.input}
-          label="Email"
-          onBlur={() =>
-            validateEmail(
-              authState["email"].value,
-              handleInputValidation,
-              "email"
-            )
-          }
-          error={!authState["email"].valid}
-          helperText={
-            !authState["email"].valid &&
-            "You have to enter a valid email , test@test.com"
-          }
-        />
-        <TextInput
-          value={authState["password"].value}
-          onChange={(text) => handleInputChange("password", text)}
-          className={classes.input}
-          label="Password"
-          type="password"
-          onBlur={() =>
-            validatePassword(
-              authState["password"].value,
-              handleInputValidation,
-              "password"
-            )
-          }
-          error={!authState["password"].valid}
-          helperText={
-            !authState["password"].valid &&
-            "You have to enter a valid password, aleast 6 characters"
-          }
-        />
+        <div style={{ padding: 20 }}>
+          <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+            <PageHeader>Are you sure ?</PageHeader>
+            <P> Are you sure you want to create this user ? </P>
+            <div style={{ display: "flex" }}>
+              <CustomButton title="Cancel" onClick={() => setIsOpen(false)} />
+              <CustomButton title="Im sure" onClick={createUser} />
+            </div>
+          </ChoiseModal>
 
-        {register && (
-          <>
+          <div className={classes.inputContainer}>
+            {!formValid && (
+              <Alert severity="error">
+                You dont have a valid form to submit, please check you inputs
+              </Alert>
+            )}
+            {success && (
+              <Alert onClose={() => setSuccess(false)}>
+                New user has been created
+              </Alert>
+            )}
+            {error.length > 0 && (
+              <Alert severity="error" onClose={() => setError("")}>
+                {isError}
+              </Alert>
+            )}
             <TextInput
-              value={authState["passwordConfirmed"].value}
-              onChange={(text) => handleInputChange("passwordConfirmed", text)}
+              value={authState["email"].value}
+              onChange={(event) => handleInputChange("email", event)}
               className={classes.input}
-              label="Confirm password"
+              label="Email"
+              onBlur={() =>
+                validateEmail(
+                  authState["email"].value,
+                  handleInputValidation,
+                  "email"
+                )
+              }
+              error={!authState["email"].valid}
+              helperText={
+                !authState["email"].valid &&
+                "You have to enter a valid email , test@test.com"
+              }
+            />
+            <TextInput
+              value={authState["password"].value}
+              onChange={(text) => handleInputChange("password", text)}
+              className={classes.input}
+              label="Password"
               type="password"
               onBlur={() =>
                 validatePassword(
-                  authState["passwordConfirmed"].value,
+                  authState["password"].value,
                   handleInputValidation,
-                  "passwordConfirmed"
+                  "password"
                 )
               }
-              error={!authState["passwordConfirmed"].valid}
+              error={!authState["password"].valid}
               helperText={
-                !authState["passwordConfirmed"].valid &&
+                !authState["password"].valid &&
                 "You have to enter a valid password, aleast 6 characters"
               }
             />
+            {register && (
+              <>
+                <TextInput
+                  value={authState["passwordConfirmed"].value}
+                  onChange={(text) =>
+                    handleInputChange("passwordConfirmed", text)
+                  }
+                  className={classes.input}
+                  label="Confirm password"
+                  type="password"
+                  onBlur={() =>
+                    validatePassword(
+                      authState["passwordConfirmed"].value,
+                      handleInputValidation,
+                      "passwordConfirmed"
+                    )
+                  }
+                  error={!authState["passwordConfirmed"].valid}
+                  helperText={
+                    !authState["passwordConfirmed"].valid &&
+                    "You have to enter a valid password, aleast 6 characters"
+                  }
+                />
 
-            {textFieldsRegister.map((item) => (
-              <TextInput
-                key={item.id}
-                value={authState[item.key].value}
-                onChange={(text) => handleInputChange(item.key, text)}
-                className={classes.input}
-                label={item.label}
-                type={item.type}
-                onBlur={() => handleValidation(item)}
-                error={!authState[item.key].valid}
-                helperText={
-                  !authState[item.key].valid &&
-                  "You have to enter a valid password, aleast 6 characters"
-                }
+                {textFieldsRegister.map((item) => (
+                  <TextInput
+                    key={item.id}
+                    value={authState[item.key].value}
+                    onChange={(text) => handleInputChange(item.key, text)}
+                    className={classes.input}
+                    label={item.label}
+                    type={item.type}
+                    onBlur={() => handleValidation(item)}
+                    error={!authState[item.key].valid}
+                    helperText={
+                      !authState[item.key].valid &&
+                      "You have to enter a valid password, aleast 6 characters"
+                    }
+                  />
+                ))}
+                <TextInput
+                  value={authState["bio"].value}
+                  onChange={(text) => handleInputChange("bio", text)}
+                  className={classes.input}
+                  label="Write something about yourself"
+                  type="text"
+                  multiline
+                  rows={4}
+                />
+              </>
+            )}
+
+            <Devider margin={30} />
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                paddingRight: 17,
+              }}
+            >
+              {register && (
+                <>
+                  <CustomButton
+                    onClick={() => {
+                      dispatch(actions.changeSignInState(!signInState));
+                      history.push("/");
+                    }}
+                    title="Go Back"
+                  />
+                  <p>{!register && "Not having a account ?"}</p>
+                  <CustomButton
+                    title={register ? "Go to Login" : "Register"}
+                    onClick={() => setRegister((prev) => !prev)}
+                  />
+                </>
+              )}
+              <CustomButton
+                title={register ? "Register user" : "Login"}
+                onClick={() => (register ? setIsOpen(true) : signIn())}
               />
-            ))}
-            <TextInput
-              value={authState["bio"].value}
-              onChange={(text) => handleInputChange("bio", text)}
-              className={classes.input}
-              label="Write something about yourself"
-              type="text"
-              multiline
-              rows={4}
-            />
-          </>
-        )}
-        
-        <Devider margin={50} />
-        <CustomButton
-          title={register ? "Register user" : "Login"}
-          onClick={() =>
-            register
-              ? setIsOpen(true)
-              : dispatch(
-                  actions.signIn(
-                    authState.email.value,
-                    authState.password.value
-                  )
-                )
-          }
-        />
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {!register && <P>Do you want to register ?</P>}
-          <CustomButton
-            title={register ? "Go to Login" : "Register"}
-            onClick={() => setRegister((prev) => !prev)}
-          />
+            </div>
+            {!register && (
+              <>
+                <div
+                  style={{
+                    backgroundColor: Colors.black,
+                    width: "90%",
+                    margin: "auto",
+                    height: 2,
+                  }}
+                />
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                  }}
+                >
+                  <CustomButton
+                    onClick={() => {
+                      dispatch(actions.changeSignInState(!signInState));
+                      history.push("/");
+                    }}
+                    title="Go Back"
+                  />
+                  <p>{!register && "Not having a account ?"}</p>
+                  <CustomButton
+                    title={register ? "Go to Login" : "Register"}
+                    onClick={() => setRegister((prev) => !prev)}
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

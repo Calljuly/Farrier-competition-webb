@@ -192,16 +192,16 @@ const useStyle = makeStyles({
 
 const Navbar = () => {
   const [drawerState, setDrawerState] = useState(false);
-  const history = useHistory();
   const toggleDrawer = () => {
     setDrawerState((prev) => !prev);
   };
-
   const classes = useStyle();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const admin = useSelector((state) => state.auth.admin);
+  const signInState = useSelector((state) => state.auth.signInState);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -260,7 +260,13 @@ const Navbar = () => {
                 style={{ color: "inherit", backgroundColor: "inherit" }}
                 onMouseOver={handleClick}
               >
-                <div style={{ display: "flex", alignItems: "center", fontSize: 16 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: 16,
+                  }}
+                >
                   <p>PROFILE </p>
                   <AccountCircleOutlinedIcon style={{ marginLeft: 10 }} />
                 </div>
@@ -317,9 +323,9 @@ const Navbar = () => {
           </>
         ) : (
           <NavLink
-            onClick={() => history.push("/signIn")}
+            onClick={() => dispatch(actions.changeSignInState(!signInState))}
             className={classes.link}
-            to="/signIn"
+            to="/"
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <p>SIGN IN </p>
