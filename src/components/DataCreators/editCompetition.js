@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import TextInput from "../TextInput";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/competitionAction";
@@ -14,6 +14,8 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
 import { editCompetition } from "../../ApiFunctions/Api";
+import { Colors } from "../../colors";
+import { Grid } from "@material-ui/core";
 
 const textInputs = [
   {
@@ -157,7 +159,36 @@ const EditCompetition = () => {
       return newValue;
     });
   };
+  const addReferee = (event) => {
+    event.persist();
+    const value = event.target.value;
+    if (value.length < 4) {
+      setError("You have to add en Judge with more than 3 characters");
+      return;
+    }
+    const currentState = [...state["referee"]];
+    currentState.push(event.target.value);
+    setState((prev) => {
+      const newValue = {
+        ...prev,
+        referee: currentState,
+      };
+      return newValue;
+    });
+  };
 
+  const deleteReferee = (name) => {
+    let currentState = [...state["referee"]];
+    currentState = currentState.filter((item) => item !== name);
+
+    setState((prev) => {
+      const newValue = {
+        ...prev,
+        referee: currentState,
+      };
+      return newValue;
+    });
+  };
   return (
     <div style={{ width: "100%" }}>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
@@ -204,6 +235,7 @@ const EditCompetition = () => {
             {error}
           </Alert>
         )}
+
         {show && (
           <>
             {textInputs.map((item, index) => (
@@ -217,6 +249,39 @@ const EditCompetition = () => {
                 onChange={(event) => handleCompetition(event, item.value)}
               />
             ))}
+            <SubHeader>Add Judges</SubHeader>
+            <P>
+              You can add more than one. A new judge will be added every time
+              you leave the textfield
+            </P>
+            <TextInput
+              label="Judge"
+              type="text"
+              placeholder="Judge"
+              onBlur={(event) => addReferee(event)}
+            />
+            <Grid container>
+              {state["referee"].map((item) => {
+                return (
+                  <Grid item>
+                    <Alert
+                      style={{
+                        backgroundColor: Colors.orange,
+                        fontColor: Colors.black,
+                        maxWidth: 200,
+                        margin: "20px 20px 0px 0px",
+                      }}
+                      severity="info"
+                      key={item}
+                      onClose={() => deleteReferee(item)}
+                      icon={false}
+                    >
+                      {item}
+                    </Alert>
+                  </Grid>
+                );
+              })}
+            </Grid>
             <ButtonContainer>
               <CustomButton
                 onClick={() => setIsOpen(true)}
