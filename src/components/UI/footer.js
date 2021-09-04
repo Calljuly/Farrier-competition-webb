@@ -1,86 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Colors } from "../colors";
 import { Grid } from "@material-ui/core";
 import LocalPhoneOutlinedIcon from "@material-ui/icons/LocalPhoneOutlined";
 import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
 import { useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
-import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo-White.jpg";
-
-const useStyle = makeStyles({
-  container: {
-    width: "100%",
-    height: 300,
-    backgroundColor: Colors.black,
-    ["@media (max-width:1400px)"]: {
-      height: "auto",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      aligntItems: "center",
-    },
-  },
-  text: {
-    color: Colors.orange,
-  },
-  email: {
-    textDecoration: "none",
-    color: Colors.orange,
-    fontSize: 20,
-  },
-  itemContainer: {
-    color: Colors.orange,
-    fontSize: 20,
-    display: "flex",
-    flexDirection: "row",
-    ["@media (max-width:956px)"]: {
-      width: "100%",
-    },
-  },
-  gridItem: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "start",
-    flexDirection: "column",
-    padding: 30,
-    ["@media (max-width:956px)"]: {
-      width: "100%",
-    },
-  },
-  icon: {
-    paddingRight: 10,
-    paddingTop: 0,
-    paddingBottom: 0,
-    margin: 5,
-    fontSize: 30,
-  },
-  button: {
-    backgroundColor: Colors.orange,
-    color: Colors.black,
-    width: 200,
-    padding: 10,
-    margin: "10px 0px 10px 10px",
-    ["@media (max-width:956px)"]: {
-      width: "95%",
-      margin: 10,
-    },
-  },
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
-    padding: 10,
-    width: "100%",
-    ["@media (max-width:956px)"]: {
-      width: "100%",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  },
-});
+import ForgingScoreLoggo from "../../assets/Images/ForgingScores-Logo-White.jpg";
+import { footerStyle } from './styles/styles'
 
 const Footer = () => {
-  const classes = useStyle();
+  const classes = footerStyle();
   const history = useHistory();
   return (
     <div className={classes.container}>

@@ -1,40 +1,14 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { string, func, array } from "prop-types";
-import { Colors } from "../colors";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: 0,
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  "&.makeStyles-formControl-42": {
-    margin: 0,
-  },
-  select: {
-    "&:before": {
-      margin: 0,
-      borderBottom: `1px solid ${Colors.black}`,
-    },
-    "&:after": {
-      borderBottom: `1px solid ${Colors.orange}`,
-    },
-    "&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before": {
-      borderBottom: `1px solid ${Colors.orange}`,
-    },
-  },
-}));
+import { array, func, string } from "prop-types";
+import React, { useState } from "react";
+import { selectStyle } from './styles/styles';
 
 const CustomSelect = ({ classTypes, label, handler, disabled, id }) => {
   const [value, setValue] = useState("");
-  const classes = useStyles();
+  const classes = selectStyle();
 
   const handleChange = (event) => {
     event.preventDefault();

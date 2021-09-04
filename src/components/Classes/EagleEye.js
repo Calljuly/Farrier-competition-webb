@@ -1,8 +1,8 @@
 import React from "react";
-import { compClasses, shoes } from "../../dummyData";
-import CustomSelect from "../Select";
-import TextInput from "../TextInput";
-import SubHeader from '../UI/SubHeader'
+import { shoes } from "../../dummyData";
+import CustomSelect from "../UI/Select";
+import TextInput from "../UI/TextInput";
+import SubHeader from '../UI/SubHeader';
 
 const EagleEye = ({ handleClasses, points, pointsHandler }) => {
   return (

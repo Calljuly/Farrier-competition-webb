@@ -1,5 +1,4 @@
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,53 +9,18 @@ import { Alert } from "@material-ui/lab";
 import React, { useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import CustomButton from "../components/CustomButton";
-import ComponentToPrint from "../components/PdfGenerator";
+import CustomButton from "../components/UI/CustomButton";
+import ComponentToPrint from "../components/UI/PdfGenerator";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import Devider from "../components/UI/Devider";
 import PageHeader from "../components/UI/PageHeader";
 import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
-
-const useStyles = makeStyles({
-  table: {
-    width: "95%",
-    margin: "auto",
-  },
-  paragraf: {
-    "-webkit-transform": "rotate(90deg)",
-    "-moz-transform": "rotate(90deg)",
-    "-ms-transform": "rotate(90deg)",
-    "-o-transform": "rotate(90deg)",
-    transform: "rotate(90deg)",
-    display: "block",
-    textAlign: "top",
-    verticalAlign: "top",
-    margin: "0px",
-    padding: "0px",
-    paddingTop: "10px",
-    whiteSpace: "nowrap",
-    transformOrigin: "left left 0",
-    width: "100%",
-    height: "100%",
-  },
-  startListContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "start",
-    margin: 30,
-    marginBottom: 30,
-  },
-  tableCell: {
-    verticalAlign: "bottom",
-    padding: 0
-  }
-});
+import { startListPageStyle } from './styles/styles';
 
 const StartList = () => {
 
-  const classes = useStyles();
+  const classes = startListPageStyle();
   const location = useLocation();
   const entries = location.entries;
   const competitionName = location.name;

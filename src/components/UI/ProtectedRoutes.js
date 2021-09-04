@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Competitions from "../pages/Competitions";
-import Layout from "../components/UI/Layout";
-import User from "../pages/User";
-import Home from "../pages/Home";
-import Contact from "../pages/Contact";
-import Login from "../pages/Login";
-import Admin from "../pages/Admin";
-import ErrorPage from "./UI/ErrorPage";
-import EditProfile from "./DataCreators/edirProfil";
-import About from "../pages/About";
+import Competitions from "../../pages/Competitions";
+import Layout from "./Layout";
+import User from "../../pages/User";
+import Home from "../../pages/Home";
+import Contact from "../../pages/Contact";
+import Login from "../../pages/Login";
+import Admin from "../../pages/Admin";
+import ErrorPage from "./ErrorPage";
+import EditProfile from "../DataCreators/editProfil";
+import About from "../../pages/About";
 
 export const getUnProtectedRoutes = () => {
   return (
@@ -28,6 +28,7 @@ export const getUnProtectedRoutes = () => {
     </Layout>
   );
 };
+
 export const getProtectedUserRoutes = (
   isAuthenticated
 ) => {
@@ -52,6 +53,7 @@ export const getProtectedUserRoutes = (
     );
   } else return getUnProtectedRoutes(isAuthenticated);
 };
+
 export const getProtectedAdminRoutes = () => {
   return (
     <Layout>

@@ -2,26 +2,16 @@ import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import FilterController from "../components/FilterController";
+import FilterController from "../components/UI/FilterController";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import PageHeader from "../components/UI/PageHeader";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
-import EnterCompetition from "../pages/EnterCompetition";
+import EnterCompetition from "./EnterCompetition";
 import Result from "./Result";
 import StartList from "./Startlist";
-
-const buttons = [
-  {
-    id: 0,
-    label: "Active",
-  },
-  {
-    id: 1,
-    label: "Past",
-  },
-];
+import { competitionButtons } from './constants/constants';
 
 const Competitions = () => {
 
@@ -73,7 +63,7 @@ const Competitions = () => {
         <Route exact path="/competitions">
           <TopPagesHeader title="Competitions">
             <CustomTab
-              buttons={buttons}
+              buttons={competitionButtons}
               value={value}
               handleChange={handleChange}
             />

@@ -1,4 +1,4 @@
-import { auth } from "../../components/firebase";
+import { auth } from "../../components/UI/firebase";
 
 export const IS_AUTH = "IS_AUTH";
 export const IS_LOADING = "IS_LOADING";

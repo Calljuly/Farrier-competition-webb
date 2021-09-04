@@ -1,21 +1,10 @@
 import React from "react";
 import PageHeader from "./PageHeader";
 import Devider from "./Devider";
-import { makeStyles } from "@material-ui/styles";
-
-const useStyle = makeStyles({
-  headerContainer: {
-    display: "flex",
-    alignItems: "center",
-    ["@media (max-width:1000px)"]: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  },
-});
+import { topPagesHeaderStyle } from './styles/styles';
 
 const TopPagesHeader = (props) => {
-  const classes = useStyle();
+  const classes = topPagesHeaderStyle();
   return (
     <>
       <div className={classes.headerContainer}>

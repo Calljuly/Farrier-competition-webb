@@ -1,87 +1,22 @@
-import React, { useState } from "react";
-import TextInput from "../TextInput";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
-import CustomButton from "../CustomButton";
-import SubHeader from "../UI/SubHeader";
-import ChoiseModal from "../ChoiseModal";
-import PageHeader from "../UI/PageHeader";
-import P from "../UI/Paragraph";
-import { Alert } from "@material-ui/lab";
-import { useLocation, useHistory } from "react-router-dom";
+import { Grid } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { auth } from "../firebase";
-import ButtonContainer from "../UI/ButtonContainer";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import { editCompetition } from "../../apiFunctions/Api";
 import { Colors } from "../../colors";
-import { Grid } from "@material-ui/core";
-
-const textInputs = [
-  {
-    id: 0,
-    label: "Name",
-    value: "name",
-    type: "text",
-    multiline: false,
-  },
-  {
-    id: 3,
-    label: "Country",
-    value: "country",
-    type: "text",
-    multiline: false,
-  },
-  {
-    id: 4,
-    label: "Location",
-    value: "location",
-    type: "text",
-    multiline: false,
-  },
-  {
-    id: 5,
-    label: "Anvils avalible",
-    value: "anvils",
-    type: "number",
-    multiline: false,
-  },
-  {
-    id: 6,
-    label: "",
-    value: "dateFrom",
-    type: "date",
-    multiline: false,
-  },
-  {
-    id: 7,
-    label: "",
-    value: "dateTo",
-    type: "date",
-    multiline: false,
-  },
-  {
-    id: 8,
-    label: "Hotels",
-    value: "hotels",
-    type: "text",
-    multiline: true,
-  },
-  {
-    id: 9,
-    label: "Parking",
-    value: "parking",
-    type: "text",
-    multiline: true,
-  },
-  {
-    id: 10,
-    label: "Other information",
-    value: "information",
-    type: "text",
-    multiline: true,
-  },
-];
+import * as actions from "../../store/actions/competitionAction";
+import ChoiseModal from "../UI/ChoiseModal";
+import CustomButton from "../UI/CustomButton";
+import { auth } from "../UI/firebase";
+import TextInput from "../UI/TextInput";
+import ButtonContainer from "../UI/ButtonContainer";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
+import { textInputsEditCompetition } from './constants/constants';
 
 const EditCompetition = () => {
   const [show, setShow] = useState(false);
@@ -117,7 +52,7 @@ const EditCompetition = () => {
             setIsOpen(false);
           }
         })
-        .then(() => {})
+        .then(() => { })
         .catch((error) => {
           console.error("Error:", error);
           setError(error.message);
@@ -168,6 +103,7 @@ const EditCompetition = () => {
       return newValue;
     });
   };
+
   return (
     <div style={{ width: "100%" }}>
       <ChoiseModal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
@@ -217,7 +153,7 @@ const EditCompetition = () => {
 
         {show && (
           <>
-            {textInputs.map((item, index) => (
+            {textInputsEditCompetition.map((item) => (
               <TextInput
                 required
                 value={state[item.lable]}

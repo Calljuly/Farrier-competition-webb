@@ -1,53 +1,11 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import React, { useEffect, useReducer, useState } from "react";
 import Picture from "../assets/Images/newpic.jpg";
-import { Colors } from "../colors";
-import TextInput from "../components/TextInput";
+import TextInput from "../components/UI/TextInput";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import P from "../components/UI/Paragraph";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
-
-const useStyle = makeStyles({
-  email: {
-    textDecoration: "none",
-    color: "black",
-  },
-  container: {
-    width: "99%",
-    padding: 20,
-    marginTop: 10,
-  },
-  itemContainer: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  button: {
-    backgroundColor: Colors.black,
-    color: Colors.orange,
-    width: 200,
-    padding: 10,
-    margin: "10px 0px 10px 10px",
-    ["@media (max-width:956px)"]: {
-      width: "100%",
-    },
-  },
-  input: {
-    width: "96%",
-    margin: 20,
-  },
-  disabled: {
-    backgroundColor: "white",
-    color: "#DCDCDC",
-    width: 200,
-    padding: 10,
-    margin: "10px 0px 10px 10px",
-    ["@media (max-width:956px)"]: {
-      width: "97%",
-      alignSelf: "center",
-      margin: "10px 0px 10px 0px",
-    },
-  },
-});
+import { contactPageStyle } from './styles/styles';
 
 const initialState = {
   firstName: {
@@ -123,7 +81,7 @@ const Contact = () => {
 
   let valid;
 
-  const classes = useStyle();
+  const classes = contactPageStyle();
   const [state, dispatchReducer] = useReducer(reducer, initialState);
   const [formValid, setFormValid] = useState(false);
 

@@ -1,28 +1,10 @@
 import React from "react";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
-import { makeStyles } from "@material-ui/styles";
-
-const useStyle = makeStyles({
-  card: {
-    backgroundColor: "rgba(255,255,255, 0.8)",
-    width: 600,
-    height: "80%",
-    position: "absolute",
-    top: 50,
-    left: 70,
-    ["@media (max-width:1300px)"]: {
-      position: "relative",
-      top: 0,
-      left: 0,
-      width: "100%",
-    },
-  },
-});
+import { aboutPage } from "./styles/styles";
 
 const About = () => {
-
-  const classes = useStyle();
+  const classes = aboutPage();
 
   return (
     <div style={{ position: "relative", margin: 0 }}>

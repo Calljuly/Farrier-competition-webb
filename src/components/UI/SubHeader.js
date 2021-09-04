@@ -1,21 +1,8 @@
 import React from "react";
-import { Colors } from "../../colors";
-import { makeStyles } from "@material-ui/styles";
+import { subHeaderStyle } from './styles/styles';
 
-const useStyle = makeStyles({
-  header: {
-    color: Colors.black,
-    padding: 20,
-    margin: 0,
-    fontFamily: "Kohinoor Telugu",
-    fontSize: 20,
-    ["@media (max-width:956px)"]: {
-      fontSize: 15,
-    },
-  },
-});
 const SubHeader = ({ children }) => {
-  const classes = useStyle();
+  const classes = subHeaderStyle();
   return (
     <h3
       className={classes.header}

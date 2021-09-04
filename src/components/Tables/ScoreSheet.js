@@ -1,40 +1,16 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { compClasses } from "../../dummyData";
 import Devider from "../UI/Devider";
-import { useHistory } from "react-router-dom";
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
-
-const rows = [
-  {
-    id: 0,
-    cell: "one",
-  },
-  {
-    id: 1,
-    cell: "two",
-  },
-  {
-    id: 2,
-    cell: "three",
-  },
-  {
-    id: 3,
-    cell: "four",
-  },
-];
+import { rowsScoreSheet } from './constants/constants';
+import { scoresSheetStyle } from './styles/styles';
 
 const ScoreSheet = ({
   savedResult,
@@ -48,8 +24,8 @@ const ScoreSheet = ({
   type,
   title
 }) => {
-  const classes = useStyles();
- 
+  const classes = scoresSheetStyle();
+
   const history = useHistory();
   const tableTitlesIndex = type === "Shoeing" ? 1 : 0;
 
@@ -94,22 +70,22 @@ const ScoreSheet = ({
                     <TableCell align="left">
                       {savedResult ? item.competitor : item.id}
                     </TableCell>
-                    {rows.map((row) => (
+                    {rowsScoreSheet.map((row) => (
                       <TableCell
                         key={row.id}
                         onClick={
                           savedResult
                             ? () =>
-                                alert("You can no longer edit these results")
+                              alert("You can no longer edit these results")
                             : () =>
-                                handleModalContent(
-                                  heatId,
-                                  row.cell,
-                                  compClasses[tableTitlesIndex].headerTitles[1],
-                                  compIndex,
-                                  item.id,
-                                  shoe
-                                )
+                              handleModalContent(
+                                heatId,
+                                row.cell,
+                                compClasses[tableTitlesIndex].headerTitles[1],
+                                compIndex,
+                                item.id,
+                                shoe
+                              )
                         }
                         align="left"
                       >

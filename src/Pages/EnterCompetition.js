@@ -8,42 +8,19 @@ import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import ChoiseModal from "../components/ChoiseModal";
-import CustomButton from "../components/CustomButton";
+import ChoiseModal from "../components/UI/ChoiseModal";
+import CustomButton from "../components/UI/CustomButton";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 import * as actions from "../store/actions/competitionAction";
-
-const useStyles = makeStyles({
-  table: {
-    width: "95%",
-    margin: "auto",
-  },
-  paragraf: {
-    "-webkit-transform": "rotate(90deg)",
-    "-moz-transform": "rotate(90deg)",
-    "-ms-transform": "rotate(90deg)",
-    "-o-transform": "rotate(90deg)",
-    transform: "rotate(90deg)",
-    display: "block",
-    textAlign: "top",
-    verticalAlign: "top",
-    margin: "0px",
-    padding: "0px",
-    paddingTop: "10px",
-    whiteSpace: "nowrap",
-    transformOrigin: "left left 0",
-    width: "100%",
-    height: "100%",
-  },
-});
+import { enterCompetitionPageStyle } from './styles/styles';
 
 const EnterCompetition = () => {
 
-  const classes = useStyles();
+  const classes = enterCompetitionPageStyle();
   const location = useLocation();
   const divisionList = location.divisionList;
   const competition = location.competition;

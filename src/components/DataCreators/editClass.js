@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { compClasses } from "../../dummyData";
-import CustomButton from "../CustomButton";
-import { useLocation } from "react-router-dom";
-import SubHeader from "../UI/SubHeader";
-import ForgingClass from "../Classes/ForgingClass";
-import ShoeingClass from "../Classes/ShoeingClass";
-import ComboClass from "../Classes/ComboClass";
-import EagleEye from "../Classes/EagleEye";
-import ChoiseModal from "../ChoiseModal";
-import PageHeader from "../UI/PageHeader";
-import P from "../UI/Paragraph";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
-import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { auth, storage, firestore } from "../firebase";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import { editClass } from "../../apiFunctions/Api";
+import { compClasses } from "../../dummyData";
+import * as actions from "../../store/actions/competitionAction";
+import ChoiseModal from "../UI/ChoiseModal";
+import ComboClass from "../Classes/ComboClass";
+import EagleEye from "../Classes/EagleEye";
+import ForgingClass from "../Classes/ForgingClass";
+import ShoeingClass from "../Classes/ShoeingClass";
+import CustomButton from "../UI/CustomButton";
+import { auth, firestore, storage } from "../UI/firebase";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
 
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();
@@ -162,7 +161,7 @@ const EditClass = ({ classes }) => {
 
                 await uploadTask.on(
                   "state_changed",
-                  (snap) => {},
+                  (snap) => { },
                   (err) => {
                     console.log(err);
                   },

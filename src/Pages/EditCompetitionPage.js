@@ -1,5 +1,5 @@
 import React from "react";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/UI/CustomButton";
 import EditClass from "../components/DataCreators/editClass";
 import Devider from "../components/UI/Devider";
 import { useLocation, useHistory } from "react-router-dom";

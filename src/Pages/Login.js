@@ -1,14 +1,12 @@
 import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { resgisterNewUser } from "../apiFunctions/Api";
-import { Colors } from "../colors";
-import ChoiseModal from "../components/ChoiseModal";
-import CustomButton from "../components/CustomButton";
-import { auth } from "../components/firebase";
-import TextInput from "../components/TextInput";
+import ChoiseModal from "../components/UI/ChoiseModal";
+import CustomButton from "../components/UI/CustomButton";
+import { auth } from "../components/UI/firebase";
+import TextInput from "../components/UI/TextInput";
 import Devider from "../components/UI/Devider";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
@@ -17,96 +15,12 @@ import {
   validateAge, validateEmail, validatePassword, validateText
 } from "../helpers/validation";
 import * as actions from "../store/actions/auth";
-
-const textFieldsRegister = [
-  {
-    id: 1,
-    label: "Name",
-    type: "text",
-    key: "name",
-  },
-  {
-    id: 2,
-    label: "Age",
-    type: "number",
-    key: "age",
-  },
-  {
-    id: 3,
-    label: "Address",
-    type: "text",
-    key: "address",
-  },
-  {
-    id: 4,
-    label: "Phone number",
-    type: "number",
-    key: "phone",
-  },
-  {
-    id: 5,
-    label: "Country",
-    type: "text",
-    key: "country",
-  },
-];
-
-const useStyle = makeStyles({
-  inputContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    width: "80%",
-    height: 50,
-    fontSize: 20,
-    margin: 10,
-  },
-  failedLogin: {
-    color: "red",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  logInContainer: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    top: 0,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logInButtonContainer: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingRight: 17,
-  },
-  blackLine: {
-    backgroundColor: Colors.black,
-    width: "90%",
-    margin: "auto",
-    height: 2,
-  },
-  registerButtonContainer: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
-  background: {
-    width: "50%",
-    backgroundColor: "white",
-  },
-});
+import { textFieldsRegister } from './constants/constants';
+import { logInPageStyle } from './styles/styles';
 
 const Login = () => {
 
-  const classes = useStyle();
+  const classes = logInPageStyle();
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
   const isAuth = useSelector((state) => state.auth.isAuth);

@@ -1,50 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
-import { compClasses } from "../../dummyData";
-import CustomButton from "../CustomButton";
-import { useHistory, useLocation } from "react-router-dom";
-import SubHeader from "../UI/SubHeader";
-import ForgingClass from "../Classes/ForgingClass";
-import ShoeingClass from "../Classes/ShoeingClass";
-import ComboClass from "../Classes/ComboClass";
-import ChoiseModal from "../ChoiseModal";
-import PageHeader from "../UI/PageHeader";
-import P from "../UI/Paragraph";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
-import Devider from "../UI/Devider";
-import { storage, auth, firestore } from "../../components/firebase";
-import { Alert } from "@material-ui/lab";
-import ButtonContainer from "../UI/ButtonContainer";
+import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { Colors } from "../../colors";
+import { Alert } from "@material-ui/lab";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import { createClass } from "../../apiFunctions/Api";
+import { auth, firestore, storage } from "../../components/UI/firebase";
+import { compClasses } from "../../dummyData";
+import * as actions from "../../store/actions/competitionAction";
+import ChoiseModal from "../UI/ChoiseModal";
+import ComboClass from "../Classes/ComboClass";
+import ForgingClass from "../Classes/ForgingClass";
+import ShoeingClass from "../Classes/ShoeingClass";
+import CustomButton from "../UI/CustomButton";
+import ButtonContainer from "../UI/ButtonContainer";
+import Devider from "../UI/Devider";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
 import TopPageHeader from "../UI/TopPagesHeader";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    minWidth: 120,
-    marginRight: 20,
-  },
-  "&.makeStyles-formControl-42": {
-    margin: 0,
-  },
-  select: {
-    "&:before": {
-      margin: 0,
-      borderBottom: `1px solid ${Colors.black}`,
-    },
-    "&:after": {
-      borderBottom: `1px solid ${Colors.orange}`,
-    },
-    "&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before": {
-      borderBottom: `1px solid ${Colors.orange}`,
-    },
-  },
-}));
+import { addClassStyle } from './styles/styles';
 
 const AddClass = () => {
   const dispatch = useDispatch();
@@ -52,7 +29,7 @@ const AddClass = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const classes = useStyles();
+  const classes = addClassStyle();
   const [classesObject, setClasses] = useState({
     className: "",
     pointsToMultiply: [],

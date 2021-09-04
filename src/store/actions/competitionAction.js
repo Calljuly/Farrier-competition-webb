@@ -1,4 +1,4 @@
-import { firestore, auth } from "../../components/firebase";
+import { firestore, auth } from "../../components/UI/firebase";
 import {
   enterCompetitions,
   addNewPoint,

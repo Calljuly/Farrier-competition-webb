@@ -1,5 +1,5 @@
 import React from "react";
-import TextInput from "../TextInput";
+import TextInput from "../UI/TextInput";
 import SubHeader from "../UI/SubHeader";
 
 const ForgingClass = ({ handleClasses, points, pointsHandler }) => {

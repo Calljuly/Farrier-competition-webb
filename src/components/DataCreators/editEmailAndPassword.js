@@ -1,19 +1,17 @@
-import React, { useState } from "react";
-
-import { resetPassword } from "../../databaseFunctions";
-import { auth } from "../firebase";
-import CustomButton from "../CustomButton";
-import P from "../UI/Paragraph";
-import TextInput from "../TextInput";
-import PageHeader from "../UI/PageHeader";
-import ChoiseModal from "../ChoiseModal";
 import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { resetPassword } from "../../databaseFunctions";
+import { regEmail } from '../../helpers/regex';
+import ChoiseModal from "../UI/ChoiseModal";
+import CustomButton from "../UI/CustomButton";
+import { auth } from "../UI/firebase";
+import TextInput from "../UI/TextInput";
 import ButtonContainer from "../UI/ButtonContainer";
-
-let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
 
 const EditEmailAndPassword = () => {
-  
+
   const [authState, setAuthState] = useState({
     email: {
       value: "",

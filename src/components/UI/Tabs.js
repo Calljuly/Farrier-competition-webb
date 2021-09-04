@@ -1,44 +1,12 @@
-import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import { Grid } from "@material-ui/core";
-import { Colors } from "../../colors";
-
-const useStyle = makeStyles({
-  tabs: {
-    minWidth: 120,
-    height: 40,
-    textDecoration: "none",
-    color: Colors.black,
-    fontSize: 10,
-    margin: 5,
-    padding: 5,
-    ["@media (max-width:900px)"]: {
-      width: 300,
-      margin: 10,
-    },
-  },
-  active: {
-    minWidth: 120,
-    minHeight: 30,
-    margin: 5,
-    marginBottom: 0,
-    textDecoration: "none",
-    color: "#101820FF",
-    backgroundColor: "#F2AA4CFF",
-    fontSize: 10,
-    borderRadius: 3,
-    padding: 5,
-    ["@media (max-width:900px)"]: {
-      margin: 10,
-    },
-  },
-});
+import React from "react";
+import { tabsStyle } from './styles/styles';
 
 const CustomTab = ({ buttons, value, handleChange }) => {
-  const classes = useStyle();
+  const classes = tabsStyle()
   const { innerWidth: width } = window;
+
   return (
     <Tabs
       TabIndicatorProps={{
@@ -49,7 +17,7 @@ const CustomTab = ({ buttons, value, handleChange }) => {
       value={value}
       onChange={handleChange}
       orientation={width < 1000 ? "vertical" : "horizontal"}
-      style={{dispaly: 'flex', flexWrap: 'wrap'}}
+      style={{ dispaly: 'flex', flexWrap: 'wrap' }}
     >
       {buttons.map((item) => {
         return (

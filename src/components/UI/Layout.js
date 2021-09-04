@@ -1,17 +1,10 @@
 import React from "react";
-import Navbar from "../Navbar";
-import Footer from "../footer";
-import { makeStyles } from "@material-ui/styles";
-
-const useStyle = makeStyles({
-  contentContainer: {
-    backgroundColor: "#FFFFFF",
-    paddingBottom: 20,
-  },
-});
+import Footer from "./footer";
+import Navbar from "./Navbar";
+import { layoutStyle } from './styles/styles';
 
 const Layout = ({ children, logOut, signInState, setSignInState }) => {
-  const classes = useStyle();
+  const classes = layoutStyle();
   return (
     <>
       <Navbar logOut={logOut} signInState={signInState} setSignInState={setSignInState} />

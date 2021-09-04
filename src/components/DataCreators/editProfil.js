@@ -1,80 +1,23 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import CustomButton from "../CustomButton";
-import P from "../UI/Paragraph";
-import PageHeader from "../UI/PageHeader";
-import TextInput from "../TextInput";
-import Devider from "../UI/Devider";
-import ChoiseModal from "../ChoiseModal";
-import { auth } from "../firebase";
-import * as actions from "../../store/actions/auth";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import ButtonContainer from "../UI/ButtonContainer";
-import { storage } from "../firebase";
 import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as actions from "../../store/actions/auth";
+import ChoiseModal from "../UI/ChoiseModal";
+import CustomButton from "../UI/CustomButton";
+import { auth, storage } from "../UI/firebase";
+import TextInput from "../UI/TextInput";
+import ButtonContainer from "../UI/ButtonContainer";
+import Devider from "../UI/Devider";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
 import TopPagesHeader from "../UI/TopPagesHeader";
+import { textFieldsRegister } from './constants/constants';
 import EditEmailAndPassword from "./editEmailAndPassword";
-
-const textFieldsRegister = [
-  {
-    id: 1,
-    label: "Name",
-    type: "text",
-    key: "name",
-  },
-  {
-    id: 2,
-    label: "Age",
-    type: "number",
-    key: "age",
-  },
-  {
-    id: 3,
-    label: "Address",
-    type: "text",
-    key: "address",
-  },
-  {
-    id: 4,
-    label: "Phone number",
-    type: "number",
-    key: "phone",
-  },
-  {
-    id: 5,
-    label: "Country",
-    type: "text",
-    key: "country",
-  },
-  {
-    id: 6,
-    label: "",
-    type: "file",
-    key: "img",
-  },
-];
-
-const useStyle = makeStyles({
-  inputContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    ["@media (max-width:1000px)"]: {
-      width: "90%",
-      margin: "auto",
-    },
-  },
-  input: {
-    width: "100%",
-    height: 50,
-    fontSize: 20,
-    margin: 10,
-  },
-});
+import { editProfileStyle } from './styles/styles';
 
 const EditProfile = () => {
-  const classes = useStyle();
+  const classes = editProfileStyle();
   const [isOpen, setIsOpen] = useState(false);
   const userState = useSelector((state) => state.auth.user);
   const [authState, setAuthState] = useState(userState);

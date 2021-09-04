@@ -1,15 +1,14 @@
-import React from "react";
 import {
-  SwipeableDrawer,
   List,
   ListItem,
-  ListItemText,
+  ListItemText, SwipeableDrawer
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Colors } from "../colors";
-import { NavLink, useHistory } from "react-router-dom";
+import React from "react";
 import { useDispatch } from "react-redux";
-import * as actions from "../store/actions/auth";
+import { NavLink, useHistory } from "react-router-dom";
+import { Colors } from "../../colors";
+import * as actions from "../../store/actions/auth";
 
 const CustomDrawer = ({ drawerState, toggleDrawer, navLinks, auth }) => {
   const classes = useStyle();

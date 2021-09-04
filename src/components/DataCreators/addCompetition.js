@@ -1,116 +1,25 @@
-import React, { useReducer, useState } from "react";
-import TextInput from "../TextInput";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
-import CustomButton from "../CustomButton";
-import SubHeader from "../UI/SubHeader";
-import ChoiseModal from "../ChoiseModal";
-import PageHeader from "../UI/PageHeader";
-import P from "../UI/Paragraph";
-import { Alert } from "@material-ui/lab";
-import Devider from "../UI/Devider";
-import { auth } from "../firebase";
-import ButtonContainer from "../UI/ButtonContainer";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { Grid } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import { Alert } from "@material-ui/lab";
+import React, { useReducer, useState } from "react";
+import { useDispatch } from "react-redux";
 import { createCompetition } from "../../apiFunctions/Api";
 import { Colors } from "../../colors";
-import { Grid } from "@material-ui/core";
+import * as actions from "../../store/actions/competitionAction";
+import ChoiseModal from "../UI/ChoiseModal";
+import CustomButton from "../UI/CustomButton";
+import { auth } from "../UI/firebase";
+import TextInput from "../UI/TextInput";
+import ButtonContainer from "../UI/ButtonContainer";
+import Devider from "../UI/Devider";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
+import {textInputsAddCompetition, divisionDataAddCompetition} from './constants/constants';
 
-const textInputs = [
-  {
-    id: 0,
-    label: "Name",
-    value: "name",
-    type: "text",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 3,
-    label: "Country",
-    value: "country",
-    type: "text",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 4,
-    label: "Location",
-    value: "location",
-    type: "text",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 5,
-    label: "Anvils avalible",
-    value: "anvils",
-    type: "number",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 6,
-    label: "",
-    value: "dateFrom",
-    type: "date",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 7,
-    label: "",
-    value: "dateTo",
-    type: "date",
-    multiline: false,
-    required: true,
-  },
-  {
-    id: 8,
-    label: "Hotels",
-    value: "hotels",
-    type: "text",
-    multiline: true,
-    required: false,
-  },
-  {
-    id: 9,
-    label: "Parking",
-    value: "parking",
-    type: "text",
-    multiline: true,
-    required: false,
-  },
-  {
-    id: 10,
-    label: "Other information",
-    value: "information",
-    type: "text",
-    multiline: true,
-    required: false,
-  },
-];
-const divisionData = [
-  {
-    id: 11,
-    label: "Semi final spaces",
-    value: "semi",
-    type: "number",
-    multiline: false,
-    required: false,
-  },
-  {
-    id: 12,
-    label: "Final spaces",
-    value: "final",
-    type: "number",
-    multiline: false,
-    required: false,
-  },
-];
 const initialState = {
   name: {
     value: "",
@@ -456,7 +365,7 @@ const AddCompetition = () => {
           {error}
         </Alert>
       )}
-      {textInputs.map((item) => (
+      {textInputsAddCompetition.map((item) => (
         <TextInput
           required={item.required}
           key={item.id}

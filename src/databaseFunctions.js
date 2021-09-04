@@ -1,4 +1,4 @@
-import { auth } from "./components/firebase";
+import { auth } from "./components/UI/firebase";
 
 export const resetEmail = () => {
   auth

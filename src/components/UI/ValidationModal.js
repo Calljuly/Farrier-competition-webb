@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
+import React, { useState } from "react";
 import CustomButton from "./CustomButton";
-import P from "./UI/Paragraph";
+import { validationModalStyle } from './styles/styles';
 import PageHeader from "./UI/PageHeader";
+import P from "./UI/Paragraph";
+
 const rand = () => {
   return Math.round(Math.random() * 20) - 10;
 };
@@ -19,30 +20,8 @@ const getModalStyle = () => {
   };
 };
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: "absolute",
-    width: 700,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    display: "flex",
-    justifyContent: "cenetr",
-    alignItems: "center",
-    flexDirection: "column",
-  },
-
-  modalContent: {
-    backgroundColor: "white",
-    width: "80%",
-    height: 300,
-    alignSelf: "center",
-  },
-}));
-
 const CustomModal = ({ isOpen, handleClose, description, action }) => {
-  const classes = useStyles();
+  const classes = validationModalStyle();
   const [modalStyle] = useState(getModalStyle);
 
   return (

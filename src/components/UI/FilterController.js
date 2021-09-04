@@ -1,50 +1,17 @@
-import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import P from "./UI/Paragraph";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Colors } from "../colors";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../store/actions/filterAction";
-import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
+import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-
-const useStyle = makeStyles({
-  container: {
-    width: "100%",
-    objectFit: "cover",
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    border: "1px solid #DCDCDC",
-    margin: "auto",
-    padding: 20,
-    ["@media (max-width: 1000px)"]: {
-      height: "auto",
-    },
-  },
-  contentContainer: {
-    width: "80%",
-    margin: "auto",
-    backgroundColor: "#FFFFFF",
-    padding: "30px 0px 30px 0px",
-    ["@media (max-width: 1000px)"]: {
-      width: "100%",
-      padding: 0,
-    },
-  },
-  radio: {
-    "&$checked": {
-      color: "blue",
-    },
-  },
-  checked: { color: "green" },
-});
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../store/actions/filterAction";
+import { filterControllerStyle } from './styles/styles';
+import P from "./Paragraph";
 
 const FilterController = () => {
-  const classes = useStyle();
+  const classes = filterControllerStyle();
   const filter = useSelector((state) => state.filter.sort);
 
   const dispatch = useDispatch();

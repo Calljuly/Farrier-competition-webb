@@ -1,11 +1,11 @@
-import React from "react";
-import TextInput from "../TextInput";
-import SubHeader from "../UI/SubHeader";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
+import React from "react";
+import TextInput from "../UI/TextInput";
 import Devider from "../UI/Devider";
+import SubHeader from "../UI/SubHeader";
 
 const ShoingClass = ({ handleClasses, points, pointsHandler, feet }) => {
   return (

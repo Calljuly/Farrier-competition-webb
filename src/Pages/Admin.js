@@ -1,14 +1,13 @@
 import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import Pic from "../assets/Images/hov1.jpg";
 import AddClass from "../components/DataCreators/addClass";
 import AddCompetition from "../components/DataCreators/addCompetition";
-import { auth } from "../components/firebase";
+import { auth } from "../components/UI/firebase";
 import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
-import Scores from "../components/Scores";
+import Scores from "../components/UI/Scores";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
 import TabPanel from "../components/UI/TabPanel";
@@ -17,32 +16,11 @@ import TopPagesHeader from "../components/UI/TopPagesHeader";
 import EditCompetitionPage from "./EditCompetitionPage";
 import Result from "./Result";
 import ScorePicker from "./ScorePicker";
-
-const useStyle = makeStyles({
-  imgContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  }
-});
-
-const buttons = [
-  {
-    id: 0,
-    label: "Information",
-  },
-  {
-    id: 1,
-    label: "Create Competition",
-  },
-  {
-    id: 2,
-    label: "My Competitions",
-  },
-];
+import { adminPage } from './styles/styles'
+import { adminButtons } from './constants/constants'
 
 const Admin = () => {
-  const classes = useStyle();
+  const classes = adminPage();
   const [value, setValue] = useState(0);
   const [scorePickerData, setscorePickerData] = useState({});
 
@@ -127,7 +105,7 @@ const Admin = () => {
             <>
               <TopPagesHeader title="Admin">
                 <CustomTab
-                  buttons={buttons}
+                  buttons={adminButtons}
                   value={value}
                   handleChange={handleChange}
                 />

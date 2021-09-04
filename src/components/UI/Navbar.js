@@ -1,201 +1,23 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import { NavLink, useHistory } from "react-router-dom";
-import * as actions from "../store/actions/auth";
-import { useDispatch, useSelector } from "react-redux";
-import MenuIcon from "@material-ui/icons/Menu";
-import CustomDrawer from "./CustomDrawer";
-import { Colors } from "../colors";
-import ForgingScoreLoggo from "../assets/Images/ForgingScores-Logo-White.jpg";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-
-const linksAdmin = [
-  {
-    id: 0,
-    label: "HOME",
-    path: "/",
-    exact: true,
-  },
-  {
-    id: 1,
-    label: "PROFILE",
-    path: "/myProfile",
-    exact: false,
-  },
-  {
-    id: 2,
-    label: "COMPETITIONS",
-    path: "/competitions",
-    exact: false,
-  },
-  {
-    id: 3,
-    label: "ADMIN",
-    path: "/admin",
-    exact: false,
-  },
-  {
-    id: 4,
-    label: "CONTACT",
-    path: "/contact",
-    exact: false,
-  },
-];
-const linksUnAuth = [
-  {
-    id: 0,
-    label: "HOME",
-    path: "/",
-    exact: true,
-  },
-  {
-    id: 2,
-    label: "COMPETITIONS",
-    path: "/competitions",
-    exact: false,
-  },
-  {
-    id: 4,
-    label: "CONTACT",
-    path: "/contact",
-    exact: false,
-  },
-];
-const linksAuth = [
-  {
-    id: 0,
-    label: "HOME",
-    path: "/",
-    exact: true,
-  },
-  {
-    id: 6,
-    label: "ABOUT",
-    path: "/about",
-    exact: true,
-  },
-  {
-    id: 1,
-    label: "PROFILE",
-    path: "/myProfile",
-    exact: false,
-  },
-  {
-    id: 5,
-    label: "EDIT PROFILE",
-    path: "/myProfile/editProfile",
-    exact: false,
-  },
-  {
-    id: 2,
-    label: "COMPETITIONS",
-    path: "/competitions",
-    exact: false,
-  },
-  {
-    id: 4,
-    label: "CONTACT",
-    path: "/contact",
-    exact: false,
-  },
-];
-
-const useStyle = makeStyles({
-  avatar: {
-    width: 100,
-    height: 100,
-  },
-  container: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#101820FF",
-    flexDirection: "row",
-    ["@media (max-width:1200px)"]: {
-      justifyContent: "flex-start",
-    },
-  },
-  logo: {
-    width: "15%",
-    alignSelf: "center",
-    margin: 10,
-  },
-  welcomeContainer: {
-    display: "flex",
-    flexDirection: "row",
-    background: "white",
-    flex: 0.9,
-    margin: 10,
-    padding: 20,
-    "&>h1": {
-      marginLeft: 20,
-    },
-  },
-  link: {
-    width: 170,
-    height: 40,
-    margin: 20,
-    textDecoration: "none",
-    color: Colors.orange,
-    fontSize: 20,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-
-    "&:hover": {
-      color: "#101820FF",
-      backgroundColor: "#F2AA4CFF",
-      borderRadius: 5,
-    },
-  },
-  activeLink: {
-    margin: 20,
-    padding: 10,
-    textDecoration: "none",
-    color: "#101820FF",
-    backgroundColor: "#F2AA4CFF",
-    fontSize: 20,
-    borderRadius: 5,
-    "&:hover": {
-      color: "white",
-    },
-  },
-
-  contentContainer: {
-    display: "flex",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    ["@media (max-width:1200px)"]: {
-      display: "none",
-    },
-  },
-  menuIcon: {
-    fontSize: 40,
-    color: Colors.orange,
-  },
-  menuIconContainer: {
-    display: "none",
-    ["@media (max-width:1200px)"]: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      margin: 20,
-    },
-  },
-});
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import MenuIcon from "@material-ui/icons/Menu";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import ForgingScoreLoggo from "../../assets/Images/ForgingScores-Logo-White.jpg";
+import * as actions from "../../store/actions/auth";
+import { linksAdmin, linksAuth, linksUnAuth } from './constants/constants';
+import CustomDrawer from "./CustomDrawer";
+import { navbarStyle } from './styles/styles';
 
 const Navbar = () => {
   const [drawerState, setDrawerState] = useState(false);
   const toggleDrawer = () => {
     setDrawerState((prev) => !prev);
   };
-  const classes = useStyle();
+  const classes = navbarStyle();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isAuth = useSelector((state) => state.auth.isAuth);

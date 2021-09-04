@@ -1,115 +1,16 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import { useSelector } from "react-redux";
-import PageHeader from "../UI/PageHeader";
-import SubHeader from "../UI/SubHeader";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import P from "../UI/Paragraph";
-import CustomButton from "../CustomButton";
-import { useHistory } from "react-router-dom";
 import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import CustomButton from "../UI/CustomButton";
 import ButtonContainer from "../UI/ButtonContainer";
-import ShoePic from "../../assets/Images/shoe1.jpg";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
+import { competitionLitsItemStyle } from './styles/styles';
 
-const useStyle = makeStyles({
-  container: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "column",
-    borderBottom: "1px solid #DCDCDC",
-  },
-  classesContainer: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "column",
-    cursor: "pointer",
-    paddingBottom: 20,
-    padding: 10,
-  },
-  classes: {
-    width: "100%",
-    padding: 10,
-    "&:hover": {
-      backgroundColor: "#DCDCDC",
-    },
-    borderBottom: "1px solid #DCDCDC",
-  },
-  infoContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    borderBottom: "1px solid black",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
-    marginBottom: 10,
-    "&>p": {
-      marginLeft: 10,
-    },
-  },
-  button: {
-    borderTop: "1px solid black",
-    width: "100%",
-    padding: 10,
-    fontSize: 15,
-    backgroundColor: "#b9babe",
-    borderRadius: "0px 0px 10px 10px",
-    border: "none",
-    "&:hover": {
-      backgroundColor: "#595658",
-      color: "white",
-    },
-  },
-  classContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  header: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: "#DCDCDC",
-    },
-  },
-  icon: {
-    marginRight: 20,
-    fontSize: 30,
-  },
-
-  shoePic: {
-    width: 200,
-    height: 200,
-    ["@media (max-width: 1000px)"]: {
-      width: "100%",
-      height: "100%",
-    },
-  },
-  shoeContainer: {
-    display: "flex",
-    ["@media (max-width: 1000px)"]: {
-      flexDirection: "column",
-      margin: "10px 0px 20px 0px",
-    },
-  },
-  classInfo: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "start",
-    margin: 0,
-    ["@media (max-width: 1000px)"]: {
-      flexDirection: "column",
-    },
-  },
-});
 const CompetitionsListItem = ({
   id,
   name,
@@ -130,7 +31,7 @@ const CompetitionsListItem = ({
   parking,
   information,
 }) => {
-  const classes = useStyle();
+  const classes = competitionLitsItemStyle();
   const history = useHistory();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);

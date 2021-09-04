@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import ScoreSheet from "./Tables/ScoreSheet";
-import { useDispatch } from "react-redux";
-import CustomModal from "../components/Modal";
-import * as actions from "../store/actions/competitionAction";
-import { useLocation, useHistory } from "react-router-dom";
-import P from "./UI/Paragraph";
-import CustomButton from "./CustomButton";
-import Devider from "./UI/Devider";
-import { Alert } from "@material-ui/lab";
-import ButtonContainer from "./UI/ButtonContainer";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import CustomModal from "./Modal";
+import * as actions from "../../store/actions/competitionAction";
+import CustomButton from "./CustomButton";
 import { firestore } from "./firebase";
-import TopPagesHeader from "./UI/TopPagesHeader";
+import ScoreSheet from "../Tables/ScoreSheet";
+import ButtonContainer from "./ButtonContainer";
+import Devider from "./Devider";
+import P from "./Paragraph";
+import TopPagesHeader from "./TopPagesHeader";
 
 const Scores = () => {
   const [modalopen, setModal] = useState(false);

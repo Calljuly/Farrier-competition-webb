@@ -1,7 +1,7 @@
 import React from "react";
 import { shoes } from "../../dummyData";
-import CustomSelect from "../Select";
-import TextInput from "../TextInput";
+import CustomSelect from "../UI/Select";
+import TextInput from "../UI/TextInput";
 import SubHeader from "../UI/SubHeader";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";

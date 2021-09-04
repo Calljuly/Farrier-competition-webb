@@ -1,5 +1,4 @@
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,67 +9,23 @@ import { Alert } from "@material-ui/lab";
 import React, { useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import CustomButton from "../components/CustomButton";
-import ComponentToPrint from "../components/PdfGenerator";
-import SponsorCard from "../components/SponsorCard";
+import CustomButton from "../components/UI/CustomButton";
+import ComponentToPrint from "../components/UI/PdfGenerator";
+import SponsorCard from "../components/UI/SponsorCard";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import Devider from "../components/UI/Devider";
 import PageHeader from "../components/UI/PageHeader";
 import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 import { compClasses } from "../dummyData";
-
-const useStyles = makeStyles({
-  table: {
-    width: "95%",
-    margin: "auto",
-  },
-  paragraf: {
-    "-webkit-transform": "rotate(90deg)",
-    "-moz-transform": "rotate(90deg)",
-    "-ms-transform": "rotate(90deg)",
-    "-o-transform": "rotate(90deg)",
-    transform: "rotate(90deg)",
-    display: "block",
-    textAlign: "top",
-    verticalAlign: "top",
-    margin: "0px",
-    padding: "0px",
-    paddingTop: "10px",
-    whiteSpace: "nowrap",
-    transformOrigin: "left left 0",
-    width: "100%",
-    height: "100%",
-  },
-  sponsorContainer: {
-    display: "flex",
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    width: "100%",
-    marginBottom: 30,
-    ["@media (max-width: 1000px)"]: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  },
-  contentContainer: {
-    margin: 40,
-    ["@media (max-width: 1000px)"]: {
-      margin: 0,
-    },
-  },
-  tableContainer: {
-    width: "100%",
-    marginTop: "20px"
-  },
-});
+import { resultPageStyle } from './styles/styles';
 
 const Result = () => {
 
   const result = [];
   const savedClasses = [];
 
-  const classes = useStyles();
+  const classes = resultPageStyle();
   const location = useLocation();
   const history = useHistory();
   const resultRef = useRef();

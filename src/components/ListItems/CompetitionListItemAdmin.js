@@ -1,141 +1,22 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import { useDispatch } from "react-redux";
-import * as actions from "../../store/actions/competitionAction";
-import CustomButton from "../CustomButton";
-import { useHistory } from "react-router-dom";
-import P from "../UI/Paragraph";
-import SubHeader from "../UI/SubHeader";
-import PageHeader from "../UI/PageHeader";
-import { Colors } from "../../colors";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import ChoiseModal from "../ChoiseModal";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { startCompetitions, openCompetition } from "../../apiFunctions/Api";
-import { auth } from "../firebase";
-import ButtonContainer from "../UI/ButtonContainer";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { openCompetition, startCompetitions } from "../../apiFunctions/Api";
 import ShoePic from "../../assets/Images/shoe1.jpg";
-
-const useStyle = makeStyles({
-  container: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "column",
-    borderBottom: "1px solid #DCDCDC",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    padding: 10,
-  },
-  classesContainer: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    flexDirection: "column",
-    cursor: "pointer",
-    paddingBottom: 20,
-    padding: 10,
-  },
-  infoContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    borderBottom: "1px solid black",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
-    marginBottom: 10,
-    "&>p": {
-      marginLeft: 10,
-    },
-  },
-  classes: {
-    width: "100%",
-    padding: 10,
-    margin: 0,
-    "&:hover": {
-      backgroundColor: "#DCDCDC",
-    },
-    borderBottom: "1px solid #DCDCDC",
-  },
-  competitionRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    margin: 0,
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: "#DCDCDC",
-    },
-  },
-  icon: {
-    marginRight: 20,
-    fontSize: 30,
-  },
-  classIcon: {
-    fontSize: 20,
-    marginRight: 20,
-    marginLeft: 20,
-  },
-  switch_track: {
-    backgroundColor: Colors.black,
-    color: Colors.black,
-  },
-  switch_base: {
-    color: Colors.black,
-    "&.Mui-disabled": {
-      color: "#e886a9",
-    },
-    "&.Mui-checked": {
-      color: Colors.orange,
-    },
-    "&.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: Colors.black,
-    },
-  },
-  switch_primary: {
-    "&.Mui-checked": {
-      color: "#4CAF50",
-    },
-    "&.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: Colors.orange,
-    },
-  },
-  shoePic: {
-    width: 200,
-    height: 200,
-    ["@media (max-width: 1000px)"]: {
-      width: "100%",
-      height: "100%",
-    },
-  },
-  shoeContainer: {
-    display: "flex",
-    ["@media (max-width: 1000px)"]: {
-      flexDirection: "column",
-      margin: "10px 0px 20px 0px",
-    },
-  },
-  classInfo: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "start",
-    margin: 0,
-    ["@media (max-width: 1000px)"]: {
-      flexDirection: "column",
-    },
-  },
-});
+import * as actions from "../../store/actions/competitionAction";
+import ChoiseModal from "../UI/ChoiseModal";
+import CustomButton from "../UI/CustomButton";
+import { auth } from "../UI/firebase";
+import ButtonContainer from "../UI/ButtonContainer";
+import PageHeader from "../UI/PageHeader";
+import P from "../UI/Paragraph";
+import SubHeader from "../UI/SubHeader";
+import { competitionListItemAdminStyle } from './styles/styles';
 
 const CompetitionListItemAdmin = ({
   id,
@@ -159,7 +40,7 @@ const CompetitionListItemAdmin = ({
   information,
   handleScorePicker,
 }) => {
-  const classes = useStyle();
+  const classes = competitionListItemAdminStyle();
   const dispatch = useDispatch();
   const history = useHistory();
   const competitionEndDate = new Date(dateTo);
@@ -398,7 +279,7 @@ const CompetitionListItemAdmin = ({
                     }}
                     checked={open}
                     onChange={
-                      startCompetition ? () => {} : openCompetitionForEntries
+                      startCompetition ? () => { } : openCompetitionForEntries
                     }
                     name="Open competition"
                   />
@@ -416,7 +297,7 @@ const CompetitionListItemAdmin = ({
                     checked={started}
                     onChange={
                       startCompetition || divisions.length === 0
-                        ? () => {}
+                        ? () => { }
                         : startCompetitionHandler
                     }
                     name="Open competition for entries"

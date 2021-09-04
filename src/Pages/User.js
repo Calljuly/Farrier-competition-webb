@@ -1,49 +1,13 @@
 import { Avatar } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import { useSelector } from "react-redux";
 import PageHeader from "../components/UI/PageHeader";
 import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
-
-const useStyle = makeStyles({
-  avatar: {
-    margin: 40,
-    width: 400,
-    height: 400,
-    ["@media (max-width:1000px)"]: {
-      width: "80%",
-      height: "80%",
-    },
-  },
-  root: {
-    display: "flex",
-    width: "100%",
-    ["@media (max-width:1000px)"]: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  headContainer: {
-    display: "flex",
-    flexDirection: "column",
-    marginLeft: 20,
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    ["@media (max-width:1000px)"]: {
-      flexDirection: "column",
-    },
-  },
-});
+import { userPageStyle } from './styles/styles';
 
 const User = () => {
-  const classes = useStyle();
+  const classes = userPageStyle();
   const user = useSelector((state) => state.auth.user);
   const userImage = useSelector((state) => state.auth.userImage);
 

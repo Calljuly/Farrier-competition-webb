@@ -1,88 +1,12 @@
-import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import img from "../assets/Images/newpic.jpg";
-import { Colors } from "../colors";
 import CompetitionItemHome from "../components/ListItems/CompetitionItemHome";
-
-const useStyle = makeStyles({
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    ["@media (max-width:1300px)"]: {
-      display: "block",
-    },
-  },
-  headerText: {
-    color: Colors.orange,
-    fontSize: 45,
-    fontWeight: "bold",
-    marginLeft: 60,
-    ["@media (max-width:1300px)"]: {
-      textAlign: "center",
-      margin: 0,
-      fontSize: 30,
-    },
-  },
-  headerTextSec: {
-    color: "white",
-    fontSize: 30,
-    margin: "40px 100px 40px 40px",
-    ["@media (max-width:1300px)"]: {
-      margin: 20,
-      fontSize: 20,
-      textAlign: "center",
-    },
-  },
-  welcomeText: {
-    color: Colors.orange,
-    fontSize: 40,
-    marginLeft: 60,
-    ["@media (max-width:1300px)"]: {
-      textAlign: "center",
-      margin: 0,
-    },
-  },
-  calendarContainer: {
-    display: "flex",
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
-    marginTop: 40,
-    paddingBottom: 40,
-  },
-  orangeLine: {
-    backgroundColor: Colors.orange,
-    width: "100%",
-    height: "2px",
-  },
-  upcomingEvent: {
-    width: "80%",
-    marginTop: 40,
-    fontSize: 40
-  },
-  upcomingEventContainer: {
-    backgroundColor: "white",
-    marginTop: 40,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  homeBackground: {
-    backgroundColor: Colors.black,
-    width: "100%",
-    overflow: "hidden",
-  },
-  img: {
-    width: "100%",
-  },
-});
+import { homePageStyle } from './styles/styles';
 
 const Home = () => {
 
-  const classes = useStyle();
+  const classes = homePageStyle();
 
   const competitions = useSelector((state) => {
     const allCompetitions = state.competitions.competitions;

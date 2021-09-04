@@ -1,25 +1,10 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import P from "./UI/Paragraph";
-import SubHeader from "./UI/SubHeader";
-import { storage } from "./firebase";
-
-const useStyle = makeStyles({
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    width: 301,
-    border: "1px solid #DCDCDC",
-    margin: 20,
-    ["@media (max-width:956px)"]: {
-      width: "95%",
-      margin: 10,
-    },
-  },
-});
+import React from "react";
+import { sponsorCardStyle } from './styles/styles';
+import P from "./Paragraph";
+import SubHeader from "./SubHeader";
 
 const SponsorCard = ({ sponsorName, sponsorUrl, className }) => {
-  const classes = useStyle();
+  const classes = sponsorCardStyle();
 
   return (
     <div className={classes.card}>
