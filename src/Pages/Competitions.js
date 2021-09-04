@@ -1,18 +1,32 @@
+import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Route, Switch } from "react-router-dom";
+import FilterController from "../components/FilterController";
 import CompetitionsListItem from "../components/ListItems/CompetitionsListItem";
 import PageHeader from "../components/UI/PageHeader";
-import { Route, Switch } from "react-router-dom";
-import StartList from "./Startlist";
-import Result from "./Result";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-import EnterCompetition from "../Pages/EnterCompetition";
-import { Alert } from "@material-ui/lab";
-import FilterController from "../components/FilterController";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import EnterCompetition from "../pages/EnterCompetition";
+import Result from "./Result";
+import StartList from "./Startlist";
+
+const buttons = [
+  {
+    id: 0,
+    label: "Active",
+  },
+  {
+    id: 1,
+    label: "Past",
+  },
+];
 
 const Competitions = () => {
+
+  const todayDate = new Date();
+
   const [value, setValue] = useState(0);
   const filter = useSelector((state) => state.filter.sort);
 
@@ -33,23 +47,7 @@ const Competitions = () => {
     }
   });
 
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-  };
-  const todayDate = new Date();
-  const buttons = [
-    {
-      id: 0,
-      label: "Active",
-    },
-    {
-      id: 1,
-      label: "Past",
-    },
-  ];
-
-  const competitionsActive = competitions.filter((item, index) => {
+  const competitionsActive = competitions.filter((item) => {
     const competitionEndDate = new Date(item.competition.dateTo);
 
     if (competitionEndDate > todayDate) {
@@ -57,12 +55,17 @@ const Competitions = () => {
     }
   });
 
-  const competitionsDone = competitions.filter((item, index) => {
+  const competitionsDone = competitions.filter((item) => {
     const competitionToDate = new Date(item.competition.dateTo);
     if (competitionToDate < todayDate) {
       return item;
     }
   });
+
+  const handleChange = (event, newValue) => {
+    event.preventDefault();
+    setValue(newValue);
+  };
 
   return (
     <div style={{ marginTop: 0, width: "100%" }}>

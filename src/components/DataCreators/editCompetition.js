@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
-import { editCompetition } from "../../ApiFunctions/Api";
+import { editCompetition } from "../../apiFunctions/Api";
 import { Colors } from "../../colors";
 import { Grid } from "@material-ui/core";
 

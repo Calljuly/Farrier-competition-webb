@@ -21,7 +21,9 @@ const useStyle = makeStyles({
 });
 
 const About = () => {
+
   const classes = useStyle();
+
   return (
     <div style={{ position: "relative", margin: 0 }}>
       <img
@@ -29,7 +31,7 @@ const About = () => {
         style={{
           width: "100%",
         }}
-        alt="Home of Timmy Hoas"
+        alt="User page"
       />
       <div className={classes.card}>
         <div

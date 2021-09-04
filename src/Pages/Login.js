@@ -1,25 +1,23 @@
-import React, { useState } from "react";
+import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../store/actions/auth";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { resgisterNewUser } from "../apiFunctions/Api";
+import { Colors } from "../colors";
+import ChoiseModal from "../components/ChoiseModal";
 import CustomButton from "../components/CustomButton";
-import P from "../components/UI/Paragraph";
-import PageHeader from "../components/UI/PageHeader";
-import {
-  validatePassword,
-  validateEmail,
-  validateText,
-  validateAge,
-} from "../helpers/validation";
+import { auth } from "../components/firebase";
 import TextInput from "../components/TextInput";
 import Devider from "../components/UI/Devider";
-import ChoiseModal from "../components/ChoiseModal";
-import { useHistory } from "react-router-dom";
-import { auth } from "../components/firebase";
-import { resgisterNewUser } from "../ApiFunctions/Api";
-import { Alert } from "@material-ui/lab";
+import PageHeader from "../components/UI/PageHeader";
+import P from "../components/UI/Paragraph";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
-import { Colors } from "../colors";
+import {
+  validateAge, validateEmail, validatePassword, validateText
+} from "../helpers/validation";
+import * as actions from "../store/actions/auth";
+
 const textFieldsRegister = [
   {
     id: 1,
@@ -54,15 +52,6 @@ const textFieldsRegister = [
 ];
 
 const useStyle = makeStyles({
-  loginContainer: {
-    width: "70%",
-    borderRadius: 20,
-    margin: "auto",
-    backgroundColor: "white",
-    border: "2px solid gray",
-    boxShadow: "10px 5px 5px gray",
-    overflow: "hidden",
-  },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
@@ -80,9 +69,43 @@ const useStyle = makeStyles({
     fontSize: 20,
     fontWeight: "bold",
   },
+  logInContainer: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    top: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logInButtonContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingRight: 17,
+  },
+  blackLine: {
+    backgroundColor: Colors.black,
+    width: "90%",
+    margin: "auto",
+    height: 2,
+  },
+  registerButtonContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  background: {
+    width: "50%",
+    backgroundColor: "white",
+  },
 });
 
 const Login = () => {
+
   const classes = useStyle();
   const dispatch = useDispatch();
   const isError = useSelector((state) => state.auth.error);
@@ -134,10 +157,11 @@ const Login = () => {
       valid: true,
     },
   });
-  
+
   if (isAuth) {
     history.push("/");
   }
+
   const handleInputChange = (id, text) => {
     let updatedState;
     if (id === "profileImage") {
@@ -185,11 +209,11 @@ const Login = () => {
   };
 
   const formValidation = () => {
-    const a = Object.keys(authState);
+    const auth = Object.keys(authState);
     let valid = true;
-    a.forEach((item) => {
-      const b = authState[item];
-      if (b.valid === false || b.value === "") {
+    auth.forEach((item) => {
+      const authItem = authState[item];
+      if (authItem.valid === false || authItem.value === "") {
         valid = false;
       }
     });
@@ -244,20 +268,10 @@ const Login = () => {
   const signIn = () => {
     dispatch(actions.signIn(authState.email.value, authState.password.value));
   };
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        top: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div style={{ width: "50%", backgroundColor: "white" }}>
+    <div className={classes.logInContainer}>
+      <div className={classes.background}>
         {register ? (
           <TopPagesHeader title="Register user" />
         ) : (
@@ -379,15 +393,7 @@ const Login = () => {
             )}
 
             <Devider margin={30} />
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                paddingRight: 17,
-              }}
-            >
+            <div className={classes.logInButtonContainer}>
               {register && (
                 <>
                   <CustomButton
@@ -411,22 +417,8 @@ const Login = () => {
             </div>
             {!register && (
               <>
-                <div
-                  style={{
-                    backgroundColor: Colors.black,
-                    width: "90%",
-                    margin: "auto",
-                    height: 2,
-                  }}
-                />
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
-                  }}
-                >
+                <div className={classes.blackLine} />
+                <div className={classes.registerButtonContainer}>
                   <CustomButton
                     onClick={() => {
                       dispatch(actions.changeSignInState(!signInState));

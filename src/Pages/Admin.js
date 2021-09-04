@@ -1,24 +1,48 @@
+import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import AddCompetition from "../components/DataCreators/addCompetition";
-import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
 import { Route, Switch } from "react-router-dom";
-import Scores from "../components/Scores";
-import Edit from "./Edit";
-import P from "../components/UI/Paragraph";
-import PageHeader from "../components/UI/PageHeader";
+import Pic from "../assets/Images/hov1.jpg";
 import AddClass from "../components/DataCreators/addClass";
-import Result from "./Result";
+import AddCompetition from "../components/DataCreators/addCompetition";
+import { auth } from "../components/firebase";
+import CompetitionListItemAdmin from "../components/ListItems/CompetitionListItemAdmin";
+import Scores from "../components/Scores";
+import PageHeader from "../components/UI/PageHeader";
+import P from "../components/UI/Paragraph";
 import TabPanel from "../components/UI/TabPanel";
 import CustomTab from "../components/UI/Tabs";
-import ScorePicker from "./ScorePicker";
-import { Grid } from "@material-ui/core";
-import Pic from "../assets/Images/hov1.jpg";
-import { auth } from "../components/firebase";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import EditCompetitionPage from "./EditCompetitionPage";
+import Result from "./Result";
+import ScorePicker from "./ScorePicker";
 
+const useStyle = makeStyles({
+  imgContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
+});
+
+const buttons = [
+  {
+    id: 0,
+    label: "Information",
+  },
+  {
+    id: 1,
+    label: "Create Competition",
+  },
+  {
+    id: 2,
+    label: "My Competitions",
+  },
+];
 
 const Admin = () => {
+  const classes = useStyle();
   const [value, setValue] = useState(0);
   const [scorePickerData, setscorePickerData] = useState({});
 
@@ -52,20 +76,6 @@ const Admin = () => {
     setValue(3);
   };
 
-  const buttons = [
-    {
-      id: 0,
-      label: "Information",
-    },
-    {
-      id: 1,
-      label: "Create Competition",
-    },
-    {
-      id: 2,
-      label: "My Competitions",
-    },
-  ];
   const myCompetitions =
     adminCompetitions.length !== 0 ? (
       adminCompetitions.map((item, index) => {
@@ -114,7 +124,7 @@ const Admin = () => {
               goBackAdmin={() => setValue(2)}
             />
           ) : (
-            <div>
+            <>
               <TopPagesHeader title="Admin">
                 <CustomTab
                   buttons={buttons}
@@ -122,80 +132,74 @@ const Admin = () => {
                   handleChange={handleChange}
                 />
               </TopPagesHeader>
-              <TabPanel value={value} index={0}>
-                <div style={{ padding: 20 }}>
-                  <h1>Authurized as admin</h1>
-                  <Grid container>
-                    <Grid item xs={12} lg={6}>
-                      <P>
-                        If you are authurized as an admin you will here be able
-                        to create competitions and manege them as you wish. You
-                        will be able to create the competition , add classes to
-                        it after you choise, open competition for entries, start
-                        competition on starting date and fill out the scores for
-                        each competitor dureing the competition.
-                        <br />
-                        <br />
-                      </P>
-                      <h1>How do i start ?</h1>
-                      <P>
-                        To create your competition you start with clicking the
-                        tab above "Create Competition". Fill out the form , make
-                        sure the data på enter is correct bufor pressing the
-                        button in the end of the form "Create Competition". When
-                        you done you should have recived a response from the
-                        server if you creating of competition were success full
-                        or not. If Succsess you can now navigate to your
-                        competitions by pressing the tab above "My competition"
-                        and you will find it there.
-                        <br />
-                        <br />
-                        To view the information about each competition you have
-                        you can press the expand icon. When you have open up you
-                        will see all informations about your competition and
-                        what you can manege.
-                        <br />
-                        Press the button "Add class" to create classes to your
-                        competition. We have made some premade types of classes
-                        you can choose between and they all have diffrent forms
-                        to fill out.
-                        <br />
-                        <br />
-                        When you have created all the classes to their belonging
-                        divisions or category you can choose to edit you
-                        competitions if more data is required for your
-                        competition or you can now wait until its time to press
-                        the switsh "Open for entries". When doing that you have
-                        made you competition open for competitors to enter.
-                        <br />
-                        <br />
-                        When you have started the competition the entries are
-                        sorted out in heats in the classes and divisions they
-                        have entered. When the competition has started
-                        competitor can no longer enter your classes. You will
-                        now be able to fill out the scores for each class and
-                        each heat. You'll find this if you expand the
-                        competition under "My competitions".
-                      </P>
-                    </Grid>
-                    <Grid
-                      xs={12}
-                      lg={6}
-                      item
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src={Pic}
-                        alt="Timmy Hoas and Fredrik Strange"
-                        style={{ width: "80%" }}
-                      />
-                    </Grid>
+              <TabPanel value={value} index={0} style={{ padding: 20 }}>
+                <h1>Authurized as admin</h1>
+                <Grid container>
+                  <Grid item xs={12} lg={6}>
+                    <P>
+                      If you are authurized as an admin you will here be able
+                      to create competitions and manege them as you wish. You
+                      will be able to create the competition , add classes to
+                      it after you choise, open competition for entries, start
+                      competition on starting date and fill out the scores for
+                      each competitor dureing the competition.
+                      <br />
+                      <br />
+                    </P>
+                    <h1>How do i start ?</h1>
+                    <P>
+                      To create your competition you start with clicking the
+                      tab above "Create Competition". Fill out the form , make
+                      sure the data på enter is correct bufor pressing the
+                      button in the end of the form "Create Competition". When
+                      you done you should have recived a response from the
+                      server if you creating of competition were success full
+                      or not. If Succsess you can now navigate to your
+                      competitions by pressing the tab above "My competition"
+                      and you will find it there.
+                      <br />
+                      <br />
+                      To view the information about each competition you have
+                      you can press the expand icon. When you have open up you
+                      will see all informations about your competition and
+                      what you can manege.
+                      <br />
+                      Press the button "Add class" to create classes to your
+                      competition. We have made some premade types of classes
+                      you can choose between and they all have diffrent forms
+                      to fill out.
+                      <br />
+                      <br />
+                      When you have created all the classes to their belonging
+                      divisions or category you can choose to edit you
+                      competitions if more data is required for your
+                      competition or you can now wait until its time to press
+                      the switsh "Open for entries". When doing that you have
+                      made you competition open for competitors to enter.
+                      <br />
+                      <br />
+                      When you have started the competition the entries are
+                      sorted out in heats in the classes and divisions they
+                      have entered. When the competition has started
+                      competitor can no longer enter your classes. You will
+                      now be able to fill out the scores for each class and
+                      each heat. You'll find this if you expand the
+                      competition under "My competitions".
+                    </P>
                   </Grid>
-                </div>
+                  <Grid
+                    xs={12}
+                    lg={6}
+                    item
+                    className={classes.imgContainer}
+                  >
+                    <img
+                      src={Pic}
+                      alt="Timmy Hoas and Fredrik Strange"
+                      style={{ width: "80%" }}
+                    />
+                  </Grid>
+                </Grid>
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <PageHeader>Add new competition</PageHeader>
@@ -205,14 +209,14 @@ const Admin = () => {
                 <PageHeader>My competitions</PageHeader>
                 {myCompetitions}
               </TabPanel>
-            </div>
+            </>
           )}
         </Route>
         <Route path="/admin/scores" exact>
           <Scores />
         </Route>
         <Route path="/admin/editCompetition" exact>
-          <Edit />
+          <EditCompetitionPage />
         </Route>
         <Route path="/admin/addClass" exact>
           <AddClass />

@@ -7,7 +7,7 @@ import EditCompetition from "../components/DataCreators/editCompetition";
 import ButtonContainer from "../components/UI/ButtonContainer";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
-const Edit = () => {
+const EditCompetitionPage = () => {
   const l = useLocation();
   const compClasses = l.state;
   const id = l.id;
@@ -31,7 +31,7 @@ const Edit = () => {
       >
         <EditCompetition />
         {compClasses.length > 0 &&
-          compClasses.map((divs, index) => {
+          compClasses.map((divs) => {
             return Object.values(divs).map((data) => {
               return data.map((item) => {
                 return <EditClass key={item.className} classes={item} />;
@@ -48,4 +48,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default EditCompetitionPage;

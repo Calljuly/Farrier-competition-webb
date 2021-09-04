@@ -17,7 +17,7 @@ import { Alert } from "@material-ui/lab";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { auth, storage, firestore } from "../firebase";
-import { editClass } from "../../ApiFunctions/Api";
+import { editClass } from "../../apiFunctions/Api";
 
 const EditClass = ({ classes }) => {
   const dispatch = useDispatch();

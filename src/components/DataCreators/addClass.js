@@ -21,7 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Colors } from "../../colors";
-import { createClass } from "../../ApiFunctions/Api";
+import { createClass } from "../../apiFunctions/Api";
 import TopPageHeader from "../UI/TopPagesHeader";
 
 const useStyles = makeStyles((theme) => ({

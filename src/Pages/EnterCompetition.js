@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PageHeader from "../components/UI/PageHeader";
-import SubHeader from "../components/UI/SubHeader";
-import { useLocation, useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Alert } from "@material-ui/lab";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import ChoiseModal from "../components/ChoiseModal";
 import CustomButton from "../components/CustomButton";
 import ButtonContainer from "../components/UI/ButtonContainer";
-import ChoiseModal from "../components/ChoiseModal";
+import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/actions/competitionAction";
+import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import * as actions from "../store/actions/competitionAction";
 
 const useStyles = makeStyles({
   table: {
@@ -43,11 +42,12 @@ const useStyles = makeStyles({
 });
 
 const EnterCompetition = () => {
+
   const classes = useStyles();
-  const l = useLocation();
-  const divisionList = l.divisionList;
-  const competition = l.competition;
-  const id = l.id;
+  const location = useLocation();
+  const divisionList = location.divisionList;
+  const competition = location.competition;
+  const id = location.id;
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -58,13 +58,14 @@ const EnterCompetition = () => {
   if (!divisionList) {
     history.push("/competitions");
   }
+
   const state = divisionList
     ? divisionList.map((item) => {
-        return {
-          name: item,
-          checked: false,
-        };
-      })
+      return {
+        name: item,
+        checked: false,
+      };
+    })
     : null;
 
   const [newstate, setnewState] = useState(state);

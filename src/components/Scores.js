@@ -21,16 +21,16 @@ const Scores = () => {
   const [modalData, setModalData] = useState({});
   const history = useHistory();
   const dispatch = useDispatch();
-  const l = useLocation();
-  const compClasses = l.state ? l.state : [];
-  const compIndex = l.id;
-  const heat = l.heat ? l.heat : [];
-  const heatId = l.heatId;
-  const shoe = l.shoe ? l.shoe : "";
-  const judges = l.judges ? l.judges : [];
+  const location = useLocation();
+  const compClass = location.state ? location.state : [];
+  const compIndex = location.id;
+  const heat = location.heat ? location.heat : [];
+  const heatId = location.heatId;
+  const shoe = location.shoe ? location.shoe : "";
+  const judges = location.judges ? location.judges : [];
 
   const [judge, setJudge] = useState(
-    compClasses.referee.length > 0 ? compClasses.referee : ""
+    compClass.referee.length > 0 ? compClass.referee : ""
   );
 
   const closeModalHandler = (data) => {
@@ -41,7 +41,7 @@ const Scores = () => {
           modalData.user,
           modalData.cellId,
           compIndex,
-          compClasses,
+          compClass,
           modalData.type,
           modalData.heat
         )
@@ -62,7 +62,7 @@ const Scores = () => {
     setModal(true);
   };
 
-  if (compClasses.length === 0 || heat.length === 0 || judges.length === 0) {
+  if (compClass.length === 0 || heat.length === 0 || judges.length === 0) {
     history.push("/admin");
   }
 
@@ -74,8 +74,8 @@ const Scores = () => {
     firestore
       .collection("competitions")
       .doc(compIndex)
-      .collection(compClasses.divisions)
-      .doc(compClasses.className)
+      .collection(compClass.divisions)
+      .doc(compClass.className)
       .update({
         referee: value,
       });
@@ -90,7 +90,7 @@ const Scores = () => {
           handleClose={closeModalHandler}
           modalData={modalData}
         />
-        {compClasses.savedResult && (
+        {compClass.savedResult && (
           <Alert>
             <P>This class is saved and you wont be able to change the scores</P>
           </Alert>
@@ -118,18 +118,18 @@ const Scores = () => {
           </FormControl>
         </ButtonContainer>
         <ScoreSheet
-          className={compClasses.className}
+          className={compClass.className}
           handleModalContent={handleModalContent}
-          savedResult={compClasses.savedResult}
-          pointsToMultiply={compClasses.pointsToMultiply}
+          savedResult={compClass.savedResult}
+          pointsToMultiply={compClass.pointsToMultiply}
           result={heat}
           compIndex={compIndex}
           shoe={shoe}
           heatId={heatId}
           type={
             shoe === "shoeOne"
-              ? compClasses.shoeOneType
-              : compClasses.shoeTwoType
+              ? compClass.shoeOneType
+              : compClass.shoeTwoType
           }
           title={shoe === "shoeOne" ? "Shoe One" : "Shoe Two"}
         />

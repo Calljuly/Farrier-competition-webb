@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Competitions from "../Pages/Competitions";
+import Competitions from "../pages/Competitions";
 import Layout from "../components/UI/Layout";
-import User from "../Pages/User";
-import Home from "../Pages/Home";
-import Contact from "../Pages/Contact";
-import Login from "../Pages/Login";
-import Admin from "../Pages/Admin";
+import User from "../pages/User";
+import Home from "../pages/Home";
+import Contact from "../pages/Contact";
+import Login from "../pages/Login";
+import Admin from "../pages/Admin";
 import ErrorPage from "./UI/ErrorPage";
 import EditProfile from "./DataCreators/edirProfil";
-import About from "../Pages/About";
+import About from "../pages/About";
 
 export const getUnProtectedRoutes = () => {
   return (

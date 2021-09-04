@@ -1,14 +1,9 @@
-import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import React from "react";
 import { useSelector } from "react-redux";
-import SubHeader from "../components/UI/SubHeader";
 import PageHeader from "../components/UI/PageHeader";
-import EditProfile from "../components/DataCreators/edirProfil";
-import EditEmailAndPassword from "../components/DataCreators/editEmailAndPassword";
-import TabPanel from "../components/UI/TabPanel";
-import CustomTab from "../components/UI/Tabs";
-import { Alert } from "@material-ui/lab";
+import SubHeader from "../components/UI/SubHeader";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyle = makeStyles({

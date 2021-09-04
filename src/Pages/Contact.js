@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { makeStyles } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
-import P from "../components/UI/Paragraph";
-import PageHeader from "../components/UI/PageHeader";
-import { Colors } from "../colors";
-import Devider from "../components/UI/Devider";
-import TextInput from "../components/TextInput";
-import { Button } from "@material-ui/core";
-import ButtonContainer from "../components/UI/ButtonContainer";
+import { Button, Grid, makeStyles } from "@material-ui/core";
+import React, { useEffect, useReducer, useState } from "react";
 import Picture from "../assets/Images/newpic.jpg";
+import { Colors } from "../colors";
+import TextInput from "../components/TextInput";
+import ButtonContainer from "../components/UI/ButtonContainer";
+import P from "../components/UI/Paragraph";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyle = makeStyles({
@@ -124,10 +120,12 @@ const reducer = (state, action) => {
 };
 
 const Contact = () => {
+
+  let valid;
+
   const classes = useStyle();
   const [state, dispatchReducer] = useReducer(reducer, initialState);
   const [formValid, setFormValid] = useState(false);
-  let valid;
 
   const validateText = (text, key, type) => {
     valid = true;
@@ -148,6 +146,7 @@ const Contact = () => {
     }
     dispatchReducer({ type: key, value: valid, key: "valid" });
   };
+
   const formValidation = () => {
     const a = Object.keys(state);
     let valid = true;
@@ -160,6 +159,7 @@ const Contact = () => {
 
     return valid;
   };
+
   useEffect(() => {
     setFormValid(formValidation());
   }, [state]);

@@ -17,12 +17,30 @@ const useStyles = makeStyles({
   },
 });
 
+const rows = [
+  {
+    id: 0,
+    cell: "one",
+  },
+  {
+    id: 1,
+    cell: "two",
+  },
+  {
+    id: 2,
+    cell: "three",
+  },
+  {
+    id: 3,
+    cell: "four",
+  },
+];
+
 const ScoreSheet = ({
   savedResult,
   handleModalContent,
   pointsToMultiply,
   result,
-  index,
   compIndex,
   className,
   shoe,
@@ -31,24 +49,7 @@ const ScoreSheet = ({
   title
 }) => {
   const classes = useStyles();
-  const rows = [
-    {
-      id: 0,
-      cell: "one",
-    },
-    {
-      id: 1,
-      cell: "two",
-    },
-    {
-      id: 2,
-      cell: "three",
-    },
-    {
-      id: 3,
-      cell: "four",
-    },
-  ];
+ 
   const history = useHistory();
   const tableTitlesIndex = type === "Shoeing" ? 1 : 0;
 

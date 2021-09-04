@@ -7,7 +7,7 @@ import { getRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./components/firebase";
 import CookieConsent from "./components/CookieConsent";
 import Loading from "./components/IsLoading";
-import Login from "./Pages/Login";
+import Login from "./pages/Login";
 
 const App = () => {
   const dispatch = useDispatch();

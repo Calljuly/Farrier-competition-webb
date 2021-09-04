@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -6,17 +6,17 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import SubHeader from "../components/UI/SubHeader";
-import PageHeader from "../components/UI/PageHeader";
-import { useLocation, useHistory } from "react-router-dom";
-import CustomButton from "../components/CustomButton";
 import { Alert } from "@material-ui/lab";
-import ComponentToPrint from "../components/PdfGenerator";
+import React, { useRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import CustomButton from "../components/CustomButton";
+import ComponentToPrint from "../components/PdfGenerator";
 import ButtonContainer from "../components/UI/ButtonContainer";
-import TopPagesHeader from "../components/UI/TopPagesHeader";
 import Devider from "../components/UI/Devider";
+import PageHeader from "../components/UI/PageHeader";
+import SubHeader from "../components/UI/SubHeader";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
 
 const useStyles = makeStyles({
   table: {
@@ -40,16 +40,29 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
+  startListContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "start",
+    margin: 30,
+    marginBottom: 30,
+  },
+  tableCell: {
+    verticalAlign: "bottom",
+    padding: 0
+  }
 });
 
 const StartList = () => {
-  const classes = useStyles();
-  const l = useLocation();
-  const entries = l.entries;
-  const competitionName = l.name;
-  const history = useHistory();
 
+  const classes = useStyles();
+  const location = useLocation();
+  const entries = location.entries;
+  const competitionName = location.name;
+  const history = useHistory();
   const componentRef = useRef();
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -61,21 +74,12 @@ const StartList = () => {
   return (
     <>
       <TopPagesHeader title="StartList" />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "start",
-          margin: 30,
-          marginBottom: 30,
-        }}
-      >
+      <div className={classes.startListContainer}>
         <ComponentToPrint ref={componentRef}>
           <PageHeader>{competitionName}</PageHeader>
 
           {entries && Object.keys(entries).length > 0 ? (
-            Object.keys(entries).map((divs, index) => (
+            Object.keys(entries).map((divs) => (
               <TableContainer component={Paper}>
                 <SubHeader>{divs}</SubHeader>
 
@@ -86,19 +90,13 @@ const StartList = () => {
                 >
                   <TableHead>
                     <TableRow>
-                      <TableCell
-                        style={{ verticalAlign: "bottom", padding: 0 }}
-                      >
+                      <TableCell className={classes.tableCell}>
                         <p>Competitor</p>
                       </TableCell>
-                      <TableCell
-                        style={{ verticalAlign: "bottom", padding: 0 }}
-                      >
+                      <TableCell className={classes.tableCell}>
                         <p>Id</p>
                       </TableCell>
-                      <TableCell
-                        style={{ verticalAlign: "bottom", padding: 0 }}
-                      >
+                      <TableCell className={classes.tableCell}>
                         <p>Country</p>
                       </TableCell>
                     </TableRow>

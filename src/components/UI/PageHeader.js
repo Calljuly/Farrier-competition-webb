@@ -14,6 +14,7 @@ const useStyle = makeStyles({
     },
   },
 });
+
 const PageHeader = ({ children }) => {
   const classes = useStyle();
 

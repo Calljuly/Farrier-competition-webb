@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -6,19 +6,19 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { compClasses } from "../dummyData";
-import SubHeader from "../components/UI/SubHeader";
-import PageHeader from "../components/UI/PageHeader";
-import { useLocation, useHistory } from "react-router-dom";
-import CustomButton from "../components/CustomButton";
-import SponsorCard from "../components/SponsorCard";
-import ComponentToPrint from "../components/PdfGenerator";
-import { useReactToPrint } from "react-to-print";
-import ButtonContainer from "../components/UI/ButtonContainer";
 import { Alert } from "@material-ui/lab";
-import TopPagesHeader from "../components/UI/TopPagesHeader";
+import React, { useRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
+import CustomButton from "../components/CustomButton";
+import ComponentToPrint from "../components/PdfGenerator";
+import SponsorCard from "../components/SponsorCard";
+import ButtonContainer from "../components/UI/ButtonContainer";
 import Devider from "../components/UI/Devider";
+import PageHeader from "../components/UI/PageHeader";
+import SubHeader from "../components/UI/SubHeader";
+import TopPagesHeader from "../components/UI/TopPagesHeader";
+import { compClasses } from "../dummyData";
 
 const useStyles = makeStyles({
   table: {
@@ -59,18 +59,34 @@ const useStyles = makeStyles({
       margin: 0,
     },
   },
+  tableContainer: {
+    width: "100%",
+    marginTop: "20px"
+  },
 });
 
 const Result = () => {
-  const classes = useStyles();
-  const l = useLocation();
-  const incomingResult = l.result ? l.result : [];
-  const competitionName = l.name ? l.name : "No name avalilable";
-  const sponsor = l.divisions ? l.divisions : [];
-  const history = useHistory();
-  const result = [];
 
+  const result = [];
   const savedClasses = [];
+
+  const classes = useStyles();
+  const location = useLocation();
+  const history = useHistory();
+  const resultRef = useRef();
+
+  const incomingResult = location.result ? location.result : [];
+  const competitionName = location.name ? location.name : "No name avalilable";
+  const sponsor = location.divisions ? location.divisions : [];
+
+  const handleResultPrint = useReactToPrint({
+    content: () => resultRef.current,
+  });
+
+  const classResultRef = useRef();
+  const handleClassPrint = useReactToPrint({
+    content: () => classResultRef.current,
+  });
 
   if (sponsor) {
     sponsor.forEach((item) => {
@@ -83,15 +99,6 @@ const Result = () => {
       });
     });
   }
-
-  const resultRef = useRef();
-  const handleResultPrint = useReactToPrint({
-    content: () => resultRef.current,
-  });
-  const classResultRef = useRef();
-  const handleClassPrint = useReactToPrint({
-    content: () => classResultRef.current,
-  });
 
   incomingResult.forEach((i) => {
     i.class.map((item) => {
@@ -106,6 +113,9 @@ const Result = () => {
       });
     });
   });
+
+  console.log(result);
+
   return sponsor ? (
     <>
       <TopPagesHeader title="Result" />
@@ -247,7 +257,7 @@ const Result = () => {
                 <TableContainer
                   key={index}
                   component={Paper}
-                  style={{ width: "100%", marginTop: "20px" }}
+                  className={classes.tableContainer}
                 >
                   <SubHeader>{item.className}</SubHeader>
                   <SubHeader>{item.divisions}</SubHeader>
@@ -258,32 +268,19 @@ const Result = () => {
                   >
                     <TableHead>
                       <TableRow>
-                        {compClasses[1].headerTitles.map((comp, index) => {
+                        {compClasses[1].headerTitles.map((comp) => {
                           if (comp !== "Total Points") {
                             return (
-                              <TableCell
-                                key={comp}
-                                style={{
-                                  verticalAlign: "bottom",
-                                  padding: 0,
-                                  fontSize: 16,
-                                }}
-                              >
+                              <TableCell key={comp}>
                                 <p>{comp}</p>
                               </TableCell>
                             );
                           }
                         })}
-                        {compClasses[0].headerTitles.map((comp, index) => {
+                        {compClasses[0].headerTitles.map((comp) => {
                           if (comp !== "Competitor") {
                             return (
-                              <TableCell
-                                key={comp}
-                                style={{
-                                  verticalAlign: "bottom",
-                                  padding: 0,
-                                }}
-                              >
+                              <TableCell key={comp}>
                                 <p>{comp}</p>
                               </TableCell>
                             );

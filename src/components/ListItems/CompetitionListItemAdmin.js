@@ -14,7 +14,7 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ChoiseModal from "../ChoiseModal";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { startCompetitions, openCompetition } from "../../ApiFunctions/Api";
+import { startCompetitions, openCompetition } from "../../apiFunctions/Api";
 import { auth } from "../firebase";
 import ButtonContainer from "../UI/ButtonContainer";
 import ShoePic from "../../assets/Images/shoe1.jpg";

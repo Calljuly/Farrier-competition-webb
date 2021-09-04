@@ -1,9 +1,9 @@
+import { makeStyles } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
 import img from "../assets/Images/newpic.jpg";
 import { Colors } from "../colors";
-import { useSelector } from "react-redux";
 import CompetitionItemHome from "../components/ListItems/CompetitionItemHome";
-import { makeStyles } from "@material-ui/core";
 
 const useStyle = makeStyles({
   header: {
@@ -44,19 +44,55 @@ const useStyle = makeStyles({
       margin: 0,
     },
   },
+  calendarContainer: {
+    display: "flex",
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginTop: 40,
+    paddingBottom: 40,
+  },
+  orangeLine: {
+    backgroundColor: Colors.orange,
+    width: "100%",
+    height: "2px",
+  },
+  upcomingEvent: {
+    width: "80%",
+    marginTop: 40,
+    fontSize: 40
+  },
+  upcomingEventContainer: {
+    backgroundColor: "white",
+    marginTop: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  homeBackground: {
+    backgroundColor: Colors.black,
+    width: "100%",
+    overflow: "hidden",
+  },
+  img: {
+    width: "100%",
+  },
 });
 
 const Home = () => {
 
-  const competitions = useSelector((state) => {
-    const a = state.competitions.competitions;
+  const classes = useStyle();
 
-    return a.sort((a, b) =>
+  const competitions = useSelector((state) => {
+    const allCompetitions = state.competitions.competitions;
+
+    return allCompetitions.sort((a, b) =>
       a.competition.dateFrom > b.competition.dateFrom ? 1 : -1
     );
   });
 
-  const comps = competitions.filter((item) => {
+  const competitionsList = competitions.filter((item) => {
     const startDate = new Date(item.competition.dateFrom);
     const today = new Date();
 
@@ -65,7 +101,7 @@ const Home = () => {
     }
   });
 
-  const kalenderItems = comps.map((item) => {
+  const calendarItems = competitionsList.map((item) => {
     return (
       <CompetitionItemHome
         key={item.competition.id}
@@ -77,22 +113,13 @@ const Home = () => {
       />
     );
   });
-  const classes = useStyle();
 
   return (
-    <div style={{ backgroundColor: "white" }}>
-      <div
-        style={{
-          backgroundColor: Colors.black,
-          width: "100%",
-          overflow: "hidden",
-        }}
-      >
+    <>
+      <div className={classes.homeBackground}>
         <img
           src={img}
-          style={{
-            width: "100%",
-          }}
+          className={classes.img}
           alt="Home of Timmy Hoas"
         />
         <div className={classes.header}>
@@ -104,51 +131,17 @@ const Home = () => {
             Here to simplify life as a<br /> competetive farrier or organizer
           </p>
         </div>
-        <div
-          style={{
-            backgroundColor: Colors.orange,
-            width: "90%",
-            height: "2px",
-            margin: "auto",
-          }}
-        />
-        <div
-          style={{
-            backgroundColor: "white",
-            marginTop: 40,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "80%", marginTop: 40 }}>
-            <div>
-              <p style={{ fontSize: 40 }}>Upcoming events</p>
-            </div>
-            <div
-              style={{
-                backgroundColor: Colors.orange,
-                width: "100%",
-                height: "2px",
-              }}
-            />
+        <div className={classes.upcomingEventContainer}>
+          <div className={classes.upcomingEvent}>
+            <p>Upcoming events</p>
+            <div className={classes.orangeLine} />
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          backgroundColor: "white",
-          justifyContent: "center",
-          alignItems: "center",
-          flexWrap: "wrap",
-          marginTop: 40,
-          paddingBottom: 40,
-        }}
-      >
-        {kalenderItems}
+      <div className={classes.calendarContainer}>
+        {calendarItems}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,20 +1,20 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { saveClassResult } from "../apiFunctions/Api";
 import CustomButton from "../components/CustomButton";
+import { auth } from "../components/firebase";
+import ButtonContainer from "../components/UI/ButtonContainer";
+import Devider from "../components/UI/Devider";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
-import ButtonContainer from "../components/UI/ButtonContainer";
-import { useDispatch } from "react-redux";
-import { fetchCompetitions } from "../store/actions/competitionAction";
-import { saveClassResult } from "../ApiFunctions/Api";
-import { auth } from "../components/firebase";
-import Devider from "../components/UI/Devider";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
+import { fetchCompetitions } from "../store/actions/competitionAction";
 
 const ScorePicker = ({ judges, state, id, goBackAdmin }) => {
-  const history = useHistory();
   const compClasses = state;
 
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const saveClassResults = async () => {
@@ -37,7 +37,7 @@ const ScorePicker = ({ judges, state, id, goBackAdmin }) => {
       <div style={{ margin: 40 }}>
         <P>Pick the shoe or heat you would like to fill the scores for below</P>
 
-        {compClasses.unPublishedResult.map((item, index) => {
+        {compClasses.unPublishedResult.map((item) => {
           return (
             <div key={item.heat}>
               <PageHeader>Heat {item.heat}</PageHeader>

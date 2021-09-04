@@ -3,7 +3,7 @@ import {
   enterCompetitions,
   addNewPoint,
   fetchAllCompetitions,
-} from "../../ApiFunctions/Api";
+} from "../../apiFunctions/Api";
 export const ADD_COMPETITOR = "ADD_COMPETITOR";
 export const FETCH_COMPETITIONS = "FETCH_COMPETITIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
