@@ -69,8 +69,6 @@ const Result = () => {
     });
   });
 
-  console.log(result);
-
   return sponsor ? (
     <>
       <TopPagesHeader title="Result" />

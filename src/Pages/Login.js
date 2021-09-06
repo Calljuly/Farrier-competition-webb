@@ -310,13 +310,6 @@ const Login = () => {
             <div className={classes.logInButtonContainer}>
               {register && (
                 <>
-                  <CustomButton
-                    onClick={() => {
-                      dispatch(actions.changeSignInState(!signInState));
-                      history.push("/");
-                    }}
-                    title="Go Back"
-                  />
                   <p>{!register && "Not having a account ?"}</p>
                   <CustomButton
                     title={register ? "Go to Login" : "Register"}
