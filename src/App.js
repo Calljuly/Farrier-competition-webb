@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-import { storage } from "./components/UI/firebase";
 import { useDispatch, useSelector } from "react-redux";
+import CookieConsent from "./components/UI/CookieConsent";
+import { auth, storage } from "./components/UI/firebase";
+import Loading from "./components/UI/IsLoading";
+import { getRoutes } from "./components/UI/ProtectedRoutes";
+import Login from "./pages/Login";
 import * as action from "./store/actions/auth";
 import * as actionComp from "./store/actions/competitionAction";
-import { getRoutes } from "./components/UI/ProtectedRoutes";
-import { auth } from "./components/UI/firebase";
-import CookieConsent from "./components/UI/CookieConsent";
-import Loading from "./components/UI/IsLoading";
-import Login from "./pages/Login";
 
 const App = () => {
   const dispatch = useDispatch();
