@@ -34,7 +34,6 @@ const CompetitionsListItem = ({
   const classes = competitionLitsItemStyle();
   const history = useHistory();
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const user = useSelector((state) => state.auth.user);
   const competitionStartDate = new Date(dateFrom);
   const competitionEndDate = new Date(dateTo);
   const todayDate = new Date();
