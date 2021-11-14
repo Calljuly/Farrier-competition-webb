@@ -22,6 +22,7 @@ import P from "../UI/Paragraph";
 import SubHeader from "../UI/SubHeader";
 import TopPageHeader from "../UI/TopPagesHeader";
 import { addClassStyle } from './styles/styles';
+import EagleEye from '../Classes/EagleEye';
 
 const AddClass = () => {
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ const AddClass = () => {
           ...prev,
           [key]: value.value,
         };
+        console.log(newValue)
         return newValue;
       });
     }
@@ -215,6 +217,8 @@ const AddClass = () => {
   };
 
   useEffect(() => {
+    console.log(classesObject.type)
+
     switch (classesObject.type) {
       case "Shoeing":
         setClasses((prev) => {
@@ -227,6 +231,26 @@ const AddClass = () => {
         });
         return;
       case "Forging":
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            shoeOneType: "Forging",
+            shoeTwoType: "Forging",
+          };
+          return newValue;
+        });
+        return;
+      case "ComboClass":
+        setClasses((prev) => {
+          const newValue = {
+            ...prev,
+            shoeOneType: "Shoeing",
+            shoeTwoType: "Forging",
+          };
+          return newValue;
+        });
+        return;
+      case "EagleEye":
         setClasses((prev) => {
           const newValue = {
             ...prev,
@@ -271,7 +295,13 @@ const AddClass = () => {
           />
         );
       case "EagleEye":
-        break;
+        return (
+          <EagleEye
+            pointsHandler={pointsHandler}
+            points={points}
+            handleClasses={handleClasses}
+          />
+        );
       case "SpeedForging":
         break;
       case "Team":
@@ -346,10 +376,7 @@ const AddClass = () => {
           <Devider margin={30} />
 
           <ButtonContainer>
-            <CustomButton
-              onClick={() => setIsOpen(true)}
-              title="Create class"
-            />
+            <CustomButton onClick={() => setIsOpen(true)} title="Create class" />
             <CustomButton onClick={() => history.goBack()} title="Go Back" />
           </ButtonContainer>
         </div>

@@ -12,7 +12,6 @@ const ForgingClass = ({ handleClasses, points, pointsHandler }) => {
         placeholder="ClassName"
         onChange={(event) => handleClasses("className", event.target)}
       />
-
       <TextInput
         required
         id="shoeOne"

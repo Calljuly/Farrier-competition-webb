@@ -1,40 +1,51 @@
 import React from "react";
-import { shoes } from "../../dummyData";
-import CustomSelect from "../UI/Select";
-import TextInput from "../UI/TextInput";
 import SubHeader from '../UI/SubHeader';
+import TextInput from "../UI/TextInput";
 
 const EagleEye = ({ handleClasses, points, pointsHandler }) => {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <TextInput
         required
         id="className"
         label="ClassName"
         placeholder="ClassName"
-        onChange={(event) => handleClasses("className", event.target.value)}
+        onChange={(event) => handleClasses("className", event.target)}
       />
-
-      <CustomSelect
-        handler={handleClasses}
-        label="Shoe Foot"
+      <TextInput
+        required
         id="shoeOne"
-        classTypes={shoes}
+        label="Shoe One"
+        placeholder="Shoe One"
+        onChange={(event) => handleClasses("shoeOne", event.target)}
       />
-      <CustomSelect
-        handler={handleClasses}
-        label="Shoe Forge"
+      <TextInput
+        id="shoeOneImg"
+        type="file"
+        onChange={(event) => handleClasses("shoeOneImg", event)}
+      />
+      <TextInput
         id="shoeTwo"
-        classTypes={shoes}
+        label="Shoe Two"
+        placeholder="Shoe Two"
+        onChange={(event) => handleClasses("shoeTwo", event.target)}
+      />
+      <TextInput
+        required
+        id="shoeTwoImg"
+        type="file"
+        onChange={(event) => handleClasses("shoeTwoImg", event)}
       />
       <TextInput
         required
         id="time"
         label="Time"
         placeholder="time"
-        onChange={(event) => handleClasses("time", event.target.value)}
+        onChange={(event) => handleClasses("time", event.target)}
       />
-      <SubHeader>Add points</SubHeader>
+      <SubHeader>Add points for first shoe</SubHeader>
+      <p>If not filled out values will get default values (1.5, 1 ,1.5 , 1)</p>
+
       {points.map((item, index) => {
         return (
           <TextInput
@@ -42,17 +53,24 @@ const EagleEye = ({ handleClasses, points, pointsHandler }) => {
             key={index}
             label={item}
             placeholder={item}
-            onChange={(event) => pointsHandler(index, event)}
+            onChange={(event) => pointsHandler(index, event.target)}
           />
         );
       })}
-      <h3>Add sponsor</h3>
+
+      <SubHeader>Add sponsor</SubHeader>
       <TextInput
-        required
         id="sponsor"
         label="Sponsor"
         placeholder="Sponsor"
-        onChange={(event) => handleClasses("sponsors", event.target.value)}
+        onChange={(event) => handleClasses("sponsors", event.target)}
+      />
+      <TextInput
+        id="sponsorLoggo"
+        type="file"
+        label="Sponsor Loggo"
+        placeholder="Sponsor Loggo"
+        onChange={(event) => handleClasses("sponsorLoggo", event)}
       />
     </div>
   );
