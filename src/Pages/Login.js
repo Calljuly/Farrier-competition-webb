@@ -5,11 +5,11 @@ import { useHistory } from "react-router-dom";
 import { resgisterNewUser } from "../apiFunctions/Api";
 import ChoiseModal from "../components/UI/ChoiseModal";
 import CustomButton from "../components/UI/CustomButton";
-import { auth } from "../components/UI/firebase";
-import TextInput from "../components/UI/TextInput";
 import Devider from "../components/UI/Devider";
+import { auth } from "../components/UI/firebase";
 import PageHeader from "../components/UI/PageHeader";
 import P from "../components/UI/Paragraph";
+import TextInput from "../components/UI/TextInput";
 import TopPagesHeader from "../components/UI/TopPagesHeader";
 import {
   validateAge, validateEmail, validatePassword, validateText
